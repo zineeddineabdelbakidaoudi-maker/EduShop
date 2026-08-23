@@ -2,15 +2,15 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Produits — EduShop Admin</title>
 <link rel="stylesheet" href="/static/css/app.css">
-<!-- Tesseract.js Universal OCR Engine -->
+<!-- Tesseract.js High-Accuracy In-Browser OCR -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
-.ocr-layout { display: grid; grid-template-columns: 320px 1fr; gap: 16px; min-height: 420px; }
-@media (max-width: 900px) { .ocr-layout { grid-template-columns: 1fr; } }
+.ocr-layout { display: grid; grid-template-columns: 340px 1fr; gap: 16px; min-height: 440px; }
+@media (max-width: 960px) { .ocr-layout { grid-template-columns: 1fr; } }
 .progress-bar { width: 100%; height: 8px; background: var(--bg); border-radius: 4px; overflow: hidden; margin-top: 8px; display: none; }
 .progress-fill { height: 100%; width: 0%; background: var(--accent); transition: width 0.2s ease; }
 .ocr-table th, .ocr-table td { padding: 6px 8px; font-size: 12px; }
-.ocr-input { width: 100%; padding: 4px 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); color: var(--text); font-size: 12px; }
+.ocr-input { width: 100%; padding: 5px 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); color: var(--text); font-size: 12px; }
 .ocr-input:focus { border-color: var(--accent); outline: none; }
 </style>
 </head><body>
@@ -97,12 +97,12 @@
 
 <!-- Modal: Smart Invoice OCR Assistant -->
 <div class="modal-overlay" id="ocr-modal">
-  <div class="modal" style="max-width:1100px;width:96%">
+  <div class="modal" style="max-width:1150px;width:96%">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
       <h3 style="margin:0">📸 Reconnaissance Intelligente de Facture Fournisseur</h3>
       <button class="btn btn-secondary" onclick="closeOCR()" style="padding:4px 8px">✕</button>
     </div>
-    <p style="color:var(--text2);font-size:13px;margin-bottom:12px">Sélectionnez la photo d'une facture. Le système filtre les en-têtes inutiles, extrait chaque ligne de produit avec son <b>Code, Code-barres, Désignation, Prix Achat, Quantité Stock et Prix Vente</b>.</p>
+    <p style="color:var(--text2);font-size:13px;margin-bottom:12px">Sélectionnez la photo d'une facture. Le système extrait avec précision chaque ligne : <b>Code, Code-barres, Désignation complète, Prix Achat, Quantité en Stock et Prix de Vente</b>.</p>
     
     <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
       <input type="file" id="ocr-file" accept="image/*" style="padding:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;flex:1;min-width:240px;color:var(--text)">
@@ -111,24 +111,24 @@
         <input type="number" id="ocr-default-margin" value="25" min="0" style="width:60px;padding:6px;font-weight:bold" oninput="recalcAllMargins()">
         <span style="font-weight:bold">%</span>
       </div>
-      <button class="btn btn-secondary" id="ocr-scan-btn" onclick="runSmartOCR()">🔍 Relancer l'Analyse</button>
+      <button class="btn btn-secondary" id="ocr-scan-btn" onclick="runSmartOCR()">🔍 Analyser la Facture</button>
       <button class="btn btn-secondary" onclick="addManualOCRRow()">+ Ajouter Ligne</button>
     </div>
 
     <!-- Progress bar -->
     <div class="progress-bar" id="ocr-progress"><div class="progress-fill" id="ocr-progress-fill"></div></div>
-    <div id="ocr-status-msg" style="font-size:12px;color:var(--accent);margin:6px 0;font-weight:bold"></div>
+    <div id="ocr-status-msg" style="font-size:13px;color:var(--accent);margin:6px 0;font-weight:bold"></div>
 
-    <!-- Side-by-side Layout: Photo on Left (320px), Full Editable Table on Right -->
+    <!-- Side-by-side Layout -->
     <div class="ocr-layout" id="invoice-workspace">
       <!-- Left: Picture Viewer -->
-      <div style="border:1px solid var(--border);border-radius:8px;padding:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;height:420px;overflow:hidden">
+      <div style="border:1px solid var(--border);border-radius:8px;padding:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;height:440px;overflow:hidden">
         <img id="ocr-img" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;display:none">
         <span id="ocr-placeholder" style="color:var(--text2);font-size:13px;text-align:center">Sélectionnez une photo pour afficher l'aperçu</span>
       </div>
 
       <!-- Right: Data Table of Products -->
-      <div style="border:1px solid var(--border);border-radius:8px;padding:10px;background:var(--card);display:flex;flex-direction:column;height:420px">
+      <div style="border:1px solid var(--border);border-radius:8px;padding:10px;background:var(--card);display:flex;flex-direction:column;height:440px">
         <div style="overflow-y:auto;flex:1">
           <table class="ocr-table" style="width:100%">
             <thead>
@@ -149,7 +149,7 @@
 
         <!-- Summary Footer -->
         <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid var(--border);margin-top:6px;font-size:12px">
-          <div><b id="ocr-count-badge">0 article(s)</b> | <span id="ocr-units-badge">0 unité(s)</span></div>
+          <div><b id="ocr-count-badge" style="color:var(--accent)">0 article(s)</b> | <span id="ocr-units-badge">0 unité(s)</span></div>
           <div style="color:var(--green);font-weight:bold" id="ocr-val-badge">Total Achat : 0.00 DA</div>
         </div>
       </div>
@@ -281,7 +281,7 @@ async function deleteProduct(id, name){
 }
 
 // -------------------------------------------------------------
-// SMART INVOICE OCR ENGINE (Column-Aware & Header-Filtered)
+// SMART INVOICE OCR ENGINE (Bounding Box Clustering & Filter)
 // -------------------------------------------------------------
 
 function openOCR(){
@@ -333,7 +333,7 @@ async function runSmartOCR(){
 
   try {
     if(typeof Tesseract !== "undefined"){
-      const worker = await Tesseract.createWorker("fra+ara", 1, {
+      const worker = await Tesseract.createWorker("fra", 1, {
         logger: m => {
           if(m.status === "recognizing text"){
             const pct = Math.round((m.progress || 0) * 100);
@@ -345,7 +345,13 @@ async function runSmartOCR(){
       const ret = await worker.recognize(imgEl.src);
       await worker.terminate();
 
-      parseSmartInvoice(ret.data.text);
+      // Cluster words by horizontal bounding box
+      const reconstructedLines = clusterWordsToLines(ret.data.words || []);
+      
+      // If words clustering gave results, use them, otherwise fallback to text lines
+      const linesToParse = reconstructedLines.length > 0 ? reconstructedLines : (ret.data.text || "").split("\n");
+      parseSmartInvoiceLines(linesToParse);
+      
       sMsg.textContent = `✅ Analyse terminée : ${ocrDetected.length} produit(s) extrait(s) !`;
     } else {
       // Fallback
@@ -364,97 +370,126 @@ async function runSmartOCR(){
   } catch(e) {
     console.error("OCR Error:", e);
     sMsg.textContent = "Saisie assistée : vous pouvez saisir ou ajuster les articles directement.";
-    if(ocrDetected.length === 0){
-      ocrDetected = [{ code: "ART-001", barcode: "", name_fr: "", category: "Papeterie", purchase_price: 0, quantity: 10, sell_price: 0 }];
-      renderOCRTable();
-    }
   } finally {
     pFill.style.width = "100%";
     setTimeout(() => { pBar.style.display = "none"; }, 800);
   }
 }
 
-// Smart Parser: Ignores headers, extracts Code, Barcode, Designation, Category, PA, Qty, PV
-function parseSmartInvoice(rawText){
-  const lines = rawText.split("\n").map(l => l.trim()).filter(l => l.length >= 4);
-  const skipKeywords = [
-    "FOURNITURES", "GENERALES", "CENTRE", "SARL", "RUE", "RC", "NIF", "TEL", "CLIENT", 
-    "FACTURE", "DATE", "TOTAL HT", "TVA", "TOTAL TTC", "MERCI", "PAGE", "BON DE", "REGLEMENT",
-    "CODE CODE-BARRES", "DESIGNATION", "CATEGORIE", "P.ACHAT", "QTE", "P.VENTE"
-  ];
+// Group OCR words into complete horizontal lines
+function clusterWordsToLines(words){
+  if(!words || words.length === 0) return [];
+  const rows = [];
+  words.forEach(w => {
+    const text = (w.text || "").trim();
+    if(!text) return;
+    const yCenter = (w.bbox.y0 + w.bbox.y1) / 2;
+    let match = rows.find(r => Math.abs(r.y - yCenter) < 16);
+    if(match){
+      match.words.push(w);
+      match.y = (match.y * (match.words.length - 1) + yCenter) / match.words.length;
+    } else {
+      rows.push({ y: yCenter, words: [w] });
+    }
+  });
 
-  const categoriesKnown = [
-    "Papeterie", "Accessoires", "Cahiers", "Classeurs", "Sacs & Cartables", 
-    "Fournitures", "Bureau", "Livres", "Manuels", "Général"
-  ];
+  rows.sort((a, b) => a.y - b.y);
+  return rows.map(r => {
+    r.words.sort((a, b) => a.bbox.x0 - b.bbox.x0);
+    return r.words.map(w => w.text.trim()).join(" ");
+  });
+}
 
+function parseSmartInvoiceLines(rawLines){
   const defaultMargin = parseFloat(document.getElementById("ocr-default-margin")?.value) || 25;
+  const categoriesKnown = ["Papeterie", "Accessoires", "Cahiers", "Classeurs", "Sacs & Cartables", "Fournitures", "Bureau", "Livres", "Manuels", "Général"];
+  const skipKeywords = ["FOURNITURES", "GENERALES", "CENTRE", "SARL", "RUE", "RC", "NIF", "TEL", "CLIENT", "FACTURE", "DATE", "TOTAL HT", "TVA", "TOTAL TTC", "MERCI POUR", "PAGE", "BON DE", "REGLEMENT"];
+
   const detected = [];
+  let inTable = false;
 
-  lines.forEach(line => {
+  for(let raw of rawLines){
+    let line = raw.trim();
+    if(line.length < 3) continue;
     const upper = line.toUpperCase();
-    if(skipKeywords.some(kw => upper.includes(kw))) return;
 
-    // Remove 'DA' or 'DZD' or currency
-    let cleanLine = line.replace(/\bDA\b/gi, '').replace(/\bDZD\b/gi, '').replace(/€/g, '').trim();
+    if(upper.includes("CODE") && (upper.includes("DESIGNATION") || upper.includes("P.ACHAT") || upper.includes("CATEGORIE") || upper.includes("QTE"))){
+      inTable = true;
+      continue;
+    }
 
-    // 1. Extract Code Article at start: (e.g. ART-006 or ART006 or PROD-123)
+    if(upper.includes("TOTAL HT") || upper.includes("TOTAL TTC") || upper.includes("TVA") || upper.includes("MERCI POUR")){
+      inTable = false;
+      break;
+    }
+
+    if(skipKeywords.some(kw => upper.includes(kw))) continue;
+
+    // Must look like a product row (has ART-xxx or price or starts with code)
+    const hasCode = /^(ART[-\s]?\d+|[A-Z0-9]{3,8}\b)/i.test(line);
+    const hasPrice = /\d+[\.,]\d{2}/.test(line);
+
+    if(!inTable && !hasCode && !hasPrice) continue;
+
+    let clean = line.replace(/\b(DA|DZD|€)\b/gi, '').trim();
+
+    // 1. Code
     let code = "";
-    const codeMatch = cleanLine.match(/^(ART[-\s]?\d+|[A-Z]{2,4}[-\s]?\d+)\b/i);
-    if(codeMatch){
-      code = codeMatch[1].replace(/\s+/g, '-').toUpperCase();
-      cleanLine = cleanLine.substring(codeMatch[0].length).trim();
+    const mCode = clean.match(/^(ART[-\s]?\d+|[A-Z]{2,4}[-\s]?\d+)\b/i);
+    if(mCode){
+      code = mCode[1].replace(/\s+/g, '-').toUpperCase();
+      clean = clean.substring(mCode[0].length).trim();
     }
 
-    // 2. Extract Barcode at start: 8 to 14 digits (e.g. 3000000000006)
+    // 2. Barcode
     let barcode = "";
-    const barcodeMatch = cleanLine.match(/^(\d{8,14})\b/);
-    if(barcodeMatch){
-      barcode = barcodeMatch[1];
-      cleanLine = cleanLine.substring(barcodeMatch[0].length).trim();
+    const mBc = clean.match(/^(\d{8,14})\b/);
+    if(mBc){
+      barcode = mBc[1];
+      clean = clean.substring(mBc[0].length).trim();
     }
 
-    // 3. Extract numbers at the end of the line: [PA] [Qty] [PV] or [PA] [Qty]
-    // Matches patterns like: "15,00 50 25,00" or "15.00  50  25.00"
-    const numberMatches = cleanLine.match(/(\d+[\.,]?\d*)\s+(\d+)(?:\s+(\d+[\.,]?\d*))?$/);
-    
-    let purchasePrice = 0, quantity = 10, sellPrice = 0;
-    if(numberMatches){
-      const paStr = numberMatches[1].replace(',', '.');
-      const qtyStr = numberMatches[2];
-      const pvStr = numberMatches[3] ? numberMatches[3].replace(',', '.') : "";
-
-      purchasePrice = parseFloat(paStr) || 0;
-      quantity = parseInt(qtyStr, 10) || 10;
-      sellPrice = pvStr ? parseFloat(pvStr) || 0 : +(purchasePrice * (1 + defaultMargin / 100)).toFixed(2);
-
-      // Remove numbers from line to get text
-      cleanLine = cleanLine.substring(0, cleanLine.length - numberMatches[0].length).trim();
+    // 3. Extract numbers at end: [PA] [Qty] [PV] or [PA] [Qty]
+    let pa = 0, qty = 1, pv = 0;
+    const mNum3 = clean.match(/(\d+[\.,]?\d*)\s+(\d+)\s+(\d+[\.,]?\d*)$/);
+    if(mNum3){
+      pa = parseFloat(mNum3[1].replace(',', '.')) || 0;
+      qty = parseInt(mNum3[2], 10) || 1;
+      pv = parseFloat(mNum3[3].replace(',', '.')) || 0;
+      clean = clean.substring(0, mNum3.index).trim();
+    } else {
+      const mNum2 = clean.match(/(\d+[\.,]?\d*)\s+(\d+)$/);
+      if(mNum2){
+        pa = parseFloat(mNum2[1].replace(',', '.')) || 0;
+        qty = parseInt(mNum2[2], 10) || 1;
+        pv = +(pa * (1 + defaultMargin / 100)).toFixed(2);
+        clean = clean.substring(0, mNum2.index).trim();
+      }
     }
 
-    // 4. Extract Category and Designation
+    // 4. Category
     let category = "Papeterie";
     for(const cat of categoriesKnown){
       const catRegex = new RegExp(`\\b${cat}\\b`, 'i');
-      if(catRegex.test(cleanLine)){
+      if(catRegex.test(clean)){
         category = cat;
-        cleanLine = cleanLine.replace(catRegex, '').trim();
+        clean = clean.replace(catRegex, '').trim();
         break;
       }
     }
 
-    let designation = cleanLine.replace(/^[-\s|:;]+|[-\s|:;]+$/g, '').trim();
+    let designation = clean.replace(/^[-\s|:;]+|[-\s|:;]+$/g, '').trim();
     if(!designation && code){
       designation = `Article ${code}`;
     }
 
-    // Only add if we have a valid designation or price
-    if(designation.length >= 2 || purchasePrice > 0){
+    // Filter noise: Must have a designation and (either a code or a price > 0)
+    if(designation.length >= 2 && (pa > 0 || code || hasCode)){
       if(!code){
         code = "ART-" + Math.floor(100 + Math.random() * 900);
       }
-      if(purchasePrice > 0 && (!sellPrice || sellPrice <= purchasePrice)){
-        sellPrice = +(purchasePrice * (1 + defaultMargin / 100)).toFixed(2);
+      if(pa > 0 && (!pv || pv <= pa)){
+        pv = +(pa * (1 + defaultMargin / 100)).toFixed(2);
       }
 
       detected.push({
@@ -462,17 +497,14 @@ function parseSmartInvoice(rawText){
         barcode: barcode,
         name_fr: designation,
         category: category,
-        purchase_price: purchasePrice,
-        quantity: quantity,
-        sell_price: sellPrice
+        purchase_price: pa,
+        quantity: qty,
+        sell_price: pv
       });
     }
-  });
+  }
 
-  ocrDetected = detected.length > 0 ? detected : [
-    { code: "ART-006", barcode: "3000000000006", name_fr: "Surligneur Stabilo Boss Jaune", category: "Papeterie", purchase_price: 15.0, quantity: 50, sell_price: 25.0 }
-  ];
-
+  ocrDetected = detected;
   renderOCRTable();
 }
 
@@ -484,7 +516,7 @@ function renderOCRTable(){
       <td><input class="ocr-input" id="ocr-barcode-${i}" value="${item.barcode || ''}" placeholder="Code-barres"></td>
       <td><input class="ocr-input" id="ocr-name-${i}" value="${item.name_fr || ''}" placeholder="Désignation" style="font-weight:bold"></td>
       <td><input class="ocr-input" id="ocr-cat-${i}" value="${item.category || 'Papeterie'}"></td>
-      <td><input class="ocr-input" type="number" step="0.5" id="ocr-pa-${i}" value="${item.purchase_price || 0}" oninput="onPARowChange(${i})" style="color:var(--blue)"></td>
+      <td><input class="ocr-input" type="number" step="0.5" id="ocr-pa-${i}" value="${item.purchase_price || 0}" oninput="onPARowChange(${i})" style="color:var(--blue);font-weight:bold"></td>
       <td><input class="ocr-input" type="number" id="ocr-qty-${i}" value="${item.quantity || 1}" oninput="updateSummaryBadges()" style="font-weight:bold"></td>
       <td><input class="ocr-input" type="number" step="0.5" id="ocr-pv-${i}" value="${item.sell_price || 0}" style="color:var(--accent);font-weight:bold"></td>
       <td><button class="btn btn-danger" style="padding:2px 6px;font-size:11px" onclick="removeOCRRow(${i})">✕</button></td>

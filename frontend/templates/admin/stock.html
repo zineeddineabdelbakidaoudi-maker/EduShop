@@ -1,362 +1,166 @@
-﻿<!DOCTYPE html><html lang="fr"><head>
+<!DOCTYPE html><html lang="fr"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Stock — EduShop Admin</title>
+<title>Stock Global — EduShop Admin</title>
 <link rel="stylesheet" href="/static/css/app.css">
-<style>
-@media print {
-  body * { visibility: hidden; }
-  #print-area, #print-area * { visibility: visible; }
-  #print-area { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 20px; font-family: Arial, sans-serif; }
-  .no-print { display: none !important; }
-}
-.batch-table { max-height: 280px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; margin-top: 10px; }
-.batch-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid var(--border); }
-.batch-row:last-child { border-bottom: none; }
-.receipt-box { background: #fff; color: #111; border-radius: 8px; padding: 20px; font-family: Arial, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-.receipt-table { width: 100%; border-collapse: collapse; margin: 14px 0; }
-.receipt-table th { background: #f0f0f0; color: #333; padding: 8px; border: 1px solid #ddd; text-align: left; font-size: 13px; }
-.receipt-table td { padding: 8px; border: 1px solid #ddd; font-size: 13px; }
-</style>
 </head><body>
 <div class="layout">
   <aside class="sidebar">
     <div class="sidebar-logo">🛒 EduShop</div>
     <nav class="sidebar-nav">
-      <a href="/admin">📋Š Tableau de bord</a>
-      <a href="/admin/products">📋¦ Produits</a>
-      <a href="/admin/stock" class="active">ðŸª Stock</a>
+      <a href="/admin">📊 Tableau de bord</a>
+      <a href="/admin/products">📦 Produits</a>
+      <a href="/admin/stock" class="active">🏪 Stock</a>
+      <a href="/admin/inventory">📝 Inventaire & Audit</a>
+      <a href="/admin/transfers">📋 Transferts Vendeurs</a>
       <a href="/admin/sellers">👥 Vendeurs</a>
       <a href="/admin/sales">💰 Ventes</a>
-      <a href="/admin/transfers">📋 Transferts Vendeurs</a>
       <a href="/admin/suppliers">🚚 Fournisseurs</a>
     </nav>
-    <div class="sidebar-footer"><a href="#" onclick="logout()">ðŸšª Déconnexion</a></div>
+    <div class="sidebar-footer"><a href="#" onclick="logout()">🚪 Déconnexion</a></div>
   </aside>
   <main class="main">
     <div class="page-header">
-      <span class="page-title">ðŸª Gestion du Stock</span>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="openBatchTransfer()">📋¦ Transférer un Lot (Multi-Produits)</button>
-        <button class="btn btn-secondary" onclick="openTransfer()">âž¡ï¸ Transfert Rapide (1 Produit)</button>
+      <span class="page-title">🏪 Stock Global</span>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-primary" onclick="openTransferModal()">➡️ Transférer au Vendeur</button>
       </div>
     </div>
     <div class="card">
       <div class="toolbar">
-        <input class="search-box" id="search" placeholder="Rechercher un produit..." oninput="filterTable()" style="max-width:300px">
-        <span style="color:var(--text2);font-size:13px" id="stock-summary"></span>
+        <input class="search-box" id="search" placeholder="Rechercher par produit, code article..." oninput="filterStock()">
       </div>
       <div class="table-wrap">
-        <table><thead><tr><th>Code</th><th>Nom</th><th>Code-barres</th><th>Prix Vente</th><th>Qté Entrepôt</th><th>Statut</th><th>Action</th></tr></thead>
-        <tbody id="stock-table"></tbody></table>
+        <table>
+          <thead>
+            <tr>
+              <th>Code Art.</th>
+              <th>Désignation</th>
+              <th>Catégorie</th>
+              <th>Prix Achat</th>
+              <th>Prix Vente</th>
+              <th>Stock Global</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="stock-table"></tbody>
+        </table>
       </div>
     </div>
   </main>
 </div>
 
-<!-- Modal 1: Batch Transfer (Multi-Select) -->
-<div class="modal-overlay" id="batch-transfer-modal">
-  <div class="modal" style="width: 550px; max-width: 95vw;">
-    <h3>📋¦ Transférer un Lot de Produits au Vendeur</h3>
-    <label>Vendeur Destinataire *</label>
-    <select id="bt-seller"></select>
-    
-    <label>Notes / Référence du transfert</label>
-    <input id="bt-notes" placeholder="Ex: Dotation du matin, Réapprovisionnement...">
-
-    <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center;">
-      <label style="margin: 0;">Sélectionnez les produits & quantités :</label>
-      <input type="text" id="bt-filter" placeholder="Filtrer..." oninput="filterBatchList()" style="width: 140px; padding: 4px 8px; font-size: 12px;">
-    </div>
-
-    <div class="batch-table" id="batch-items-container"></div>
-
-    <div style="margin-top: 12px; font-weight: bold; color: var(--accent); display: flex; justify-content: space-between;">
-      <span id="bt-selected-count">0 produit(s) sélectionné(s)</span>
-      <span id="bt-total-val">0.00 DA</span>
-    </div>
-
-    <div id="bt-error" class="error-box" style="display:none; margin-top: 10px;"></div>
-
+<!-- Modal: Add Stock -->
+<div class="modal-overlay" id="add-modal">
+  <div class="modal">
+    <h3 id="add-modal-title">Ajouter du Stock</h3>
+    <p style="color:var(--text2);font-size:13px" id="add-modal-subtitle"></p>
+    <label>Quantité à ajouter *</label>
+    <input type="number" id="add-qty" min="1" value="10">
     <div class="modal-actions">
-      <button class="btn btn-secondary" onclick="closeBatchTransfer()">Annuler</button>
-      <button class="btn btn-primary" onclick="doBatchTransfer()">✅ Valider & Générer Bon PDF</button>
+      <button class="btn btn-secondary" onclick="closeAddModal()">Annuler</button>
+      <button class="btn btn-primary" onclick="submitAddStock()">Ajouter au Stock</button>
     </div>
   </div>
 </div>
 
-<!-- Modal 2: Printable PDF / Bon de Transfert -->
-<div class="modal-overlay" id="receipt-modal">
-  <div class="modal" style="width: 650px; max-width: 95vw; background: #222;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-      <h3 style="color:#fff;margin:0;">📋„ Bon de Transfert de Stock</h3>
-      <button class="btn btn-primary" onclick="printReceipt()">🖨️ï¸ Imprimer / Sauvegarder en PDF</button>
-    </div>
-    
-    <!-- Printable Area -->
-    <div id="print-area">
-      <div class="receipt-box">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #333; padding-bottom:10px; margin-bottom:12px;">
-          <div>
-            <h2 style="margin:0; color:#111;">EDUSHOP MANAGER</h2>
-            <div style="font-size:13px; color:#555;">BON DE DÉCHARGE & TRANSFERT DE STOCK</div>
-          </div>
-          <div style="text-align:right; font-size:12px; color:#555;">
-            <div><b>Date :</b> <span id="r-date"></span></div>
-            <div><b>Émetteur :</b> <span id="r-admin"></span></div>
-          </div>
-        </div>
-
-        <div style="background:#f8f9fa; border:1px solid #e9ecef; border-radius:6px; padding:10px; margin-bottom:12px; font-size:13px;">
-          <div><b>Vendeur destinataire :</b> <span id="r-seller" style="font-size:15px; font-weight:bold; color:#0056b3;"></span></div>
-          <div id="r-notes-row" style="margin-top:4px;"><b>Note :</b> <span id="r-notes"></span></div>
-        </div>
-
-        <table class="receipt-table">
-          <thead>
-            <tr>
-              <th>N°</th>
-              <th>Code Art.</th>
-              <th>Désignation Produit</th>
-              <th style="text-align:center;">Qté Transférée</th>
-              <th style="text-align:right;">Prix Vente</th>
-              <th style="text-align:right;">Total (DA)</th>
-            </tr>
-          </thead>
-          <tbody id="r-items-table"></tbody>
-          <tfoot>
-            <tr style="font-weight:bold; background:#f0f0f0;">
-              <td colspan="3">TOTAL GÉNÉRAL</td>
-              <td style="text-align:center;" id="r-total-qty"></td>
-              <td></td>
-              <td style="text-align:right; color:#0056b3;" id="r-total-val"></td>
-            </tr>
-          </tfoot>
-        </table>
-
-        <div style="display:flex; justify-content:space-between; margin-top:30px; padding-top:20px; border-top:1px dashed #aaa; font-size:13px;">
-          <div style="text-align:center; width:200px;">
-            <b>Signature Administrateur</b>
-            <div style="height:50px;"></div>
-            <div>..................................</div>
-          </div>
-          <div style="text-align:center; width:200px;">
-            <b>Signature Vendeur (Réception)</b>
-            <div style="height:50px;"></div>
-            <div>..................................</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal-actions no-print">
-      <button class="btn btn-secondary" onclick="closeReceipt()">Fermer</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal 3: Quick Single Transfer -->
+<!-- Modal: Transfer Stock -->
 <div class="modal-overlay" id="transfer-modal">
   <div class="modal">
-    <h3>âž¡ï¸ Transférer un Produit</h3>
-    <label>Produit</label><select id="t-product"></select>
-    <label>Vendeur</label><select id="t-seller"></select>
-    <label>Quantité</label><input type="number" id="t-qty" min="1" value="1">
-    <div id="transfer-error" class="error-box" style="display:none"></div>
+    <h3>Transférer du Stock à un Vendeur</h3>
+    <label>Produit *</label>
+    <select id="t-product"></select>
+    <label>Vendeur Destinataire *</label>
+    <select id="t-seller"></select>
+    <label>Quantité à transférer *</label>
+    <input type="number" id="t-qty" min="1" value="5">
+    <div id="t-error" class="error-box" style="display:none"></div>
     <div class="modal-actions">
-      <button class="btn btn-secondary" onclick="closeTransfer()">Annuler</button>
-      <button class="btn btn-primary" onclick="doTransfer()">Confirmer</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal 4: Add Stock -->
-<div class="modal-overlay" id="add-stock-modal">
-  <div class="modal">
-    <h3 id="add-stock-title">Ajouter du stock</h3>
-    <label>Quantité Ã  ajouter</label><input type="number" id="add-qty" min="1" value="1">
-    <div id="add-error" class="error-box" style="display:none"></div>
-    <div class="modal-actions">
-      <button class="btn btn-secondary" onclick="closeAddStock()">Annuler</button>
-      <button class="btn btn-primary" onclick="doAddStock()">Ajouter</button>
+      <button class="btn btn-secondary" onclick="closeTransferModal()">Annuler</button>
+      <button class="btn btn-primary" onclick="submitTransfer()">Confirmer le Transfert</button>
     </div>
   </div>
 </div>
 
 <script src="/static/js/app.js"></script>
 <script>
-let stocks = [], sellers = [], currentProductId = null;
+let stockList = [], selectedProdId = null;
 
-async function init() {
-  const [s, sel] = await Promise.all([api("GET","/api/stock/global"), api("GET","/api/sellers")]);
-  stocks = s || [];
-  sellers = sel || [];
-  renderTable(stocks);
-  document.getElementById("stock-summary").textContent = `${stocks.length} produits — ${stocks.filter(s=>s.low_stock).length} en stock faible`;
-  
-  const tprod = document.getElementById("t-product");
-  const tsel = document.getElementById("t-seller");
-  const btsel = document.getElementById("bt-seller");
-  
-  tprod.innerHTML = stocks.map(s=>`<option value="${s.product_id}">${s.name_fr} (Dispo: ${s.quantity})</option>`).join("");
-  const sellerOpts = sellers.map(s=>`<option value="${s.id}">${s.username}</option>`).join("");
-  tsel.innerHTML = sellerOpts;
-  btsel.innerHTML = sellerOpts;
+async function init(){
+  stockList = await api("GET", "/api/stock/global") || [];
+  renderTable(stockList);
 }
 
-function renderTable(data) {
-  document.getElementById("stock-table").innerHTML = data.map(s=>`<tr>
-    <td><code>${s.code_article||""}</code></td>
-    <td>${s.name_fr}</td>
-    <td><small>${s.barcode||""}</small></td>
-    <td>${fmtDA(s.sell_price)}</td>
-    <td class="${s.low_stock?"low-stock":""}">${s.quantity}</td>
-    <td><span class="badge ${s.low_stock?"badge-red":"badge-green"}">${s.low_stock?"Stock faible":"OK"}</span></td>
-    <td><button class="btn btn-secondary" style="padding:5px 12px;font-size:12px" onclick="openAddStock(${s.product_id},'${s.name_fr}')">+ Ajouter</button></td>
-  </tr>`).join("");
-}
-
-function filterTable(){ const q=document.getElementById("search").value.toLowerCase(); renderTable(stocks.filter(s=>s.name_fr.toLowerCase().includes(q)||(s.barcode||"").includes(q))); }
-
-// Single Transfer
-function openTransfer(){ document.getElementById("transfer-modal").classList.add("open"); }
-function closeTransfer(){ document.getElementById("transfer-modal").classList.remove("open"); }
-async function doTransfer() {
-  const pid=+document.getElementById("t-product").value, sid=+document.getElementById("t-seller").value, qty=+document.getElementById("t-qty").value;
-  const r = await api("POST","/api/stock/transfer",{product_id:pid,seller_id:sid,quantity:qty});
-  if(r){ closeTransfer(); showToast("Transfert effectué !"); init(); }
-}
-
-// Add Stock
-function openAddStock(pid, name){ currentProductId=pid; document.getElementById("add-stock-title").textContent="Ajouter stock: "+name; document.getElementById("add-stock-modal").classList.add("open"); }
-function closeAddStock(){ document.getElementById("add-stock-modal").classList.remove("open"); currentProductId=null; }
-async function doAddStock() {
-  const qty=+document.getElementById("add-qty").value;
-  const r = await api("POST",`/api/stock/global/${currentProductId}/add`,{quantity:qty});
-  if(r){ closeAddStock(); showToast("Stock mis Ã  jour !"); init(); }
-}
-
-// Batch Transfer (Multi-Select)
-function openBatchTransfer() {
-  renderBatchItems();
-  document.getElementById("batch-transfer-modal").classList.add("open");
-}
-function closeBatchTransfer() { document.getElementById("batch-transfer-modal").classList.remove("open"); }
-
-function renderBatchItems() {
-  const container = document.getElementById("batch-items-container");
-  const available = stocks.filter(s => s.quantity > 0);
-  if (!available.length) {
-    container.innerHTML = '<div style="padding:15px;color:var(--text2);text-align:center;">Aucun stock disponible Ã  transférer</div>';
-    return;
-  }
-  container.innerHTML = available.map(s => `
-    <div class="batch-row" data-name="${s.name_fr.toLowerCase()}">
-      <div style="display:flex;align-items:center;gap:10px;flex:1;">
-        <input type="checkbox" id="chk-${s.product_id}" onchange="updateBatchCalculations()" style="width:18px;height:18px;cursor:pointer;">
-        <div>
-          <b>${s.name_fr}</b><br>
-          <small style="color:var(--text2);">${s.code_article||""} — Dispo: ${s.quantity} | ${fmtDA(s.sell_price)}</small>
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;">
-        <span style="font-size:12px;color:var(--text2);">Qté:</span>
-        <input type="number" id="qty-${s.product_id}" min="1" max="${s.quantity}" value="1" 
-          oninput="updateBatchCalculations()" style="width:70px;padding:4px 8px;font-size:13px;">
-      </div>
-    </div>
-  `).join("");
-  updateBatchCalculations();
-}
-
-function filterBatchList() {
-  const q = document.getElementById("bt-filter").value.toLowerCase();
-  document.querySelectorAll(".batch-row").forEach(row => {
-    row.style.display = row.dataset.name.includes(q) ? "flex" : "none";
-  });
-}
-
-function updateBatchCalculations() {
-  let count = 0, totalVal = 0;
-  stocks.filter(s => s.quantity > 0).forEach(s => {
-    const chk = document.getElementById(`chk-${s.product_id}`);
-    const qty = document.getElementById(`qty-${s.product_id}`);
-    if (chk && chk.checked) {
-      const q = Math.min(s.quantity, Math.max(1, +qty.value || 1));
-      count += q;
-      totalVal += q * s.sell_price;
-    }
-  });
-  document.getElementById("bt-selected-count").textContent = `${count} unité(s) sélectionnée(s)`;
-  document.getElementById("bt-total-val").textContent = fmtDA(totalVal);
-}
-
-async function doBatchTransfer() {
-  const sid = +document.getElementById("bt-seller").value;
-  const notes = document.getElementById("bt-notes").value.trim();
-  const items = [];
-
-  stocks.filter(s => s.quantity > 0).forEach(s => {
-    const chk = document.getElementById(`chk-${s.product_id}`);
-    const qty = document.getElementById(`qty-${s.product_id}`);
-    if (chk && chk.checked) {
-      const q = Math.min(s.quantity, Math.max(1, +qty.value || 1));
-      items.push({ product_id: s.product_id, quantity: q });
-    }
-  });
-
-  if (!items.length) {
-    document.getElementById("bt-error").textContent = "Veuillez cocher au moins un produit Ã  transférer.";
-    document.getElementById("bt-error").style.display = "block";
-    return;
-  }
-  document.getElementById("bt-error").style.display = "none";
-
-  const res = await api("POST", "/api/stock/transfer-batch", {
-    seller_id: sid,
-    items: items,
-    notes: notes || null
-  });
-
-  if (res && res.status === "success") {
-    closeBatchTransfer();
-    showToast("✅ Transfert de lot effectué !");
-    init();
-    showReceipt(res);
-  }
-}
-
-// Receipt & PDF Modal
-function showReceipt(data) {
-  document.getElementById("r-date").textContent = data.transfer_date;
-  document.getElementById("r-admin").textContent = data.admin_name;
-  document.getElementById("r-seller").textContent = data.seller_name;
-  document.getElementById("r-notes").textContent = data.notes || "Aucune";
-  document.getElementById("r-notes-row").style.display = data.notes ? "block" : "none";
-
-  const tbody = document.getElementById("r-items-table");
-  tbody.innerHTML = data.items.map((it, idx) => `
+function renderTable(data){
+  document.getElementById("stock-table").innerHTML = data.map(item => `
     <tr>
-      <td>${idx + 1}</td>
-      <td><code>${it.code_article||""}</code></td>
-      <td><b>${it.name_fr}</b></td>
-      <td style="text-align:center; font-weight:bold;">${it.quantity}</td>
-      <td style="text-align:right;">${fmtDA(it.sell_price)}</td>
-      <td style="text-align:right; font-weight:bold;">${fmtDA(it.total_value)}</td>
+      <td><code>${item.code_article}</code></td>
+      <td><b>${item.name_fr}</b></td>
+      <td>${item.category || "—"}</td>
+      <td>${fmtDA(item.purchase_price)}</td>
+      <td style="color:var(--accent);font-weight:700">${fmtDA(item.sell_price)}</td>
+      <td class="${item.quantity <= item.min_quantity ? "low-stock" : ""}"><b>${item.quantity}</b></td>
+      <td style="display:flex;gap:6px">
+        <button class="btn btn-secondary" style="padding:4px 8px;font-size:12px" onclick="openAddModal(${item.product_id}, '${item.name_fr.replace(/'/g,"\\'")}', ${item.quantity})">+ Ajouter</button>
+      </td>
     </tr>
   `).join("");
-
-  document.getElementById("r-total-qty").textContent = data.total_items_count;
-  document.getElementById("r-total-val").textContent = fmtDA(data.total_value);
-
-  document.getElementById("receipt-modal").classList.add("open");
 }
 
-function closeReceipt() { document.getElementById("receipt-modal").classList.remove("open"); }
-function printReceipt() { window.print(); }
+function filterStock(){
+  const q = document.getElementById("search").value.toLowerCase();
+  renderTable(stockList.filter(s => s.name_fr.toLowerCase().includes(q) || s.code_article.toLowerCase().includes(q)));
+}
 
-async function logout(){ await api("POST","/api/auth/logout"); window.location.href="/"; }
+function openAddModal(id, name, currentQty){
+  selectedProdId = id;
+  document.getElementById("add-modal-title").textContent = "Ajouter du Stock";
+  document.getElementById("add-modal-subtitle").textContent = `Produit : ${name} (Stock actuel : ${currentQty})`;
+  document.getElementById("add-qty").value = 10;
+  document.getElementById("add-modal").classList.add("open");
+}
+function closeAddModal(){ document.getElementById("add-modal").classList.remove("open"); }
+
+async function submitAddStock(){
+  const qty = parseInt(document.getElementById("add-qty").value, 10);
+  if(!qty || qty <= 0) return;
+  const res = await api("POST", `/api/stock/global/${selectedProdId}/add`, { quantity: qty });
+  if(res){
+    closeAddModal();
+    showToast("Stock ajouté avec succès !");
+    init();
+  }
+}
+
+async function openTransferModal(){
+  const prods = await api("GET", "/api/products") || [];
+  const sellers = await api("GET", "/api/sellers") || [];
+  document.getElementById("t-product").innerHTML = prods.map(p=>`<option value="${p.id}">${p.name_fr} (Dispo: ${p.global_stock_quantity})</option>`).join("");
+  document.getElementById("t-seller").innerHTML = sellers.map(s=>`<option value="${s.id}">${s.username}</option>`).join("");
+  document.getElementById("t-qty").value = 5;
+  document.getElementById("t-error").style.display = "none";
+  document.getElementById("transfer-modal").classList.add("open");
+}
+function closeTransferModal(){ document.getElementById("transfer-modal").classList.remove("open"); }
+
+async function submitTransfer(){
+  const pid = parseInt(document.getElementById("t-product").value, 10);
+  const sid = parseInt(document.getElementById("t-seller").value, 10);
+  const qty = parseInt(document.getElementById("t-qty").value, 10);
+  const err = document.getElementById("t-error");
+  if(!qty || qty <= 0){ err.textContent = "Quantité invalide."; err.style.display = "block"; return; }
+  const res = await api("POST", "/api/stock/transfer", { product_id: pid, seller_id: sid, quantity: qty });
+  if(res){
+    closeTransferModal();
+    showToast("Transfert effectué avec succès !");
+    init();
+  } else {
+    err.textContent = "Stock global insuffisant pour ce transfert.";
+    err.style.display = "block";
+  }
+}
+
+async function logout(){ await api("POST", "/api/auth/logout"); window.location.href = "/"; }
+
 init();
 </script>
 </body></html>
-
-
