@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EduShop — Connexion</title>
+<link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body class="login-body">
+<div class="login-card">
+  <div class="logo">🛒 EduShop</div>
+  <h2>Connexion</h2>
+  <div id="error-msg" class="error-box" style="display:none"></div>
+  <form id="login-form">
+    <label>Nom d'utilisateur</label>
+    <input type="text" id="username" placeholder="admin / thel / ..." autofocus required>
+    <label>PIN</label>
+    <input type="password" id="pin" placeholder="••••" maxlength="8" required>
+    <button type="submit" class="btn btn-primary btn-full">Se connecter</button>
+  </form>
+</div>
+<script>
+document.getElementById("login-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = e.target.querySelector("button");
+  btn.disabled = true; btn.textContent = "...";
+  const res = await fetch("/api/auth/login", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({username: document.getElementById("username").value, pin: document.getElementById("pin").value})
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    document.getElementById("error-msg").textContent = data.detail || "Erreur";
+    document.getElementById("error-msg").style.display = "block";
+    btn.disabled = false; btn.textContent = "Se connecter";
+    return;
+  }
+  window.location.href = data.role === "admin" ? "/admin" : "/seller";
+});
+</script>
+</body></html>

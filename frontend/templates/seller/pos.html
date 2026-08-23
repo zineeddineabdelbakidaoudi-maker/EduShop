@@ -1,0 +1,278 @@
+﻿<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><title>Caisse — EduShop</title>
+<link rel="stylesheet" href="/static/css/app.css">
+</head><body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">🛒 EduShop</div>
+    <nav class="sidebar-nav">
+      <a href="/seller" class="active">🧾 Caisse</a>
+      <a href="/seller/sales">📋 Mes Ventes</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div id="seller-name" style="color:var(--accent);font-weight:700;margin-bottom:8px"></div>
+      <span class="ws-status ws-disconnected" id="ws-badge">⚡ Hors ligne</span><br><br>
+      <a href="#" onclick="logout()">🚪 Déconnexion</a>
+    </div>
+  </aside>
+  <main class="main" style="padding:16px">
+    <div class="pos-layout">
+      <!-- LEFT: product search -->
+      <div class="pos-left">
+        <div class="card" style="padding:14px">
+          <input class="search-box" id="search-input" placeholder="🔍 Nom ou scanner code-barres puis Entrée..."
+            oninput="onSearchInput()" onkeydown="onSearchKey(event)" autofocus>
+        </div>
+        <div class="card" style="padding:14px;flex:1">
+          <div style="font-size:12px;color:var(--text2);margin-bottom:10px">MON STOCK</div>
+          <div class="product-grid" id="product-grid">
+            <div style="color:var(--text2);font-size:13px">Chargement...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: cart -->
+      <div class="pos-right">
+        <div class="card" style="padding:14px;display:flex;flex-direction:column;flex:1">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <b>🛒 Panier</b>
+            <button class="btn btn-danger" style="padding:5px 12px;font-size:12px" onclick="clearCart()">Vider</button>
+          </div>
+          <div class="cart-items" id="cart-items">
+            <div style="color:var(--text2);font-size:13px;text-align:center;padding:30px 0">Panier vide</div>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:12px;margin-top:8px">
+            <div class="cart-total-row"><span>Sous-total</span><span id="subtotal">0.00 DA</span></div>
+            <div class="cart-total-row">
+              <span>Remise</span>
+              <div style="display:flex;align-items:center;gap:6px">
+                <input type="number" id="discount" min="0" value="0" style="width:80px;padding:4px 8px;font-size:13px" oninput="updateTotals()">
+                <span style="font-size:12px;color:var(--text2)">DA</span>
+              </div>
+            </div>
+            <div class="cart-total-row big"><span>Total</span><span id="total">0.00 DA</span></div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <select id="payment-method" style="flex:1">
+              <option value="cash">💵 Espèces</option>
+              <option value="card">💳 Carte</option>
+              <option value="mixed">🔄 Mixte</option>
+            </select>
+            <button class="btn btn-primary" style="flex:1.5" onclick="openPayment()">✅ Encaisser</button>
+          </div>
+          <button class="btn btn-secondary" style="margin-top:8px;width:100%" onclick="openReturn()">↩️ Mode Retour</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Payment modal -->
+<div class="modal-overlay" id="payment-modal">
+  <div class="modal">
+    <h3>✅ Encaissement</h3>
+    <div style="font-size:28px;font-weight:700;color:var(--accent);margin:12px 0" id="payment-total-display"></div>
+    <label>Mode de paiement</label>
+    <select id="pay-method-modal">
+      <option value="cash">💵 Espèces</option>
+      <option value="card">💳 Carte</option>
+      <option value="mixed">🔄 Mixte</option>
+    </select>
+    <div id="cash-section">
+      <label>Montant reçu (DA)</label>
+      <input type="number" id="amount-received" placeholder="0" oninput="calcChange()" style="font-size:20px">
+      <div style="margin-top:10px;font-size:16px">Monnaie à rendre: <b id="change-display" style="color:var(--green)">0.00 DA</b></div>
+    </div>
+    <label>Notes</label>
+    <input id="pay-notes" placeholder="Optionnel">
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closePayment()">Annuler</button>
+      <button class="btn btn-primary" onclick="confirmPayment()">Confirmer la vente</button>
+    </div>
+  </div>
+</div>
+
+<!-- Return modal -->
+<div class="modal-overlay" id="return-modal">
+  <div class="modal">
+    <h3>↩️ Traiter un Retour</h3>
+    <label>Numéro de vente #</label>
+    <input type="number" id="return-sale-id" placeholder="ID de la vente">
+    <div id="return-info" style="margin-top:12px;font-size:13px;color:var(--text2)"></div>
+    <div id="return-error" class="error-box" style="display:none"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeReturn()">Annuler</button>
+      <button class="btn btn-danger" onclick="confirmReturn()">Confirmer le Retour</button>
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/app.js"></script>
+<script>
+let cart = [], allProducts = [], me = null;
+
+async function init() {
+  const user = await api("GET", "/api/auth/me");
+  if (!user) return;
+  me = user;
+  document.getElementById("seller-name").textContent = "👤 " + user.username;
+  await loadProducts();
+  connectWS();
+}
+
+async function loadProducts() {
+  allProducts = await api("GET", "/api/products/seller") || [];
+  renderProductGrid(allProducts);
+}
+
+function renderProductGrid(products) {
+  const grid = document.getElementById("product-grid");
+  if (!products.length) { grid.innerHTML = '<div style="color:var(--text2);font-size:13px">Aucun produit dans votre stock</div>'; return; }
+  grid.innerHTML = products.map(p => `
+    <div class="product-card" onclick="addToCart(${p.id})">
+      <div class="pname">${p.name_fr}</div>
+      <div class="pprice">${fmtDA(p.sell_price)}</div>
+      <div class="pstock ${p.seller_stock_quantity <= 0 ? "low-stock" : ""}">${p.seller_stock_quantity} en stock</div>
+    </div>`).join("");
+}
+
+let searchTimer;
+function onSearchInput() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    const q = document.getElementById("search-input").value.trim().toLowerCase();
+    if (!q) { renderProductGrid(allProducts); return; }
+    renderProductGrid(allProducts.filter(p => p.name_fr.toLowerCase().includes(q) || (p.barcode||"").includes(q) || p.code_article.toLowerCase().includes(q)));
+  }, 200);
+}
+
+async function onSearchKey(e) {
+  if (e.key !== "Enter") return;
+  const q = document.getElementById("search-input").value.trim();
+  if (!q) return;
+  // Barcode scanner: exact match first
+  const r = await api("GET", `/api/products/search?barcode=${encodeURIComponent(q)}`);
+  if (r && r.length) { addToCartById(r[0]); document.getElementById("search-input").value = ""; return; }
+  // Text search
+  const r2 = await api("GET", `/api/products/search?q=${encodeURIComponent(q)}`);
+  if (r2 && r2.length === 1) { addToCartById(r2[0]); document.getElementById("search-input").value = ""; }
+  else if (r2 && r2.length > 1) renderProductGrid(r2);
+}
+
+function addToCart(productId) {
+  const p = allProducts.find(x => x.id === productId);
+  if (!p) return;
+  addToCartById(p);
+}
+
+function addToCartById(p) {
+  if (p.seller_stock_quantity <= 0) { showToast("Stock insuffisant pour " + p.name_fr, "warn"); return; }
+  const existing = cart.find(c => c.product_id === p.id);
+  if (existing) {
+    if (existing.quantity >= p.seller_stock_quantity) { showToast("Stock insuffisant", "warn"); return; }
+    existing.quantity++;
+  } else {
+    cart.push({ product_id: p.id, name_fr: p.name_fr, sell_price: p.sell_price, quantity: 1, max: p.seller_stock_quantity });
+  }
+  renderCart();
+}
+
+function renderCart() {
+  const container = document.getElementById("cart-items");
+  if (!cart.length) { container.innerHTML = '<div style="color:var(--text2);font-size:13px;text-align:center;padding:30px 0">Panier vide</div>'; updateTotals(); return; }
+  container.innerHTML = cart.map((c, i) => `
+    <div class="cart-item">
+      <div class="cart-item-name">${c.name_fr}<br><small style="color:var(--text2)">${fmtDA(c.sell_price)}</small></div>
+      <div class="cart-qty">
+        <button onclick="changeQty(${i}, -1)">−</button>
+        <span>${c.quantity}</span>
+        <button onclick="changeQty(${i}, 1)">+</button>
+      </div>
+      <div style="min-width:80px;text-align:right;font-weight:700;color:var(--accent)">${fmtDA(c.sell_price * c.quantity)}</div>
+      <button onclick="removeItem(${i})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:18px">✕</button>
+    </div>`).join("");
+  updateTotals();
+}
+
+function changeQty(i, delta) {
+  cart[i].quantity += delta;
+  if (cart[i].quantity <= 0) cart.splice(i, 1);
+  else if (cart[i].quantity > cart[i].max) { cart[i].quantity = cart[i].max; showToast("Stock maximum atteint", "warn"); }
+  renderCart();
+}
+
+function removeItem(i) { cart.splice(i, 1); renderCart(); }
+function clearCart() { cart = []; renderCart(); }
+
+function updateTotals() {
+  const sub = cart.reduce((s, c) => s + c.sell_price * c.quantity, 0);
+  const disc = +document.getElementById("discount").value || 0;
+  document.getElementById("subtotal").textContent = fmtDA(sub);
+  document.getElementById("total").textContent = fmtDA(Math.max(0, sub - disc));
+}
+
+function openPayment() {
+  if (!cart.length) { showToast("Le panier est vide", "warn"); return; }
+  const total = cart.reduce((s, c) => s + c.sell_price * c.quantity, 0) - (+document.getElementById("discount").value || 0);
+  document.getElementById("payment-total-display").textContent = fmtDA(Math.max(0, total));
+  document.getElementById("pay-method-modal").value = document.getElementById("payment-method").value;
+  document.getElementById("amount-received").value = "";
+  document.getElementById("change-display").textContent = "0.00 DA";
+  document.getElementById("payment-modal").classList.add("open");
+}
+
+function closePayment() { document.getElementById("payment-modal").classList.remove("open"); }
+
+function calcChange() {
+  const total = parseFloat(document.getElementById("payment-total-display").textContent.replace(/[^0-9.]/g, ""));
+  const received = +document.getElementById("amount-received").value || 0;
+  document.getElementById("change-display").textContent = fmtDA(Math.max(0, received - total));
+}
+
+async function confirmPayment() {
+  const saleData = {
+    items: cart.map(c => ({ product_id: c.product_id, quantity: c.quantity })),
+    payment_method: document.getElementById("pay-method-modal").value,
+    discount: +document.getElementById("discount").value || 0,
+    notes: document.getElementById("pay-notes").value || null
+  };
+  const result = await api("POST", "/api/sales", saleData);
+  if (result) {
+    closePayment();
+    clearCart();
+    document.getElementById("discount").value = 0;
+    showToast("✅ Vente enregistrée ! #" + result.id);
+    await loadProducts(); // refresh stock
+  } else {
+    // Queue for offline retry
+    const q = getQueue(); q.push(saleData); saveQueue(q);
+    showToast("Vente mise en file d'attente (hors ligne)", "warn");
+    closePayment(); clearCart();
+  }
+}
+
+function openReturn() { document.getElementById("return-modal").classList.add("open"); }
+function closeReturn() { document.getElementById("return-modal").classList.remove("open"); document.getElementById("return-info").innerHTML = ""; }
+
+async function confirmReturn() {
+  const id = +document.getElementById("return-sale-id").value;
+  if (!id) { showToast("Entrez un numéro de vente", "warn"); return; }
+  const r = await api("POST", `/api/sales/${id}/return`);
+  if (r) { closeReturn(); showToast("↩️ Retour traité avec succès"); await loadProducts(); }
+}
+
+function connectWS() {
+  if (!me) return;
+  const ws = new WebSocket(`ws://${location.host}/ws/${me.id}?role=seller`);
+  ws.onopen = () => { document.getElementById("ws-badge").textContent = "⚡ En ligne"; document.getElementById("ws-badge").className = "ws-status ws-connected"; };
+  ws.onclose = () => { document.getElementById("ws-badge").textContent = "⚡ Hors ligne"; document.getElementById("ws-badge").className = "ws-status ws-disconnected"; setTimeout(connectWS, 3000); };
+  ws.onmessage = async (e) => {
+    const msg = JSON.parse(e.data);
+    if (msg.event === "stock.updated") await loadProducts();
+  };
+}
+
+async function logout() { await api("POST", "/api/auth/logout"); window.location.href = "/"; }
+init();
+</script>
+</body></html>

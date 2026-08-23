@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><title>EduShop Admin</title>
+<link rel="stylesheet" href="/static/css/app.css">
+</head><body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">🛒 EduShop</div>
+    <nav class="sidebar-nav">
+      <a href="/admin" class="active">📊 Tableau de bord</a>
+      <a href="/admin/products">📦 Produits</a>
+      <a href="/admin/stock">🏪 Stock</a>
+      <a href="/admin/sellers">👥 Vendeurs</a>
+      <a href="/admin/sales">💰 Ventes</a>
+      <a href="/admin/suppliers">🚚 Fournisseurs</a>
+    </nav>
+    <div class="sidebar-footer">
+      <span class="ws-status ws-disconnected" id="ws-badge">⚡ Hors ligne</span><br><br>
+      <a href="#" onclick="logout()">🚪 Déconnexion</a>
+    </div>
+  </aside>
+  <main class="main">
+    <div class="page-header">
+      <span class="page-title">Tableau de bord</span>
+      <span style="color:var(--text2);font-size:13px" id="last-update"></span>
+    </div>
+    <div class="kpi-grid" id="kpi-grid">
+      <div class="kpi-card"><div class="kpi-label">Chiffre d affaires (auj.)</div><div class="kpi-value" id="kpi-ca">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Bénéfice net (auj.)</div><div class="kpi-value green" id="kpi-profit">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Transactions (auj.)</div><div class="kpi-value blue" id="kpi-tx">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Retours (auj.)</div><div class="kpi-value red" id="kpi-ret">—</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div class="card">
+        <h3 style="margin-bottom:16px">📡 Activité en direct</h3>
+        <div class="live-feed" id="live-feed"><div style="color:var(--text2);font-size:13px">En attente d activité...</div></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:16px">👥 Performance vendeurs</h3>
+        <div class="table-wrap">
+          <table><thead><tr><th>Vendeur</th><th>Ventes</th><th>CA</th><th>Bénéfice</th></tr></thead>
+          <tbody id="seller-perf"></tbody></table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="/static/js/app.js"></script>
+<script>
+let me = null;
+async function init() {
+  const res = await api("GET", "/api/auth/me");
+  if (!res) return (window.location.href = "/");
+  me = res;
+  loadKPIs();
+  loadSellers();
+  connectWS();
+}
+async function loadKPIs() {
+  const today = new Date().toISOString().split("T")[0];
+  const r = await api("GET", `/api/sales/report?from=${today}T00:00:00&to=${today}T23:59:59`);
+  if (!r) return;
+  document.getElementById("kpi-ca").textContent = fmtDA(r.total_revenue);
+  document.getElementById("kpi-profit").textContent = fmtDA(r.total_profit);
+  document.getElementById("kpi-tx").textContent = r.total_transactions;
+  document.getElementById("kpi-ret").textContent = r.total_returns;
+  document.getElementById("last-update").textContent = "Mis à jour: " + new Date().toLocaleTimeString();
+}
+async function loadSellers() {
+  const sellers = await api("GET", "/api/sellers");
+  if (!sellers) return;
+  const tbody = document.getElementById("seller-perf");
+  tbody.innerHTML = sellers.map(s => `<tr>
+    <td><b>${s.username}</b></td>
+    <td>${s.total_sales}</td>
+    <td>${fmtDA(s.total_revenue)}</td>
+    <td style="color:var(--green)">${fmtDA(s.total_profit)}</td>
+  </tr>`).join("");
+}
+function connectWS() {
+  if (!me) return;
+  const ws = new WebSocket(`ws://${location.host}/ws/${me.id}?role=admin`);
+  ws.onopen = () => { document.getElementById("ws-badge").textContent = "⚡ En ligne"; document.getElementById("ws-badge").className = "ws-status ws-connected"; };
+  ws.onclose = () => { document.getElementById("ws-badge").textContent = "⚡ Hors ligne"; document.getElementById("ws-badge").className = "ws-status ws-disconnected"; setTimeout(connectWS, 3000); };
+  ws.onmessage = (e) => {
+    const msg = JSON.parse(e.data);
+    const feed = document.getElementById("live-feed");
+    if (msg.event === "sale.created") {
+      feed.innerHTML = `<div class="live-event"><span class="live-dot"></span><b>${msg.data.seller_name}</b> — Vente ${fmtDA(msg.data.total)}</div>` + feed.innerHTML;
+      loadKPIs(); loadSellers();
+    } else if (msg.event === "stock.transfer") {
+      feed.innerHTML = `<div class="live-event"><span class="live-dot" style="background:var(--blue)"></span>Transfer: ${msg.data.quantity}x <b>${msg.data.product_name}</b> → ${msg.data.seller_name}</div>` + feed.innerHTML;
+    }
+  };
+}
+async function logout() { await api("POST", "/api/auth/logout"); window.location.href = "/"; }
+init();
+</script>
+</body></html>

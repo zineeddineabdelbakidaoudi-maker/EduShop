@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><title>Ventes — EduShop Admin</title>
+<link rel="stylesheet" href="/static/css/app.css">
+</head><body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">🛒 EduShop</div>
+    <nav class="sidebar-nav">
+      <a href="/admin">📊 Tableau de bord</a>
+      <a href="/admin/products">📦 Produits</a>
+      <a href="/admin/stock">🏪 Stock</a>
+      <a href="/admin/sellers">👥 Vendeurs</a>
+      <a href="/admin/sales" class="active">💰 Ventes</a>
+      <a href="/admin/suppliers">🚚 Fournisseurs</a>
+    </nav>
+    <div class="sidebar-footer"><a href="#" onclick="logout()">🚪 Déconnexion</a></div>
+  </aside>
+  <main class="main">
+    <div class="page-header"><span class="page-title">💰 Toutes les Ventes</span></div>
+    <div class="kpi-grid" id="kpi-grid">
+      <div class="kpi-card"><div class="kpi-label">Chiffre d affaires</div><div class="kpi-value" id="kpi-ca">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Bénéfice net</div><div class="kpi-value green" id="kpi-profit">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Transactions</div><div class="kpi-value blue" id="kpi-tx">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Retours</div><div class="kpi-value red" id="kpi-ret">—</div></div>
+    </div>
+    <div class="card">
+      <div class="toolbar">
+        <input type="date" id="from-date" style="width:auto">
+        <input type="date" id="to-date" style="width:auto">
+        <button class="btn btn-primary" onclick="init()">🔍 Filtrer</button>
+      </div>
+      <div class="table-wrap">
+        <table><thead><tr><th>#</th><th>Date</th><th>Vendeur</th><th>Total</th><th>Remise</th><th>Paiement</th><th>Type</th></tr></thead>
+        <tbody id="sales-table"></tbody></table>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="/static/js/app.js"></script>
+<script>
+async function init(){
+  const from=document.getElementById("from-date").value, to=document.getElementById("to-date").value;
+  let url="/api/sales?limit=200"; if(from)url+=`&date_from=${from}T00:00:00`; if(to)url+=`&date_to=${to}T23:59:59`;
+  const [sales,report]=await Promise.all([api("GET",url),api("GET",`/api/sales/report${from?`?from=${from}T00:00:00`:""}${to?`${from?"&":"?"}to=${to}T23:59:59`:""}`)]);
+  if(report){document.getElementById("kpi-ca").textContent=fmtDA(report.total_revenue);document.getElementById("kpi-profit").textContent=fmtDA(report.total_profit);document.getElementById("kpi-tx").textContent=report.total_transactions;document.getElementById("kpi-ret").textContent=report.total_returns;}
+  document.getElementById("sales-table").innerHTML=(sales||[]).map(s=>`<tr>
+    <td>#${s.id}</td><td>${new Date(s.created_at).toLocaleString()}</td>
+    <td><b>${s.seller_name}</b></td><td style="color:var(--accent);font-weight:700">${fmtDA(s.total)}</td>
+    <td>${fmtDA(s.discount)}</td><td>${s.payment_method}</td>
+    <td><span class="badge ${s.is_return?"badge-red":"badge-green"}">${s.is_return?"Retour":"Vente"}</span></td>
+  </tr>`).join("");
+}
+async function logout(){ await api("POST","/api/auth/logout"); window.location.href="/"; }
+init();
+</script>
+</body></html>

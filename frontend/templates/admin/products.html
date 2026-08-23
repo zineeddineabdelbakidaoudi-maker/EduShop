@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><title>Produits — EduShop Admin</title>
+<link rel="stylesheet" href="/static/css/app.css">
+</head><body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">🛒 EduShop</div>
+    <nav class="sidebar-nav">
+      <a href="/admin">📊 Tableau de bord</a>
+      <a href="/admin/products" class="active">📦 Produits</a>
+      <a href="/admin/stock">🏪 Stock</a>
+      <a href="/admin/sellers">👥 Vendeurs</a>
+      <a href="/admin/sales">💰 Ventes</a>
+      <a href="/admin/suppliers">🚚 Fournisseurs</a>
+    </nav>
+    <div class="sidebar-footer"><a href="#" onclick="logout()">🚪 Déconnexion</a></div>
+  </aside>
+  <main class="main">
+    <div class="page-header">
+      <span class="page-title">📦 Catalogue Produits</span>
+      <button class="btn btn-primary" onclick="openCreate()">+ Nouveau Produit</button>
+    </div>
+    <div class="card">
+      <div class="toolbar">
+        <input class="search-box" id="search" placeholder="Rechercher..." oninput="filterTable()" style="max-width:280px">
+      </div>
+      <div class="table-wrap">
+        <table><thead><tr><th>Code</th><th>Barcode</th><th>Nom</th><th>Catégorie</th><th>Prix Achat</th><th>Prix Vente</th><th>Stock</th><th>Actions</th></tr></thead>
+        <tbody id="products-table"></tbody></table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="modal-overlay" id="prod-modal">
+  <div class="modal">
+    <h3 id="modal-title">Nouveau Produit</h3>
+    <div class="form-row">
+      <div><label>Nom (FR) *</label><input id="p-name-fr" placeholder="Nom français"></div>
+      <div><label>Nom (AR)</label><input id="p-name-ar" placeholder="الاسم بالعربية"></div>
+    </div>
+    <div class="form-row">
+      <div><label>Code Article</label><input id="p-code" placeholder="Auto si vide"></div>
+      <div><label>Code-barres</label><input id="p-barcode" placeholder="Optionnel"></div>
+    </div>
+    <label>Catégorie</label><input id="p-category" placeholder="Papeterie, Cahiers...">
+    <div class="form-row">
+      <div><label>Prix Achat (DA)</label><input type="number" id="p-purchase" min="0" step="0.5" value="0"></div>
+      <div><label>Prix Vente (DA)</label><input type="number" id="p-sell" min="0" step="0.5" value="0"></div>
+    </div>
+    <div class="form-row">
+      <div><label>Stock Initial</label><input type="number" id="p-qty" min="0" value="0"></div>
+      <div><label>Seuil Alerte</label><input type="number" id="p-min" min="0" value="5"></div>
+    </div>
+    <div id="prod-error" class="error-box" style="display:none"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+      <button class="btn btn-primary" onclick="saveProduct()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/app.js"></script>
+<script>
+let products=[], editId=null;
+async function init(){ products=await api("GET","/api/products")||[]; renderTable(products); }
+function renderTable(data){
+  document.getElementById("products-table").innerHTML=data.map(p=>`<tr>
+    <td><code>${p.code_article}</code></td>
+    <td><small>${p.barcode||"—"}</small></td>
+    <td><b>${p.name_fr}</b>${p.name_ar?`<br><small style="color:var(--text2)">${p.name_ar}</small>`:""}</td>
+    <td>${p.category||"—"}</td>
+    <td>${fmtDA(p.purchase_price)}</td>
+    <td style="color:var(--accent);font-weight:700">${fmtDA(p.sell_price)}</td>
+    <td class="${p.global_stock_quantity<=p.min_quantity?"low-stock":""}">${p.global_stock_quantity}</td>
+    <td style="display:flex;gap:6px">
+      <button class="btn btn-secondary" style="padding:5px 10px;font-size:12px" onclick="openEdit(${p.id})">✏️</button>
+      <button class="btn btn-danger" style="padding:5px 10px;font-size:12px" onclick="deleteProduct(${p.id},'${p.name_fr}')">🗑️</button>
+    </td>
+  </tr>`).join("");
+}
+function filterTable(){ const q=document.getElementById("search").value.toLowerCase(); renderTable(products.filter(p=>p.name_fr.toLowerCase().includes(q)||p.code_article.toLowerCase().includes(q)||(p.barcode||"").includes(q))); }
+function openCreate(){ editId=null; document.getElementById("modal-title").textContent="Nouveau Produit"; clearForm(); document.getElementById("prod-modal").classList.add("open"); }
+function openEdit(id){ editId=id; const p=products.find(x=>x.id===id); document.getElementById("modal-title").textContent="Modifier: "+p.name_fr; document.getElementById("p-name-fr").value=p.name_fr; document.getElementById("p-name-ar").value=p.name_ar||""; document.getElementById("p-code").value=p.code_article; document.getElementById("p-barcode").value=p.barcode||""; document.getElementById("p-category").value=p.category||""; document.getElementById("p-purchase").value=p.purchase_price; document.getElementById("p-sell").value=p.sell_price; document.getElementById("p-qty").value=p.global_stock_quantity; document.getElementById("p-min").value=p.min_quantity; document.getElementById("prod-modal").classList.add("open"); }
+function closeModal(){ document.getElementById("prod-modal").classList.remove("open"); }
+function clearForm(){ ["p-name-fr","p-name-ar","p-code","p-barcode","p-category"].forEach(id=>document.getElementById(id).value=""); ["p-purchase","p-qty"].forEach(id=>document.getElementById(id).value=0); document.getElementById("p-sell").value=0; document.getElementById("p-min").value=5; }
+async function saveProduct(){
+  const body={name_fr:document.getElementById("p-name-fr").value,name_ar:document.getElementById("p-name-ar").value||null,code_article:document.getElementById("p-code").value||null,barcode:document.getElementById("p-barcode").value||null,category:document.getElementById("p-category").value||null,purchase_price:+document.getElementById("p-purchase").value,sell_price:+document.getElementById("p-sell").value,min_quantity:+document.getElementById("p-min").value,initial_quantity:+document.getElementById("p-qty").value};
+  if(!body.name_fr){document.getElementById("prod-error").textContent="Le nom FR est requis.";document.getElementById("prod-error").style.display="block";return;}
+  const r=editId?await api("PUT",`/api/products/${editId}`,body):await api("POST","/api/products",body);
+  if(r){closeModal();showToast("Produit enregistré !");init();}
+}
+async function deleteProduct(id,name){ if(!confirm(`Supprimer "${name}" ?`))return; await api("DELETE",`/api/products/${id}`); showToast("Produit supprimé."); init(); }
+async function logout(){ await api("POST","/api/auth/logout"); window.location.href="/"; }
+init();
+</script>
+</body></html>

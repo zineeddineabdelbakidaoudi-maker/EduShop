@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><title>Mes Ventes — EduShop</title>
+<link rel="stylesheet" href="/static/css/app.css">
+</head><body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">🛒 EduShop</div>
+    <nav class="sidebar-nav">
+      <a href="/seller">🧾 Caisse</a>
+      <a href="/seller/sales" class="active">📋 Mes Ventes</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div id="seller-name" style="color:var(--accent);font-weight:700;margin-bottom:8px"></div>
+      <a href="#" onclick="logout()">🚪 Déconnexion</a>
+    </div>
+  </aside>
+  <main class="main">
+    <div class="page-header"><span class="page-title">📋 Mes Ventes</span></div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-label">Total ventes</div><div class="kpi-value" id="kpi-count">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Chiffre d affaires</div><div class="kpi-value green" id="kpi-ca">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Retours</div><div class="kpi-value red" id="kpi-ret">—</div></div>
+    </div>
+    <div class="card">
+      <div class="table-wrap">
+        <table><thead><tr><th>#</th><th>Date</th><th>Total</th><th>Remise</th><th>Paiement</th><th>Type</th></tr></thead>
+        <tbody id="sales-table"></tbody></table>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="/static/js/app.js"></script>
+<script>
+async function init() {
+  const user = await api("GET", "/api/auth/me");
+  if (!user) return;
+  document.getElementById("seller-name").textContent = "👤 " + user.username;
+  const sales = await api("GET", "/api/sales/me?limit=100") || [];
+  const ventes = sales.filter(s => !s.is_return);
+  const retours = sales.filter(s => s.is_return);
+  document.getElementById("kpi-count").textContent = ventes.length;
+  document.getElementById("kpi-ca").textContent = fmtDA(ventes.reduce((s, v) => s + v.total, 0));
+  document.getElementById("kpi-ret").textContent = retours.length;
+  document.getElementById("sales-table").innerHTML = sales.map(s => `<tr>
+    <td>#${s.id}</td>
+    <td>${fmtDate(s.created_at)}</td>
+    <td style="color:var(--accent);font-weight:700">${fmtDA(s.total)}</td>
+    <td>${fmtDA(s.discount)}</td>
+    <td>${s.payment_method}</td>
+    <td><span class="badge ${s.is_return ? "badge-red" : "badge-green"}">${s.is_return ? "Retour" : "Vente"}</span></td>
+  </tr>`).join("");
+}
+async function logout() { await api("POST", "/api/auth/logout"); window.location.href = "/"; }
+init();
+</script>
+</body></html>

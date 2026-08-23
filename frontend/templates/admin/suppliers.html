@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><title>Fournisseurs — EduShop Admin</title>
+<link rel="stylesheet" href="/static/css/app.css">
+</head><body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">🛒 EduShop</div>
+    <nav class="sidebar-nav">
+      <a href="/admin">📊 Tableau de bord</a>
+      <a href="/admin/products">📦 Produits</a>
+      <a href="/admin/stock">🏪 Stock</a>
+      <a href="/admin/sellers">👥 Vendeurs</a>
+      <a href="/admin/sales">💰 Ventes</a>
+      <a href="/admin/suppliers" class="active">🚚 Fournisseurs</a>
+    </nav>
+    <div class="sidebar-footer"><a href="#" onclick="logout()">🚪 Déconnexion</a></div>
+  </aside>
+  <main class="main">
+    <div class="page-header">
+      <span class="page-title">🚚 Fournisseurs</span>
+      <button class="btn btn-primary" onclick="openCreate()">+ Nouveau Fournisseur</button>
+    </div>
+    <div class="card">
+      <div class="table-wrap">
+        <table><thead><tr><th>Nom</th><th>Téléphone</th><th>Email</th><th>Dette</th><th>Actions</th></tr></thead>
+        <tbody id="suppliers-table"></tbody></table>
+      </div>
+    </div>
+  </main>
+</div>
+<div class="modal-overlay" id="sup-modal">
+  <div class="modal">
+    <h3 id="sup-modal-title">Nouveau Fournisseur</h3>
+    <label>Nom *</label><input id="s-name" placeholder="Nom du fournisseur">
+    <div class="form-row">
+      <div><label>Téléphone</label><input id="s-phone" placeholder="05..."></div>
+      <div><label>Email</label><input id="s-email" placeholder="email@..."></div>
+    </div>
+    <label>Adresse</label><input id="s-address" placeholder="Adresse">
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+      <button class="btn btn-primary" onclick="saveSup()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="inv-modal">
+  <div class="modal">
+    <h3 id="inv-title">Ajouter une Facture</h3>
+    <label>Montant Total (DA)</label><input type="number" id="inv-amount" min="0" value="0">
+    <label>Montant Payé (DA)</label><input type="number" id="inv-paid" min="0" value="0">
+    <label>Notes</label><input id="inv-notes" placeholder="Optionnel">
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeInv()">Annuler</button>
+      <button class="btn btn-primary" onclick="saveInv()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+<script src="/static/js/app.js"></script>
+<script>
+let suppliers=[], editId=null, invSupplierId=null;
+async function init(){ suppliers=await api("GET","/api/suppliers")||[]; renderTable(); }
+function renderTable(){
+  document.getElementById("suppliers-table").innerHTML=suppliers.map(s=>`<tr>
+    <td><b>${s.name}</b></td><td>${s.phone||"—"}</td><td>${s.email||"—"}</td>
+    <td class="${s.debt_balance>0?"low-stock":""}">${fmtDA(s.debt_balance)}</td>
+    <td style="display:flex;gap:6px">
+      <button class="btn btn-secondary" style="padding:5px 10px;font-size:12px" onclick="openEdit(${s.id})">✏️</button>
+      <button class="btn btn-primary" style="padding:5px 10px;font-size:12px" onclick="openInv(${s.id},'${s.name}')">+ Facture</button>
+      <button class="btn btn-danger" style="padding:5px 10px;font-size:12px" onclick="deleteSup(${s.id},'${s.name}')">🗑️</button>
+    </td>
+  </tr>`).join("");
+}
+function openCreate(){ editId=null; document.getElementById("sup-modal-title").textContent="Nouveau Fournisseur"; ["s-name","s-phone","s-email","s-address"].forEach(id=>document.getElementById(id).value=""); document.getElementById("sup-modal").classList.add("open"); }
+function openEdit(id){ editId=id; const s=suppliers.find(x=>x.id===id); document.getElementById("sup-modal-title").textContent="Modifier: "+s.name; document.getElementById("s-name").value=s.name; document.getElementById("s-phone").value=s.phone||""; document.getElementById("s-email").value=s.email||""; document.getElementById("s-address").value=s.address||""; document.getElementById("sup-modal").classList.add("open"); }
+function closeModal(){ document.getElementById("sup-modal").classList.remove("open"); }
+async function saveSup(){ const body={name:document.getElementById("s-name").value,phone:document.getElementById("s-phone").value||null,email:document.getElementById("s-email").value||null,address:document.getElementById("s-address").value||null}; if(!body.name){showToast("Le nom est requis","warn");return;} const r=editId?await api("PUT",`/api/suppliers/${editId}`,body):await api("POST","/api/suppliers",body); if(r){closeModal();showToast("Fournisseur enregistré!");init();} }
+async function deleteSup(id,name){ if(!confirm(`Supprimer "${name}" ?`))return; await api("DELETE",`/api/suppliers/${id}`); showToast("Fournisseur supprimé."); init(); }
+function openInv(id,name){ invSupplierId=id; document.getElementById("inv-title").textContent="Facture: "+name; document.getElementById("inv-amount").value=0; document.getElementById("inv-paid").value=0; document.getElementById("inv-notes").value=""; document.getElementById("inv-modal").classList.add("open"); }
+function closeInv(){ document.getElementById("inv-modal").classList.remove("open"); invSupplierId=null; }
+async function saveInv(){ const r=await api("POST",`/api/suppliers/${invSupplierId}/invoice`,{amount:+document.getElementById("inv-amount").value,paid_amount:+document.getElementById("inv-paid").value,notes:document.getElementById("inv-notes").value||null}); if(r){closeInv();showToast("Facture enregistrée!");init();} }
+async function logout(){ await api("POST","/api/auth/logout"); window.location.href="/"; }
+init();
+</script>
+</body></html>

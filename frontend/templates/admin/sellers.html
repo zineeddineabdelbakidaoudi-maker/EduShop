@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><title>Vendeurs — EduShop Admin</title>
+<link rel="stylesheet" href="/static/css/app.css">
+</head><body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">🛒 EduShop</div>
+    <nav class="sidebar-nav">
+      <a href="/admin">📊 Tableau de bord</a>
+      <a href="/admin/products">📦 Produits</a>
+      <a href="/admin/stock">🏪 Stock</a>
+      <a href="/admin/sellers" class="active">👥 Vendeurs</a>
+      <a href="/admin/sales">💰 Ventes</a>
+      <a href="/admin/suppliers">🚚 Fournisseurs</a>
+    </nav>
+    <div class="sidebar-footer"><a href="#" onclick="logout()">🚪 Déconnexion</a></div>
+  </aside>
+  <main class="main">
+    <div class="page-header">
+      <span class="page-title">👥 Gestion des Vendeurs</span>
+      <button class="btn btn-primary" onclick="openCreate()">+ Nouveau Vendeur</button>
+    </div>
+    <div class="card">
+      <div class="table-wrap">
+        <table><thead><tr><th>Nom</th><th>Rôle</th><th>Ventes</th><th>CA Total</th><th>Bénéfice</th><th>Retours</th><th>Actions</th></tr></thead>
+        <tbody id="sellers-table"></tbody></table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="modal-overlay" id="seller-modal">
+  <div class="modal">
+    <h3 id="modal-title">Nouveau Vendeur</h3>
+    <label>Nom d utilisateur</label>
+    <input id="s-username" placeholder="thel, seller2...">
+    <label>PIN (chiffres)</label>
+    <input type="password" id="s-pin" placeholder="••••" maxlength="8">
+    <label>Rôle</label>
+    <select id="s-role"><option value="seller">Vendeur</option><option value="admin">Admin</option></select>
+    <div id="seller-error" class="error-box" style="display:none"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+      <button class="btn btn-primary" onclick="saveSeller()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/app.js"></script>
+<script>
+let sellers=[], editId=null;
+async function init(){ sellers=await api("GET","/api/sellers")||[]; renderTable(); }
+function renderTable(){
+  document.getElementById("sellers-table").innerHTML=sellers.map(s=>`<tr>
+    <td><b>${s.username}</b></td>
+    <td><span class="badge ${s.role==="admin"?"badge-orange":"badge-blue"}">${s.role}</span></td>
+    <td>${s.total_sales}</td>
+    <td>${fmtDA(s.total_revenue)}</td>
+    <td style="color:var(--green)">${fmtDA(s.total_profit||0)}</td>
+    <td>${s.total_returns}</td>
+    <td style="display:flex;gap:6px">
+      <button class="btn btn-secondary" style="padding:5px 10px;font-size:12px" onclick="openEdit(${s.id})">✏️ Modifier</button>
+      <button class="btn btn-danger" style="padding:5px 10px;font-size:12px" onclick="deleteSeller(${s.id},'${s.username}')">🗑️</button>
+    </td>
+  </tr>`).join("");
+}
+function openCreate(){ editId=null; document.getElementById("modal-title").textContent="Nouveau Vendeur"; document.getElementById("s-username").value=""; document.getElementById("s-pin").value=""; document.getElementById("s-role").value="seller"; document.getElementById("seller-modal").classList.add("open"); }
+function openEdit(id){ editId=id; const s=sellers.find(x=>x.id===id); document.getElementById("modal-title").textContent="Modifier: "+s.username; document.getElementById("s-username").value=s.username; document.getElementById("s-pin").value=""; document.getElementById("s-role").value=s.role; document.getElementById("seller-modal").classList.add("open"); }
+function closeModal(){ document.getElementById("seller-modal").classList.remove("open"); }
+async function saveSeller(){
+  const body={username:document.getElementById("s-username").value,pin:document.getElementById("s-pin").value,role:document.getElementById("s-role").value};
+  if(!editId && !body.pin){document.getElementById("seller-error").textContent="Le PIN est requis.";document.getElementById("seller-error").style.display="block";return;}
+  const r=editId?await api("PUT",`/api/sellers/${editId}`,body):await api("POST","/api/sellers",body);
+  if(r){closeModal();showToast("Vendeur enregistré !");init();}
+}
+async function deleteSeller(id,name){ if(!confirm(`Supprimer le vendeur "${name}" ?`))return; await api("DELETE",`/api/sellers/${id}`); showToast("Vendeur supprimé."); init(); }
+async function logout(){ await api("POST","/api/auth/logout"); window.location.href="/"; }
+init();
+</script>
+</body></html>
