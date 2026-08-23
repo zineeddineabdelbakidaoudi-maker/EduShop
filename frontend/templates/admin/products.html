@@ -2,21 +2,12 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Produits — EduShop Admin</title>
 <link rel="stylesheet" href="/static/css/app.css">
-<!-- Tesseract.js High-Accuracy In-Browser OCR -->
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<style>
-.ocr-layout { display: grid; grid-template-columns: 340px 1fr; gap: 16px; min-height: 440px; }
-@media (max-width: 960px) { .ocr-layout { grid-template-columns: 1fr; } }
-.progress-bar { width: 100%; height: 8px; background: var(--bg); border-radius: 4px; overflow: hidden; margin-top: 8px; display: none; }
-.progress-fill { height: 100%; width: 0%; background: var(--accent); transition: width 0.2s ease; }
-.ocr-table th, .ocr-table td { padding: 6px 8px; font-size: 12px; }
-.ocr-input { width: 100%; padding: 5px 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); color: var(--text); font-size: 12px; }
-.ocr-input:focus { border-color: var(--accent); outline: none; }
-</style>
 </head><body>
 <div class="layout">
   <aside class="sidebar">
-    <div class="sidebar-logo">🛒 EduShop</div>
+    <div class="sidebar-logo">
+      <span>🛒 EduShop</span>
+    </div>
     <nav class="sidebar-nav">
       <a href="/admin">📊 Tableau de bord</a>
       <a href="/admin/products" class="active">📦 Produits</a>
@@ -33,7 +24,8 @@
     <div class="page-header">
       <span class="page-title">📦 Catalogue Produits</span>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-secondary" onclick="openOCR()">📸 Importer Facture Fournisseur (OCR)</button>
+        <button class="btn btn-secondary" onclick="openJsonModal()">📥 Importer JSON</button>
+        <button class="btn btn-secondary" onclick="downloadJsonTemplate()">📄 Modèle JSON</button>
         <button class="btn btn-primary" onclick="openCreate()">+ Nouveau Produit</button>
       </div>
     </div>
@@ -95,76 +87,39 @@
   </div>
 </div>
 
-<!-- Modal: Smart Invoice OCR Assistant -->
-<div class="modal-overlay" id="ocr-modal">
-  <div class="modal" style="max-width:1150px;width:96%">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-      <h3 style="margin:0">📸 Reconnaissance Intelligente de Facture Fournisseur</h3>
-      <button class="btn btn-secondary" onclick="closeOCR()" style="padding:4px 8px">✕</button>
+<!-- Modal: JSON Batch Import -->
+<div class="modal-overlay" id="json-modal">
+  <div class="modal" style="max-width:550px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h3 style="margin:0">📥 Importer des Produits (Fichier JSON)</h3>
+      <button class="btn btn-secondary" onclick="closeJsonModal()" style="padding:4px 8px">✕</button>
     </div>
-    <p style="color:var(--text2);font-size:13px;margin-bottom:12px">Sélectionnez la photo d'une facture. Le système extrait avec précision chaque ligne : <b>Code, Code-barres, Désignation complète, Prix Achat, Quantité en Stock et Prix de Vente</b>.</p>
+    <p style="color:var(--text2);font-size:13px;margin-bottom:14px">
+      Importez facilement une liste complète de produits avec leurs prix d'achat, prix de vente et quantités de stock en 1 clic.
+    </p>
     
-    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
-      <input type="file" id="ocr-file" accept="image/*" style="padding:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;flex:1;min-width:240px;color:var(--text)">
-      <div style="display:flex;gap:6px;align-items:center">
-        <label style="font-size:12px;color:var(--text2)">Marge par défaut :</label>
-        <input type="number" id="ocr-default-margin" value="25" min="0" style="width:60px;padding:6px;font-weight:bold" oninput="recalcAllMargins()">
-        <span style="font-weight:bold">%</span>
+    <label>1. Choisir un fichier .json :</label>
+    <input type="file" id="json-file" accept=".json,application/json" style="padding:8px;margin-bottom:12px">
+    
+    <label>2. Ou Coller directement du JSON :</label>
+    <textarea id="json-text" rows="6" placeholder='[{"name_fr":"Cahier 200p", "purchase_price":55, "sell_price":95, "quantity":40}]' style="font-family:monospace;font-size:12px"></textarea>
+    
+    <div id="json-error" class="error-box" style="display:none"></div>
+    <div id="json-success" class="success-box" style="display:none"></div>
+
+    <div class="modal-actions" style="justify-content:space-between;margin-top:16px">
+      <button class="btn btn-secondary" onclick="downloadJsonTemplate()">📄 Télécharger Modèle</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-secondary" onclick="closeJsonModal()">Annuler</button>
+        <button class="btn btn-primary" onclick="processJsonImport()">Importer</button>
       </div>
-      <button class="btn btn-secondary" id="ocr-scan-btn" onclick="runSmartOCR()">🔍 Analyser la Facture</button>
-      <button class="btn btn-secondary" onclick="addManualOCRRow()">+ Ajouter Ligne</button>
-    </div>
-
-    <!-- Progress bar -->
-    <div class="progress-bar" id="ocr-progress"><div class="progress-fill" id="ocr-progress-fill"></div></div>
-    <div id="ocr-status-msg" style="font-size:13px;color:var(--accent);margin:6px 0;font-weight:bold"></div>
-
-    <!-- Side-by-side Layout -->
-    <div class="ocr-layout" id="invoice-workspace">
-      <!-- Left: Picture Viewer -->
-      <div style="border:1px solid var(--border);border-radius:8px;padding:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;height:440px;overflow:hidden">
-        <img id="ocr-img" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;display:none">
-        <span id="ocr-placeholder" style="color:var(--text2);font-size:13px;text-align:center">Sélectionnez une photo pour afficher l'aperçu</span>
-      </div>
-
-      <!-- Right: Data Table of Products -->
-      <div style="border:1px solid var(--border);border-radius:8px;padding:10px;background:var(--card);display:flex;flex-direction:column;height:440px">
-        <div style="overflow-y:auto;flex:1">
-          <table class="ocr-table" style="width:100%">
-            <thead>
-              <tr style="background:#16213e;position:sticky;top:0;z-index:2">
-                <th style="width:90px">Code</th>
-                <th style="width:120px">Code-barres</th>
-                <th>Désignation Produit</th>
-                <th style="width:100px">Catégorie</th>
-                <th style="width:85px">P. Achat</th>
-                <th style="width:65px">Qté</th>
-                <th style="width:85px">P. Vente</th>
-                <th style="width:30px"></th>
-              </tr>
-            </thead>
-            <tbody id="ocr-items-tbody"></tbody>
-          </table>
-        </div>
-
-        <!-- Summary Footer -->
-        <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid var(--border);margin-top:6px;font-size:12px">
-          <div><b id="ocr-count-badge" style="color:var(--accent)">0 article(s)</b> | <span id="ocr-units-badge">0 unité(s)</span></div>
-          <div style="color:var(--green);font-weight:bold" id="ocr-val-badge">Total Achat : 0.00 DA</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal-actions" style="justify-content:flex-end;gap:10px;margin-top:12px">
-      <button class="btn btn-secondary" onclick="closeOCR()">Annuler</button>
-      <button class="btn btn-primary" onclick="importOCRProducts()" style="background:var(--green);font-weight:bold;font-size:14px;padding:10px 20px">✅ Valider & Importer Tout dans le Catalogue & Stock</button>
     </div>
   </div>
 </div>
 
 <script src="/static/js/app.js"></script>
 <script>
-let products = [], editId = null, ocrDetected = [];
+let products = [], editId = null;
 
 async function init(){ 
   products = await api("GET","/api/products") || []; 
@@ -182,10 +137,10 @@ function renderTable(data){
       <td>${fmtDA(p.purchase_price)}</td>
       <td style="color:var(--green)">${margin}%</td>
       <td style="color:var(--accent);font-weight:700">${fmtDA(p.sell_price)}</td>
-      <td class="${p.global_stock_quantity <= p.min_quantity ? "low-stock" : ""}">${p.global_stock_quantity}</td>
+      <td class="${p.global_stock_quantity <= p.min_quantity ? "low-stock" : ""}"><b>${p.global_stock_quantity}</b></td>
       <td style="display:flex;gap:6px">
-        <button class="btn btn-secondary" style="padding:5px 10px;font-size:12px" onclick="openEdit(${p.id})">✏️</button>
-        <button class="btn btn-danger" style="padding:5px 10px;font-size:12px" onclick="deleteProduct(${p.id},'${p.name_fr}')">🗑️</button>
+        <button class="btn btn-secondary" style="padding:4px 8px;font-size:12px" onclick="openEdit(${p.id})">✏️</button>
+        <button class="btn btn-danger" style="padding:4px 8px;font-size:12px" onclick="deleteProduct(${p.id},'${p.name_fr}')">🗑️</button>
       </td>
     </tr>`;
   }).join("");
@@ -281,342 +236,131 @@ async function deleteProduct(id, name){
 }
 
 // -------------------------------------------------------------
-// SMART INVOICE OCR ENGINE (Bounding Box Clustering & Filter)
+// JSON BATCH IMPORT
 // -------------------------------------------------------------
 
-function openOCR(){
-  document.getElementById("ocr-file").value = "";
-  document.getElementById("ocr-img").style.display = "none";
-  document.getElementById("ocr-placeholder").style.display = "block";
-  document.getElementById("ocr-status-msg").textContent = "Sélectionnez une photo de facture.";
-  document.getElementById("ocr-progress").style.display = "none";
-  ocrDetected = [];
-  renderOCRTable();
-  document.getElementById("ocr-modal").classList.add("open");
+function openJsonModal(){
+  document.getElementById("json-file").value = "";
+  document.getElementById("json-text").value = "";
+  document.getElementById("json-error").style.display = "none";
+  document.getElementById("json-success").style.display = "none";
+  document.getElementById("json-modal").classList.add("open");
 }
 
-function closeOCR(){ document.getElementById("ocr-modal").classList.remove("open"); }
+function closeJsonModal(){
+  document.getElementById("json-modal").classList.remove("open");
+}
 
 document.addEventListener("DOMContentLoaded", () => {
-  const fileInput = document.getElementById("ocr-file");
-  if(fileInput){
-    fileInput.addEventListener("change", function(){
+  const fileEl = document.getElementById("json-file");
+  if(fileEl){
+    fileEl.addEventListener("change", function(){
       const file = this.files[0];
-      if(file && file.type.startsWith("image/")){
+      if(file){
         const reader = new FileReader();
-        reader.onload = e => { 
-          document.getElementById("ocr-img").src = e.target.result; 
-          document.getElementById("ocr-img").style.display = "block";
-          document.getElementById("ocr-placeholder").style.display = "none";
-          runSmartOCR();
+        reader.onload = e => {
+          document.getElementById("json-text").value = e.target.result;
         };
-        reader.readAsDataURL(file);
+        reader.readAsText(file);
       }
     });
   }
 });
 
-async function runSmartOCR(){
-  const imgEl = document.getElementById("ocr-img");
-  if(!imgEl || !imgEl.src || imgEl.style.display === "none"){
-    alert("Veuillez d'abord sélectionner une photo de facture.");
+function downloadJsonTemplate(){
+  const example = [
+    {
+      "name_fr": "Surligneur Stabilo Boss Jaune",
+      "name_ar": "قلم تحديد أصفر",
+      "code_article": "ART-006",
+      "barcode": "3000000000006",
+      "category": "Papeterie",
+      "purchase_price": 15.00,
+      "sell_price": 25.00,
+      "quantity": 50,
+      "min_quantity": 5
+    },
+    {
+      "name_fr": "Cahier 200 Pages Grand Format",
+      "name_ar": "كراس 200 صفحة كبير",
+      "code_article": "ART-024",
+      "barcode": "3000000000024",
+      "category": "Cahiers",
+      "purchase_price": 55.00,
+      "sell_price": 95.00,
+      "quantity": 40,
+      "min_quantity": 5
+    },
+    {
+      "name_fr": "Papier A4 Ramette 500f",
+      "name_ar": "حزمة ورق أ4",
+      "code_article": "ART-030",
+      "barcode": "3000000000030",
+      "category": "Papeterie",
+      "purchase_price": 550.00,
+      "sell_price": 850.00,
+      "quantity": 40,
+      "min_quantity": 5
+    }
+  ];
+
+  const blob = new Blob([JSON.stringify(example, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "modele_produits_edushop.json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+async function processJsonImport(){
+  const raw = document.getElementById("json-text").value.trim();
+  const errBox = document.getElementById("json-error");
+  const succBox = document.getElementById("json-success");
+  errBox.style.display = "none";
+  succBox.style.display = "none";
+
+  if(!raw){
+    errBox.textContent = "Veuillez choisir un fichier JSON ou coller du code JSON.";
+    errBox.style.display = "block";
     return;
   }
 
-  const pBar = document.getElementById("ocr-progress");
-  const pFill = document.getElementById("ocr-progress-fill");
-  const sMsg = document.getElementById("ocr-status-msg");
-
-  pBar.style.display = "block";
-  pFill.style.width = "10%";
-  sMsg.textContent = "⏳ Chargement du moteur OCR haute précision...";
-
+  let items = [];
   try {
-    if(typeof Tesseract !== "undefined"){
-      const worker = await Tesseract.createWorker("fra", 1, {
-        logger: m => {
-          if(m.status === "recognizing text"){
-            const pct = Math.round((m.progress || 0) * 100);
-            pFill.style.width = `${pct}%`;
-            sMsg.textContent = `🔍 Lecture intelligente des colonnes : ${pct}%`;
-          }
-        }
-      });
-      const ret = await worker.recognize(imgEl.src);
-      await worker.terminate();
-
-      // Cluster words by horizontal bounding box
-      const reconstructedLines = clusterWordsToLines(ret.data.words || []);
-      
-      // If words clustering gave results, use them, otherwise fallback to text lines
-      const linesToParse = reconstructedLines.length > 0 ? reconstructedLines : (ret.data.text || "").split("\n");
-      parseSmartInvoiceLines(linesToParse);
-      
-      sMsg.textContent = `✅ Analyse terminée : ${ocrDetected.length} produit(s) extrait(s) !`;
-    } else {
-      // Fallback
-      sMsg.textContent = "⏳ Analyse serveur...";
-      const file = document.getElementById("ocr-file").files[0];
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await fetch("/api/products/import-image", { method:"POST", body:formData, credentials:"include" });
-      const data = await res.json();
-      if(data.products && data.products.length > 0){
-        ocrDetected = data.products;
-      }
-      renderOCRTable();
-      sMsg.textContent = `✅ ${ocrDetected.length} produit(s) extrait(s) !`;
-    }
-  } catch(e) {
-    console.error("OCR Error:", e);
-    sMsg.textContent = "Saisie assistée : vous pouvez saisir ou ajuster les articles directement.";
-  } finally {
-    pFill.style.width = "100%";
-    setTimeout(() => { pBar.style.display = "none"; }, 800);
-  }
-}
-
-// Group OCR words into complete horizontal lines
-function clusterWordsToLines(words){
-  if(!words || words.length === 0) return [];
-  const rows = [];
-  words.forEach(w => {
-    const text = (w.text || "").trim();
-    if(!text) return;
-    const yCenter = (w.bbox.y0 + w.bbox.y1) / 2;
-    let match = rows.find(r => Math.abs(r.y - yCenter) < 16);
-    if(match){
-      match.words.push(w);
-      match.y = (match.y * (match.words.length - 1) + yCenter) / match.words.length;
-    } else {
-      rows.push({ y: yCenter, words: [w] });
-    }
-  });
-
-  rows.sort((a, b) => a.y - b.y);
-  return rows.map(r => {
-    r.words.sort((a, b) => a.bbox.x0 - b.bbox.x0);
-    return r.words.map(w => w.text.trim()).join(" ");
-  });
-}
-
-function parseSmartInvoiceLines(rawLines){
-  const defaultMargin = parseFloat(document.getElementById("ocr-default-margin")?.value) || 25;
-  const categoriesKnown = ["Papeterie", "Accessoires", "Cahiers", "Classeurs", "Sacs & Cartables", "Fournitures", "Bureau", "Livres", "Manuels", "Général"];
-  const skipKeywords = ["FOURNITURES", "GENERALES", "CENTRE", "SARL", "RUE", "RC", "NIF", "TEL", "CLIENT", "FACTURE", "DATE", "TOTAL HT", "TVA", "TOTAL TTC", "MERCI POUR", "PAGE", "BON DE", "REGLEMENT"];
-
-  const detected = [];
-  let inTable = false;
-
-  for(let raw of rawLines){
-    let line = raw.trim();
-    if(line.length < 3) continue;
-    const upper = line.toUpperCase();
-
-    if(upper.includes("CODE") && (upper.includes("DESIGNATION") || upper.includes("P.ACHAT") || upper.includes("CATEGORIE") || upper.includes("QTE"))){
-      inTable = true;
-      continue;
-    }
-
-    if(upper.includes("TOTAL HT") || upper.includes("TOTAL TTC") || upper.includes("TVA") || upper.includes("MERCI POUR")){
-      inTable = false;
-      break;
-    }
-
-    if(skipKeywords.some(kw => upper.includes(kw))) continue;
-
-    // Must look like a product row (has ART-xxx or price or starts with code)
-    const hasCode = /^(ART[-\s]?\d+|[A-Z0-9]{3,8}\b)/i.test(line);
-    const hasPrice = /\d+[\.,]\d{2}/.test(line);
-
-    if(!inTable && !hasCode && !hasPrice) continue;
-
-    let clean = line.replace(/\b(DA|DZD|€)\b/gi, '').trim();
-
-    // 1. Code
-    let code = "";
-    const mCode = clean.match(/^(ART[-\s]?\d+|[A-Z]{2,4}[-\s]?\d+)\b/i);
-    if(mCode){
-      code = mCode[1].replace(/\s+/g, '-').toUpperCase();
-      clean = clean.substring(mCode[0].length).trim();
-    }
-
-    // 2. Barcode
-    let barcode = "";
-    const mBc = clean.match(/^(\d{8,14})\b/);
-    if(mBc){
-      barcode = mBc[1];
-      clean = clean.substring(mBc[0].length).trim();
-    }
-
-    // 3. Extract numbers at end: [PA] [Qty] [PV] or [PA] [Qty]
-    let pa = 0, qty = 1, pv = 0;
-    const mNum3 = clean.match(/(\d+[\.,]?\d*)\s+(\d+)\s+(\d+[\.,]?\d*)$/);
-    if(mNum3){
-      pa = parseFloat(mNum3[1].replace(',', '.')) || 0;
-      qty = parseInt(mNum3[2], 10) || 1;
-      pv = parseFloat(mNum3[3].replace(',', '.')) || 0;
-      clean = clean.substring(0, mNum3.index).trim();
-    } else {
-      const mNum2 = clean.match(/(\d+[\.,]?\d*)\s+(\d+)$/);
-      if(mNum2){
-        pa = parseFloat(mNum2[1].replace(',', '.')) || 0;
-        qty = parseInt(mNum2[2], 10) || 1;
-        pv = +(pa * (1 + defaultMargin / 100)).toFixed(2);
-        clean = clean.substring(0, mNum2.index).trim();
+    items = JSON.parse(raw);
+    if(!Array.isArray(items)){
+      if(typeof items === "object" && items.products && Array.isArray(items.products)){
+        items = items.products;
+      } else {
+        items = [items];
       }
     }
-
-    // 4. Category
-    let category = "Papeterie";
-    for(const cat of categoriesKnown){
-      const catRegex = new RegExp(`\\b${cat}\\b`, 'i');
-      if(catRegex.test(clean)){
-        category = cat;
-        clean = clean.replace(catRegex, '').trim();
-        break;
-      }
-    }
-
-    let designation = clean.replace(/^[-\s|:;]+|[-\s|:;]+$/g, '').trim();
-    if(!designation && code){
-      designation = `Article ${code}`;
-    }
-
-    // Filter noise: Must have a designation and (either a code or a price > 0)
-    if(designation.length >= 2 && (pa > 0 || code || hasCode)){
-      if(!code){
-        code = "ART-" + Math.floor(100 + Math.random() * 900);
-      }
-      if(pa > 0 && (!pv || pv <= pa)){
-        pv = +(pa * (1 + defaultMargin / 100)).toFixed(2);
-      }
-
-      detected.push({
-        code: code,
-        barcode: barcode,
-        name_fr: designation,
-        category: category,
-        purchase_price: pa,
-        quantity: qty,
-        sell_price: pv
-      });
-    }
+  } catch(e){
+    errBox.textContent = "Erreur de format JSON invalide : " + e.message;
+    errBox.style.display = "block";
+    return;
   }
 
-  ocrDetected = detected;
-  renderOCRTable();
-}
-
-function renderOCRTable(){
-  const tbody = document.getElementById("ocr-items-tbody");
-  tbody.innerHTML = ocrDetected.map((item, i) => `
-    <tr id="ocr-row-${i}">
-      <td><input class="ocr-input" id="ocr-code-${i}" value="${item.code || ''}" placeholder="Code"></td>
-      <td><input class="ocr-input" id="ocr-barcode-${i}" value="${item.barcode || ''}" placeholder="Code-barres"></td>
-      <td><input class="ocr-input" id="ocr-name-${i}" value="${item.name_fr || ''}" placeholder="Désignation" style="font-weight:bold"></td>
-      <td><input class="ocr-input" id="ocr-cat-${i}" value="${item.category || 'Papeterie'}"></td>
-      <td><input class="ocr-input" type="number" step="0.5" id="ocr-pa-${i}" value="${item.purchase_price || 0}" oninput="onPARowChange(${i})" style="color:var(--blue);font-weight:bold"></td>
-      <td><input class="ocr-input" type="number" id="ocr-qty-${i}" value="${item.quantity || 1}" oninput="updateSummaryBadges()" style="font-weight:bold"></td>
-      <td><input class="ocr-input" type="number" step="0.5" id="ocr-pv-${i}" value="${item.sell_price || 0}" style="color:var(--accent);font-weight:bold"></td>
-      <td><button class="btn btn-danger" style="padding:2px 6px;font-size:11px" onclick="removeOCRRow(${i})">✕</button></td>
-    </tr>
-  `).join("");
-
-  updateSummaryBadges();
-}
-
-function onPARowChange(i){
-  const pa = parseFloat(document.getElementById(`ocr-pa-${i}`).value) || 0;
-  const defMargin = parseFloat(document.getElementById("ocr-default-margin")?.value) || 25;
-  document.getElementById(`ocr-pv-${i}`).value = (pa * (1 + defMargin / 100)).toFixed(2);
-  updateSummaryBadges();
-}
-
-function recalcAllMargins(){
-  const defMargin = parseFloat(document.getElementById("ocr-default-margin")?.value) || 25;
-  ocrDetected.forEach((_, i) => {
-    const paEl = document.getElementById(`ocr-pa-${i}`);
-    const pvEl = document.getElementById(`ocr-pv-${i}`);
-    if(paEl && pvEl){
-      const pa = parseFloat(paEl.value) || 0;
-      pvEl.value = (pa * (1 + defMargin / 100)).toFixed(2);
-    }
-  });
-}
-
-function addManualOCRRow(){
-  const defMargin = parseFloat(document.getElementById("ocr-default-margin")?.value) || 25;
-  ocrDetected.push({
-    code: "ART-" + Math.floor(100 + Math.random() * 900),
-    barcode: "",
-    name_fr: "",
-    category: "Papeterie",
-    purchase_price: 0,
-    quantity: 10,
-    sell_price: 0
-  });
-  renderOCRTable();
-}
-
-function removeOCRRow(idx){
-  ocrDetected.splice(idx, 1);
-  renderOCRTable();
-}
-
-function updateSummaryBadges(){
-  let totalUnits = 0, totalVal = 0;
-  ocrDetected.forEach((_, i) => {
-    const qty = parseInt(document.getElementById(`ocr-qty-${i}`)?.value, 10) || 0;
-    const pa = parseFloat(document.getElementById(`ocr-pa-${i}`)?.value) || 0;
-    totalUnits += qty;
-    totalVal += (qty * pa);
-  });
-
-  document.getElementById("ocr-count-badge").textContent = `${ocrDetected.length} article(s)`;
-  document.getElementById("ocr-units-badge").textContent = `${totalUnits.toLocaleString()} unité(s) de stock`;
-  document.getElementById("ocr-val-badge").textContent = `Total Achat : ${fmtDA(totalVal)}`;
-}
-
-async function importOCRProducts(){
-  const toImport = [];
-  ocrDetected.forEach((_, i) => {
-    const name = document.getElementById(`ocr-name-${i}`)?.value?.trim();
-    const code = document.getElementById(`ocr-code-${i}`)?.value?.trim();
-    const barcode = document.getElementById(`ocr-barcode-${i}`)?.value?.trim();
-    const cat = document.getElementById(`ocr-cat-${i}`)?.value?.trim() || "Général";
-    const pa = parseFloat(document.getElementById(`ocr-pa-${i}`)?.value) || 0;
-    const pv = parseFloat(document.getElementById(`ocr-pv-${i}`)?.value) || 0;
-    const qty = parseInt(document.getElementById(`ocr-qty-${i}`)?.value, 10) || 0;
-
-    if(name){
-      toImport.push({ 
-        name_fr: name,
-        code_article: code || null,
-        barcode: barcode || null,
-        category: cat,
-        purchase_price: pa, 
-        sell_price: pv, 
-        initial_quantity: qty, 
-        min_quantity: 5
-      });
-    }
-  });
-
-  if(toImport.length === 0){ 
-    alert("Veuillez saisir ou détecter au moins un article."); 
-    return; 
-  }
-  
-  let ok = 0;
-  for(const p of toImport){
-    const r = await api("POST", "/api/products", p);
-    if(r) ok++;
+  if(items.length === 0){
+    errBox.textContent = "Le tableau JSON ne contient aucun article.";
+    errBox.style.display = "block";
+    return;
   }
 
-  showToast(`✅ ${ok} produit(s) importé(s) dans le catalogue et stock !`);
-  closeOCR();
-  init();
+  const res = await api("POST", "/api/products/batch-import", items);
+  if(res){
+    succBox.textContent = `✅ ${res.imported_count} produit(s) importé(s) avec succès dans le catalogue et stock !`;
+    succBox.style.display = "block";
+    showToast(`✅ ${res.imported_count} produit(s) importé(s) !`);
+    setTimeout(() => {
+      closeJsonModal();
+      init();
+    }, 1200);
+  } else {
+    errBox.textContent = "Erreur lors de l'importation.";
+    errBox.style.display = "block";
+  }
 }
 
 async function logout(){ 

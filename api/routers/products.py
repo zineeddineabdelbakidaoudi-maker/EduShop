@@ -135,9 +135,44 @@ def delete_product(product_id: int, db: Session = Depends(get_db), admin: User =
     db.delete(p)
     db.commit()
 
-@router.post("/import-image")
-async def import_from_image(file: UploadFile = File(...), admin: User = Depends(require_admin)):
-    """OCR: Detect product names and prices from an invoice photo with robust error handling."""
+@router.post("/batch-import")
+def batch_import_products(items: list[dict], db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+    """Import multiple products in 1 atomic transaction from JSON."""
+    imported_count = 0
+    for it in items:
+        name_fr = it.get("name_fr", "").strip()
+        if not name_fr:
+            continue
+        code = it.get("code_article") or gen_code()
+        while db.query(Product).filter(Product.code_article == code).first():
+            code = gen_code()
+        
+        pa = float(it.get("purchase_price", 0.0))
+        pv = float(it.get("sell_price", 0.0))
+        if pv <= 0 and pa > 0:
+            pv = round(pa * 1.25, 2)
+            
+        qty = int(it.get("quantity", it.get("initial_quantity", 0)))
+        
+        p = Product(
+            code_article=code,
+            barcode=it.get("barcode") or None,
+            name_fr=name_fr,
+            name_ar=it.get("name_ar") or None,
+            category=it.get("category") or "Général",
+            purchase_price=pa,
+            sell_price=pv,
+            min_quantity=int(it.get("min_quantity", 5)),
+            description=it.get("description") or None,
+        )
+        db.add(p)
+        db.flush()
+        gs = GlobalStock(product_id=p.id, quantity=qty)
+        db.add(gs)
+        imported_count += 1
+        
+    db.commit()
+    return {"imported_count": imported_count, "message": f"{imported_count} produits importés avec succès."}
     contents = await file.read()
     text = ""
     ocr_available = False
