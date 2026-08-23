@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="fr"><head>
+﻿<!DOCTYPE html><html lang="fr"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stock Global — EduShop Admin</title>
 <link rel="stylesheet" href="/static/css/app.css">
@@ -21,7 +21,8 @@
   <main class="main">
     <div class="page-header">
       <span class="page-title">🏪 Stock Global</span>
-      <div style="display:flex;gap:8px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-secondary" onclick="openBulkTransferModal()">📦 Transfert Multiple Produits</button>
         <button class="btn btn-primary" onclick="openTransferModal()">➡️ Transférer au Vendeur</button>
       </div>
     </div>
@@ -33,10 +34,10 @@
         <table>
           <thead>
             <tr>
+              <th style="width:30px"><input type="checkbox" id="check-all" onchange="toggleAllChecks(this.checked)" title="Tout sélectionner"></th>
               <th>Code Art.</th>
               <th>Désignation</th>
               <th>Catégorie</th>
-              <th>Prix Achat</th>
               <th>Prix Vente</th>
               <th>Stock Global</th>
               <th>Actions</th>
@@ -63,10 +64,10 @@
   </div>
 </div>
 
-<!-- Modal: Transfer Stock -->
+<!-- Modal: Single Transfer -->
 <div class="modal-overlay" id="transfer-modal">
   <div class="modal">
-    <h3>Transférer du Stock à un Vendeur</h3>
+    <h3>➡️ Transférer un Produit à un Vendeur</h3>
     <label>Produit *</label>
     <select id="t-product"></select>
     <label>Vendeur Destinataire *</label>
@@ -77,6 +78,40 @@
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeTransferModal()">Annuler</button>
       <button class="btn btn-primary" onclick="submitTransfer()">Confirmer le Transfert</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Bulk Multi-Product Transfer -->
+<div class="modal-overlay" id="bulk-modal">
+  <div class="modal" style="max-width:640px;width:96%">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <h3 style="margin:0">📦 Transfert Multiple Produits au Vendeur</h3>
+      <button class="btn btn-secondary" onclick="closeBulkModal()" style="padding:4px 8px">✕</button>
+    </div>
+    <label>Vendeur Destinataire *</label>
+    <select id="bulk-seller" style="margin-bottom:12px"></select>
+    <p style="color:var(--text2);font-size:12px;margin-bottom:8px">Cochez les produits à transférer et saisissez les quantités :</p>
+    <div style="max-height:320px;overflow-y:auto;border:1px solid var(--border);border-radius:8px">
+      <table style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr style="background:var(--card2);position:sticky;top:0;z-index:1">
+            <th style="padding:8px;width:30px;text-align:center">
+              <input type="checkbox" id="bulk-check-all" onchange="toggleBulkAll(this.checked)">
+            </th>
+            <th style="padding:8px;text-align:left">Produit</th>
+            <th style="padding:8px;width:80px;text-align:center">Dispo</th>
+            <th style="padding:8px;width:100px;text-align:center">Qté à Envoyer</th>
+          </tr>
+        </thead>
+        <tbody id="bulk-products-tbody"></tbody>
+      </table>
+    </div>
+    <div id="bulk-summary" style="margin-top:10px;font-size:13px;color:var(--accent);font-weight:700"></div>
+    <div id="bulk-error" class="error-box" style="display:none;margin-top:8px"></div>
+    <div class="modal-actions" style="margin-top:14px">
+      <button class="btn btn-secondary" onclick="closeBulkModal()">Annuler</button>
+      <button class="btn btn-primary" onclick="submitBulkTransfer()" style="background:var(--green);font-weight:bold">✅ Confirmer Tous les Transferts</button>
     </div>
   </div>
 </div>
@@ -93,14 +128,15 @@ async function init(){
 function renderTable(data){
   document.getElementById("stock-table").innerHTML = data.map(item => `
     <tr>
+      <td style="text-align:center"><input type="checkbox" class="row-check" data-id="${item.product_id}"></td>
       <td><code>${item.code_article}</code></td>
       <td><b>${item.name_fr}</b></td>
       <td>${item.category || "—"}</td>
-      <td>${fmtDA(item.purchase_price)}</td>
       <td style="color:var(--accent);font-weight:700">${fmtDA(item.sell_price)}</td>
       <td class="${item.quantity <= item.min_quantity ? "low-stock" : ""}"><b>${item.quantity}</b></td>
       <td style="display:flex;gap:6px">
-        <button class="btn btn-secondary" style="padding:4px 8px;font-size:12px" onclick="openAddModal(${item.product_id}, '${item.name_fr.replace(/'/g,"\\'")}', ${item.quantity})">+ Ajouter</button>
+        <button class="btn btn-secondary" style="padding:4px 8px;font-size:12px" onclick="openAddModal(${item.product_id}, '${item.name_fr.replace(/'/g,"\\'")}', ${item.quantity})">+ Stock</button>
+        <button class="btn btn-primary" style="padding:4px 8px;font-size:12px" onclick="quickTransfer(${item.product_id}, '${item.name_fr.replace(/'/g,"\\'")}', ${item.quantity})">➡️ Vendeur</button>
       </td>
     </tr>
   `).join("");
@@ -111,6 +147,11 @@ function filterStock(){
   renderTable(stockList.filter(s => s.name_fr.toLowerCase().includes(q) || s.code_article.toLowerCase().includes(q)));
 }
 
+function toggleAllChecks(checked){
+  document.querySelectorAll(".row-check").forEach(cb => cb.checked = checked);
+}
+
+// ── Add Stock Modal ────────────────────────────────────────────────────────────
 function openAddModal(id, name, currentQty){
   selectedProdId = id;
   document.getElementById("add-modal-title").textContent = "Ajouter du Stock";
@@ -124,23 +165,24 @@ async function submitAddStock(){
   const qty = parseInt(document.getElementById("add-qty").value, 10);
   if(!qty || qty <= 0) return;
   const res = await api("POST", `/api/stock/global/${selectedProdId}/add`, { quantity: qty });
-  if(res){
-    closeAddModal();
-    showToast("Stock ajouté avec succès !");
-    init();
-  }
+  if(res){ closeAddModal(); showToast("Stock ajouté !"); init(); }
 }
 
-async function openTransferModal(){
+// ── Single Transfer Modal ──────────────────────────────────────────────────────
+async function openTransferModal(preselectedPid = null){
   const prods = await api("GET", "/api/products") || [];
   const sellers = await api("GET", "/api/sellers") || [];
-  document.getElementById("t-product").innerHTML = prods.map(p=>`<option value="${p.id}">${p.name_fr} (Dispo: ${p.global_stock_quantity})</option>`).join("");
-  document.getElementById("t-seller").innerHTML = sellers.map(s=>`<option value="${s.id}">${s.username}</option>`).join("");
+  document.getElementById("t-product").innerHTML = prods.map(p => `<option value="${p.id}" ${p.id === preselectedPid ? "selected" : ""}>${p.name_fr} (Dispo: ${p.global_stock_quantity})</option>`).join("");
+  document.getElementById("t-seller").innerHTML = sellers.map(s => `<option value="${s.id}">${s.username}</option>`).join("");
   document.getElementById("t-qty").value = 5;
   document.getElementById("t-error").style.display = "none";
   document.getElementById("transfer-modal").classList.add("open");
 }
 function closeTransferModal(){ document.getElementById("transfer-modal").classList.remove("open"); }
+
+async function quickTransfer(pid, name, qty){
+  await openTransferModal(pid);
+}
 
 async function submitTransfer(){
   const pid = parseInt(document.getElementById("t-product").value, 10);
@@ -149,13 +191,93 @@ async function submitTransfer(){
   const err = document.getElementById("t-error");
   if(!qty || qty <= 0){ err.textContent = "Quantité invalide."; err.style.display = "block"; return; }
   const res = await api("POST", "/api/stock/transfer", { product_id: pid, seller_id: sid, quantity: qty });
-  if(res){
-    closeTransferModal();
-    showToast("Transfert effectué avec succès !");
+  if(res){ closeTransferModal(); showToast("Transfert effectué !"); init(); }
+  else { err.textContent = "Stock global insuffisant."; err.style.display = "block"; }
+}
+
+// ── Bulk Multi-Product Transfer Modal ─────────────────────────────────────────
+async function openBulkTransferModal(){
+  const sellers = await api("GET", "/api/sellers") || [];
+  document.getElementById("bulk-seller").innerHTML = sellers.map(s => `<option value="${s.id}">${s.username}</option>`).join("");
+  
+  // Populate table with all products
+  document.getElementById("bulk-products-tbody").innerHTML = stockList.map(item => `
+    <tr style="border-bottom:1px solid var(--border)">
+      <td style="padding:7px;text-align:center">
+        <input type="checkbox" class="bulk-check" data-id="${item.product_id}" onchange="updateBulkSummary()">
+      </td>
+      <td style="padding:7px">
+        <b style="font-size:13px">${item.name_fr}</b>
+        <br><small style="color:var(--text2)">${item.code_article}</small>
+      </td>
+      <td style="padding:7px;text-align:center;font-weight:700;color:${item.quantity <= item.min_quantity ? "var(--red)" : "var(--green)"}">${item.quantity}</td>
+      <td style="padding:7px;text-align:center">
+        <input type="number" class="bulk-qty" data-id="${item.product_id}" data-max="${item.quantity}"
+          value="5" min="1" max="${item.quantity}"
+          style="width:72px;padding:4px;text-align:center;background:var(--card2);border:1px solid var(--border);border-radius:6px;color:var(--text)"
+          oninput="updateBulkSummary()">
+      </td>
+    </tr>
+  `).join("");
+
+  document.getElementById("bulk-error").style.display = "none";
+  document.getElementById("bulk-summary").textContent = "";
+  document.getElementById("bulk-modal").classList.add("open");
+}
+function closeBulkModal(){ document.getElementById("bulk-modal").classList.remove("open"); }
+
+function toggleBulkAll(checked){
+  document.querySelectorAll(".bulk-check").forEach(cb => cb.checked = checked);
+  updateBulkSummary();
+}
+
+function updateBulkSummary(){
+  const checked = document.querySelectorAll(".bulk-check:checked");
+  let totalLines = 0, totalUnits = 0;
+  checked.forEach(cb => {
+    const qtyEl = document.querySelector(`.bulk-qty[data-id="${cb.dataset.id}"]`);
+    const qty = parseInt(qtyEl?.value, 10) || 0;
+    totalLines++;
+    totalUnits += qty;
+  });
+  document.getElementById("bulk-summary").textContent = totalLines > 0
+    ? `${totalLines} produit(s) sélectionné(s) — ${totalUnits} unité(s) au total à transférer`
+    : "";
+}
+
+async function submitBulkTransfer(){
+  const sellerId = parseInt(document.getElementById("bulk-seller").value, 10);
+  const errEl = document.getElementById("bulk-error");
+  errEl.style.display = "none";
+
+  const checked = document.querySelectorAll(".bulk-check:checked");
+  if(checked.length === 0){
+    errEl.textContent = "Sélectionnez au moins un produit à transférer.";
+    errEl.style.display = "block";
+    return;
+  }
+
+  let successCount = 0, failCount = 0;
+  for(const cb of checked){
+    const pid = parseInt(cb.dataset.id, 10);
+    const qtyEl = document.querySelector(`.bulk-qty[data-id="${pid}"]`);
+    const qty = parseInt(qtyEl?.value, 10) || 0;
+    const maxQty = parseInt(qtyEl?.dataset.max, 10) || 0;
+
+    if(qty <= 0 || qty > maxQty){ failCount++; continue; }
+
+    const res = await api("POST", "/api/stock/transfer", { product_id: pid, seller_id: sellerId, quantity: qty });
+    if(res) successCount++;
+    else failCount++;
+  }
+
+  if(successCount > 0){
+    showToast(`✅ ${successCount} transfert(s) effectué(s) avec succès !${failCount > 0 ? ` (${failCount} échec)` : ""}`);
+    closeBulkModal();
     init();
   } else {
-    err.textContent = "Stock global insuffisant pour ce transfert.";
-    err.style.display = "block";
+    errEl.textContent = `Tous les transferts ont échoué. Vérifiez les stocks disponibles.`;
+    errEl.style.display = "block";
   }
 }
 
