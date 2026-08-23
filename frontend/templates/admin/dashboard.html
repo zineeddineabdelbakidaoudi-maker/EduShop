@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html><html lang="fr"><head>
+<!DOCTYPE html><html lang="fr"><head>
 <meta charset="UTF-8"><title>EduShop Admin</title>
 <link rel="stylesheet" href="/static/css/app.css">
 </head><body>
@@ -15,6 +15,7 @@
     </nav>
     <div class="sidebar-footer">
       <span class="ws-status ws-disconnected" id="ws-badge">⚡ Hors ligne</span><br><br>
+      <a href="#" onclick="openChangePasswordModal()" style="display:block;margin-bottom:8px;">🔒 Changer Mot de passe</a>
       <a href="#" onclick="logout()">🚪 Déconnexion</a>
     </div>
   </aside>
@@ -42,8 +43,28 @@
         </div>
       </div>
     </div>
-  </main>
+<!-- Modal: Change Password -->
+<div class="modal-overlay" id="change-pwd-modal">
+  <div class="modal">
+    <h3>🔒 Changer mon Mot de passe</h3>
+    <label>Ancien mot de passe / PIN actuel *</label>
+    <input type="password" id="cp-old" placeholder="Ex: 1234">
+    
+    <label>Nouveau mot de passe fort *</label>
+    <input type="password" id="cp-new" placeholder="Min. 4 caractères (ex: Admin2026!#)">
+    
+    <label>Confirmer le nouveau mot de passe *</label>
+    <input type="password" id="cp-confirm" placeholder="Répéter le nouveau mot de passe">
+
+    <div id="cp-error" class="error-box" style="display:none;margin-top:10px;"></div>
+
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeChangePasswordModal()">Annuler</button>
+      <button class="btn btn-primary" onclick="doChangePassword()">Enregistrer</button>
+    </div>
+  </div>
 </div>
+
 <script src="/static/js/app.js"></script>
 <script>
 let me = null;
@@ -54,6 +75,43 @@ async function init() {
   loadKPIs();
   loadSellers();
   connectWS();
+}
+function openChangePasswordModal() {
+  document.getElementById("cp-old").value = "";
+  document.getElementById("cp-new").value = "";
+  document.getElementById("cp-confirm").value = "";
+  document.getElementById("cp-error").style.display = "none";
+  document.getElementById("change-pwd-modal").classList.add("open");
+}
+function closeChangePasswordModal() {
+  document.getElementById("change-pwd-modal").classList.remove("open");
+}
+async function doChangePassword() {
+  const oldPin = document.getElementById("cp-old").value;
+  const newPin = document.getElementById("cp-new").value;
+  const confirmPin = document.getElementById("cp-confirm").value;
+
+  if (!oldPin || !newPin) {
+    document.getElementById("cp-error").textContent = "Veuillez remplir tous les champs.";
+    document.getElementById("cp-error").style.display = "block";
+    return;
+  }
+  if (newPin !== confirmPin) {
+    document.getElementById("cp-error").textContent = "Les deux nouveaux mots de passe ne correspondent pas.";
+    document.getElementById("cp-error").style.display = "block";
+    return;
+  }
+  if (newPin.length < 4) {
+    document.getElementById("cp-error").textContent = "Le mot de passe doit comporter au moins 4 caractères.";
+    document.getElementById("cp-error").style.display = "block";
+    return;
+  }
+
+  const res = await api("POST", "/api/auth/change-password", { old_pin: oldPin, new_pin: newPin });
+  if (res) {
+    closeChangePasswordModal();
+    showToast("✅ Mot de passe modifié avec succès !");
+  }
 }
 async function loadKPIs() {
   const today = new Date().toISOString().split("T")[0];
