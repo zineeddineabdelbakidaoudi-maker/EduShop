@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html><html lang="fr"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Stock â€” EduShop Admin</title>
+<title>Stock — EduShop Admin</title>
 <link rel="stylesheet" href="/static/css/app.css">
 <style>
 @media print {
@@ -20,23 +20,23 @@
 </head><body>
 <div class="layout">
   <aside class="sidebar">
-    <div class="sidebar-logo">ðŸ›’ EduShop</div>
+    <div class="sidebar-logo">🛒 EduShop</div>
     <nav class="sidebar-nav">
-      <a href="/admin">ðŸ“Š Tableau de bord</a>
-      <a href="/admin/products">ðŸ“¦ Produits</a>
+      <a href="/admin">📋Š Tableau de bord</a>
+      <a href="/admin/products">📋¦ Produits</a>
       <a href="/admin/stock" class="active">ðŸª Stock</a>
-      <a href="/admin/sellers">ðŸ‘¥ Vendeurs</a>
-      <a href="/admin/sales">ðŸ’° Ventes</a>
+      <a href="/admin/sellers">👥 Vendeurs</a>
+      <a href="/admin/sales">💰 Ventes</a>
       <a href="/admin/transfers">📋 Transferts Vendeurs</a>
-      <a href="/admin/suppliers">ðŸšš Fournisseurs</a>
+      <a href="/admin/suppliers">🚚 Fournisseurs</a>
     </nav>
-    <div class="sidebar-footer"><a href="#" onclick="logout()">ðŸšª DÃ©connexion</a></div>
+    <div class="sidebar-footer"><a href="#" onclick="logout()">ðŸšª Déconnexion</a></div>
   </aside>
   <main class="main">
     <div class="page-header">
       <span class="page-title">ðŸª Gestion du Stock</span>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="openBatchTransfer()">ðŸ“¦ TransfÃ©rer un Lot (Multi-Produits)</button>
+        <button class="btn btn-primary" onclick="openBatchTransfer()">📋¦ Transférer un Lot (Multi-Produits)</button>
         <button class="btn btn-secondary" onclick="openTransfer()">âž¡ï¸ Transfert Rapide (1 Produit)</button>
       </div>
     </div>
@@ -46,7 +46,7 @@
         <span style="color:var(--text2);font-size:13px" id="stock-summary"></span>
       </div>
       <div class="table-wrap">
-        <table><thead><tr><th>Code</th><th>Nom</th><th>Code-barres</th><th>Prix Vente</th><th>QtÃ© EntrepÃ´t</th><th>Statut</th><th>Action</th></tr></thead>
+        <table><thead><tr><th>Code</th><th>Nom</th><th>Code-barres</th><th>Prix Vente</th><th>Qté Entrepôt</th><th>Statut</th><th>Action</th></tr></thead>
         <tbody id="stock-table"></tbody></table>
       </div>
     </div>
@@ -56,22 +56,22 @@
 <!-- Modal 1: Batch Transfer (Multi-Select) -->
 <div class="modal-overlay" id="batch-transfer-modal">
   <div class="modal" style="width: 550px; max-width: 95vw;">
-    <h3>ðŸ“¦ TransfÃ©rer un Lot de Produits au Vendeur</h3>
+    <h3>📋¦ Transférer un Lot de Produits au Vendeur</h3>
     <label>Vendeur Destinataire *</label>
     <select id="bt-seller"></select>
     
-    <label>Notes / RÃ©fÃ©rence du transfert</label>
-    <input id="bt-notes" placeholder="Ex: Dotation du matin, RÃ©approvisionnement...">
+    <label>Notes / Référence du transfert</label>
+    <input id="bt-notes" placeholder="Ex: Dotation du matin, Réapprovisionnement...">
 
     <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center;">
-      <label style="margin: 0;">SÃ©lectionnez les produits & quantitÃ©s :</label>
+      <label style="margin: 0;">Sélectionnez les produits & quantités :</label>
       <input type="text" id="bt-filter" placeholder="Filtrer..." oninput="filterBatchList()" style="width: 140px; padding: 4px 8px; font-size: 12px;">
     </div>
 
     <div class="batch-table" id="batch-items-container"></div>
 
     <div style="margin-top: 12px; font-weight: bold; color: var(--accent); display: flex; justify-content: space-between;">
-      <span id="bt-selected-count">0 produit(s) sÃ©lectionnÃ©(s)</span>
+      <span id="bt-selected-count">0 produit(s) sélectionné(s)</span>
       <span id="bt-total-val">0.00 DA</span>
     </div>
 
@@ -79,7 +79,7 @@
 
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeBatchTransfer()">Annuler</button>
-      <button class="btn btn-primary" onclick="doBatchTransfer()">âœ… Valider & GÃ©nÃ©rer Bon PDF</button>
+      <button class="btn btn-primary" onclick="doBatchTransfer()">✅ Valider & Générer Bon PDF</button>
     </div>
   </div>
 </div>
@@ -88,8 +88,8 @@
 <div class="modal-overlay" id="receipt-modal">
   <div class="modal" style="width: 650px; max-width: 95vw; background: #222;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-      <h3 style="color:#fff;margin:0;">ðŸ“„ Bon de Transfert de Stock</h3>
-      <button class="btn btn-primary" onclick="printReceipt()">ðŸ–¨ï¸ Imprimer / Sauvegarder en PDF</button>
+      <h3 style="color:#fff;margin:0;">📋„ Bon de Transfert de Stock</h3>
+      <button class="btn btn-primary" onclick="printReceipt()">🖨️ï¸ Imprimer / Sauvegarder en PDF</button>
     </div>
     
     <!-- Printable Area -->
@@ -98,11 +98,11 @@
         <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #333; padding-bottom:10px; margin-bottom:12px;">
           <div>
             <h2 style="margin:0; color:#111;">EDUSHOP MANAGER</h2>
-            <div style="font-size:13px; color:#555;">BON DE DÃ‰CHARGE & TRANSFERT DE STOCK</div>
+            <div style="font-size:13px; color:#555;">BON DE DÉCHARGE & TRANSFERT DE STOCK</div>
           </div>
           <div style="text-align:right; font-size:12px; color:#555;">
             <div><b>Date :</b> <span id="r-date"></span></div>
-            <div><b>Ã‰metteur :</b> <span id="r-admin"></span></div>
+            <div><b>Émetteur :</b> <span id="r-admin"></span></div>
           </div>
         </div>
 
@@ -114,10 +114,10 @@
         <table class="receipt-table">
           <thead>
             <tr>
-              <th>NÂ°</th>
+              <th>N°</th>
               <th>Code Art.</th>
-              <th>DÃ©signation Produit</th>
-              <th style="text-align:center;">QtÃ© TransfÃ©rÃ©e</th>
+              <th>Désignation Produit</th>
+              <th style="text-align:center;">Qté Transférée</th>
               <th style="text-align:right;">Prix Vente</th>
               <th style="text-align:right;">Total (DA)</th>
             </tr>
@@ -125,7 +125,7 @@
           <tbody id="r-items-table"></tbody>
           <tfoot>
             <tr style="font-weight:bold; background:#f0f0f0;">
-              <td colspan="3">TOTAL GÃ‰NÃ‰RAL</td>
+              <td colspan="3">TOTAL GÉNÉRAL</td>
               <td style="text-align:center;" id="r-total-qty"></td>
               <td></td>
               <td style="text-align:right; color:#0056b3;" id="r-total-val"></td>
@@ -140,7 +140,7 @@
             <div>..................................</div>
           </div>
           <div style="text-align:center; width:200px;">
-            <b>Signature Vendeur (RÃ©ception)</b>
+            <b>Signature Vendeur (Réception)</b>
             <div style="height:50px;"></div>
             <div>..................................</div>
           </div>
@@ -157,10 +157,10 @@
 <!-- Modal 3: Quick Single Transfer -->
 <div class="modal-overlay" id="transfer-modal">
   <div class="modal">
-    <h3>âž¡ï¸ TransfÃ©rer un Produit</h3>
+    <h3>âž¡ï¸ Transférer un Produit</h3>
     <label>Produit</label><select id="t-product"></select>
     <label>Vendeur</label><select id="t-seller"></select>
-    <label>QuantitÃ©</label><input type="number" id="t-qty" min="1" value="1">
+    <label>Quantité</label><input type="number" id="t-qty" min="1" value="1">
     <div id="transfer-error" class="error-box" style="display:none"></div>
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeTransfer()">Annuler</button>
@@ -173,7 +173,7 @@
 <div class="modal-overlay" id="add-stock-modal">
   <div class="modal">
     <h3 id="add-stock-title">Ajouter du stock</h3>
-    <label>QuantitÃ© Ã  ajouter</label><input type="number" id="add-qty" min="1" value="1">
+    <label>Quantité Ã  ajouter</label><input type="number" id="add-qty" min="1" value="1">
     <div id="add-error" class="error-box" style="display:none"></div>
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeAddStock()">Annuler</button>
@@ -191,7 +191,7 @@ async function init() {
   stocks = s || [];
   sellers = sel || [];
   renderTable(stocks);
-  document.getElementById("stock-summary").textContent = `${stocks.length} produits â€” ${stocks.filter(s=>s.low_stock).length} en stock faible`;
+  document.getElementById("stock-summary").textContent = `${stocks.length} produits — ${stocks.filter(s=>s.low_stock).length} en stock faible`;
   
   const tprod = document.getElementById("t-product");
   const tsel = document.getElementById("t-seller");
@@ -223,7 +223,7 @@ function closeTransfer(){ document.getElementById("transfer-modal").classList.re
 async function doTransfer() {
   const pid=+document.getElementById("t-product").value, sid=+document.getElementById("t-seller").value, qty=+document.getElementById("t-qty").value;
   const r = await api("POST","/api/stock/transfer",{product_id:pid,seller_id:sid,quantity:qty});
-  if(r){ closeTransfer(); showToast("Transfert effectuÃ© !"); init(); }
+  if(r){ closeTransfer(); showToast("Transfert effectué !"); init(); }
 }
 
 // Add Stock
@@ -246,7 +246,7 @@ function renderBatchItems() {
   const container = document.getElementById("batch-items-container");
   const available = stocks.filter(s => s.quantity > 0);
   if (!available.length) {
-    container.innerHTML = '<div style="padding:15px;color:var(--text2);text-align:center;">Aucun stock disponible Ã  transfÃ©rer</div>';
+    container.innerHTML = '<div style="padding:15px;color:var(--text2);text-align:center;">Aucun stock disponible Ã  transférer</div>';
     return;
   }
   container.innerHTML = available.map(s => `
@@ -255,11 +255,11 @@ function renderBatchItems() {
         <input type="checkbox" id="chk-${s.product_id}" onchange="updateBatchCalculations()" style="width:18px;height:18px;cursor:pointer;">
         <div>
           <b>${s.name_fr}</b><br>
-          <small style="color:var(--text2);">${s.code_article||""} â€” Dispo: ${s.quantity} | ${fmtDA(s.sell_price)}</small>
+          <small style="color:var(--text2);">${s.code_article||""} — Dispo: ${s.quantity} | ${fmtDA(s.sell_price)}</small>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:6px;">
-        <span style="font-size:12px;color:var(--text2);">QtÃ©:</span>
+        <span style="font-size:12px;color:var(--text2);">Qté:</span>
         <input type="number" id="qty-${s.product_id}" min="1" max="${s.quantity}" value="1" 
           oninput="updateBatchCalculations()" style="width:70px;padding:4px 8px;font-size:13px;">
       </div>
@@ -286,7 +286,7 @@ function updateBatchCalculations() {
       totalVal += q * s.sell_price;
     }
   });
-  document.getElementById("bt-selected-count").textContent = `${count} unitÃ©(s) sÃ©lectionnÃ©e(s)`;
+  document.getElementById("bt-selected-count").textContent = `${count} unité(s) sélectionnée(s)`;
   document.getElementById("bt-total-val").textContent = fmtDA(totalVal);
 }
 
@@ -305,7 +305,7 @@ async function doBatchTransfer() {
   });
 
   if (!items.length) {
-    document.getElementById("bt-error").textContent = "Veuillez cocher au moins un produit Ã  transfÃ©rer.";
+    document.getElementById("bt-error").textContent = "Veuillez cocher au moins un produit Ã  transférer.";
     document.getElementById("bt-error").style.display = "block";
     return;
   }
@@ -319,7 +319,7 @@ async function doBatchTransfer() {
 
   if (res && res.status === "success") {
     closeBatchTransfer();
-    showToast("âœ… Transfert de lot effectuÃ© !");
+    showToast("✅ Transfert de lot effectué !");
     init();
     showReceipt(res);
   }
