@@ -32,7 +32,7 @@ app.mount("/static", StaticFiles(directory=str(BASE_DIR / "frontend" / "static")
 templates = Jinja2Templates(directory=str(BASE_DIR / "frontend" / "templates"))
 
 # ── API routers ───────────────────────────────────────────────────────────────
-from api.routers import auth, products, stock, sales, sellers, suppliers, sync
+from api.routers import auth, products, stock, sales, sellers, suppliers, sync, inventory
 from api.websocket import router as ws_router
 
 app.include_router(auth.router)
@@ -42,6 +42,7 @@ app.include_router(sales.router)
 app.include_router(sellers.router)
 app.include_router(suppliers.router)
 app.include_router(sync.router)
+app.include_router(inventory.router)
 app.include_router(ws_router)
 
 # ── Frontend page routes ──────────────────────────────────────────────────────
@@ -60,6 +61,10 @@ def admin_products(request: Request):
 @app.get("/admin/stock", response_class=HTMLResponse)
 def admin_stock(request: Request):
     return templates.TemplateResponse(request=request, name="admin/stock.html")
+
+@app.get("/admin/inventory", response_class=HTMLResponse)
+def admin_inventory(request: Request):
+    return templates.TemplateResponse(request=request, name="admin/inventory.html")
 
 @app.get("/admin/sellers", response_class=HTMLResponse)
 def admin_sellers(request: Request):

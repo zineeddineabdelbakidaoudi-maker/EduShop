@@ -137,39 +137,48 @@ def delete_product(product_id: int, db: Session = Depends(get_db), admin: User =
 
 @router.post("/import-image")
 async def import_from_image(file: UploadFile = File(...), admin: User = Depends(require_admin)):
-    """OCR: Detect product names and prices from an invoice photo."""
+    """OCR: Detect product names and prices from an invoice photo with robust error handling."""
     contents = await file.read()
+    text = ""
+    ocr_available = False
     
     try:
         from PIL import Image
         import pytesseract
         img = Image.open(io.BytesIO(contents)).convert("L")
         text = pytesseract.image_to_string(img, lang="fra+ara", config="--psm 6")
-    except ImportError:
-        raise HTTPException(500, "Tesseract OCR non disponible. Contactez l'administrateur.")
+        ocr_available = True
     except Exception as e:
-        raise HTTPException(500, f"Erreur analyse image: {str(e)}")
+        # Tesseract not installed locally on Windows or missing PATH
+        ocr_available = False
+        text = ""
     
     products_detected = []
-    price_pattern = re.compile(r'(\d[\d\s]*[\.,]\d{2}|\d+)\s*(DA|DZD|€)?', re.IGNORECASE)
-    skip_kw = ["TOTAL", "SOUS", "TVA", "REMISE", "FACTURE", "DATE", "N°", "TEL", "ADRESSE", "SIRET", "MONTANT"]
+    if ocr_available and text:
+        price_pattern = re.compile(r'(\d[\d\s]*[\.,]\d{2}|\d+)\s*(DA|DZD|€)?', re.IGNORECASE)
+        skip_kw = ["TOTAL", "SOUS", "TVA", "REMISE", "FACTURE", "DATE", "N°", "TEL", "ADRESSE", "SIRET", "MONTANT"]
+        
+        for line in [l.strip() for l in text.split("\n") if l.strip()]:
+            if len(line) < 3:
+                continue
+            if any(kw in line.upper() for kw in skip_kw):
+                continue
+            prices = price_pattern.findall(line)
+            name = price_pattern.sub("", line).strip(" :-|")
+            if name and len(name) >= 3:
+                purchase, sell = 0.0, 0.0
+                if prices:
+                    try:
+                        purchase = float(prices[0][0].replace(" ", "").replace(",", "."))
+                        sell = round(purchase * 1.20, 2)
+                    except Exception:
+                        pass
+                products_detected.append({"name_fr": name[:100], "purchase_price": purchase, "sell_price": sell, "quantity": 1})
     
-    for line in [l.strip() for l in text.split("\n") if l.strip()]:
-        if len(line) < 3:
-            continue
-        if any(kw in line.upper() for kw in skip_kw):
-            continue
-        prices = price_pattern.findall(line)
-        name = price_pattern.sub("", line).strip(" :-|")
-        if name and len(name) >= 3:
-            purchase, sell = 0.0, 0.0
-            if prices:
-                try:
-                    purchase = float(prices[0][0].replace(" ", "").replace(",", "."))
-                    sell = round(purchase * 1.20, 2)
-                except Exception:
-                    pass
-            products_detected.append({"name_fr": name[:100], "purchase_price": purchase, "sell_price": sell, "quantity": 1})
-    
-    return {"products": products_detected[:50], "raw_text": text[:2000]}
+    return {
+        "ocr_available": ocr_available,
+        "products": products_detected[:50],
+        "raw_text": text[:2000] if text else "",
+        "message": "Texte extrait avec succès" if ocr_available else "OCR automatique non disponible en local. Utilisez la saisie assistée côte-à-côte avec l'aperçu de l'image."
+    }
 
