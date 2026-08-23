@@ -11,6 +11,7 @@
       <a href="/admin/stock">🏪 Stock</a>
       <a href="/admin/sellers">👥 Vendeurs</a>
       <a href="/admin/sales" class="active">💰 Ventes</a>
+      <a href="/admin/transfers">📋 Transferts Vendeurs</a>
       <a href="/admin/suppliers">🚚 Fournisseurs</a>
     </nav>
     <div class="sidebar-footer"><a href="#" onclick="logout()">🚪 Déconnexion</a></div>
@@ -54,3 +55,4 @@ async function logout(){ await api("POST","/api/auth/logout"); window.location.h
 init();
 </script>
 </body></html>
+

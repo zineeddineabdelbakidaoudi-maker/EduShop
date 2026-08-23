@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transferts Vendeurs — EduShop Admin</title>
+<link rel="stylesheet" href="/static/css/app.css">
+<style>
+@media print {
+  body * { visibility: hidden; }
+  #print-area, #print-area * { visibility: visible; }
+  #print-area { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 20px; font-family: Arial, sans-serif; }
+  .no-print { display: none !important; }
+}
+</style>
+</head><body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">🛒 EduShop</div>
+    <nav class="sidebar-nav">
+      <a href="/admin">📊 Tableau de bord</a>
+      <a href="/admin/products">📦 Produits</a>
+      <a href="/admin/stock">🏪 Stock</a>
+      <a href="/admin/sellers">👥 Vendeurs</a>
+      <a href="/admin/sales">💰 Ventes</a>
+      <a href="/admin/transfers" class="active">📋 Transferts Vendeurs</a>
+      <a href="/admin/suppliers">🚚 Fournisseurs</a>
+    </nav>
+    <div class="sidebar-footer"><a href="#" onclick="logout()">🚪 Déconnexion</a></div>
+  </aside>
+  <main class="main">
+    <div class="page-header no-print">
+      <span class="page-title">📋 Historique des Transferts Vendeurs</span>
+      <button class="btn btn-secondary" onclick="window.print()">🖨️ Imprimer</button>
+    </div>
+    <div class="kpi-grid no-print" style="margin-bottom:20px">
+      <div class="kpi-card"><div class="kpi-label">Total Transferts</div><div class="kpi-value" id="kpi-total">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Unités Transférées</div><div class="kpi-value blue" id="kpi-units">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Valeur Totale Estimée</div><div class="kpi-value green" id="kpi-value">—</div></div>
+    </div>
+    <div class="card no-print" style="margin-bottom:20px">
+      <div class="toolbar" style="flex-wrap:wrap;gap:12px">
+        <select id="filter-seller" onchange="filterTable()" style="padding:8px 12px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px;min-width:180px">
+          <option value="">Tous les vendeurs</option>
+        </select>
+        <input type="date" id="filter-from" onchange="filterTable()" style="padding:8px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px">
+        <input type="date" id="filter-to" onchange="filterTable()" style="padding:8px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px">
+        <input class="search-box" id="search" placeholder="Rechercher produit..." oninput="filterTable()" style="min-width:220px">
+        <button class="btn btn-secondary" onclick="clearFilters()">✕ Effacer filtres</button>
+      </div>
+    </div>
+    <div id="print-area">
+      <div style="display:none" id="print-header">
+        <h2 style="text-align:center;margin-bottom:4px">EduShop — Historique des Transferts</h2>
+        <p style="text-align:center;color:#555;font-size:13px" id="print-date-range"></p>
+        <hr style="margin:10px 0">
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Date</th><th>Produit</th><th>Code-barres</th><th>Vendeur</th><th>Par</th><th>Qté</th><th>Prix Vente</th><th>Valeur</th></tr></thead>
+            <tbody id="transfers-table"></tbody>
+          </table>
+        </div>
+        <div id="empty-msg" style="display:none;text-align:center;padding:40px;color:var(--text2)">Aucun transfert trouvé.</div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="/static/js/app.js"></script>
+<script>
+let allTransfers=[], sellers=[];
+async function init(){
+  const today=new Date().toISOString().split("T")[0];
+  const ago=new Date(Date.now()-30*24*60*60*1000).toISOString().split("T")[0];
+  document.getElementById("filter-from").value=ago;
+  document.getElementById("filter-to").value=today;
+  [allTransfers,sellers]=await Promise.all([api("GET","/api/stock/transfers")||[],api("GET","/api/sellers")||[]]);
+  const sel=document.getElementById("filter-seller");
+  sellers.forEach(s=>{const o=document.createElement("option");o.value=s.username;o.textContent=s.username;sel.appendChild(o);});
+  filterTable();
+}
+function filterTable(){
+  const sv=document.getElementById("filter-seller").value;
+  const from=document.getElementById("filter-from").value;
+  const to=document.getElementById("filter-to").value;
+  const q=document.getElementById("search").value.toLowerCase();
+  const filtered=allTransfers.filter(t=>{
+    const d=t.created_at.split("T")[0];
+    if(sv&&t.seller_name!==sv)return false;
+    if(from&&d<from)return false;
+    if(to&&d>to)return false;
+    if(q&&!t.product_name.toLowerCase().includes(q)&&!(t.barcode||"").includes(q))return false;
+    return true;
+  });
+  renderTable(filtered);
+  updateKPIs(filtered);
+}
+function clearFilters(){["filter-seller","filter-from","filter-to","search"].forEach(id=>document.getElementById(id).value="");filterTable();}
+function renderTable(data){
+  const tbody=document.getElementById("transfers-table");
+  document.getElementById("empty-msg").style.display=data.length===0?"block":"none";
+  tbody.innerHTML=data.map(t=>{
+    const dt=new Date(t.created_at).toLocaleString("fr-DZ");
+    const val=((t.quantity||0)*(t.sell_price||0)).toFixed(2);
+    return `<tr>
+      <td><code>#${t.id}</code></td>
+      <td>${dt}</td>
+      <td><b>${t.product_name}</b></td>
+      <td><small>${t.barcode||"—"}</small></td>
+      <td><span style="background:var(--blue);color:#fff;padding:2px 8px;border-radius:10px;font-size:12px">${t.seller_name}</span></td>
+      <td>${t.transferred_by||"admin"}</td>
+      <td style="font-weight:700;color:var(--accent)">${t.quantity}</td>
+      <td>${fmtDA(t.sell_price||0)}</td>
+      <td style="color:var(--green);font-weight:700">${fmtDA(parseFloat(val))}</td>
+    </tr>`;
+  }).join("");
+}
+function updateKPIs(data){
+  document.getElementById("kpi-total").textContent=data.length;
+  document.getElementById("kpi-units").textContent=data.reduce((s,t)=>s+t.quantity,0).toLocaleString();
+  document.getElementById("kpi-value").textContent=fmtDA(data.reduce((s,t)=>s+t.quantity*(t.sell_price||0),0));
+}
+async function logout(){await api("POST","/api/auth/logout");window.location.href="/";}
+window.addEventListener("beforeprint",()=>{
+  document.getElementById("print-header").style.display="block";
+  const from=document.getElementById("filter-from").value,to=document.getElementById("filter-to").value;
+  document.getElementById("print-date-range").textContent=`Période: ${from||"Début"} → ${to||"Aujourd'hui"}`;
+});
+window.addEventListener("afterprint",()=>{document.getElementById("print-header").style.display="none";});
+init();
+</script>
+</body></html>

@@ -73,6 +73,10 @@ def admin_sales(request: Request):
 def admin_suppliers(request: Request):
     return templates.TemplateResponse(request=request, name="admin/suppliers.html")
 
+@app.get("/admin/transfers", response_class=HTMLResponse)
+def admin_transfers(request: Request):
+    return templates.TemplateResponse(request=request, name="admin/transfers.html")
+
 @app.get("/seller", response_class=HTMLResponse)
 def seller_pos(request: Request):
     return templates.TemplateResponse(request=request, name="seller/pos.html")

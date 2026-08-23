@@ -206,10 +206,32 @@ def get_seller_stock(seller_id: int, db: Session = Depends(get_db), admin: User 
 @router.get("/me")
 def get_my_stock(db: Session = Depends(get_db), seller: User = Depends(require_seller)):
     stocks = db.query(SellerStock).filter_by(seller_id=seller.id).all()
+    return [{"product_id": ss.product_id, "name_fr": ss.product.name_fr, "barcode": ss.product.barcode, "sell_price": ss.product.sell_price, "quantity": ss.quantity,} for ss in stocks]
+
+@router.get("/transfers")
+def get_all_transfers(db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+    transfers = db.query(StockTransfer).order_by(StockTransfer.created_at.desc()).all()
     return [{
-        "product_id": ss.product_id,
-        "name_fr": ss.product.name_fr,
-        "barcode": ss.product.barcode,
-        "sell_price": ss.product.sell_price,
-        "quantity": ss.quantity,
-    } for ss in stocks]
+        "id": t.id,
+        "created_at": t.created_at.isoformat(),
+        "product_name": t.product.name_fr,
+        "barcode": t.product.barcode or "",
+        "sell_price": t.product.sell_price,
+        "seller_name": t.seller.username,
+        "transferred_by": t.transferred_by.username,
+        "quantity": t.quantity,
+    } for t in transfers]
+
+@router.get("/transfers/seller/{seller_id}")
+def get_transfers_by_seller(seller_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+    transfers = db.query(StockTransfer).filter_by(seller_id=seller_id).order_by(StockTransfer.created_at.desc()).all()
+    return [{
+        "id": t.id,
+        "created_at": t.created_at.isoformat(),
+        "product_name": t.product.name_fr,
+        "barcode": t.product.barcode or "",
+        "sell_price": t.product.sell_price,
+        "seller_name": t.seller.username,
+        "transferred_by": t.transferred_by.username,
+        "quantity": t.quantity,
+    } for t in transfers]

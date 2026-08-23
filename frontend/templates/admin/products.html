@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html><html lang="fr"><head>
+<!DOCTYPE html><html lang="fr"><head>
 <meta charset="UTF-8"><title>Produits — EduShop Admin</title>
 <link rel="stylesheet" href="/static/css/app.css">
 </head><body>
@@ -11,6 +11,7 @@
       <a href="/admin/stock">🏪 Stock</a>
       <a href="/admin/sellers">👥 Vendeurs</a>
       <a href="/admin/sales">💰 Ventes</a>
+      <a href="/admin/transfers">📋 Transferts Vendeurs</a>
       <a href="/admin/suppliers">🚚 Fournisseurs</a>
     </nav>
     <div class="sidebar-footer"><a href="#" onclick="logout()">🚪 Déconnexion</a></div>
@@ -18,20 +19,24 @@
   <main class="main">
     <div class="page-header">
       <span class="page-title">📦 Catalogue Produits</span>
-      <button class="btn btn-primary" onclick="openCreate()">+ Nouveau Produit</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-secondary" onclick="openOCR()">📸 Importer Facture (Photo)</button>
+        <button class="btn btn-primary" onclick="openCreate()">+ Nouveau Produit</button>
+      </div>
     </div>
     <div class="card">
       <div class="toolbar">
         <input class="search-box" id="search" placeholder="Rechercher..." oninput="filterTable()" style="max-width:280px">
       </div>
       <div class="table-wrap">
-        <table><thead><tr><th>Code</th><th>Barcode</th><th>Nom</th><th>Catégorie</th><th>Prix Achat</th><th>Prix Vente</th><th>Stock</th><th>Actions</th></tr></thead>
+        <table><thead><tr><th>Code</th><th>Barcode</th><th>Nom</th><th>Catégorie</th><th>Prix Achat</th><th>Marge</th><th>Prix Vente</th><th>Stock</th><th>Actions</th></tr></thead>
         <tbody id="products-table"></tbody></table>
       </div>
     </div>
   </main>
 </div>
 
+<!-- Modal: Add/Edit Product -->
 <div class="modal-overlay" id="prod-modal">
   <div class="modal">
     <h3 id="modal-title">Nouveau Produit</h3>
@@ -45,8 +50,13 @@
     </div>
     <label>Catégorie</label><input id="p-category" placeholder="Papeterie, Cahiers...">
     <div class="form-row">
-      <div><label>Prix Achat (DA)</label><input type="number" id="p-purchase" min="0" step="0.5" value="0"></div>
-      <div><label>Prix Vente (DA)</label><input type="number" id="p-sell" min="0" step="0.5" value="0"></div>
+      <div><label>Prix Achat (DA)</label><input type="number" id="p-purchase" min="0" step="0.5" value="0" oninput="calcSellFromMargin()"></div>
+      <div>
+        <label>Marge Bénéfice (%)</label>
+        <input type="number" id="p-margin" min="0" step="1" value="0" placeholder="Ex: 20" oninput="calcSellFromMargin()" style="border:2px solid var(--accent)">
+        <small style="color:var(--text2);font-size:11px">Calcule le prix de vente automatiquement</small>
+      </div>
+      <div><label>Prix Vente (DA) <small style="color:var(--text2)">(ou saisissez manuellement)</small></label><input type="number" id="p-sell" min="0" step="0.5" value="0" oninput="calcMarginFromSell()"></div>
     </div>
     <div class="form-row">
       <div><label>Stock Initial</label><input type="number" id="p-qty" min="0" value="0"></div>
@@ -60,30 +70,79 @@
   </div>
 </div>
 
+<!-- Modal: OCR Photo Import -->
+<div class="modal-overlay" id="ocr-modal">
+  <div class="modal" style="max-width:600px">
+    <h3>📸 Importer une Facture (Photo / Image)</h3>
+    <p style="color:var(--text2);font-size:13px">Prenez une photo de votre facture fournisseur. Le système détecte automatiquement les noms et prix des produits.</p>
+    <label>Choisir une image (JPG, PNG)</label>
+    <input type="file" id="ocr-file" accept="image/*" style="padding:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;width:100%;color:var(--text)">
+    <div id="ocr-preview" style="margin-top:12px;display:none">
+      <img id="ocr-img" style="max-width:100%;max-height:200px;border-radius:8px;border:1px solid var(--border)">
+    </div>
+    <div id="ocr-loading" style="display:none;text-align:center;padding:20px;color:var(--accent)">⏳ Analyse de l'image en cours...</div>
+    <div id="ocr-results" style="display:none;margin-top:16px">
+      <h4 style="margin-bottom:8px">Produits détectés — Confirmez avant d'importer :</h4>
+      <div id="ocr-items-list"></div>
+    </div>
+    <div id="ocr-error" class="error-box" style="display:none;margin-top:10px"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeOCR()">Fermer</button>
+      <button class="btn btn-primary" id="ocr-analyze-btn" onclick="analyzeImage()">🔍 Analyser l'image</button>
+      <button class="btn btn-primary" id="ocr-import-btn" onclick="importOCRProducts()" style="display:none;background:var(--green)">✅ Importer les produits sélectionnés</button>
+    </div>
+  </div>
+</div>
+
 <script src="/static/js/app.js"></script>
 <script>
-let products=[], editId=null;
+let products=[], editId=null, ocrDetected=[];
+
 async function init(){ products=await api("GET","/api/products")||[]; renderTable(products); }
+
 function renderTable(data){
-  document.getElementById("products-table").innerHTML=data.map(p=>`<tr>
+  document.getElementById("products-table").innerHTML=data.map(p=>{
+    const margin = p.purchase_price>0 ? ((p.sell_price - p.purchase_price)/p.purchase_price*100).toFixed(1) : "—";
+    return `<tr>
     <td><code>${p.code_article}</code></td>
     <td><small>${p.barcode||"—"}</small></td>
     <td><b>${p.name_fr}</b>${p.name_ar?`<br><small style="color:var(--text2)">${p.name_ar}</small>`:""}</td>
     <td>${p.category||"—"}</td>
     <td>${fmtDA(p.purchase_price)}</td>
+    <td style="color:var(--green)">${margin}%</td>
     <td style="color:var(--accent);font-weight:700">${fmtDA(p.sell_price)}</td>
     <td class="${p.global_stock_quantity<=p.min_quantity?"low-stock":""}">${p.global_stock_quantity}</td>
     <td style="display:flex;gap:6px">
       <button class="btn btn-secondary" style="padding:5px 10px;font-size:12px" onclick="openEdit(${p.id})">✏️</button>
       <button class="btn btn-danger" style="padding:5px 10px;font-size:12px" onclick="deleteProduct(${p.id},'${p.name_fr}')">🗑️</button>
     </td>
-  </tr>`).join("");
+  </tr>`;
+  }).join("");
 }
+
+function calcSellFromMargin(){
+  const purchase = parseFloat(document.getElementById("p-purchase").value)||0;
+  const margin = parseFloat(document.getElementById("p-margin").value)||0;
+  const sell = purchase * (1 + margin/100);
+  document.getElementById("p-sell").value = sell.toFixed(2);
+}
+
+function calcMarginFromSell(){
+  const purchase = parseFloat(document.getElementById("p-purchase").value)||0;
+  const sell = parseFloat(document.getElementById("p-sell").value)||0;
+  if(purchase > 0){
+    const margin = ((sell - purchase)/purchase*100).toFixed(1);
+    document.getElementById("p-margin").value = margin;
+  }
+}
+
 function filterTable(){ const q=document.getElementById("search").value.toLowerCase(); renderTable(products.filter(p=>p.name_fr.toLowerCase().includes(q)||p.code_article.toLowerCase().includes(q)||(p.barcode||"").includes(q))); }
 function openCreate(){ editId=null; document.getElementById("modal-title").textContent="Nouveau Produit"; clearForm(); document.getElementById("prod-modal").classList.add("open"); }
-function openEdit(id){ editId=id; const p=products.find(x=>x.id===id); document.getElementById("modal-title").textContent="Modifier: "+p.name_fr; document.getElementById("p-name-fr").value=p.name_fr; document.getElementById("p-name-ar").value=p.name_ar||""; document.getElementById("p-code").value=p.code_article; document.getElementById("p-barcode").value=p.barcode||""; document.getElementById("p-category").value=p.category||""; document.getElementById("p-purchase").value=p.purchase_price; document.getElementById("p-sell").value=p.sell_price; document.getElementById("p-qty").value=p.global_stock_quantity; document.getElementById("p-min").value=p.min_quantity; document.getElementById("prod-modal").classList.add("open"); }
+function openEdit(id){ editId=id; const p=products.find(x=>x.id===id); document.getElementById("modal-title").textContent="Modifier: "+p.name_fr; document.getElementById("p-name-fr").value=p.name_fr; document.getElementById("p-name-ar").value=p.name_ar||""; document.getElementById("p-code").value=p.code_article; document.getElementById("p-barcode").value=p.barcode||""; document.getElementById("p-category").value=p.category||""; document.getElementById("p-purchase").value=p.purchase_price; document.getElementById("p-sell").value=p.sell_price; document.getElementById("p-qty").value=p.global_stock_quantity; document.getElementById("p-min").value=p.min_quantity;
+  if(p.purchase_price>0){ document.getElementById("p-margin").value=((p.sell_price-p.purchase_price)/p.purchase_price*100).toFixed(1); }
+  document.getElementById("prod-modal").classList.add("open"); }
 function closeModal(){ document.getElementById("prod-modal").classList.remove("open"); }
-function clearForm(){ ["p-name-fr","p-name-ar","p-code","p-barcode","p-category"].forEach(id=>document.getElementById(id).value=""); ["p-purchase","p-qty"].forEach(id=>document.getElementById(id).value=0); document.getElementById("p-sell").value=0; document.getElementById("p-min").value=5; }
+function clearForm(){ ["p-name-fr","p-name-ar","p-code","p-barcode","p-category"].forEach(id=>document.getElementById(id).value=""); ["p-purchase","p-qty","p-margin"].forEach(id=>document.getElementById(id).value=0); document.getElementById("p-sell").value=0; document.getElementById("p-min").value=5; }
 async function saveProduct(){
   const body={name_fr:document.getElementById("p-name-fr").value,name_ar:document.getElementById("p-name-ar").value||null,code_article:document.getElementById("p-code").value||null,barcode:document.getElementById("p-barcode").value||null,category:document.getElementById("p-category").value||null,purchase_price:+document.getElementById("p-purchase").value,sell_price:+document.getElementById("p-sell").value,min_quantity:+document.getElementById("p-min").value,initial_quantity:+document.getElementById("p-qty").value};
   if(!body.name_fr){document.getElementById("prod-error").textContent="Le nom FR est requis.";document.getElementById("prod-error").style.display="block";return;}
@@ -91,6 +150,85 @@ async function saveProduct(){
   if(r){closeModal();showToast("Produit enregistré !");init();}
 }
 async function deleteProduct(id,name){ if(!confirm(`Supprimer "${name}" ?`))return; await api("DELETE",`/api/products/${id}`); showToast("Produit supprimé."); init(); }
+
+// OCR Photo Import
+function openOCR(){
+  document.getElementById("ocr-file").value="";
+  document.getElementById("ocr-preview").style.display="none";
+  document.getElementById("ocr-results").style.display="none";
+  document.getElementById("ocr-loading").style.display="none";
+  document.getElementById("ocr-error").style.display="none";
+  document.getElementById("ocr-import-btn").style.display="none";
+  document.getElementById("ocr-analyze-btn").style.display="inline-flex";
+  ocrDetected=[];
+  document.getElementById("ocr-modal").classList.add("open");
+}
+function closeOCR(){ document.getElementById("ocr-modal").classList.remove("open"); }
+document.getElementById("ocr-file").addEventListener("change", function(){
+  const file = this.files[0];
+  if(file && file.type.startsWith("image/")){
+    const reader = new FileReader();
+    reader.onload = e => { document.getElementById("ocr-img").src = e.target.result; document.getElementById("ocr-preview").style.display="block"; };
+    reader.readAsDataURL(file);
+  }
+});
+async function analyzeImage(){
+  const file = document.getElementById("ocr-file").files[0];
+  if(!file){ document.getElementById("ocr-error").textContent="Veuillez sélectionner une image."; document.getElementById("ocr-error").style.display="block"; return; }
+  document.getElementById("ocr-error").style.display="none";
+  document.getElementById("ocr-loading").style.display="block";
+  document.getElementById("ocr-results").style.display="none";
+  document.getElementById("ocr-analyze-btn").style.display="none";
+  const formData = new FormData();
+  formData.append("file", file);
+  try {
+    const res = await fetch("/api/products/import-image", { method:"POST", body:formData, credentials:"include" });
+    const data = await res.json();
+    if(!res.ok){ throw new Error(data.detail || "Erreur d'analyse"); }
+    ocrDetected = data.products || [];
+    renderOCRResults(ocrDetected);
+  } catch(e) {
+    document.getElementById("ocr-error").textContent = "Erreur: " + e.message;
+    document.getElementById("ocr-error").style.display = "block";
+    document.getElementById("ocr-analyze-btn").style.display = "inline-flex";
+  } finally {
+    document.getElementById("ocr-loading").style.display="none";
+  }
+}
+function renderOCRResults(items){
+  document.getElementById("ocr-results").style.display="block";
+  document.getElementById("ocr-import-btn").style.display="inline-flex";
+  document.getElementById("ocr-items-list").innerHTML = items.length===0 ? `<p style="color:var(--text2)">Aucun produit détecté. Essayez avec une image plus nette.</p>` : items.map((item,i)=>`
+  <div style="display:flex;gap:8px;align-items:center;padding:8px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px">
+    <input type="checkbox" id="ocr-chk-${i}" checked style="width:16px;height:16px">
+    <div style="flex:1">
+      <input value="${item.name_fr||''}" id="ocr-name-${i}" placeholder="Nom produit" style="width:100%;margin-bottom:4px">
+      <div style="display:flex;gap:6px">
+        <input type="number" value="${item.purchase_price||0}" id="ocr-pa-${i}" placeholder="Prix achat" style="flex:1">
+        <input type="number" value="${item.sell_price||0}" id="ocr-pv-${i}" placeholder="Prix vente" style="flex:1">
+        <input type="number" value="${item.quantity||1}" id="ocr-qty-${i}" placeholder="Qté" style="flex:0.5">
+      </div>
+    </div>
+  </div>`).join("");
+}
+async function importOCRProducts(){
+  const toImport = [];
+  ocrDetected.forEach((item,i)=>{
+    if(document.getElementById(`ocr-chk-${i}`).checked){
+      toImport.push({ name_fr: document.getElementById(`ocr-name-${i}`).value, purchase_price: +document.getElementById(`ocr-pa-${i}`).value, sell_price: +document.getElementById(`ocr-pv-${i}`).value, initial_quantity: +document.getElementById(`ocr-qty-${i}`).value, min_quantity: 5, category: "Importé" });
+    }
+  });
+  if(toImport.length===0){ alert("Aucun produit sélectionné."); return; }
+  let ok=0, fail=0;
+  for(const p of toImport){
+    const r = await api("POST","/api/products",p);
+    if(r) ok++; else fail++;
+  }
+  showToast(`✅ ${ok} produit(s) importé(s)${fail>0?" — "+fail+" erreur(s)":""}`);
+  closeOCR();
+  init();
+}
+
 async function logout(){ await api("POST","/api/auth/logout"); window.location.href="/"; }
 init();
 </script>

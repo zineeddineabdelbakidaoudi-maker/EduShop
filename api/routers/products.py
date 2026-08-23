@@ -1,6 +1,6 @@
-﻿import random, string
+import random, string, re, io
 from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from db.base import get_db
@@ -134,3 +134,42 @@ def delete_product(product_id: int, db: Session = Depends(get_db), admin: User =
         raise HTTPException(404, "Produit introuvable")
     db.delete(p)
     db.commit()
+
+@router.post("/import-image")
+async def import_from_image(file: UploadFile = File(...), admin: User = Depends(require_admin)):
+    """OCR: Detect product names and prices from an invoice photo."""
+    contents = await file.read()
+    
+    try:
+        from PIL import Image
+        import pytesseract
+        img = Image.open(io.BytesIO(contents)).convert("L")
+        text = pytesseract.image_to_string(img, lang="fra+ara", config="--psm 6")
+    except ImportError:
+        raise HTTPException(500, "Tesseract OCR non disponible. Contactez l'administrateur.")
+    except Exception as e:
+        raise HTTPException(500, f"Erreur analyse image: {str(e)}")
+    
+    products_detected = []
+    price_pattern = re.compile(r'(\d[\d\s]*[\.,]\d{2}|\d+)\s*(DA|DZD|€)?', re.IGNORECASE)
+    skip_kw = ["TOTAL", "SOUS", "TVA", "REMISE", "FACTURE", "DATE", "N°", "TEL", "ADRESSE", "SIRET", "MONTANT"]
+    
+    for line in [l.strip() for l in text.split("\n") if l.strip()]:
+        if len(line) < 3:
+            continue
+        if any(kw in line.upper() for kw in skip_kw):
+            continue
+        prices = price_pattern.findall(line)
+        name = price_pattern.sub("", line).strip(" :-|")
+        if name and len(name) >= 3:
+            purchase, sell = 0.0, 0.0
+            if prices:
+                try:
+                    purchase = float(prices[0][0].replace(" ", "").replace(",", "."))
+                    sell = round(purchase * 1.20, 2)
+                except Exception:
+                    pass
+            products_detected.append({"name_fr": name[:100], "purchase_price": purchase, "sell_price": sell, "quantity": 1})
+    
+    return {"products": products_detected[:50], "raw_text": text[:2000]}
+
