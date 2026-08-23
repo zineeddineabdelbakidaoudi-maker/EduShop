@@ -47,39 +47,39 @@ app.include_router(ws_router)
 # ── Frontend page routes ──────────────────────────────────────────────────────
 @app.get("/", response_class=HTMLResponse)
 def login_page(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="login.html")
 
 @app.get("/admin", response_class=HTMLResponse)
 def admin_dashboard(request: Request):
-    return templates.TemplateResponse("admin/dashboard.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="admin/dashboard.html")
 
 @app.get("/admin/products", response_class=HTMLResponse)
 def admin_products(request: Request):
-    return templates.TemplateResponse("admin/products.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="admin/products.html")
 
 @app.get("/admin/stock", response_class=HTMLResponse)
 def admin_stock(request: Request):
-    return templates.TemplateResponse("admin/stock.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="admin/stock.html")
 
 @app.get("/admin/sellers", response_class=HTMLResponse)
 def admin_sellers(request: Request):
-    return templates.TemplateResponse("admin/sellers.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="admin/sellers.html")
 
 @app.get("/admin/sales", response_class=HTMLResponse)
 def admin_sales(request: Request):
-    return templates.TemplateResponse("admin/sales.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="admin/sales.html")
 
 @app.get("/admin/suppliers", response_class=HTMLResponse)
 def admin_suppliers(request: Request):
-    return templates.TemplateResponse("admin/suppliers.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="admin/suppliers.html")
 
 @app.get("/seller", response_class=HTMLResponse)
 def seller_pos(request: Request):
-    return templates.TemplateResponse("seller/pos.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="seller/pos.html")
 
 @app.get("/seller/sales", response_class=HTMLResponse)
 def seller_sales(request: Request):
-    return templates.TemplateResponse("seller/sales.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="seller/sales.html")
 
 # ── Startup banner ────────────────────────────────────────────────────────────
 def get_lan_ip():
