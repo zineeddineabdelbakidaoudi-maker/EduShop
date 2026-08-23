@@ -155,30 +155,76 @@ async def import_from_image(file: UploadFile = File(...), admin: User = Depends(
     
     products_detected = []
     if ocr_available and text:
-        price_pattern = re.compile(r'(\d[\d\s]*[\.,]\d{2}|\d+)\s*(DA|DZD|€)?', re.IGNORECASE)
-        skip_kw = ["TOTAL", "SOUS", "TVA", "REMISE", "FACTURE", "DATE", "N°", "TEL", "ADRESSE", "SIRET", "MONTANT"]
-        
+        skip_kw = [
+            "FOURNITURES", "GENERALES", "CENTRE", "SARL", "RUE", "RC", "NIF", "TEL", "CLIENT", 
+            "FACTURE", "DATE", "TOTAL HT", "TVA", "TOTAL TTC", "MERCI", "PAGE", "BON DE", "REGLEMENT",
+            "CODE CODE-BARRES", "DESIGNATION", "CATEGORIE", "P.ACHAT", "QTE", "P.VENTE"
+        ]
+        categories_known = ["Papeterie", "Accessoires", "Cahiers", "Classeurs", "Sacs & Cartables", "Fournitures", "Bureau", "Livres", "Manuels", "Général"]
+
         for line in [l.strip() for l in text.split("\n") if l.strip()]:
-            if len(line) < 3:
+            if len(line) < 4:
                 continue
             if any(kw in line.upper() for kw in skip_kw):
                 continue
-            prices = price_pattern.findall(line)
-            name = price_pattern.sub("", line).strip(" :-|")
-            if name and len(name) >= 3:
-                purchase, sell = 0.0, 0.0
-                if prices:
-                    try:
-                        purchase = float(prices[0][0].replace(" ", "").replace(",", "."))
-                        sell = round(purchase * 1.20, 2)
-                    except Exception:
-                        pass
-                products_detected.append({"name_fr": name[:100], "purchase_price": purchase, "sell_price": sell, "quantity": 1})
+            
+            clean_line = re.sub(r'\b(DA|DZD|€)\b', '', line, flags=re.IGNORECASE).strip()
+            
+            # 1. Code
+            code = ""
+            code_m = re.match(r'^(ART[-\s]?\d+|[A-Z]{2,4}[-\s]?\d+)\b', clean_line, re.IGNORECASE)
+            if code_m:
+                code = code_m.group(1).replace(" ", "-").upper()
+                clean_line = clean_line[len(code_m.group(0)):].strip()
+            
+            # 2. Barcode
+            barcode = ""
+            bc_m = re.match(r'^(\d{8,14})\b', clean_line)
+            if bc_m:
+                barcode = bc_m.group(1)
+                clean_line = clean_line[len(bc_m.group(0)):].strip()
+            
+            # 3. Numbers at end: [PA] [Qty] [PV] or [PA] [Qty]
+            num_m = re.search(r'(\d+[\.,]?\d*)\s+(\d+)(?:\s+(\d+[\.,]?\d*))?$', clean_line)
+            pa, qty, pv = 0.0, 10, 0.0
+            if num_m:
+                pa = float(num_m.group(1).replace(',', '.'))
+                qty = int(num_m.group(2))
+                pv = float(num_m.group(3).replace(',', '.')) if num_m.group(3) else round(pa * 1.25, 2)
+                clean_line = clean_line[:num_m.start()].strip()
+            
+            # 4. Category & Designation
+            category = "Papeterie"
+            for cat in categories_known:
+                if re.search(rf'\b{re.escape(cat)}\b', clean_line, re.IGNORECASE):
+                    category = cat
+                    clean_line = re.sub(rf'\b{re.escape(cat)}\b', '', clean_line, flags=re.IGNORECASE).strip()
+                    break
+            
+            designation = clean_line.strip(" :-|;")
+            if not designation and code:
+                designation = f"Article {code}"
+            
+            if designation and (len(designation) >= 2 or pa > 0):
+                if not code:
+                    code = gen_code()
+                if pa > 0 and (pv <= 0 or pv <= pa):
+                    pv = round(pa * 1.25, 2)
+                
+                products_detected.append({
+                    "code": code,
+                    "barcode": barcode,
+                    "name_fr": designation[:120],
+                    "category": category,
+                    "purchase_price": pa,
+                    "quantity": qty,
+                    "sell_price": pv
+                })
     
     return {
         "ocr_available": ocr_available,
-        "products": products_detected[:50],
+        "products": products_detected[:100],
         "raw_text": text[:2000] if text else "",
-        "message": "Texte extrait avec succès" if ocr_available else "OCR automatique non disponible en local. Utilisez la saisie assistée côte-à-côte avec l'aperçu de l'image."
+        "message": "Facture analysée avec succès" if ocr_available else "Moteur OCR Tesseract côté serveur non disponible."
     }
 

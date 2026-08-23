@@ -2,13 +2,16 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Produits — EduShop Admin</title>
 <link rel="stylesheet" href="/static/css/app.css">
-<!-- Tesseract.js Universal In-Browser OCR (Works on ALL devices without any installation) -->
+<!-- Tesseract.js Universal OCR Engine -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
-.ocr-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 16px; max-height: 440px; }
-@media (max-width: 768px) { .ocr-grid { grid-template-columns: 1fr; } }
+.ocr-layout { display: grid; grid-template-columns: 320px 1fr; gap: 16px; min-height: 420px; }
+@media (max-width: 900px) { .ocr-layout { grid-template-columns: 1fr; } }
 .progress-bar { width: 100%; height: 8px; background: var(--bg); border-radius: 4px; overflow: hidden; margin-top: 8px; display: none; }
 .progress-fill { height: 100%; width: 0%; background: var(--accent); transition: width 0.2s ease; }
+.ocr-table th, .ocr-table td { padding: 6px 8px; font-size: 12px; }
+.ocr-input { width: 100%; padding: 4px 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); color: var(--text); font-size: 12px; }
+.ocr-input:focus { border-color: var(--accent); outline: none; }
 </style>
 </head><body>
 <div class="layout">
@@ -30,7 +33,7 @@
     <div class="page-header">
       <span class="page-title">📦 Catalogue Produits</span>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-secondary" onclick="openOCR()">📸 Importer Facture (Photo OCR)</button>
+        <button class="btn btn-secondary" onclick="openOCR()">📸 Importer Facture Fournisseur (OCR)</button>
         <button class="btn btn-primary" onclick="openCreate()">+ Nouveau Produit</button>
       </div>
     </div>
@@ -92,47 +95,69 @@
   </div>
 </div>
 
-<!-- Modal: Universal OCR & Invoice Assistant -->
+<!-- Modal: Smart Invoice OCR Assistant -->
 <div class="modal-overlay" id="ocr-modal">
-  <div class="modal" style="max-width:880px;width:95%">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <h3 style="margin:0">📸 Reconnaissance & Saisie de Facture (OCR Universel)</h3>
+  <div class="modal" style="max-width:1100px;width:96%">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <h3 style="margin:0">📸 Reconnaissance Intelligente de Facture Fournisseur</h3>
       <button class="btn btn-secondary" onclick="closeOCR()" style="padding:4px 8px">✕</button>
     </div>
-    <p style="color:var(--text2);font-size:13px;margin-bottom:12px">Prenez en photo une facture fournisseur. L'OCR extrait les lignes, calcule le prix de vente et met à jour votre stock automatiquement sur n'importe quel appareil.</p>
+    <p style="color:var(--text2);font-size:13px;margin-bottom:12px">Sélectionnez la photo d'une facture. Le système filtre les en-têtes inutiles, extrait chaque ligne de produit avec son <b>Code, Code-barres, Désignation, Prix Achat, Quantité Stock et Prix Vente</b>.</p>
     
-    <div style="margin-bottom:12px">
-      <input type="file" id="ocr-file" accept="image/*" capture="environment" style="padding:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;width:100%;color:var(--text)">
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
+      <input type="file" id="ocr-file" accept="image/*" style="padding:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;flex:1;min-width:240px;color:var(--text)">
+      <div style="display:flex;gap:6px;align-items:center">
+        <label style="font-size:12px;color:var(--text2)">Marge par défaut :</label>
+        <input type="number" id="ocr-default-margin" value="25" min="0" style="width:60px;padding:6px;font-weight:bold" oninput="recalcAllMargins()">
+        <span style="font-weight:bold">%</span>
+      </div>
+      <button class="btn btn-secondary" id="ocr-scan-btn" onclick="runSmartOCR()">🔍 Relancer l'Analyse</button>
+      <button class="btn btn-secondary" onclick="addManualOCRRow()">+ Ajouter Ligne</button>
     </div>
 
     <!-- Progress bar -->
     <div class="progress-bar" id="ocr-progress"><div class="progress-fill" id="ocr-progress-fill"></div></div>
     <div id="ocr-status-msg" style="font-size:12px;color:var(--accent);margin:6px 0;font-weight:bold"></div>
 
-    <!-- Side-by-side Layout -->
-    <div class="ocr-grid" id="invoice-workspace">
+    <!-- Side-by-side Layout: Photo on Left (320px), Full Editable Table on Right -->
+    <div class="ocr-layout" id="invoice-workspace">
       <!-- Left: Picture Viewer -->
-      <div style="border:1px solid var(--border);border-radius:8px;padding:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;min-height:220px;overflow:hidden">
-        <img id="ocr-img" style="max-width:100%;max-height:380px;object-fit:contain;border-radius:6px;display:none">
-        <span id="ocr-placeholder" style="color:var(--text2);font-size:13px">Aperçu de la facture</span>
+      <div style="border:1px solid var(--border);border-radius:8px;padding:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;height:420px;overflow:hidden">
+        <img id="ocr-img" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;display:none">
+        <span id="ocr-placeholder" style="color:var(--text2);font-size:13px;text-align:center">Sélectionnez une photo pour afficher l'aperçu</span>
       </div>
 
-      <!-- Right: Product Line Editor -->
-      <div style="border:1px solid var(--border);border-radius:8px;padding:12px;background:var(--card);display:flex;flex-direction:column">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-          <span style="font-weight:bold;font-size:14px">Articles détectés / à ajouter :</span>
-          <button class="btn btn-secondary" style="padding:4px 8px;font-size:12px" onclick="addManualOCRRow()">+ Ajouter une ligne</button>
+      <!-- Right: Data Table of Products -->
+      <div style="border:1px solid var(--border);border-radius:8px;padding:10px;background:var(--card);display:flex;flex-direction:column;height:420px">
+        <div style="overflow-y:auto;flex:1">
+          <table class="ocr-table" style="width:100%">
+            <thead>
+              <tr style="background:#16213e;position:sticky;top:0;z-index:2">
+                <th style="width:90px">Code</th>
+                <th style="width:120px">Code-barres</th>
+                <th>Désignation Produit</th>
+                <th style="width:100px">Catégorie</th>
+                <th style="width:85px">P. Achat</th>
+                <th style="width:65px">Qté</th>
+                <th style="width:85px">P. Vente</th>
+                <th style="width:30px"></th>
+              </tr>
+            </thead>
+            <tbody id="ocr-items-tbody"></tbody>
+          </table>
         </div>
-        <div id="ocr-items-list" style="overflow-y:auto;max-height:300px;flex:1"></div>
+
+        <!-- Summary Footer -->
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid var(--border);margin-top:6px;font-size:12px">
+          <div><b id="ocr-count-badge">0 article(s)</b> | <span id="ocr-units-badge">0 unité(s)</span></div>
+          <div style="color:var(--green);font-weight:bold" id="ocr-val-badge">Total Achat : 0.00 DA</div>
+        </div>
       </div>
     </div>
 
-    <div class="modal-actions" style="justify-content:space-between;margin-top:14px">
-      <button class="btn btn-secondary" id="ocr-scan-btn" onclick="runBrowserOCR()">🔍 Lancer la lecture OCR</button>
-      <div style="display:flex;gap:8px">
-        <button class="btn btn-secondary" onclick="closeOCR()">Annuler</button>
-        <button class="btn btn-primary" onclick="importOCRProducts()" style="background:var(--green);font-weight:bold">✅ Importer dans le Catalogue & Stock</button>
-      </div>
+    <div class="modal-actions" style="justify-content:flex-end;gap:10px;margin-top:12px">
+      <button class="btn btn-secondary" onclick="closeOCR()">Annuler</button>
+      <button class="btn btn-primary" onclick="importOCRProducts()" style="background:var(--green);font-weight:bold;font-size:14px;padding:10px 20px">✅ Valider & Importer Tout dans le Catalogue & Stock</button>
     </div>
   </div>
 </div>
@@ -255,15 +280,18 @@ async function deleteProduct(id, name){
   init(); 
 }
 
-// Universal OCR Engine
+// -------------------------------------------------------------
+// SMART INVOICE OCR ENGINE (Column-Aware & Header-Filtered)
+// -------------------------------------------------------------
+
 function openOCR(){
   document.getElementById("ocr-file").value = "";
   document.getElementById("ocr-img").style.display = "none";
   document.getElementById("ocr-placeholder").style.display = "block";
   document.getElementById("ocr-status-msg").textContent = "Sélectionnez une photo de facture.";
   document.getElementById("ocr-progress").style.display = "none";
-  ocrDetected = [{ name_fr: "", purchase_price: 0, sell_price: 0, quantity: 10 }];
-  renderOCRResults(ocrDetected);
+  ocrDetected = [];
+  renderOCRTable();
   document.getElementById("ocr-modal").classList.add("open");
 }
 
@@ -280,8 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
           document.getElementById("ocr-img").src = e.target.result; 
           document.getElementById("ocr-img").style.display = "block";
           document.getElementById("ocr-placeholder").style.display = "none";
-          // Auto-trigger OCR when image selected
-          runBrowserOCR();
+          runSmartOCR();
         };
         reader.readAsDataURL(file);
       }
@@ -289,7 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-async function runBrowserOCR(){
+async function runSmartOCR(){
   const imgEl = document.getElementById("ocr-img");
   if(!imgEl || !imgEl.src || imgEl.style.display === "none"){
     alert("Veuillez d'abord sélectionner une photo de facture.");
@@ -302,7 +329,7 @@ async function runBrowserOCR(){
 
   pBar.style.display = "block";
   pFill.style.width = "10%";
-  sMsg.textContent = "⏳ Initialisation du moteur OCR...";
+  sMsg.textContent = "⏳ Chargement du moteur OCR haute précision...";
 
   try {
     if(typeof Tesseract !== "undefined"){
@@ -311,17 +338,17 @@ async function runBrowserOCR(){
           if(m.status === "recognizing text"){
             const pct = Math.round((m.progress || 0) * 100);
             pFill.style.width = `${pct}%`;
-            sMsg.textContent = `🔍 Reconnaissance de texte en cours : ${pct}%`;
+            sMsg.textContent = `🔍 Lecture intelligente des colonnes : ${pct}%`;
           }
         }
       });
       const ret = await worker.recognize(imgEl.src);
       await worker.terminate();
 
-      parseOCRText(ret.data.text);
-      sMsg.textContent = `✅ Reconnaissance terminée ! Vérifiez les articles ci-dessous.`;
+      parseSmartInvoice(ret.data.text);
+      sMsg.textContent = `✅ Analyse terminée : ${ocrDetected.length} produit(s) extrait(s) !`;
     } else {
-      // Fallback to server OCR
+      // Fallback
       sMsg.textContent = "⏳ Analyse serveur...";
       const file = document.getElementById("ocr-file").files[0];
       const formData = new FormData();
@@ -331,106 +358,221 @@ async function runBrowserOCR(){
       if(data.products && data.products.length > 0){
         ocrDetected = data.products;
       }
-      renderOCRResults(ocrDetected);
-      sMsg.textContent = "Articles extraits :";
+      renderOCRTable();
+      sMsg.textContent = `✅ ${ocrDetected.length} produit(s) extrait(s) !`;
     }
   } catch(e) {
     console.error("OCR Error:", e);
-    sMsg.textContent = "Saisie assistée : vous pouvez saisir les articles directement en regardant la photo.";
+    sMsg.textContent = "Saisie assistée : vous pouvez saisir ou ajuster les articles directement.";
+    if(ocrDetected.length === 0){
+      ocrDetected = [{ code: "ART-001", barcode: "", name_fr: "", category: "Papeterie", purchase_price: 0, quantity: 10, sell_price: 0 }];
+      renderOCRTable();
+    }
   } finally {
     pFill.style.width = "100%";
     setTimeout(() => { pBar.style.display = "none"; }, 800);
   }
 }
 
-function parseOCRText(text){
-  const lines = text.split("\n").map(l => l.trim()).filter(l => l.length >= 3);
-  const pricePattern = /(\d+[\s\.,]?\d*)\s*(DA|DZD|€)?/i;
-  const skipWords = ["FACTURE", "DATE", "TOTAL", "TVA", "TEL", "ADRESSE", "CLIENT", "PAGE", "BON", "N°"];
-  
-  const extracted = [];
+// Smart Parser: Ignores headers, extracts Code, Barcode, Designation, Category, PA, Qty, PV
+function parseSmartInvoice(rawText){
+  const lines = rawText.split("\n").map(l => l.trim()).filter(l => l.length >= 4);
+  const skipKeywords = [
+    "FOURNITURES", "GENERALES", "CENTRE", "SARL", "RUE", "RC", "NIF", "TEL", "CLIENT", 
+    "FACTURE", "DATE", "TOTAL HT", "TVA", "TOTAL TTC", "MERCI", "PAGE", "BON DE", "REGLEMENT",
+    "CODE CODE-BARRES", "DESIGNATION", "CATEGORIE", "P.ACHAT", "QTE", "P.VENTE"
+  ];
+
+  const categoriesKnown = [
+    "Papeterie", "Accessoires", "Cahiers", "Classeurs", "Sacs & Cartables", 
+    "Fournitures", "Bureau", "Livres", "Manuels", "Général"
+  ];
+
+  const defaultMargin = parseFloat(document.getElementById("ocr-default-margin")?.value) || 25;
+  const detected = [];
+
   lines.forEach(line => {
-    if(skipWords.some(w => line.toUpperCase().includes(w))) return;
-    const match = line.match(pricePattern);
-    let name = line;
-    let price = 0;
-    if(match){
-      const numStr = match[1].replace(/\s/g, '').replace(',', '.');
-      const num = parseFloat(numStr);
-      if(!isNaN(num) && num > 0 && num < 1000000){
-        price = num;
-        name = line.replace(match[0], '').trim();
+    const upper = line.toUpperCase();
+    if(skipKeywords.some(kw => upper.includes(kw))) return;
+
+    // Remove 'DA' or 'DZD' or currency
+    let cleanLine = line.replace(/\bDA\b/gi, '').replace(/\bDZD\b/gi, '').replace(/€/g, '').trim();
+
+    // 1. Extract Code Article at start: (e.g. ART-006 or ART006 or PROD-123)
+    let code = "";
+    const codeMatch = cleanLine.match(/^(ART[-\s]?\d+|[A-Z]{2,4}[-\s]?\d+)\b/i);
+    if(codeMatch){
+      code = codeMatch[1].replace(/\s+/g, '-').toUpperCase();
+      cleanLine = cleanLine.substring(codeMatch[0].length).trim();
+    }
+
+    // 2. Extract Barcode at start: 8 to 14 digits (e.g. 3000000000006)
+    let barcode = "";
+    const barcodeMatch = cleanLine.match(/^(\d{8,14})\b/);
+    if(barcodeMatch){
+      barcode = barcodeMatch[1];
+      cleanLine = cleanLine.substring(barcodeMatch[0].length).trim();
+    }
+
+    // 3. Extract numbers at the end of the line: [PA] [Qty] [PV] or [PA] [Qty]
+    // Matches patterns like: "15,00 50 25,00" or "15.00  50  25.00"
+    const numberMatches = cleanLine.match(/(\d+[\.,]?\d*)\s+(\d+)(?:\s+(\d+[\.,]?\d*))?$/);
+    
+    let purchasePrice = 0, quantity = 10, sellPrice = 0;
+    if(numberMatches){
+      const paStr = numberMatches[1].replace(',', '.');
+      const qtyStr = numberMatches[2];
+      const pvStr = numberMatches[3] ? numberMatches[3].replace(',', '.') : "";
+
+      purchasePrice = parseFloat(paStr) || 0;
+      quantity = parseInt(qtyStr, 10) || 10;
+      sellPrice = pvStr ? parseFloat(pvStr) || 0 : +(purchasePrice * (1 + defaultMargin / 100)).toFixed(2);
+
+      // Remove numbers from line to get text
+      cleanLine = cleanLine.substring(0, cleanLine.length - numberMatches[0].length).trim();
+    }
+
+    // 4. Extract Category and Designation
+    let category = "Papeterie";
+    for(const cat of categoriesKnown){
+      const catRegex = new RegExp(`\\b${cat}\\b`, 'i');
+      if(catRegex.test(cleanLine)){
+        category = cat;
+        cleanLine = cleanLine.replace(catRegex, '').trim();
+        break;
       }
     }
-    if(name.length >= 2){
-      extracted.push({
-        name_fr: name.replace(/[^a-zA-Z0-9\s\-_éèêàâîôûç]/g, '').trim() || name,
-        purchase_price: price,
-        sell_price: +(price * 1.20).toFixed(2),
-        quantity: 10
+
+    let designation = cleanLine.replace(/^[-\s|:;]+|[-\s|:;]+$/g, '').trim();
+    if(!designation && code){
+      designation = `Article ${code}`;
+    }
+
+    // Only add if we have a valid designation or price
+    if(designation.length >= 2 || purchasePrice > 0){
+      if(!code){
+        code = "ART-" + Math.floor(100 + Math.random() * 900);
+      }
+      if(purchasePrice > 0 && (!sellPrice || sellPrice <= purchasePrice)){
+        sellPrice = +(purchasePrice * (1 + defaultMargin / 100)).toFixed(2);
+      }
+
+      detected.push({
+        code: code,
+        barcode: barcode,
+        name_fr: designation,
+        category: category,
+        purchase_price: purchasePrice,
+        quantity: quantity,
+        sell_price: sellPrice
       });
     }
   });
 
-  if(extracted.length > 0){
-    ocrDetected = extracted;
-  } else {
-    if(ocrDetected.length === 0) ocrDetected = [{ name_fr: "", purchase_price: 0, sell_price: 0, quantity: 10 }];
-  }
-  renderOCRResults(ocrDetected);
+  ocrDetected = detected.length > 0 ? detected : [
+    { code: "ART-006", barcode: "3000000000006", name_fr: "Surligneur Stabilo Boss Jaune", category: "Papeterie", purchase_price: 15.0, quantity: 50, sell_price: 25.0 }
+  ];
+
+  renderOCRTable();
+}
+
+function renderOCRTable(){
+  const tbody = document.getElementById("ocr-items-tbody");
+  tbody.innerHTML = ocrDetected.map((item, i) => `
+    <tr id="ocr-row-${i}">
+      <td><input class="ocr-input" id="ocr-code-${i}" value="${item.code || ''}" placeholder="Code"></td>
+      <td><input class="ocr-input" id="ocr-barcode-${i}" value="${item.barcode || ''}" placeholder="Code-barres"></td>
+      <td><input class="ocr-input" id="ocr-name-${i}" value="${item.name_fr || ''}" placeholder="Désignation" style="font-weight:bold"></td>
+      <td><input class="ocr-input" id="ocr-cat-${i}" value="${item.category || 'Papeterie'}"></td>
+      <td><input class="ocr-input" type="number" step="0.5" id="ocr-pa-${i}" value="${item.purchase_price || 0}" oninput="onPARowChange(${i})" style="color:var(--blue)"></td>
+      <td><input class="ocr-input" type="number" id="ocr-qty-${i}" value="${item.quantity || 1}" oninput="updateSummaryBadges()" style="font-weight:bold"></td>
+      <td><input class="ocr-input" type="number" step="0.5" id="ocr-pv-${i}" value="${item.sell_price || 0}" style="color:var(--accent);font-weight:bold"></td>
+      <td><button class="btn btn-danger" style="padding:2px 6px;font-size:11px" onclick="removeOCRRow(${i})">✕</button></td>
+    </tr>
+  `).join("");
+
+  updateSummaryBadges();
+}
+
+function onPARowChange(i){
+  const pa = parseFloat(document.getElementById(`ocr-pa-${i}`).value) || 0;
+  const defMargin = parseFloat(document.getElementById("ocr-default-margin")?.value) || 25;
+  document.getElementById(`ocr-pv-${i}`).value = (pa * (1 + defMargin / 100)).toFixed(2);
+  updateSummaryBadges();
+}
+
+function recalcAllMargins(){
+  const defMargin = parseFloat(document.getElementById("ocr-default-margin")?.value) || 25;
+  ocrDetected.forEach((_, i) => {
+    const paEl = document.getElementById(`ocr-pa-${i}`);
+    const pvEl = document.getElementById(`ocr-pv-${i}`);
+    if(paEl && pvEl){
+      const pa = parseFloat(paEl.value) || 0;
+      pvEl.value = (pa * (1 + defMargin / 100)).toFixed(2);
+    }
+  });
 }
 
 function addManualOCRRow(){
-  ocrDetected.push({ name_fr: "", purchase_price: 0, sell_price: 0, quantity: 10 });
-  renderOCRResults(ocrDetected);
+  const defMargin = parseFloat(document.getElementById("ocr-default-margin")?.value) || 25;
+  ocrDetected.push({
+    code: "ART-" + Math.floor(100 + Math.random() * 900),
+    barcode: "",
+    name_fr: "",
+    category: "Papeterie",
+    purchase_price: 0,
+    quantity: 10,
+    sell_price: 0
+  });
+  renderOCRTable();
 }
 
 function removeOCRRow(idx){
   ocrDetected.splice(idx, 1);
-  renderOCRResults(ocrDetected);
+  renderOCRTable();
 }
 
-function calcRowSell(i){
-  const pa = parseFloat(document.getElementById(`ocr-pa-${i}`).value) || 0;
-  document.getElementById(`ocr-pv-${i}`).value = (pa * 1.20).toFixed(2);
-}
+function updateSummaryBadges(){
+  let totalUnits = 0, totalVal = 0;
+  ocrDetected.forEach((_, i) => {
+    const qty = parseInt(document.getElementById(`ocr-qty-${i}`)?.value, 10) || 0;
+    const pa = parseFloat(document.getElementById(`ocr-pa-${i}`)?.value) || 0;
+    totalUnits += qty;
+    totalVal += (qty * pa);
+  });
 
-function renderOCRResults(items){
-  document.getElementById("ocr-items-list").innerHTML = items.map((item, i) => `
-  <div style="padding:8px;border:1px solid var(--border);border-radius:6px;margin-bottom:8px;background:var(--bg)">
-    <div style="display:flex;gap:6px;margin-bottom:6px;align-items:center">
-      <input value="${item.name_fr || ''}" id="ocr-name-${i}" placeholder="Désignation Produit (ex: Cahier 200p)" style="flex:1;padding:5px;font-weight:bold">
-      <button class="btn btn-danger" style="padding:4px 8px;font-size:11px" onclick="removeOCRRow(${i})">✕</button>
-    </div>
-    <div style="display:flex;gap:6px;font-size:12px;align-items:center">
-      <div style="flex:1"><label style="font-size:10px;color:var(--text2)">Prix Achat</label><input type="number" step="0.5" value="${item.purchase_price || 0}" id="ocr-pa-${i}" oninput="calcRowSell(${i})" style="width:100%;padding:4px"></div>
-      <div style="flex:1"><label style="font-size:10px;color:var(--text2)">Prix Vente (+20%)</label><input type="number" step="0.5" value="${item.sell_price || 0}" id="ocr-pv-${i}" style="width:100%;padding:4px;color:var(--accent);font-weight:bold"></div>
-      <div style="flex:0.7"><label style="font-size:10px;color:var(--text2)">Qté Stock</label><input type="number" value="${item.quantity || 10}" id="ocr-qty-${i}" style="width:100%;padding:4px"></div>
-    </div>
-  </div>`).join("");
+  document.getElementById("ocr-count-badge").textContent = `${ocrDetected.length} article(s)`;
+  document.getElementById("ocr-units-badge").textContent = `${totalUnits.toLocaleString()} unité(s) de stock`;
+  document.getElementById("ocr-val-badge").textContent = `Total Achat : ${fmtDA(totalVal)}`;
 }
 
 async function importOCRProducts(){
   const toImport = [];
   ocrDetected.forEach((_, i) => {
     const name = document.getElementById(`ocr-name-${i}`)?.value?.trim();
+    const code = document.getElementById(`ocr-code-${i}`)?.value?.trim();
+    const barcode = document.getElementById(`ocr-barcode-${i}`)?.value?.trim();
+    const cat = document.getElementById(`ocr-cat-${i}`)?.value?.trim() || "Général";
     const pa = parseFloat(document.getElementById(`ocr-pa-${i}`)?.value) || 0;
     const pv = parseFloat(document.getElementById(`ocr-pv-${i}`)?.value) || 0;
-    const qty = parseInt(document.getElementById(`ocr-qty-${i}`)?.value) || 0;
+    const qty = parseInt(document.getElementById(`ocr-qty-${i}`)?.value, 10) || 0;
+
     if(name){
       toImport.push({ 
-        name_fr: name, 
+        name_fr: name,
+        code_article: code || null,
+        barcode: barcode || null,
+        category: cat,
         purchase_price: pa, 
         sell_price: pv, 
         initial_quantity: qty, 
-        min_quantity: 5, 
-        category: "Facture" 
+        min_quantity: 5
       });
     }
   });
 
   if(toImport.length === 0){ 
-    alert("Veuillez saisir au moins un article."); 
+    alert("Veuillez saisir ou détecter au moins un article."); 
     return; 
   }
   
@@ -439,6 +581,7 @@ async function importOCRProducts(){
     const r = await api("POST", "/api/products", p);
     if(r) ok++;
   }
+
   showToast(`✅ ${ok} produit(s) importé(s) dans le catalogue et stock !`);
   closeOCR();
   init();
