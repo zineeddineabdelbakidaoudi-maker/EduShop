@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html><html lang="fr"><head>
+<!DOCTYPE html><html lang="fr"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Produits — EduShop Admin</title>
 <link rel="stylesheet" href="/static/css/app.css">
@@ -40,6 +40,7 @@
               <th>Code Art.</th>
               <th>Code-barres</th>
               <th>Désignation FR</th>
+              <th>Gérant / Acheteur</th>
               <th>Catégorie</th>
               <th>Prix Achat</th>
               <th>Marge %</th>
@@ -63,9 +64,28 @@
     <label>Nom AR (Optionnel)</label><input id="p-name-ar" placeholder="Ex: قلم جاف">
     <div class="form-row">
       <div><label>Code Article</label><input id="p-code" placeholder="Auto si vide"></div>
-      <div><label>Code-barres</label><input id="p-barcode" placeholder="Ex: 6130000001"></div>
+      <div>
+        <label>Code-barres (Optionnel — Scanner ou Générer)</label>
+        <div style="display:flex;gap:6px">
+          <input id="p-barcode" placeholder="Scanner au lecteur ou laisser vide" style="flex:1">
+          <button type="button" class="btn btn-secondary" onclick="generateEan13()" style="padding:6px 12px;font-size:12px;white-space:nowrap;border:1px solid var(--accent);color:var(--accent)" title="Générer un code EAN-13 GS1">⚡ Générer</button>
+        </div>
+      </div>
     </div>
-    <label>Catégorie</label><input id="p-category" placeholder="Papeterie, Cahiers...">
+    <div class="form-row">
+      <div>
+        <label>Gérant / Acheteur *</label>
+        <select id="p-buyer" style="background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px;width:100%;font-weight:600">
+          <option value="Bilal">👤 Bilal</option>
+          <option value="Houari">👤 Houari</option>
+          <option value="Autre">Commun / Autre</option>
+        </select>
+      </div>
+      <div>
+        <label>Catégorie</label>
+        <input id="p-category" placeholder="Papeterie, Cahiers, Sacs...">
+      </div>
+    </div>
     <div class="form-row">
       <div><label>Prix Achat (DA)</label><input type="number" id="p-purchase" min="0" step="0.5" value="0" oninput="calcSellFromMargin()"></div>
       <div>
@@ -80,9 +100,12 @@
       <div><label>Seuil Alerte</label><input type="number" id="p-min" min="0" value="5"></div>
     </div>
     <div id="prod-error" class="error-box" style="display:none"></div>
-    <div class="modal-actions">
+    <div class="modal-actions" style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;flex-wrap:wrap;gap:8px">
       <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
-      <button class="btn btn-primary" onclick="saveProduct()">Enregistrer</button>
+      <div style="display:flex;gap:8px">
+        <button type="button" class="btn btn-secondary" style="border:1px solid var(--accent);color:var(--accent);font-weight:600" onclick="generateAndSaveProduct()" title="Si sans code-barres, génère un EAN-13 valide et enregistre">⚡ Générer Barcode & Enregistrer</button>
+        <button class="btn btn-primary" onclick="saveProduct()">Enregistrer</button>
+      </div>
     </div>
   </div>
 </div>
@@ -129,10 +152,15 @@ async function init(){
 function renderTable(data){
   document.getElementById("products-table").innerHTML = data.map(p => {
     const margin = p.purchase_price > 0 ? ((p.sell_price - p.purchase_price) / p.purchase_price * 100).toFixed(1) : "—";
+    const buyerVal = p.buyer || "Bilal";
+    const buyerBadge = (buyerVal.toLowerCase() === "houari") ?
+      `<span style="background:#7c3aed;color:#fff;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:bold">👤 Houari</span>` :
+      `<span style="background:#2563eb;color:#fff;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:bold">👤 ${buyerVal}</span>`;
     return `<tr>
       <td><code>${p.code_article}</code></td>
       <td><small>${p.barcode || "—"}</small></td>
       <td><b>${p.name_fr}</b>${p.name_ar ? `<br><small style="color:var(--text2)">${p.name_ar}</small>` : ""}</td>
+      <td>${buyerBadge}</td>
       <td>${p.category || "—"}</td>
       <td>${fmtDA(p.purchase_price)}</td>
       <td style="color:var(--green)">${margin}%</td>
@@ -164,7 +192,12 @@ function calcMarginFromSell(){
 
 function filterTable(){ 
   const q = document.getElementById("search").value.toLowerCase(); 
-  renderTable(products.filter(p => p.name_fr.toLowerCase().includes(q) || p.code_article.toLowerCase().includes(q) || (p.barcode || "").includes(q))); 
+  renderTable(products.filter(p => 
+    p.name_fr.toLowerCase().includes(q) || 
+    p.code_article.toLowerCase().includes(q) || 
+    (p.barcode || "").includes(q) ||
+    (p.buyer || "").toLowerCase().includes(q)
+  )); 
 }
 
 function openCreate(){ 
@@ -182,6 +215,7 @@ function openEdit(id){
   document.getElementById("p-name-ar").value = p.name_ar || ""; 
   document.getElementById("p-code").value = p.code_article; 
   document.getElementById("p-barcode").value = p.barcode || ""; 
+  document.getElementById("p-buyer").value = p.buyer || "Bilal"; 
   document.getElementById("p-category").value = p.category || ""; 
   document.getElementById("p-purchase").value = p.purchase_price; 
   document.getElementById("p-sell").value = p.sell_price; 
@@ -198,9 +232,34 @@ function closeModal(){ document.getElementById("prod-modal").classList.remove("o
 function clearForm(){ 
   ["p-name-fr","p-name-ar","p-code","p-barcode","p-category"].forEach(id => document.getElementById(id).value = ""); 
   ["p-purchase","p-qty"].forEach(id => document.getElementById(id).value = 0); 
+  document.getElementById("p-buyer").value = "Bilal";
   document.getElementById("p-margin").value = 20;
   document.getElementById("p-sell").value = 0; 
   document.getElementById("p-min").value = 5; 
+}
+
+function generateEan13Code(){
+  const base = "200" + Array.from({length: 9}, () => Math.floor(Math.random() * 10)).join("");
+  let s = 0;
+  for(let i = 0; i < 12; i++){
+    s += (i % 2 === 1 ? 3 : 1) * parseInt(base[i]);
+  }
+  const check = (10 - (s % 10)) % 10;
+  return base + check;
+}
+
+function generateEan13(){
+  const code = generateEan13Code();
+  document.getElementById("p-barcode").value = code;
+  showToast("Code-barres EAN-13 généré : " + code);
+}
+
+async function generateAndSaveProduct(){
+  const bcInput = document.getElementById("p-barcode");
+  if(!bcInput.value.trim()){
+    bcInput.value = generateEan13Code();
+  }
+  await saveProduct();
 }
 
 async function saveProduct(){
@@ -209,6 +268,7 @@ async function saveProduct(){
     name_ar: document.getElementById("p-name-ar").value || null,
     code_article: document.getElementById("p-code").value || null,
     barcode: document.getElementById("p-barcode").value || null,
+    buyer: document.getElementById("p-buyer").value || "Bilal",
     category: document.getElementById("p-category").value || null,
     purchase_price: +document.getElementById("p-purchase").value,
     sell_price: +document.getElementById("p-sell").value,

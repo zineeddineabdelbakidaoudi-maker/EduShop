@@ -57,6 +57,7 @@ def get_global_stock(db: Session = Depends(get_db), admin: User = Depends(requir
         "code_article": gs.product.code_article,
         "sell_price": gs.product.sell_price,
         "purchase_price": gs.product.purchase_price,
+        "buyer": gs.product.buyer or "Bilal",
         "quantity": gs.quantity,
         "min_quantity": gs.product.min_quantity,
         "low_stock": gs.quantity <= gs.product.min_quantity,
@@ -206,7 +207,13 @@ def get_seller_stock(seller_id: int, db: Session = Depends(get_db), admin: User 
 @router.get("/me")
 def get_my_stock(db: Session = Depends(get_db), seller: User = Depends(require_seller)):
     stocks = db.query(SellerStock).filter_by(seller_id=seller.id).all()
-    return [{"product_id": ss.product_id, "name_fr": ss.product.name_fr, "barcode": ss.product.barcode, "sell_price": ss.product.sell_price, "quantity": ss.quantity,} for ss in stocks]
+    return [{
+        "product_id": ss.product_id,
+        "name_fr": ss.product.name_fr,
+        "barcode": ss.product.barcode,
+        "sell_price": ss.product.sell_price,
+        "quantity": ss.quantity,
+    } for ss in stocks]
 
 @router.get("/transfers")
 def get_all_transfers(db: Session = Depends(get_db), admin: User = Depends(require_admin)):
@@ -216,7 +223,10 @@ def get_all_transfers(db: Session = Depends(get_db), admin: User = Depends(requi
         "created_at": t.created_at.isoformat(),
         "product_name": t.product.name_fr,
         "barcode": t.product.barcode or "",
+        "code_article": t.product.code_article or "",
         "sell_price": t.product.sell_price,
+        "purchase_price": t.product.purchase_price,
+        "buyer": t.product.buyer or "Bilal",
         "seller_name": t.seller.username,
         "transferred_by": t.transferred_by.username,
         "quantity": t.quantity,
@@ -230,7 +240,10 @@ def get_transfers_by_seller(seller_id: int, db: Session = Depends(get_db), admin
         "created_at": t.created_at.isoformat(),
         "product_name": t.product.name_fr,
         "barcode": t.product.barcode or "",
+        "code_article": t.product.code_article or "",
         "sell_price": t.product.sell_price,
+        "purchase_price": t.product.purchase_price,
+        "buyer": t.product.buyer or "Bilal",
         "seller_name": t.seller.username,
         "transferred_by": t.transferred_by.username,
         "quantity": t.quantity,

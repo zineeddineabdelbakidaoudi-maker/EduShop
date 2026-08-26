@@ -24,6 +24,7 @@ class ProductCreate(BaseModel):
     sell_price: float = 0.0
     min_quantity: int = 5
     description: Optional[str] = None
+    buyer: Optional[str] = "Bilal"
     initial_quantity: int = 0
 
 class ProductUpdate(BaseModel):
@@ -36,6 +37,7 @@ class ProductUpdate(BaseModel):
     sell_price: Optional[float] = None
     min_quantity: Optional[int] = None
     description: Optional[str] = None
+    buyer: Optional[str] = None
 
 def product_to_admin_dict(p: Product) -> dict:
     return {
@@ -43,6 +45,7 @@ def product_to_admin_dict(p: Product) -> dict:
         "name_fr": p.name_fr, "name_ar": p.name_ar, "category": p.category,
         "purchase_price": p.purchase_price, "sell_price": p.sell_price,
         "min_quantity": p.min_quantity, "description": p.description,
+        "buyer": p.buyer or "Bilal",
         "created_at": p.created_at,
         "global_stock_quantity": p.global_stock.quantity if p.global_stock else 0,
     }
@@ -107,6 +110,7 @@ def create_product(data: ProductCreate, db: Session = Depends(get_db), admin: Us
         name_fr=data.name_fr, name_ar=data.name_ar, category=data.category,
         purchase_price=data.purchase_price, sell_price=data.sell_price,
         min_quantity=data.min_quantity, description=data.description,
+        buyer=data.buyer or "Bilal",
     )
     db.add(p)
     db.flush()
@@ -153,6 +157,7 @@ def batch_import_products(items: list[dict], db: Session = Depends(get_db), admi
             pv = round(pa * 1.25, 2)
             
         qty = int(it.get("quantity", it.get("initial_quantity", 0)))
+        buyer_val = it.get("buyer") or "Bilal"
         
         p = Product(
             code_article=code,
@@ -164,6 +169,7 @@ def batch_import_products(items: list[dict], db: Session = Depends(get_db), admi
             sell_price=pv,
             min_quantity=int(it.get("min_quantity", 5)),
             description=it.get("description") or None,
+            buyer=buyer_val,
         )
         db.add(p)
         db.flush()

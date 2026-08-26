@@ -1,4 +1,4 @@
-﻿import datetime
+import datetime
 from sqlalchemy import Column, Integer, String, Float, DateTime
 from sqlalchemy.orm import relationship
 from db.base import Base
@@ -15,6 +15,7 @@ class Product(Base):
     sell_price = Column(Float, default=0.0)
     min_quantity = Column(Integer, default=5)
     description = Column(String, nullable=True)
+    buyer = Column(String, default="Bilal", nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     global_stock = relationship("GlobalStock", back_populates="product", uselist=False, cascade="all, delete-orphan")
