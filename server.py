@@ -17,11 +17,17 @@ import models  # noqa: F401
 
 # ── Create all tables ─────────────────────────────────────────────────────────
 from db.base import engine, Base
-Base.metadata.create_all(bind=engine)
+try:
+    Base.metadata.create_all(bind=engine)
+except Exception as e:
+    print(f"[WARN] Table creation failed on primary engine ({e})")
 
 # ── Import and run seed ───────────────────────────────────────────────────────
 from db.seed import seed
-seed()
+try:
+    seed()
+except Exception as e:
+    print(f"[WARN] Seed initialization failed: {e}")
 
 # ── FastAPI app ───────────────────────────────────────────────────────────────
 app = FastAPI(title="EduShop", version="2.0", docs_url="/api/docs")
