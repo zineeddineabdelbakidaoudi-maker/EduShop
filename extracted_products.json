@@ -1,0 +1,642 @@
+[
+  {
+    "code_article": "300A",
+    "name_fr": "BLOUSE GARCONS BLEU 6-8-10-12",
+    "purchase_price": 420.0,
+    "initial_quantity": 800,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "200A",
+    "name_fr": "BLOUSE FILLES ROSE 6-8-10-12",
+    "purchase_price": 440.0,
+    "initial_quantity": 800,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "2000",
+    "name_fr": "BLOUSE GARCON BLANC GARCONS SIMPLE 12-14-16",
+    "purchase_price": 330.0,
+    "initial_quantity": 180,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "3000",
+    "name_fr": "BLOUSE FILLES BLANC SIMPLE 12-14-16",
+    "purchase_price": 330.0,
+    "initial_quantity": 180,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "4000",
+    "name_fr": "BLOUSE ROSE FILLES SIMPLE 12-14-16",
+    "purchase_price": 350.0,
+    "initial_quantity": 180,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "5000 BB",
+    "name_fr": "BLOUSE FILLES SIMPEL B 12-14-16",
+    "purchase_price": 380.0,
+    "initial_quantity": 180,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "500",
+    "name_fr": "BLOUSE GARCONS BLEU 6-8-10-12 (Stock 0)",
+    "purchase_price": 400.0,
+    "initial_quantity": 0,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "600",
+    "name_fr": "BLOUSE FILLES ROSE 6-8-10-12 (Stock 0)",
+    "purchase_price": 400.0,
+    "initial_quantity": 0,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AD8233",
+    "name_fr": "SAC A DOS GAT AD8233 - CHOROUM",
+    "purchase_price": 1750.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AD20269",
+    "name_fr": "SAC A DOS AD20269 BOUDE - CHOROUM",
+    "purchase_price": 1950.0,
+    "initial_quantity": 8,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "1503/1504",
+    "name_fr": "SAC A DOS JB JINGPIN 1503/1504 - CHOROUM",
+    "purchase_price": 750.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "JINXING2075-6",
+    "name_fr": "SAC A DOS JINXING 2056-6 - CHOROUM",
+    "purchase_price": 1450.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CH01",
+    "name_fr": "CH01 SAC A DOS CLEVER - CHOROUM",
+    "purchase_price": 1350.0,
+    "initial_quantity": 9,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "1513-2",
+    "name_fr": "SAC A DOS XINXIN BOSHI 1513-2 - CHOROUM",
+    "purchase_price": 1200.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ABK64",
+    "name_fr": "SAC A DOS ABK64 - CHOROUM",
+    "purchase_price": 1550.0,
+    "initial_quantity": 4,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BB-08",
+    "name_fr": "SAC A DOS BEBE -08 - CHOROUM",
+    "purchase_price": 1120.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "D967/954/979/976/965",
+    "name_fr": "D967/D954/D979/D976/D965/D950 - CHOROUM",
+    "purchase_price": 1900.0,
+    "initial_quantity": 30,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "817",
+    "name_fr": "SAC A DOS 817 - CHOROUM",
+    "purchase_price": 1100.0,
+    "initial_quantity": 5,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK80/BK81/BK82",
+    "name_fr": "SAC A DOS BK79/BK80/BK81/BK82 - CHOROUM",
+    "purchase_price": 1100.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK57",
+    "name_fr": "SAC A DOS BK57 - CHOROUM",
+    "purchase_price": 680.0,
+    "initial_quantity": 8,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "12A",
+    "name_fr": "SAC A DOS/16MOTIFES 12A - CHOROUM",
+    "purchase_price": 980.0,
+    "initial_quantity": 15,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "13002",
+    "name_fr": "13002 SAC A DOS/1101-3 - CHOROUM",
+    "purchase_price": 850.0,
+    "initial_quantity": 8,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "011MK",
+    "name_fr": "SAC A DOS 011MK - CHOROUM",
+    "purchase_price": 600.0,
+    "initial_quantity": 4,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "NBS13C",
+    "name_fr": "SAC A DOS NBS13C - CHOROUM",
+    "purchase_price": 1100.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "HSB2342/2343/2345",
+    "name_fr": "SAC A DOS NBS GM HSB2342/2343/2345 - CHOROUM",
+    "purchase_price": 1600.0,
+    "initial_quantity": 8,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK55",
+    "name_fr": "SAC A DOS BK55 - CHOROUM",
+    "purchase_price": 950.0,
+    "initial_quantity": 5,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "T6172/6157",
+    "name_fr": "SAC A DOS T6172 - CHOROUM",
+    "purchase_price": 850.0,
+    "initial_quantity": 14,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "1333-2010",
+    "name_fr": "1333-2010 SAC A DOS BAIDA - CHOROUM",
+    "purchase_price": 1100.0,
+    "initial_quantity": 5,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "1868",
+    "name_fr": "SAC A DOS 1868 - CHOROUM",
+    "purchase_price": 700.0,
+    "initial_quantity": 8,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SL01",
+    "name_fr": "SL01 SAC A DOS LOCAL WAIL BAG - CHOROUM",
+    "purchase_price": 1550.0,
+    "initial_quantity": 9,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "2074-1/2074-5",
+    "name_fr": "SAC A DOS 2074-1/2074-5 - CHOROUM",
+    "purchase_price": 1250.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK59/BK60/BK61/BK62",
+    "name_fr": "SAC A DOS BK59/BK60/BK61/BK62 - CHOROUM",
+    "purchase_price": 1850.0,
+    "initial_quantity": 13,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK64/BK65/BK66",
+    "name_fr": "SAC A DOS BK64/BK65/BK66 - CHOROUM",
+    "purchase_price": 1950.0,
+    "initial_quantity": 7,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CH021",
+    "name_fr": "CH21/CH27/CH26/CH24/CH25/CH30/CH22/CH29/CH32/CH31/CH28 SAC A DOS CLEVER - CHOROUM",
+    "purchase_price": 1750.0,
+    "initial_quantity": 30,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK32",
+    "name_fr": "SAC A DOS BK32 - CHOROUM",
+    "purchase_price": 1650.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CH48/CH49/CH50/CH51",
+    "name_fr": "CH48/CH49/CH50/CH51 SAC A DOS CLEVER - CHOROUM",
+    "purchase_price": 2250.0,
+    "initial_quantity": 8,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK30/BK35",
+    "name_fr": "SAC A DOS BK30/BK35 - CHOROUM",
+    "purchase_price": 1650.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK30/BK35-2",
+    "name_fr": "SAC A DOS BK30/BK35 - CHOROUM (Lot 2)",
+    "purchase_price": 1650.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK20/BK21/BK22/BK24-1",
+    "name_fr": "SAC A DOS BK20/BK21/BK22/BK23/BK24 - CHOROUM (11p)",
+    "purchase_price": 1700.0,
+    "initial_quantity": 11,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK20/BK21/BK22/BK24-2",
+    "name_fr": "SAC A DOS BK20/BK21/BK22/BK23/BK24 - CHOROUM (7p)",
+    "purchase_price": 1700.0,
+    "initial_quantity": 7,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK19",
+    "name_fr": "SAC A DOS BK19 - CHOROUM",
+    "purchase_price": 1600.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK20/BK21/BK22/BK24-3",
+    "name_fr": "SAC A DOS BK20/BK21/BK22/BK23/BK24 - CHOROUM (8p)",
+    "purchase_price": 1700.0,
+    "initial_quantity": 8,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "H-38/H-37",
+    "name_fr": "H-38/H-37 SAC A DOS - CHOROUM",
+    "purchase_price": 1800.0,
+    "initial_quantity": 9,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "N10/TBE",
+    "name_fr": "SAC A DOS TAOBEIER N10 - CHOROUM",
+    "purchase_price": 1850.0,
+    "initial_quantity": 9,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "N42/1239",
+    "name_fr": "SAC A DOS N42/1239 - CHOROUM",
+    "purchase_price": 2100.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK17-3/BK18-3-1",
+    "name_fr": "SAC A DOS BK17-3/BK18-3 - CHOROUM (2p)",
+    "purchase_price": 1850.0,
+    "initial_quantity": 2,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CH05...CH15-1",
+    "name_fr": "CH05/CH16/CH12/CH11/CH13/CH10/CH08/CH14/CH09/CH SAC ADOS CLEVER - CHOROUM (8p)",
+    "purchase_price": 1750.0,
+    "initial_quantity": 8,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK17/BK18",
+    "name_fr": "SAC A DOS BK17/BK18 - CHOROUM",
+    "purchase_price": 1650.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK14",
+    "name_fr": "SAC A DOS BK14 - CHOROUM",
+    "purchase_price": 1550.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK09/BK10/BK11-1",
+    "name_fr": "SAC A DOS BK09/BK10/BK11/BK12/BK13 - CHOROUM (10p)",
+    "purchase_price": 1700.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "NBS660/667",
+    "name_fr": "SAC A DOS NBS660/667 - CHOROUM",
+    "purchase_price": 1000.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CH05...CH15-2",
+    "name_fr": "CH05/CH16/CH12/CH11/CH13/CH10/CH08/CH14/CH09/CH SAC ADOS CLEVER - CHOROUM (6p)",
+    "purchase_price": 1750.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK17-3/BK18-3-2",
+    "name_fr": "SAC A DOS BK17-3/BK18-3 - CHOROUM (6p)",
+    "purchase_price": 1850.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK09/BK10/BK11-2",
+    "name_fr": "SAC A DOS BK09/BK10/BK11/BK12/BK13 - CHOROUM (7p)",
+    "purchase_price": 1700.0,
+    "initial_quantity": 7,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK104",
+    "name_fr": "SAC A DOS BK104 - CHOROUM",
+    "purchase_price": 1500.0,
+    "initial_quantity": 8,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK78",
+    "name_fr": "SAC A DOS BK78 - CHOROUM",
+    "purchase_price": 1050.0,
+    "initial_quantity": 15,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK109",
+    "name_fr": "SAC A DOS BK109 - CHOROUM",
+    "purchase_price": 1950.0,
+    "initial_quantity": 4,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK05/BK06/BK07-1",
+    "name_fr": "SAC A DOS BKF04/BKF08 - CHOROUM (5p)",
+    "purchase_price": 1600.0,
+    "initial_quantity": 5,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK05/BK06/BK07-2",
+    "name_fr": "SAC A DOS BKF04/BKF08 - CHOROUM (8p)",
+    "purchase_price": 1600.0,
+    "initial_quantity": 8,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK76/BK77",
+    "name_fr": "SAC A DOS BK76/BK77 - CHOROUM",
+    "purchase_price": 1850.0,
+    "initial_quantity": 11,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CR-PC01",
+    "name_fr": "SAC A DOS CR-PC01 - CHOROUM",
+    "purchase_price": 2250.0,
+    "initial_quantity": 5,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "5039",
+    "name_fr": "SAC A DOS ONE 5039 - CHOROUM",
+    "purchase_price": 1900.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "1060",
+    "name_fr": "SAC A DOS 1060 - CHOROUM",
+    "purchase_price": 2000.0,
+    "initial_quantity": 3,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AD9320/AD9338",
+    "name_fr": "SAC A DOS AD9320/AD9338 - CHOROUM",
+    "purchase_price": 2450.0,
+    "initial_quantity": 4,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BR-1-1",
+    "name_fr": "SAC A DOS BR-1 USB - CHOROUM (6p)",
+    "purchase_price": 800.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "H-54",
+    "name_fr": "SAC A DOS COOL PACK H-54 - CHOROUM",
+    "purchase_price": 1500.0,
+    "initial_quantity": 4,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "9105-16",
+    "name_fr": "SAC A DOS 9105-16 - CHOROUM",
+    "purchase_price": 1100.0,
+    "initial_quantity": 5,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "9105-33",
+    "name_fr": "SAC A DOS 9105-33 - CHOROUM",
+    "purchase_price": 1050.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "9105-53",
+    "name_fr": "SAC A DOS 9105-53 - CHOROUM",
+    "purchase_price": 1200.0,
+    "initial_quantity": 4,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "9105-129",
+    "name_fr": "SAC A DOS 9105-129 - CHOROUM",
+    "purchase_price": 1400.0,
+    "initial_quantity": 5,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "9105-71",
+    "name_fr": "SAC A DOS 9105-71 - CHOROUM",
+    "purchase_price": 1300.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "9105-80",
+    "name_fr": "SAC A DOS 9105-80 - CHOROUM",
+    "purchase_price": 1200.0,
+    "initial_quantity": 5,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "9105-65",
+    "name_fr": "SAC A DOS 9105-65 - CHOROUM",
+    "purchase_price": 1300.0,
+    "initial_quantity": 5,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "9105-147",
+    "name_fr": "SAC A DOS 9105-147 - CHOROUM",
+    "purchase_price": 2000.0,
+    "initial_quantity": 4,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "9105-42",
+    "name_fr": "SAC A DOS 16IN 9105-42 - CHOROUM",
+    "purchase_price": 1400.0,
+    "initial_quantity": 8,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "9105-38",
+    "name_fr": "SAC A DOS 16IN 9105-38 - CHOROUM",
+    "purchase_price": 1400.0,
+    "initial_quantity": 14,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BK55-2",
+    "name_fr": "SAC A DOS BK55 - CHOROUM (Bon 1978)",
+    "purchase_price": 950.0,
+    "initial_quantity": 5,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "A006",
+    "name_fr": "SAC A DOS A006 - CHOROUM",
+    "purchase_price": 850.0,
+    "initial_quantity": 7,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BR-1-2",
+    "name_fr": "SAC A DOS BR-1 USB - CHOROUM (5p)",
+    "purchase_price": 800.0,
+    "initial_quantity": 5,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "505..",
+    "name_fr": "SAC A DOS 505 - CHOROUM",
+    "purchase_price": 1000.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  }
+]
