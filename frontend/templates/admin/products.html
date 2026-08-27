@@ -30,8 +30,20 @@
       </div>
     </div>
     <div class="card">
-      <div class="toolbar">
-        <input class="search-box" id="search" placeholder="Rechercher par nom, code article, code-barres..." oninput="filterTable()">
+      <div class="toolbar" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between;padding:12px 16px;background:rgba(255,255,255,0.02);border-radius:10px;margin-bottom:14px;border:1px solid var(--border)">
+        <input class="search-box" id="search" placeholder="🔍 Rechercher par nom, code article, code-barres, gérant..." oninput="filterTable()" style="max-width:380px;flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="font-size:13px;color:var(--text2);font-weight:600">Filtrage Code-barres :</span>
+          <button type="button" class="btn btn-secondary bc-filter-btn active-filter" id="btn-filter-all" onclick="setBarcodeFilter('all')" style="padding:6px 14px;border-radius:20px;font-size:13px;font-weight:bold;background:#2563eb;color:#fff">
+            📋 Tous <span id="count-all" style="background:rgba(255,255,255,0.25);padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
+          </button>
+          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-with" onclick="setBarcodeFilter('with')" style="padding:6px 14px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #10b981;color:#10b981">
+            ✅ Avec Code-barres <span id="count-with" style="background:#10b981;color:#fff;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
+          </button>
+          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-without" onclick="setBarcodeFilter('without')" style="padding:6px 14px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #f59e0b;color:#f59e0b">
+            ⚠️ Sans Code-barres <span id="count-without" style="background:#f59e0b;color:#111;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
+          </button>
+        </div>
       </div>
       <div class="table-wrap">
         <table>
@@ -142,23 +154,71 @@
 
 <script src="/static/js/app.js"></script>
 <script>
-let products = [], editId = null;
+let products = [], editId = null, barcodeFilter = "all";
 
 async function init(){ 
   products = await api("GET","/api/products") || []; 
-  renderTable(products); 
+  updateCounts();
+  filterTable(); 
+}
+
+function updateCounts(){
+  const total = products.length;
+  const withBc = products.filter(p => p.barcode && p.barcode.trim().length > 0).length;
+  const withoutBc = total - withBc;
+  
+  const elAll = document.getElementById("count-all");
+  const elWith = document.getElementById("count-with");
+  const elWithout = document.getElementById("count-without");
+
+  if(elAll) elAll.textContent = total;
+  if(elWith) elWith.textContent = withBc;
+  if(elWithout) elWithout.textContent = withoutBc;
+}
+
+function setBarcodeFilter(mode){
+  barcodeFilter = mode;
+  document.querySelectorAll(".bc-filter-btn").forEach(b => {
+    b.classList.remove("active-filter");
+    b.style.background = "";
+    b.style.color = "";
+  });
+  const activeBtn = document.getElementById("btn-filter-" + mode);
+  if(activeBtn){
+    activeBtn.classList.add("active-filter");
+    if(mode === "all"){
+      activeBtn.style.background = "#2563eb";
+      activeBtn.style.color = "#fff";
+    } else if(mode === "with"){
+      activeBtn.style.background = "#10b981";
+      activeBtn.style.color = "#fff";
+    } else if(mode === "without"){
+      activeBtn.style.background = "#f59e0b";
+      activeBtn.style.color = "#111";
+    }
+  }
+  filterTable();
 }
 
 function renderTable(data){
+  if(!data || data.length === 0){
+    document.getElementById("products-table").innerHTML = `<tr><td colspan="10" style="text-align:center;padding:30px;color:var(--text2)">Aucun produit correspondant au filtre sélectionné.</td></tr>`;
+    return;
+  }
   document.getElementById("products-table").innerHTML = data.map(p => {
     const margin = p.purchase_price > 0 ? ((p.sell_price - p.purchase_price) / p.purchase_price * 100).toFixed(1) : "—";
     const buyerVal = p.buyer || "Bilal";
     const buyerBadge = (buyerVal.toLowerCase() === "houari") ?
       `<span style="background:#7c3aed;color:#fff;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:bold">👤 Houari</span>` :
       `<span style="background:#2563eb;color:#fff;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:bold">👤 ${buyerVal}</span>`;
+    
+    const bcDisplay = (p.barcode && p.barcode.trim()) ?
+      `<span style="color:#10b981;font-weight:bold;font-family:monospace;background:rgba(16,185,129,0.1);padding:2px 6px;border-radius:4px">🏷️ ${p.barcode}</span>` :
+      `<span style="color:#f59e0b;font-size:11px;font-weight:600;background:rgba(245,158,11,0.1);padding:2px 6px;border-radius:4px">⚠️ Sans code-barres</span>`;
+
     return `<tr>
       <td><code>${p.code_article}</code></td>
-      <td><small>${p.barcode || "—"}</small></td>
+      <td>${bcDisplay}</td>
       <td><b>${p.name_fr}</b>${p.name_ar ? `<br><small style="color:var(--text2)">${p.name_ar}</small>` : ""}</td>
       <td>${buyerBadge}</td>
       <td>${p.category || "—"}</td>
@@ -191,13 +251,22 @@ function calcMarginFromSell(){
 }
 
 function filterTable(){ 
-  const q = document.getElementById("search").value.toLowerCase(); 
-  renderTable(products.filter(p => 
-    p.name_fr.toLowerCase().includes(q) || 
-    p.code_article.toLowerCase().includes(q) || 
-    (p.barcode || "").includes(q) ||
-    (p.buyer || "").toLowerCase().includes(q)
-  )); 
+  const q = document.getElementById("search").value.toLowerCase().trim(); 
+  const filtered = products.filter(p => {
+    const hasBc = !!(p.barcode && p.barcode.trim());
+    if(barcodeFilter === "with" && !hasBc) return false;
+    if(barcodeFilter === "without" && hasBc) return false;
+    
+    if(!q) return true;
+    return (
+      (p.name_fr && p.name_fr.toLowerCase().includes(q)) || 
+      (p.code_article && p.code_article.toLowerCase().includes(q)) || 
+      (p.barcode && p.barcode.includes(q)) ||
+      (p.buyer && p.buyer.toLowerCase().includes(q)) ||
+      (p.category && p.category.toLowerCase().includes(q))
+    );
+  });
+  renderTable(filtered); 
 }
 
 function openCreate(){ 
