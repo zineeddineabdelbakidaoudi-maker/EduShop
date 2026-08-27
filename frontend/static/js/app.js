@@ -52,6 +52,9 @@ async function flushQueue() {
     if (!r) remaining.push(item);
   }
   saveQueue(remaining);
+  if (remaining.length < q.length) showToast(`${q.length - remaining.length} vente(s) synchronisée(s) depuis la file d'attente`);
+}
+
 // ── Theme Switcher ───────────────────────────────────────────────────────────────
 function initTheme() {
   const saved = localStorage.getItem("edushop_theme") || "dark";
