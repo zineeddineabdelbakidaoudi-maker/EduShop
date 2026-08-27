@@ -1,4 +1,4 @@
-﻿*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#0f0f1a;
   --card:#1a1a2e;
@@ -12,6 +12,52 @@
   --text2:#9999bb;
   --border:#2a2a4a;
   --radius:10px;
+}
+
+[data-theme="light"] {
+  --bg: #f1f5f9;
+  --card: #ffffff;
+  --card2: #f8fafc;
+  --accent: #2563eb;
+  --accent2: #1d4ed8;
+  --green: #16a34a;
+  --red: #dc2626;
+  --blue: #2563eb;
+  --text: #0f172a;
+  --text2: #64748b;
+  --border: #cbd5e1;
+}
+
+[data-theme="light"] input, 
+[data-theme="light"] select, 
+[data-theme="light"] textarea {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] th {
+  background: #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+[data-theme="light"] tr:hover td {
+  background: rgba(37, 99, 235, 0.06) !important;
+}
+
+[data-theme="light"] .modal {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15) !important;
+}
+
+tbody tr {
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+tbody tr:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 body{background:var(--bg);color:var(--text);font-family:'Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.5;-webkit-tap-highlight-color:transparent}
 a{color:var(--accent);text-decoration:none}

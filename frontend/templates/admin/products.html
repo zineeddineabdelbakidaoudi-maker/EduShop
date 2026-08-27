@@ -18,12 +18,16 @@
       <a href="/admin/sales">💰 Ventes</a>
       <a href="/admin/suppliers">🚚 Fournisseurs</a>
     </nav>
-    <div class="sidebar-footer"><a href="#" onclick="logout()">🚪 Déconnexion</a></div>
+    <div class="sidebar-footer" style="display:flex;flex-direction:column;gap:8px">
+      <button class="btn btn-secondary theme-toggle-btn" onclick="toggleTheme()" style="width:100%;font-size:12px;padding:8px">☀️ Mode Clair</button>
+      <a href="#" onclick="logout()">🚪 Déconnexion</a>
+    </div>
   </aside>
   <main class="main">
     <div class="page-header">
       <span class="page-title">📦 Catalogue Produits</span>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <button class="btn btn-secondary theme-toggle-btn" onclick="toggleTheme()" style="font-size:12px">☀️ Mode Clair</button>
         <button class="btn btn-secondary" onclick="openJsonModal()">📥 Importer JSON</button>
         <button class="btn btn-secondary" onclick="downloadJsonTemplate()">📄 Modèle JSON</button>
         <button class="btn btn-primary" onclick="openCreate()">+ Nouveau Produit</button>
@@ -70,7 +74,7 @@
 
 <!-- Modal: Add/Edit Product -->
 <div class="modal-overlay" id="prod-modal">
-  <div class="modal">
+  <div class="modal" style="max-width:650px">
     <h3 id="modal-title">Nouveau Produit</h3>
     <label>Nom FR *</label><input id="p-name-fr" placeholder="Ex: Stylo Bic Cristal (Bleu/Noir/Rouge/Vert)">
     <label>Nom AR (Optionnel)</label><input id="p-name-ar" placeholder="Ex: قلم جاف">
@@ -86,50 +90,20 @@
       </div>
     </div>
 
-    <!-- Multi-barcode Section (Up to 5 Codes for Colors / Variations) -->
+    <!-- Dynamic Multi-barcode Section (Unlimited Variations / Colors) -->
     <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:14px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <label style="margin:0;font-weight:bold;color:var(--accent);font-size:13px">🏷️ Codes-barres Multi-Couleurs (Jusqu'à 5 codes pour le même article) :</label>
+        <label style="margin:0;font-weight:bold;color:var(--accent);font-size:13px">🏷️ Codes-barres Multi-Couleurs (10, 15, 20+ codes par article) :</label>
         <small style="color:var(--text2)">Même prix & stock, scannable avec n'importe lequel</small>
       </div>
       
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div>
-          <label style="font-size:11px;color:var(--text2)">Code-barres 1 (Principal / Couleur 1) :</label>
-          <div style="display:flex;gap:4px">
-            <input id="p-bc-1" class="barcode-input" placeholder="Scanner au lecteur ou générer" style="font-family:monospace;font-size:12px">
-            <button type="button" class="btn btn-secondary" onclick="generateEan13To('p-bc-1')" style="padding:4px 8px;font-size:11px" title="Générer EAN-13">⚡</button>
-          </div>
-        </div>
-        <div>
-          <label style="font-size:11px;color:var(--text2)">Code-barres 2 (Couleur 2 / Variante) :</label>
-          <div style="display:flex;gap:4px">
-            <input id="p-bc-2" class="barcode-input" placeholder="Couleur 2 (ex: Noir, Rouge...)" style="font-family:monospace;font-size:12px">
-            <button type="button" class="btn btn-secondary" onclick="generateEan13To('p-bc-2')" style="padding:4px 8px;font-size:11px" title="Générer EAN-13">⚡</button>
-          </div>
-        </div>
-        <div>
-          <label style="font-size:11px;color:var(--text2)">Code-barres 3 (Couleur 3 / Variante) :</label>
-          <div style="display:flex;gap:4px">
-            <input id="p-bc-3" class="barcode-input" placeholder="Couleur 3 (ex: Vert...)" style="font-family:monospace;font-size:12px">
-            <button type="button" class="btn btn-secondary" onclick="generateEan13To('p-bc-3')" style="padding:4px 8px;font-size:11px" title="Générer EAN-13">⚡</button>
-          </div>
-        </div>
-        <div>
-          <label style="font-size:11px;color:var(--text2)">Code-barres 4 (Couleur 4 / Variante) :</label>
-          <div style="display:flex;gap:4px">
-            <input id="p-bc-4" class="barcode-input" placeholder="Couleur 4..." style="font-family:monospace;font-size:12px">
-            <button type="button" class="btn btn-secondary" onclick="generateEan13To('p-bc-4')" style="padding:4px 8px;font-size:11px" title="Générer EAN-13">⚡</button>
-          </div>
-        </div>
+      <div id="barcodes-list" style="display:flex;flex-direction:column;gap:8px;max-height:220px;overflow-y:auto;padding-right:4px">
+        <!-- Dynamic Barcode Rows injected here -->
       </div>
-      <div style="margin-top:8px">
-        <label style="font-size:11px;color:var(--text2)">Code-barres 5 (Couleur 5 / Variante) :</label>
-        <div style="display:flex;gap:4px">
-          <input id="p-bc-5" class="barcode-input" placeholder="Couleur 5..." style="font-family:monospace;font-size:12px;flex:1">
-          <button type="button" class="btn btn-secondary" onclick="generateEan13To('p-bc-5')" style="padding:4px 10px;font-size:11px" title="Générer EAN-13">⚡ Générer</button>
-        </div>
-      </div>
+      
+      <button type="button" class="btn btn-secondary" onclick="addBarcodeRow()" style="margin-top:8px;width:100%;font-size:12px;border:1px dashed var(--accent);color:var(--accent);padding:6px">
+        + Ajouter un Code-barres (Autre couleur / déclinaison)
+      </button>
     </div>
 
     <div class="form-row">
@@ -138,6 +112,10 @@
         <input id="p-category" placeholder="Papeterie, Stylos, Cahiers, Sacs...">
       </div>
       <div>
+        <label>Seuil Alerte Stock</label>
+        <input type="number" id="p-min" min="0" value="5">
+      </div>
+    </div>
         <label>Seuil Alerte Stock</label>
         <input type="number" id="p-min" min="0" value="5">
       </div>
@@ -260,7 +238,7 @@ function renderTable(data){
       bcs.map(b => `<span style="display:inline-block;margin:1px;color:#10b981;font-weight:bold;font-family:monospace;background:rgba(16,185,129,0.12);padding:2px 6px;border-radius:4px;font-size:11px">🏷️ ${b}</span>`).join(" ") :
       `<span style="color:#f59e0b;font-size:11px;font-weight:600;background:rgba(245,158,11,0.1);padding:2px 6px;border-radius:4px">⚠️ Sans code-barres</span>`;
 
-    return `<tr>
+    return `<tr ondblclick="openEdit(${p.id})" title="💡 Double-cliquez pour modifier ce produit" style="cursor:pointer">
       <td><code>${p.code_article}</code></td>
       <td>${bcDisplay}</td>
       <td><b>${p.name_fr}</b>${p.name_ar ? `<br><small style="color:var(--text2)">${p.name_ar}</small>` : ""}</td>
@@ -271,11 +249,44 @@ function renderTable(data){
       <td style="color:var(--accent);font-weight:700">${fmtDA(p.sell_price)}</td>
       <td class="${p.global_stock_quantity <= p.min_quantity ? "low-stock" : ""}"><b>${p.global_stock_quantity}</b></td>
       <td style="display:flex;gap:6px">
-        <button class="btn btn-secondary" style="padding:4px 8px;font-size:12px" onclick="openEdit(${p.id})">✏️</button>
-        <button class="btn btn-danger" style="padding:4px 8px;font-size:12px" onclick="deleteProduct(${p.id},'${p.name_fr}')">🗑️</button>
+        <button class="btn btn-secondary" style="padding:4px 8px;font-size:12px" onclick="event.stopPropagation();openEdit(${p.id})">✏️</button>
+        <button class="btn btn-danger" style="padding:4px 8px;font-size:12px" onclick="event.stopPropagation();deleteProduct(${p.id},'${p.name_fr}')">🗑️</button>
       </td>
     </tr>`;
   }).join("");
+}
+
+let barcodeRowCount = 0;
+
+function addBarcodeRow(initialVal = ""){
+  barcodeRowCount++;
+  const rowId = "bc-row-" + barcodeRowCount;
+  const inputId = "p-bc-input-" + barcodeRowCount;
+  
+  const container = document.getElementById("barcodes-list");
+  const div = document.createElement("div");
+  div.id = rowId;
+  div.style.cssText = "display:flex;gap:6px;align-items:center;background:rgba(255,255,255,0.03);padding:4px 8px;border-radius:6px;border:1px solid var(--border)";
+  
+  div.innerHTML = `
+    <span style="font-size:11px;font-weight:bold;color:var(--text2);min-width:24px">#${container.children.length + 1}</span>
+    <input id="${inputId}" class="dynamic-bc-input" value="${initialVal}" placeholder="Scanner au lecteur ou générer..." style="font-family:monospace;font-size:12px;flex:1;padding:6px 10px">
+    <button type="button" class="btn btn-secondary" onclick="generateEan13To('${inputId}')" style="padding:4px 8px;font-size:11px;border:1px solid var(--accent);color:var(--accent)" title="Générer code EAN-13">⚡</button>
+    <button type="button" class="btn btn-danger" onclick="removeBarcodeRow('${rowId}')" style="padding:4px 8px;font-size:11px" title="Supprimer ce code">🗑️</button>
+  `;
+  container.appendChild(div);
+}
+
+function removeBarcodeRow(rowId){
+  const el = document.getElementById(rowId);
+  if(el){
+    el.remove();
+    const rows = document.getElementById("barcodes-list").children;
+    for(let i = 0; i < rows.length; i++){
+      const span = rows[i].querySelector("span");
+      if(span) span.textContent = "#" + (i + 1);
+    }
+  }
 }
 
 function calcSellFromMargin(){
@@ -320,6 +331,7 @@ function openCreate(){
   editId = null; 
   document.getElementById("modal-title").textContent = "Nouveau Produit"; 
   clearForm(); 
+  addBarcodeRow();
   document.getElementById("prod-modal").classList.add("open"); 
 }
 
@@ -340,10 +352,13 @@ function openEdit(id){
     document.getElementById("p-margin").value = ((p.sell_price - p.purchase_price) / p.purchase_price * 100).toFixed(1); 
   }
   
-  // Load up to 5 barcodes
+  // Clear and populate all barcodes for this product
+  document.getElementById("barcodes-list").innerHTML = "";
   const bcs = (p.barcodes && p.barcodes.length) ? p.barcodes : (p.barcode ? p.barcode.split(/[,;\s]+/).filter(Boolean) : []);
-  for(let i = 1; i <= 5; i++){
-    document.getElementById("p-bc-" + i).value = bcs[i-1] || "";
+  if(bcs.length > 0){
+    bcs.forEach(b => addBarcodeRow(b));
+  } else {
+    addBarcodeRow();
   }
   
   document.getElementById("prod-error").style.display = "none";
@@ -354,9 +369,7 @@ function closeModal(){ document.getElementById("prod-modal").classList.remove("o
 
 function clearForm(){ 
   ["p-name-fr","p-name-ar","p-code","p-category"].forEach(id => document.getElementById(id).value = ""); 
-  for(let i = 1; i <= 5; i++){
-    document.getElementById("p-bc-" + i).value = "";
-  }
+  document.getElementById("barcodes-list").innerHTML = "";
   ["p-purchase","p-qty"].forEach(id => document.getElementById(id).value = 0); 
   document.getElementById("p-buyer").value = "Houari";
   document.getElementById("p-margin").value = 20;
@@ -384,23 +397,15 @@ function generateEan13To(targetId){
   }
 }
 
-async function generateAndSaveProduct(){
-  // If first barcode is empty, generate it
-  const bc1 = document.getElementById("p-bc-1");
-  if(!bc1.value.trim()){
-    bc1.value = generateEan13Code();
-  }
-  await saveProduct();
-}
-
 async function saveProduct(){
+  const bcInputs = document.querySelectorAll("#barcodes-list .dynamic-bc-input");
   const bcList = [];
-  for(let i = 1; i <= 5; i++){
-    const val = document.getElementById("p-bc-" + i).value.trim();
+  bcInputs.forEach(input => {
+    const val = input.value.trim();
     if(val && !bcList.includes(val)){
       bcList.push(val);
     }
-  }
+  });
 
   const body = {
     name_fr: document.getElementById("p-name-fr").value,

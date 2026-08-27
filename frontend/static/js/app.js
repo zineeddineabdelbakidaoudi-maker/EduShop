@@ -1,4 +1,4 @@
-﻿// ── Shared API helper ──────────────────────────────────────────────────────────
+// ── Shared API helper ──────────────────────────────────────────────────────────
 async function api(method, url, body = null) {
   const opts = { method, headers: { "Content-Type": "application/json" }, credentials: "include" };
   if (body) opts.body = JSON.stringify(body);
@@ -52,8 +52,31 @@ async function flushQueue() {
     if (!r) remaining.push(item);
   }
   saveQueue(remaining);
-  if (remaining.length < q.length) showToast(`${q.length - remaining.length} vente(s) synchronisée(s) depuis la file d'attente`);
+// ── Theme Switcher ───────────────────────────────────────────────────────────────
+function initTheme() {
+  const saved = localStorage.getItem("edushop_theme") || "dark";
+  document.documentElement.setAttribute("data-theme", saved);
+  updateThemeButton(saved);
 }
 
-// Retry queued sales on page load
-window.addEventListener("load", () => setTimeout(flushQueue, 2000));
+function toggleTheme() {
+  const current = document.documentElement.getAttribute("data-theme") || "dark";
+  const next = current === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  localStorage.setItem("edushop_theme", next);
+  updateThemeButton(next);
+}
+
+function updateThemeButton(theme) {
+  const btns = document.querySelectorAll(".theme-toggle-btn");
+  btns.forEach(btn => {
+    btn.innerHTML = theme === "light" ? "🌙 Mode Sombre" : "☀️ Mode Clair (Lumineux)";
+  });
+}
+
+// Initialize theme immediately
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initTheme);
+} else {
+  initTheme();
+}
