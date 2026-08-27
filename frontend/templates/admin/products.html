@@ -49,6 +49,19 @@
           </button>
         </div>
       </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px 10px;font-size:12px;color:var(--text2);flex-wrap:wrap;gap:8px">
+        <div>
+          <span>⌨️ Raccourcis clavier : 
+            <kbd style="background:var(--border);padding:2px 7px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">E</kbd> Modifier &bull; 
+            <kbd style="background:var(--border);padding:2px 7px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">Espace</kbd> ou <kbd style="background:var(--border);padding:2px 7px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">Entrée</kbd> Enregistrer &bull; 
+            <kbd style="background:var(--border);padding:2px 7px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">N</kbd> Nouveau produit &bull; 
+            <kbd style="background:var(--border);padding:2px 7px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">↑ / ↓</kbd> Naviguer
+          </span>
+        </div>
+        <div style="font-size:11px;color:var(--green);font-weight:600">
+          🟢 Multi-connexions PC simultanées actives (Cloud temps réel)
+        </div>
+      </div>
       <div class="table-wrap">
         <table>
           <thead>
@@ -134,10 +147,10 @@
     </div>
     <div id="prod-error" class="error-box" style="display:none"></div>
     <div class="modal-actions" style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;flex-wrap:wrap;gap:8px">
-      <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+      <small style="color:var(--text2)">Raccourcis : <kbd style="background:var(--border);padding:2px 6px;border-radius:4px;color:var(--accent)">Espace / Entrée</kbd> Enregistrer &bull; <kbd style="background:var(--border);padding:2px 6px;border-radius:4px;color:var(--accent)">Échap</kbd> Annuler</small>
       <div style="display:flex;gap:8px">
-        <button type="button" class="btn btn-secondary" style="border:1px solid var(--accent);color:var(--accent);font-weight:600" onclick="generateAndSaveProduct()" title="Si sans code-barres, génère un EAN-13 valide et enregistre">⚡ Générer Barcode & Enregistrer</button>
-        <button class="btn btn-primary" onclick="saveProduct()">Enregistrer</button>
+        <button type="button" class="btn btn-secondary" onclick="closeModal()">Annuler [Échap]</button>
+        <button type="button" class="btn btn-primary" id="btn-save-prod" onclick="saveProduct()" style="font-weight:bold;min-width:140px">💾 Enregistrer [Espace]</button>
       </div>
     </div>
   </div>
@@ -175,7 +188,7 @@
 
 <script src="/static/js/app.js"></script>
 <script>
-let products = [], editId = null, barcodeFilter = "all";
+let products = [], editId = null, barcodeFilter = "all", selectedProductId = null, currentFilteredProducts = [];
 
 async function init(){ 
   products = await api("GET","/api/products") || []; 
@@ -183,9 +196,17 @@ async function init(){
   filterTable(); 
 }
 
+function selectRow(id){
+  selectedProductId = id;
+  renderTable(currentFilteredProducts);
+}
+
 function updateCounts(){
   const total = products.length;
-  const withBc = products.filter(p => p.barcode && p.barcode.trim().length > 0).length;
+  const withBc = products.filter(p => {
+    const bcs = (p.barcodes && p.barcodes.length) ? p.barcodes : (p.barcode ? p.barcode.split(/[,;\s]+/).filter(Boolean) : []);
+    return bcs.length > 0;
+  }).length;
   const withoutBc = total - withBc;
   
   const elAll = document.getElementById("count-all");
@@ -222,11 +243,18 @@ function setBarcodeFilter(mode){
 }
 
 function renderTable(data){
-  if(!data || data.length === 0){
+  currentFilteredProducts = data || [];
+  if(!currentFilteredProducts.length){
     document.getElementById("products-table").innerHTML = `<tr><td colspan="10" style="text-align:center;padding:30px;color:var(--text2)">Aucun produit correspondant au filtre sélectionné.</td></tr>`;
     return;
   }
-  document.getElementById("products-table").innerHTML = data.map(p => {
+  
+  if(!selectedProductId && currentFilteredProducts.length > 0){
+    selectedProductId = currentFilteredProducts[0].id;
+  }
+
+  document.getElementById("products-table").innerHTML = currentFilteredProducts.map(p => {
+    const isSelected = (p.id === selectedProductId);
     const margin = p.purchase_price > 0 ? ((p.sell_price - p.purchase_price) / p.purchase_price * 100).toFixed(1) : "—";
     const buyerVal = p.buyer || "Bilal";
     const buyerBadge = (buyerVal.toLowerCase() === "houari") ?
@@ -238,7 +266,9 @@ function renderTable(data){
       bcs.map(b => `<span style="display:inline-block;margin:1px;color:#10b981;font-weight:bold;font-family:monospace;background:rgba(16,185,129,0.12);padding:2px 6px;border-radius:4px;font-size:11px">🏷️ ${b}</span>`).join(" ") :
       `<span style="color:#f59e0b;font-size:11px;font-weight:600;background:rgba(245,158,11,0.1);padding:2px 6px;border-radius:4px">⚠️ Sans code-barres</span>`;
 
-    return `<tr ondblclick="openEdit(${p.id})" title="💡 Double-cliquez pour modifier ce produit" style="cursor:pointer">
+    const rowStyle = isSelected ? "background:rgba(37,99,235,0.18) !important;outline:2px solid var(--accent);outline-offset:-2px" : "";
+
+    return `<tr onclick="selectRow(${p.id})" ondblclick="openEdit(${p.id})" class="${isSelected ? 'selected-prod-row' : ''}" style="cursor:pointer;${rowStyle}" title="💡 Cliquez pour sélectionner (Touche E pour modifier, Double-clic direct)">
       <td><code>${p.code_article}</code></td>
       <td>${bcDisplay}</td>
       <td><b>${p.name_fr}</b>${p.name_ar ? `<br><small style="color:var(--text2)">${p.name_ar}</small>` : ""}</td>
@@ -249,7 +279,7 @@ function renderTable(data){
       <td style="color:var(--accent);font-weight:700">${fmtDA(p.sell_price)}</td>
       <td class="${p.global_stock_quantity <= p.min_quantity ? "low-stock" : ""}"><b>${p.global_stock_quantity}</b></td>
       <td style="display:flex;gap:6px">
-        <button class="btn btn-secondary" style="padding:4px 8px;font-size:12px" onclick="event.stopPropagation();openEdit(${p.id})">✏️</button>
+        <button class="btn btn-secondary" style="padding:4px 8px;font-size:12px" onclick="event.stopPropagation();openEdit(${p.id})" title="Modifier [Touche E]">✏️</button>
         <button class="btn btn-danger" style="padding:4px 8px;font-size:12px" onclick="event.stopPropagation();deleteProduct(${p.id},'${p.name_fr}')">🗑️</button>
       </td>
     </tr>`;
@@ -573,6 +603,93 @@ async function logout(){
   await api("POST", "/api/auth/logout"); 
   window.location.href = "/"; 
 }
+
+// ── Global Keyboard Shortcuts ──────────────────────────────────────────────
+document.addEventListener("keydown", function(e){
+  const prodModal = document.getElementById("prod-modal");
+  const isProdModalOpen = prodModal && prodModal.classList.contains("open");
+  const jsonModal = document.getElementById("json-modal");
+  const isJsonOpen = jsonModal && jsonModal.classList.contains("open");
+
+  // 1. When MODAL is OPEN:
+  if(isProdModalOpen){
+    // Escape closes modal
+    if(e.key === "Escape"){
+      e.preventDefault();
+      closeModal();
+      return;
+    }
+    
+    // Space or Enter (or Ctrl+Space / Ctrl+Enter) saves when focus is on non-text inputs / buttons / outer modal:
+    if(e.ctrlKey && (e.code === "Space" || e.key === "Enter")){
+      e.preventDefault();
+      saveProduct();
+      return;
+    }
+    
+    if(e.code === "Space" && (e.target.tagName !== "INPUT" && e.target.tagName !== "TEXTAREA" && e.target.tagName !== "SELECT")){
+      e.preventDefault();
+      saveProduct();
+      return;
+    }
+
+    // Enter key inside number inputs or buyer dropdown directly saves:
+    if(e.key === "Enter" && (e.target.type === "number" || e.target.id === "p-buyer" || e.target.id === "p-category")){
+      e.preventDefault();
+      saveProduct();
+      return;
+    }
+    return;
+  }
+
+  if(isJsonOpen){
+    if(e.key === "Escape"){
+      e.preventDefault();
+      closeJsonModal();
+    }
+    return;
+  }
+
+  // 2. When CATALOGUE TABLE is active:
+  const activeTag = document.activeElement ? document.activeElement.tagName : "";
+  const isTyping = (activeTag === "INPUT" || activeTag === "TEXTAREA" || activeTag === "SELECT");
+
+  // Shortcut 'E' or 'e' to Edit selected product:
+  if((e.key === "e" || e.key === "E") && !isTyping && !e.ctrlKey && !e.altKey){
+    e.preventDefault();
+    if(selectedProductId){
+      openEdit(selectedProductId);
+    } else if(currentFilteredProducts && currentFilteredProducts.length > 0){
+      openEdit(currentFilteredProducts[0].id);
+    }
+    return;
+  }
+
+  // Shortcut 'N' or '+' for New Product:
+  if((e.key === "n" || e.key === "N" || e.key === "+") && !isTyping && !e.ctrlKey && !e.altKey){
+    e.preventDefault();
+    openCreate();
+    return;
+  }
+
+  // Arrow navigation:
+  if((e.key === "ArrowDown" || e.key === "ArrowUp") && !isTyping){
+    e.preventDefault();
+    if(!currentFilteredProducts || !currentFilteredProducts.length) return;
+    let currIdx = currentFilteredProducts.findIndex(p => p.id === selectedProductId);
+    if(currIdx === -1) currIdx = 0;
+    if(e.key === "ArrowDown"){
+      currIdx = (currIdx + 1) % currentFilteredProducts.length;
+    } else {
+      currIdx = (currIdx - 1 + currentFilteredProducts.length) % currentFilteredProducts.length;
+    }
+    selectedProductId = currentFilteredProducts[currIdx].id;
+    renderTable(currentFilteredProducts);
+    
+    const selRow = document.querySelector(".selected-prod-row");
+    if(selRow) selRow.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }
+});
 
 init();
 </script>
