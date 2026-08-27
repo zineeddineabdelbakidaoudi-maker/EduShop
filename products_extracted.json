@@ -1,641 +1,5289 @@
 [
   {
-    "code_article": "300A",
-    "name_fr": "BLOUSE GARCONS BLEU 6-8-10-12",
-    "purchase_price": 420.0,
-    "initial_quantity": 800,
+    "code_article": "STYLOMONTEXX-7SOFTCRISTAL",
+    "name_fr": "STYLOMONTEXX-7SOFTCRISTAL",
+    "purchase_price": 22.5,
+    "initial_quantity": 400,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "200A",
-    "name_fr": "BLOUSE FILLES ROSE 6-8-10-12",
-    "purchase_price": 440.0,
-    "initial_quantity": 800,
+    "code_article": "STYLOMONTEXTOWTONEGCRISTAL",
+    "name_fr": "STYLOMONTEXTOWTONEGCRISTAL",
+    "purchase_price": 24.5,
+    "initial_quantity": 500,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "2000",
-    "name_fr": "BLOUSE GARCON BLANC GARCONS SIMPLE 12-14-16",
-    "purchase_price": 330.0,
-    "initial_quantity": 180,
+    "code_article": "STYLOVI0VERTEXV1646",
+    "name_fr": "STYLOVI0VERTEXV1646",
+    "purchase_price": 22.5,
+    "initial_quantity": 200,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "3000",
-    "name_fr": "BLOUSE FILLES BLANC SIMPLE 12-14-16",
-    "purchase_price": 330.0,
-    "initial_quantity": 180,
+    "code_article": "STYLOUNOMAXTRIO-GPSI",
+    "name_fr": "STYLOUNOMAXTRIO-GPSI",
+    "purchase_price": 26.5,
+    "initial_quantity": 300,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "4000",
-    "name_fr": "BLOUSE ROSE FILLES SIMPLE 12-14-16",
-    "purchase_price": 350.0,
-    "initial_quantity": 180,
+    "code_article": "STYLOUNOMAXTRIO-DC",
+    "name_fr": "STYLOUNOMAXTRIO-DC",
+    "purchase_price": 26.5,
+    "initial_quantity": 350,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "5000 BB",
-    "name_fr": "BLOUSE FILLES SIMPEL B 12-14-16",
-    "purchase_price": 380.0,
-    "initial_quantity": 180,
+    "code_article": "STYLOVERTEXDJANETB10V1643",
+    "name_fr": "STYLOVERTEXDJANETB10V1643",
+    "purchase_price": 28.0,
+    "initial_quantity": 100,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "500",
-    "name_fr": "BLOUSE GARCONS BLEU 6-8-10-12 (Stock 0)",
-    "purchase_price": 400.0,
-    "initial_quantity": 0,
+    "code_article": "ART-0007",
+    "name_fr": "STYLOABILLEEVENTI.0MMTECHNO77..",
+    "purchase_price": 22.5,
+    "initial_quantity": 300,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "600",
-    "name_fr": "BLOUSE FILLES ROSE 6-8-10-12 (Stock 0)",
-    "purchase_price": 400.0,
-    "initial_quantity": 0,
+    "code_article": "ART-0008",
+    "name_fr": "STYLOABILLEWOODY1.OMMTECHNO86..",
+    "purchase_price": 42.5,
+    "initial_quantity": 150,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "AD8233",
-    "name_fr": "SAC A DOS GAT AD8233 - CHOROUM",
-    "purchase_price": 1750.0,
-    "initial_quantity": 6,
+    "code_article": "0TECHNO70125",
+    "name_fr": "STYLOBLAK1.0TECHNO70125",
+    "purchase_price": 24.5,
+    "initial_quantity": 200,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "AD20269",
-    "name_fr": "SAC A DOS AD20269 BOUDE - CHOROUM",
-    "purchase_price": 1950.0,
+    "code_article": "ART-0010",
+    "name_fr": "STYLOABILLECOOL1.0MMTECHNO9...",
+    "purchase_price": 24.5,
+    "initial_quantity": 250,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOAGELXO4COLHAUZRTECHNO7714",
+    "name_fr": "STYLOAGELXO4COLHAUZRTECHNO7714",
+    "purchase_price": 47.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0012",
+    "name_fr": "STYLOABILLENCARBONIXHAUSRTECHNO77:",
+    "purchase_price": 42.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0013",
+    "name_fr": "STYLOABILLEBCARBONIXHAUSRTECHNO77:",
+    "purchase_price": 42.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOWOODY4COLHAUSRTECHNO7716",
+    "name_fr": "STYLOWOODY4COLHAUSRTECHNO7716",
+    "purchase_price": 42.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOABILLECLICKERHAUSRTECHNO7741",
+    "name_fr": "STYLOABILLECLICKERHAUSRTECHNO7741",
+    "purchase_price": 55.0,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "0MMPRESENTTECHNO7239",
+    "name_fr": "STYLOXO1.0MMPRESENTTECHNO7239",
+    "purchase_price": 42.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOAGELPEARLZHAUZRTECHNOS284",
+    "name_fr": "STYLOAGELPEARLZHAUZRTECHNOS284",
+    "purchase_price": 42.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOMONTEXMEGASTON",
+    "name_fr": "STYLOMONTEXMEGASTON",
+    "purchase_price": 38.5,
+    "initial_quantity": 100,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOABILLEWOODYHAUSRTECHNO7800",
+    "name_fr": "STYLOABILLEWOODYHAUSRTECHNO7800",
+    "purchase_price": 45.0,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOAGELXO6COLHAUZRTECHNO7715",
+    "name_fr": "STYLOAGELXO6COLHAUZRTECHNO7715",
+    "purchase_price": 47.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "0MM4CLTECKNO8618",
+    "name_fr": "STYLOABILLEGLOW1.0MM4CLTECKNO8618",
+    "purchase_price": 45.0,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0022",
+    "name_fr": "STYLOABILLE0.IORBEXGIANTGI86..",
+    "purchase_price": 18.5,
+    "initial_quantity": 300,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "0MMTECHNO7232",
+    "name_fr": "STYLOABILLEXOROUGE1.0MMTECHNO7232",
+    "purchase_price": 44.8,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "0MMTECHNO7230",
+    "name_fr": "STYLOABILLEXONOIR1.0MMTECHNO7230",
+    "purchase_price": 44.8,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "0MMTECHNO7229",
+    "name_fr": "STYLOABILLEXOBLEU1.0MMTECHNO7229",
+    "purchase_price": 44.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "0MMTECHNO7231",
+    "name_fr": "STYLOABILLEXOVERT1.0MMTECHNO7231",
+    "purchase_price": 44.8,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOUNOMAXTRIO-DC-GP",
+    "name_fr": "STYLOUNOMAXTRIO-DC-GP",
+    "purchase_price": 26.5,
+    "initial_quantity": 300,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "0MMDELIWQ19",
+    "name_fr": "STYLOABILLE1.0MMDELIWQ19",
+    "purchase_price": 24.5,
+    "initial_quantity": 200,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0029",
+    "name_fr": "STYLOTECHNOFOCUS979..",
+    "purchase_price": 24.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLEBUBBLES28PASTLTECHNO7103",
+    "name_fr": "AQUARELLEBUBBLES28PASTLTECHNO7103",
+    "purchase_price": 648.0,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0031",
+    "name_fr": "STYLOEVOLUS1.0MMTECHNO7003...",
+    "purchase_price": 24.5,
+    "initial_quantity": 100,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0032",
+    "name_fr": "STYLOTRIBERGRIP1.0DIGNO049.",
+    "purchase_price": 24.5,
+    "initial_quantity": 200,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOUNOMAXTRITRON",
+    "name_fr": "STYLOUNOMAXTRITRON",
+    "purchase_price": 22.5,
+    "initial_quantity": 300,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOLEADERVERTEXV1644",
+    "name_fr": "STYLOLEADERVERTEXV1644",
+    "purchase_price": 22.5,
+    "initial_quantity": 200,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOUNOMAXTRIO-GRIP",
+    "name_fr": "STYLOUNOMAXTRIO-GRIP",
+    "purchase_price": 26.5,
+    "initial_quantity": 200,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0036",
+    "name_fr": "STYLOUNOMAXTRIO-DC0.7TRIO-DC0.7",
+    "purchase_price": 26.5,
+    "initial_quantity": 250,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOKRISHX7",
+    "name_fr": "STYLOKRISHX7",
+    "purchase_price": 26.5,
+    "initial_quantity": 500,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOX7FANTAISIECOLROSEX7-ROSE",
+    "name_fr": "STYLOX7FANTAISIECOLROSEX7-ROSE",
+    "purchase_price": 28.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOGELDE06COLVERTEXVS1668",
+    "name_fr": "STYLOGELDE06COLVERTEXVS1668",
+    "purchase_price": 215.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "0DIGNOST-0078",
+    "name_fr": "STYLOSELFYMIXCOL1.0DIGNOST-0078",
+    "purchase_price": 26.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOTECHNOMIXFOCUS9795",
+    "name_fr": "STYLOTECHNOMIXFOCUS9795",
+    "purchase_price": 21.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "0ROSETECHNO9937",
+    "name_fr": "STYLOFOCUS1.0ROSETECHNO9937",
+    "purchase_price": 26.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOKRISHWINGBALLPEN",
+    "name_fr": "STYLOKRISHWINGBALLPEN",
+    "purchase_price": 34.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOKRISHGLITTERJARGLIT-JAR2113",
+    "name_fr": "STYLOKRISHGLITTERJARGLIT-JAR2113",
+    "purchase_price": 36.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLODIGNOSELFYDLX",
+    "name_fr": "STYLODIGNOSELFYDLX",
+    "purchase_price": 22.0,
+    "initial_quantity": 150,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0046",
+    "name_fr": "STYLOSELFYDLXDIGNOTT052....",
+    "purchase_price": 22.5,
+    "initial_quantity": 200,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0047",
+    "name_fr": "STYLOSWINGTECHNOB/V/RN496...",
+    "purchase_price": 22.5,
+    "initial_quantity": 150,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0048",
+    "name_fr": "STYLOTRISTARVERSALVR-85..",
+    "purchase_price": 22.5,
+    "initial_quantity": 300,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOPIPEXNOIR/BLEUVERTEXV1679",
+    "name_fr": "STYLOPIPEXNOIR/BLEUVERTEXV1679",
+    "purchase_price": 45.0,
+    "initial_quantity": 100,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "0MMVERTEXVS1683",
+    "name_fr": "STYLOOBG1.0MMVERTEXVS1683",
+    "purchase_price": 45.0,
+    "initial_quantity": 100,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOLUXCHROMA24PCSVERSALVR-923",
+    "name_fr": "STYLOLUXCHROMA24PCSVERSALVR-923",
+    "purchase_price": 45.0,
+    "initial_quantity": 25,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOGELEVERESTEV1006",
+    "name_fr": "STYLOGELEVERESTEV1006",
+    "purchase_price": 115.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOKRISHXDH",
+    "name_fr": "STYLOKRISHXDH",
+    "purchase_price": 27.5,
+    "initial_quantity": 100,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOKRISHGLITTERPOCHI0GLIT-10",
+    "name_fr": "STYLOKRISHGLITTERPOCHI0GLIT-10",
+    "purchase_price": 345.0,
     "initial_quantity": 8,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "1503/1504",
-    "name_fr": "SAC A DOS JB JINGPIN 1503/1504 - CHOROUM",
-    "purchase_price": 750.0,
-    "initial_quantity": 6,
-    "barcode": null,
-    "buyer": "Houari"
-  },
-  {
-    "code_article": "JINXING2075-6",
-    "name_fr": "SAC A DOS JINXING 2056-6 - CHOROUM",
-    "purchase_price": 1450.0,
-    "initial_quantity": 6,
-    "barcode": null,
-    "buyer": "Houari"
-  },
-  {
-    "code_article": "CH01",
-    "name_fr": "CH01 SAC A DOS CLEVER - CHOROUM",
-    "purchase_price": 1350.0,
-    "initial_quantity": 9,
-    "barcode": null,
-    "buyer": "Houari"
-  },
-  {
-    "code_article": "1513-2",
-    "name_fr": "SAC A DOS XINXIN BOSHI 1513-2 - CHOROUM",
-    "purchase_price": 1200.0,
+    "code_article": "STYLOPOCHETTE10PSCMIXTJOYMAT2092",
+    "name_fr": "STYLOPOCHETTE10PSCMIXTJOYMAT2092",
+    "purchase_price": 265.0,
     "initial_quantity": 10,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "ABK64",
-    "name_fr": "SAC A DOS ABK64 - CHOROUM",
-    "purchase_price": 1550.0,
-    "initial_quantity": 4,
+    "code_article": "POCHETTE6PSCMIXSTYLOJOYMAT2115",
+    "name_fr": "POCHETTE6PSCMIXSTYLOJOYMAT2115",
+    "purchase_price": 165.0,
+    "initial_quantity": 24,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BB-08",
-    "name_fr": "SAC A DOS BEBE -08 - CHOROUM",
-    "purchase_price": 1120.0,
-    "initial_quantity": 6,
+    "code_article": "STYLOVERTEXBOITE10V152",
+    "name_fr": "STYLOVERTEXBOITE10V152",
+    "purchase_price": 42.5,
+    "initial_quantity": 200,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "D967/954/979/976/965",
-    "name_fr": "D967/D954/D979/D976/D965/D950 - CHOROUM",
-    "purchase_price": 1900.0,
+    "code_article": "STYLOGEL08COLNY1107",
+    "name_fr": "STYLOGEL08COLNY1107",
+    "purchase_price": 155.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOGELDE12MIXCOLBHM6107-12",
+    "name_fr": "STYLOGELDE12MIXCOLBHM6107-12",
+    "purchase_price": 295.0,
     "initial_quantity": 30,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "817",
-    "name_fr": "SAC A DOS 817 - CHOROUM",
-    "purchase_price": 1100.0,
-    "initial_quantity": 5,
+    "code_article": "STYLOGELDE24MIXCOLBHM6107-24",
+    "name_fr": "STYLOGELDE24MIXCOLBHM6107-24",
+    "purchase_price": 595.0,
+    "initial_quantity": 10,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK80/BK81/BK82",
-    "name_fr": "SAC A DOS BK79/BK80/BK81/BK82 - CHOROUM",
-    "purchase_price": 1100.0,
+    "code_article": "CORECTEURRUBONBHMBH-138",
+    "name_fr": "CORECTEURRUBONBHMBH-138",
+    "purchase_price": 125.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEURARUBAN3MRVERSALVR-202",
+    "name_fr": "CORRECTEURARUBAN3MRVERSALVR-202",
+    "purchase_price": 68.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEUR7MLEXINEIB55009",
+    "name_fr": "CORRECTEUR7MLEXINEIB55009",
+    "purchase_price": 39.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEUR7MLEVERESTEV1002",
+    "name_fr": "CORRECTEUR7MLEVERESTEV1002",
+    "purchase_price": 39.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEUR7MLEVERESTEV1004",
+    "name_fr": "CORRECTEUR7MLEVERESTEV1004",
+    "purchase_price": 39.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEUR7MLEVERESTEV1005",
+    "name_fr": "CORRECTEUR7MLEVERESTEV1005",
+    "purchase_price": 39.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEUR7MLEVERESTEV1007",
+    "name_fr": "CORRECTEUR7MLEVERESTEV1007",
+    "purchase_price": 39.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEURSTYLO10MLPR24DELIA562",
+    "name_fr": "CORRECTEURSTYLO10MLPR24DELIA562",
+    "purchase_price": 105.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEURBLANC7MLYAPYA11006",
+    "name_fr": "CORRECTEURBLANC7MLYAPYA11006",
+    "purchase_price": 39.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEURBLANC7MLYAPYA11003",
+    "name_fr": "CORRECTEURBLANC7MLYAPYA11003",
+    "purchase_price": 39.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORECTEURETETEMETTECHNO3630",
+    "name_fr": "CORECTEURETETEMETTECHNO3630",
+    "purchase_price": 59.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEURTETMETTECHNO3631",
+    "name_fr": "CORRECTEURTETMETTECHNO3631",
+    "purchase_price": 59.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORECTEURFLACON10MLTECHNO6848",
+    "name_fr": "CORECTEURFLACON10MLTECHNO6848",
+    "purchase_price": 105.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRETEURSTYLO12MLDELIH10490",
+    "name_fr": "CORRETEURSTYLO12MLDELIH10490",
+    "purchase_price": 125.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEUR7MLVERTEXVS1210",
+    "name_fr": "CORRECTEUR7MLVERTEXVS1210",
+    "purchase_price": 45.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTOUR12MLVERTEXVS1256",
+    "name_fr": "CORRECTOUR12MLVERTEXVS1256",
+    "purchase_price": 85.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTOUR7MLVERTEXVS1262",
+    "name_fr": "CORRECTOUR7MLVERTEXVS1262",
+    "purchase_price": 85.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEUR5MLGIANTG1116",
+    "name_fr": "CORRECTEUR5MLGIANTG1116",
+    "purchase_price": 35.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEURTETEMET7MLTECKNO8448",
+    "name_fr": "CORRECTEURTETEMET7MLTECKNO8448",
+    "purchase_price": 59.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEUR7MLVERTEXVS1212",
+    "name_fr": "CORRECTEUR7MLVERTEXVS1212",
+    "purchase_price": 45.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEUR7MLVERTEXVS1215",
+    "name_fr": "CORRECTEUR7MLVERTEXVS1215",
+    "purchase_price": 45.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTOUR7MLVERTEXVS1259",
+    "name_fr": "CORRECTOUR7MLVERTEXVS1259",
+    "purchase_price": 55.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTOUR7MLVERTEXVS1263",
+    "name_fr": "CORRECTOUR7MLVERTEXVS1263",
+    "purchase_price": 55.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTOUR7MLVERTEXVS1260",
+    "name_fr": "CORRECTOUR7MLVERTEXVS1260",
+    "purchase_price": 55.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTOUR7MLVERTEXVS1260-2",
+    "name_fr": "CORRECTOUR7MLVERTEXVS1260",
+    "purchase_price": 55.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEUR2MLGIANTG1122",
+    "name_fr": "CORRECTEUR2MLGIANTG1122",
+    "purchase_price": 29.5,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEUR7MLVERTEXV1203",
+    "name_fr": "CORRECTEUR7MLVERTEXV1203",
+    "purchase_price": 52.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTOUR7MLVERTEXVS1254",
+    "name_fr": "CORRECTOUR7MLVERTEXVS1254",
+    "purchase_price": 52.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEUR7MLVERTEXVS1200",
+    "name_fr": "CORRECTEUR7MLVERTEXVS1200",
+    "purchase_price": 45.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CORRECTEUR7MLVERTEXVS1201",
+    "name_fr": "CORRECTEUR7MLVERTEXVS1201",
+    "purchase_price": 45.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CARTOUCHSTYLOAPLUME06VETEEXVS1690",
+    "name_fr": "CARTOUCHSTYLOAPLUME06VETEEXVS1690",
+    "purchase_price": 35.0,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "2012FSAMB2109",
+    "name_fr": "PAPIERBUVERD14*2012FSAMB2109",
+    "purchase_price": 38.5,
+    "initial_quantity": 25,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CARTOUCHEMAGICS-APB20VERTEXVS5858",
+    "name_fr": "CARTOUCHEMAGICS-APB20VERTEXVS5858",
+    "purchase_price": 125.0,
     "initial_quantity": 20,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK57",
-    "name_fr": "SAC A DOS BK57 - CHOROUM",
-    "purchase_price": 680.0,
-    "initial_quantity": 8,
+    "code_article": "STYLOAPLUMEEFASABLEB24VERTEXVS1695",
+    "name_fr": "STYLOAPLUMEEFASABLEB24VERTEXVS1695",
+    "purchase_price": 165.0,
+    "initial_quantity": 24,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "12A",
-    "name_fr": "SAC A DOS/16MOTIFES 12A - CHOROUM",
-    "purchase_price": 980.0,
-    "initial_quantity": 15,
+    "code_article": "STYLOAPLUMEEFASABLEB24VERTEXVS1696",
+    "name_fr": "STYLOAPLUMEEFASABLEB24VERTEXVS1696",
+    "purchase_price": 145.0,
+    "initial_quantity": 24,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "13002",
-    "name_fr": "13002 SAC A DOS/1101-3 - CHOROUM",
-    "purchase_price": 850.0,
-    "initial_quantity": 8,
+    "code_article": "STYLOAPLUMEEFASABLEB24VERTEXVS1698",
+    "name_fr": "STYLOAPLUMEEFASABLEB24VERTEXVS1698",
+    "purchase_price": 135.0,
+    "initial_quantity": 24,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "011MK",
-    "name_fr": "SAC A DOS 011MK - CHOROUM",
-    "purchase_price": 600.0,
-    "initial_quantity": 4,
+    "code_article": "COLLESTICK21GTECHNO5875",
+    "name_fr": "COLLESTICK21GTECHNO5875",
+    "purchase_price": 92.5,
+    "initial_quantity": 48,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "NBS13C",
-    "name_fr": "SAC A DOS NBS13C - CHOROUM",
-    "purchase_price": 1100.0,
-    "initial_quantity": 6,
+    "code_article": "COLLESTICK8GTECHNO5874",
+    "name_fr": "COLLESTICK8GTECHNO5874",
+    "purchase_price": 55.0,
+    "initial_quantity": 96,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "HSB2342/2343/2345",
-    "name_fr": "SAC A DOS NBS GM HSB2342/2343/2345 - CHOROUM",
-    "purchase_price": 1600.0,
-    "initial_quantity": 8,
+    "code_article": "COLLESTICK09GEXINEIS13206",
+    "name_fr": "COLLESTICK09GEXINEIS13206",
+    "purchase_price": 32.5,
+    "initial_quantity": 48,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK55",
-    "name_fr": "SAC A DOS BK55 - CHOROUM",
-    "purchase_price": 950.0,
-    "initial_quantity": 5,
+    "code_article": "COLLESTICKTRANASP15GGIANTG2445",
+    "name_fr": "COLLESTICKTRANASP15GGIANTG2445",
+    "purchase_price": 87.5,
+    "initial_quantity": 40,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "T6172/6157",
-    "name_fr": "SAC A DOS T6172 - CHOROUM",
-    "purchase_price": 850.0,
-    "initial_quantity": 14,
+    "code_article": "COLLESTICKTRANASP9GGIANTG2444",
+    "name_fr": "COLLESTICKTRANASP9GGIANTG2444",
+    "purchase_price": 57.5,
+    "initial_quantity": 48,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "1333-2010",
-    "name_fr": "1333-2010 SAC A DOS BAIDA - CHOROUM",
-    "purchase_price": 1100.0,
-    "initial_quantity": 5,
-    "barcode": null,
-    "buyer": "Houari"
-  },
-  {
-    "code_article": "1868",
-    "name_fr": "SAC A DOS 1868 - CHOROUM",
-    "purchase_price": 700.0,
-    "initial_quantity": 8,
-    "barcode": null,
-    "buyer": "Houari"
-  },
-  {
-    "code_article": "SL01",
-    "name_fr": "SL01 SAC A DOS LOCAL WAIL BAG - CHOROUM",
-    "purchase_price": 1550.0,
-    "initial_quantity": 9,
-    "barcode": null,
-    "buyer": "Houari"
-  },
-  {
-    "code_article": "2074-1/2074-5",
-    "name_fr": "SAC A DOS 2074-1/2074-5 - CHOROUM",
-    "purchase_price": 1250.0,
+    "code_article": "COLLESTICK36GVERTEXV1208",
+    "name_fr": "COLLESTICK36GVERTEXV1208",
+    "purchase_price": 85.0,
     "initial_quantity": 12,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK59/BK60/BK61/BK62",
-    "name_fr": "SAC A DOS BK59/BK60/BK61/BK62 - CHOROUM",
-    "purchase_price": 1850.0,
-    "initial_quantity": 13,
+    "code_article": "COLLESTICKVERTEX15GV1206",
+    "name_fr": "COLLESTICKVERTEX15GV1206",
+    "purchase_price": 47.5,
+    "initial_quantity": 24,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK64/BK65/BK66",
-    "name_fr": "SAC A DOS BK64/BK65/BK66 - CHOROUM",
-    "purchase_price": 1950.0,
-    "initial_quantity": 7,
+    "code_article": "COLLESTICKVERTEX8GV1205",
+    "name_fr": "COLLESTICKVERTEX8GV1205",
+    "purchase_price": 37.5,
+    "initial_quantity": 24,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "CH021",
-    "name_fr": "CH21/CH27/CH26/CH24/CH25/CH30/CH22/CH29/CH32/CH31/CH28 SAC A DOS CLEVER - CHOROUM",
-    "purchase_price": 1750.0,
-    "initial_quantity": 30,
+    "code_article": "COLLESTICK21GVERTEXV1207",
+    "name_fr": "COLLESTICK21GVERTEXV1207",
+    "purchase_price": 65.0,
+    "initial_quantity": 24,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK32",
-    "name_fr": "SAC A DOS BK32 - CHOROUM",
-    "purchase_price": 1650.0,
-    "initial_quantity": 10,
+    "code_article": "COLLESTICK2IGEVERESTEV9021",
+    "name_fr": "COLLESTICK2IGEVERESTEV9021",
+    "purchase_price": 47.5,
+    "initial_quantity": 24,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "CH48/CH49/CH50/CH51",
-    "name_fr": "CH48/CH49/CH50/CH51 SAC A DOS CLEVER - CHOROUM",
-    "purchase_price": 2250.0,
-    "initial_quantity": 8,
+    "code_article": "COLLESTICK08GVERSALVR-113013",
+    "name_fr": "COLLESTICK08GVERSALVR-113013",
+    "purchase_price": 33.5,
+    "initial_quantity": 48,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK30/BK35",
-    "name_fr": "SAC A DOS BK30/BK35 - CHOROUM",
-    "purchase_price": 1650.0,
+    "code_article": "COLLESTICK36GEVERESTEV9036",
+    "name_fr": "COLLESTICK36GEVERESTEV9036",
+    "purchase_price": 67.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLESTICK15GEVERESTEV9015",
+    "name_fr": "COLLESTICK15GEVERESTEV9015",
+    "purchase_price": 37.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLESTICK9GEVERESTEV9009",
+    "name_fr": "COLLESTICK9GEVERESTEV9009",
+    "purchase_price": 29.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLESTICK36GREXINEIS13208",
+    "name_fr": "COLLESTICK36GREXINEIS13208",
+    "purchase_price": 72.5,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLESTICK15GREXINEIS13207",
+    "name_fr": "COLLESTICK15GREXINEIS13207",
+    "purchase_price": 45.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLESTICK2IGREXINEIS13209",
+    "name_fr": "COLLESTICK2IGREXINEIS13209",
+    "purchase_price": 52.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0114",
+    "name_fr": "COLLESTICK9GRNAS02.001",
+    "purchase_price": 28.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLESTICK9GRNY9009",
+    "name_fr": "COLLESTICK9GRNY9009",
+    "purchase_price": 27.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0116",
+    "name_fr": "COLLESTICK15GRNAS02.002",
+    "purchase_price": 38.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLESTICK21GVERTEXVS0342",
+    "name_fr": "COLLESTICK21GVERTEXVS0342",
+    "purchase_price": 118.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COULEURDE12GMBRILLANTDELIECI25-12",
+    "name_fr": "COULEURDE12GMBRILLANTDELIECI25-12",
+    "purchase_price": 175.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYOCOLMAXDE06EFFACVERTEXVS4101",
+    "name_fr": "CRAYOCOLMAXDE06EFFACVERTEXVS4101",
+    "purchase_price": 72.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COULEURDE12GMDELIEC130-12",
+    "name_fr": "COULEURDE12GMDELIEC130-12",
+    "purchase_price": 205.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COULEURDE12GMPATROLDELIEC116-12",
+    "name_fr": "COULEURDE12GMPATROLDELIEC116-12",
+    "purchase_price": 265.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COULEURDE12GMLARVADELIEC115-12",
+    "name_fr": "COULEURDE12GMLARVADELIEC115-12",
+    "purchase_price": 265.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONDE12EFFACVERTEXVS4102",
+    "name_fr": "CRAYONDE12EFFACVERTEXVS4102",
+    "purchase_price": 145.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONDE12GMEFFACVERTEXVS4103",
+    "name_fr": "CRAYONDE12GMEFFACVERTEXVS4103",
+    "purchase_price": 275.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLORDEMAX24GMDTETE12PCSVS4108",
+    "name_fr": "COLORDEMAX24GMDTETE12PCSVS4108",
+    "purchase_price": 715.0,
+    "initial_quantity": 5,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLORDEMAX12GMPROVERETEXVS4130",
+    "name_fr": "COLORDEMAX12GMPROVERETEXVS4130",
+    "purchase_price": 480.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLORMAXDE12GMPROVERTEXVS0485",
+    "name_fr": "COLORMAXDE12GMPROVERTEXVS0485",
+    "purchase_price": 385.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONCOULEURBLACK12PMTECHNO7318",
+    "name_fr": "CRAYONCOULEURBLACK12PMTECHNO7318",
+    "purchase_price": 215.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONCOUL12TRINOTECHNO5295",
+    "name_fr": "CRAYONCOUL12TRINOTECHNO5295",
+    "purchase_price": 255.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COULEURDE12GMDELIEC120-12",
+    "name_fr": "COULEURDE12GMDELIEC120-12",
+    "purchase_price": 365.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONCOUL12MINITRINOTECHNO5294",
+    "name_fr": "CRAYONCOUL12MINITRINOTECHNO5294",
+    "purchase_price": 135.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONCOUL06TRINOTECHNO5292",
+    "name_fr": "CRAYONCOUL06TRINOTECHNO5292",
+    "purchase_price": 67.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLETRANSPARENTE50MLEVERESTEV9016",
+    "name_fr": "COLLETRANSPARENTE50MLEVERESTEV9016",
+    "purchase_price": 65.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLETRANSPARENTEEVERESTEV9005",
+    "name_fr": "COLLETRANSPARENTEEVERESTEV9005",
+    "purchase_price": 37.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLELIQUID30MLB24VERTEXVS2503",
+    "name_fr": "COLLELIQUID30MLB24VERTEXVS2503",
+    "purchase_price": 75.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLELIQUID50MLB24VERTEXVS2504",
+    "name_fr": "COLLELIQUID50MLB24VERTEXVS2504",
+    "purchase_price": 95.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLEECOLIERTRANSP30MLDELIA523",
+    "name_fr": "COLLEECOLIERTRANSP30MLDELIA523",
+    "purchase_price": 57.5,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLESTICKFRUIT8GVERTEXVS0349",
+    "name_fr": "COLLESTICKFRUIT8GVERTEXVS0349",
+    "purchase_price": 65.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "2IGVERTEXVS0350",
+    "name_fr": "COLLESTICK 2IGVERTEXVS0350",
+    "purchase_price": 105.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLESTICKACRDELIA211",
+    "name_fr": "COLLESTICKACRDELIA211",
+    "purchase_price": 58.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLELIQUID50ML12PCSVERTEXVS0351",
+    "name_fr": "COLLELIQUID50ML12PCSVERTEXVS0351",
+    "purchase_price": 85.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "K25GVERTEXVS2500",
+    "name_fr": "COLLESTICK K25GVERTEXVS2500",
+    "purchase_price": 155.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLESTICKFANTASIE15GEVERESTEV9018",
+    "name_fr": "COLLESTICKFANTASIE15GEVERESTEV9018",
+    "purchase_price": 55.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLESTICK15GRNY9015",
+    "name_fr": "COLLESTICK15GRNY9015",
+    "purchase_price": 37.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLESTICK8GDELINS144",
+    "name_fr": "COLLESTICK8GDELINS144",
+    "purchase_price": 105.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLE35MLVERTEXVS0346",
+    "name_fr": "COLLE35MLVERTEXVS0346",
+    "purchase_price": 85.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLESTICKFANTASIE08GEVERESTEV9019",
+    "name_fr": "COLLESTICKFANTASIE08GEVERESTEV9019",
+    "purchase_price": 45.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLELIQID30MLVERTEXVS0347",
+    "name_fr": "COLLELIQID30MLVERTEXVS0347",
+    "purchase_price": 55.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLLELIQUID50MLBI2VERTEXVS0348",
+    "name_fr": "COLLELIQUID50MLBI2VERTEXVS0348",
+    "purchase_price": 85.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONCOUL12GMTRINGGAINTG2422",
+    "name_fr": "CRAYONCOUL12GMTRINGGAINTG2422",
+    "purchase_price": 135.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CLORMAXCIREDE12VERTEXVS0448",
+    "name_fr": "CLORMAXCIREDE12VERTEXVS0448",
+    "purchase_price": 145.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONCOUL6PMTRINGGAINTG2424",
+    "name_fr": "CRAYONCOUL6PMTRINGGAINTG2424",
+    "purchase_price": 45.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLORSTICK12VETREXVS0482",
+    "name_fr": "COLORSTICK12VETREXVS0482",
+    "purchase_price": 555.0,
+    "initial_quantity": 4,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLORSTICK12VETREXVS0481",
+    "name_fr": "COLORSTICK12VETREXVS0481",
+    "purchase_price": 455.0,
     "initial_quantity": 6,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK30/BK35-2",
-    "name_fr": "SAC A DOS BK30/BK35 - CHOROUM (Lot 2)",
-    "purchase_price": 1650.0,
-    "initial_quantity": 10,
+    "code_article": "CRAYONCOLULEURDE12GMEV1512L",
+    "name_fr": "CRAYONCOLULEURDE12GMEV1512L",
+    "purchase_price": 115.0,
+    "initial_quantity": 36,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK20/BK21/BK22/BK24-1",
-    "name_fr": "SAC A DOS BK20/BK21/BK22/BK23/BK24 - CHOROUM (11p)",
-    "purchase_price": 1700.0,
-    "initial_quantity": 11,
+    "code_article": "CRAYONCOUL12PMTRINGGAINTG2423",
+    "name_fr": "CRAYONCOUL12PMTRINGGAINTG2423",
+    "purchase_price": 85.0,
+    "initial_quantity": 24,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK20/BK21/BK22/BK24-2",
-    "name_fr": "SAC A DOS BK20/BK21/BK22/BK23/BK24 - CHOROUM (7p)",
-    "purchase_price": 1700.0,
-    "initial_quantity": 7,
+    "code_article": "COLORDEMAX12GMOILVS4110",
+    "name_fr": "COLORDEMAX12GMOILVS4110",
+    "purchase_price": 235.0,
+    "initial_quantity": 12,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK19",
-    "name_fr": "SAC A DOS BK19 - CHOROUM",
-    "purchase_price": 1600.0,
-    "initial_quantity": 10,
+    "code_article": "CRAYONCOLULEURDE12PMEV1512",
+    "name_fr": "CRAYONCOLULEURDE12PMEV1512",
+    "purchase_price": 65.0,
+    "initial_quantity": 36,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK20/BK21/BK22/BK24-3",
-    "name_fr": "SAC A DOS BK20/BK21/BK22/BK23/BK24 - CHOROUM (8p)",
-    "purchase_price": 1700.0,
-    "initial_quantity": 8,
+    "code_article": "CRAYONCOLDE06PMEVERESTEV1506",
+    "name_fr": "CRAYONCOLDE06PMEVERESTEV1506",
+    "purchase_price": 35.0,
+    "initial_quantity": 72,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "H-38/H-37",
-    "name_fr": "H-38/H-37 SAC A DOS - CHOROUM",
-    "purchase_price": 1800.0,
-    "initial_quantity": 9,
+    "code_article": "COULEURDE12GMJUNGOODELIEC121-12",
+    "name_fr": "COULEURDE12GMJUNGOODELIEC121-12",
+    "purchase_price": 225.0,
+    "initial_quantity": 12,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "N10/TBE",
-    "name_fr": "SAC A DOS TAOBEIER N10 - CHOROUM",
-    "purchase_price": 1850.0,
-    "initial_quantity": 9,
+    "code_article": "COULEURDE12GMWINGEFFACDELIEC126-12",
+    "name_fr": "COULEURDE12GMWINGEFFACDELIEC126-12",
+    "purchase_price": 210.0,
+    "initial_quantity": 12,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "N42/1239",
-    "name_fr": "SAC A DOS N42/1239 - CHOROUM",
-    "purchase_price": 2100.0,
+    "code_article": "CRAYONDECLRDE12DOUBLETETVERTEX",
+    "name_fr": "CRAYONDECLRDE12DOUBLETETVERTEX",
+    "purchase_price": 315.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONDECLR12LONGVERTEXVS0403",
+    "name_fr": "CRAYONDECLR12LONGVERTEXVS0403",
+    "purchase_price": 255.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLOR12GMPOCH-PLASTVETREXVS0464",
+    "name_fr": "COLOR12GMPOCH-PLASTVETREXVS0464",
+    "purchase_price": 320.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLORMAXDE06GM2TETEVERTEXVS0472",
+    "name_fr": "COLORMAXDE06GM2TETEVERTEXVS0472",
+    "purchase_price": 155.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLEUREMAXCLR06GMVERTEXVS0471",
+    "name_fr": "COLEUREMAXCLR06GMVERTEXVS0471",
+    "purchase_price": 135.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLOR12POCH-PLASTVETREXVS0463",
+    "name_fr": "COLOR12POCH-PLASTVETREXVS0463",
+    "purchase_price": 185.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONDECLRDE6PMVERTEXVS0401",
+    "name_fr": "CRAYONDECLRDE6PMVERTEXVS0401",
+    "purchase_price": 67.5,
+    "initial_quantity": 96,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONDECLR12PMVERTEXVS0402",
+    "name_fr": "CRAYONDECLR12PMVERTEXVS0402",
+    "purchase_price": 135.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COULEURDE12GMRONDEFFACEXINEIS0007",
+    "name_fr": "COULEURDE12GMRONDEFFACEXINEIS0007",
+    "purchase_price": 225.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COULEURDE12PMRONDEFFACEXINEIS0006",
+    "name_fr": "COULEURDE12PMRONDEFFACEXINEIS0006",
+    "purchase_price": 155.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONCOLUEFFACPOT24EVERESTEV1520",
+    "name_fr": "CRAYONCOLUEFFACPOT24EVERESTEV1520",
+    "purchase_price": 450.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONDECOLORMAXPLASTIQDE12PMVER",
+    "name_fr": "CRAYONDECOLORMAXPLASTIQDE12PMVER",
+    "purchase_price": 276.0,
+    "initial_quantity": 27,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLORMAXCLRDE12PMTUBVERTEXVS0498",
+    "name_fr": "COLORMAXCLRDE12PMTUBVERTEXVS0498",
+    "purchase_price": 165.0,
+    "initial_quantity": 27,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONDE24EFFACTUBVERTEXVS0446",
+    "name_fr": "CRAYONDE24EFFACTUBVERTEXVS0446",
+    "purchase_price": 525.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLEURDE12WMINIRONDETECHNO7313",
+    "name_fr": "COLEURDE12WMINIRONDETECHNO7313",
+    "purchase_price": 210.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TCGAINTG2426",
+    "name_fr": "CRAYONCOUL12GMROND+TCGAINTG2426",
+    "purchase_price": 195.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TCGAINTG2425",
+    "name_fr": "CRAYONCOUL12PMROND+TCGAINTG2425",
+    "purchase_price": 145.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PANDADE06NY0323",
+    "name_fr": "PANDADE06NY0323",
+    "purchase_price": 165.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PANDADE12NY0322",
+    "name_fr": "PANDADE12NY0322",
+    "purchase_price": 245.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOUACHECREX06C9MLB24VERTEXVS4827",
+    "name_fr": "GOUACHECREX06C9MLB24VERTEXVS4827",
+    "purchase_price": 205.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOUACHECREX12C9MLB12VERTEXVS4828",
+    "name_fr": "GOUACHECREX12C9MLB12VERTEXVS4828",
+    "purchase_price": 275.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ACRYLICDE063MLFLACVERTEXVS4823",
+    "name_fr": "ACRYLICDE063MLFLACVERTEXVS4823",
+    "purchase_price": 485.0,
     "initial_quantity": 6,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK17-3/BK18-3-1",
-    "name_fr": "SAC A DOS BK17-3/BK18-3 - CHOROUM (2p)",
-    "purchase_price": 1850.0,
+    "code_article": "ACRYLICDE063MLFLACVERTEXVS4821",
+    "name_fr": "ACRYLICDE063MLFLACVERTEXVS4821",
+    "purchase_price": 125.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLOR12PMRONDVETREXVS0454",
+    "name_fr": "COLOR12PMRONDVETREXVS0454",
+    "purchase_price": 175.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COULEURDE48GMEFFACDELI7073-48",
+    "name_fr": "COULEURDE48GMEFFACDELI7073-48",
+    "purchase_price": 995.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COULEURDE36GMEFFACDELI7073-36",
+    "name_fr": "COULEURDE36GMEFFACDELI7073-36",
+    "purchase_price": 745.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COULEURDE24GMEFFACROND7073-24",
+    "name_fr": "COULEURDE24GMEFFACROND7073-24",
+    "purchase_price": 535.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COULEURDE12GMEFFACROND7073-12",
+    "name_fr": "COULEURDE12GMEFFACROND7073-12",
+    "purchase_price": 295.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COULEURDE12PMRONDECOEXINEIS0010",
+    "name_fr": "COULEURDE12PMRONDECOEXINEIS0010",
+    "purchase_price": 155.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COULEURDE06PMRONDEFFACEXINEIS0009",
+    "name_fr": "COULEURDE06PMRONDEFFACEXINEIS0009",
+    "purchase_price": 105.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOUCHEACRYLIC12MLFLACVERTEXVS4817",
+    "name_fr": "GOUCHEACRYLIC12MLFLACVERTEXVS4817",
+    "purchase_price": 745.0,
+    "initial_quantity": 4,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOUACHEERTHYDE12VERTEXVS4824",
+    "name_fr": "GOUACHEERTHYDE12VERTEXVS4824",
+    "purchase_price": 755.0,
+    "initial_quantity": 4,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOUCHEACRYLIC12MLFLACVERTEXVS4815",
+    "name_fr": "GOUCHEACRYLIC12MLFLACVERTEXVS4815",
+    "purchase_price": 745.0,
+    "initial_quantity": 4,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLORMAXCLRDE12GMTUBVERTEXVS0490",
+    "name_fr": "COLORMAXCLRDE12GMTUBVERTEXVS0490",
+    "purchase_price": 325.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLORMAXCLRDE24GMTUBVERTEXVS0491",
+    "name_fr": "COLORMAXCLRDE24GMTUBVERTEXVS0491",
+    "purchase_price": 590.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COLORMAXCLRDE12PMTUBVERTEXVS0489",
+    "name_fr": "COLORMAXCLRDE12PMTUBVERTEXVS0489",
+    "purchase_price": 195.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTREDE06COLB24VERTEXVS4905",
+    "name_fr": "FEUTREDE06COLB24VERTEXVS4905",
+    "purchase_price": 175.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTREDE122COLB12VERTEXVS4906",
+    "name_fr": "FEUTREDE122COLB12VERTEXVS4906",
+    "purchase_price": 325.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTRDE12MINIVERTEXVS4911",
+    "name_fr": "FEUTRDE12MINIVERTEXVS4911",
+    "purchase_price": 385.0,
+    "initial_quantity": 9,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTREDE12GEANTVERTEXVS4920",
+    "name_fr": "FEUTREDE12GEANTVERTEXVS4920",
+    "purchase_price": 515.0,
+    "initial_quantity": 5,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTREFANTAISIERDE12BHM2669-12",
+    "name_fr": "FEUTREFANTAISIERDE12BHM2669-12",
+    "purchase_price": 550.0,
+    "initial_quantity": 4,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PINCEAUXCOLEURPAQ12EVERESTEV1144",
+    "name_fr": "PINCEAUXCOLEURPAQ12EVERESTEV1144",
+    "purchase_price": 185.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PINCEAUX12PCSVERSALVR-108005",
+    "name_fr": "PINCEAUX12PCSVERSALVR-108005",
+    "purchase_price": 335.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOUACHEPINTUREVERESTEV1137",
+    "name_fr": "GOUACHEPINTUREVERESTEV1137",
+    "purchase_price": 225.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PEINTUREGOUACHE06EVERESTEV1142",
+    "name_fr": "PEINTUREGOUACHE06EVERESTEV1142",
+    "purchase_price": 115.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLENOIRDE12EXINEIS0017",
+    "name_fr": "AQUARELLENOIRDE12EXINEIS0017",
+    "purchase_price": 155.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLENOIRDE16EXINEIS0016",
+    "name_fr": "AQUARELLENOIRDE16EXINEIS0016",
+    "purchase_price": 175.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLEDE08PRESEVERESTEV1130",
+    "name_fr": "AQUARELLEDE08PRESEVERESTEV1130",
+    "purchase_price": 85.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLEDE08EVERESTEV1138",
+    "name_fr": "AQUARELLEDE08EVERESTEV1138",
+    "purchase_price": 125.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLE12PRESERERESTEV1131",
+    "name_fr": "AQUARELLE12PRESERERESTEV1131",
+    "purchase_price": 125.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLE16PRESERERESTEV1132",
+    "name_fr": "AQUARELLE16PRESERERESTEV1132",
+    "purchase_price": 165.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLENOIRDE08EXINEIS0015",
+    "name_fr": "AQUARELLENOIRDE08EXINEIS0015",
+    "purchase_price": 125.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLEDE08VERSALVR-2508",
+    "name_fr": "AQUARELLEDE08VERSALVR-2508",
+    "purchase_price": 115.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLEDE16VERSALVR-2516",
+    "name_fr": "AQUARELLEDE16VERSALVR-2516",
+    "purchase_price": 165.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "MARQUEURSKETCH2TETBTE80DELI70803-80",
+    "name_fr": "MARQUEURSKETCH2TETBTE80DELI70803-80",
+    "purchase_price": 4250.0,
+    "initial_quantity": 1,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "MARQUEURSKETCH2TETBTE40DELINS736-40",
+    "name_fr": "MARQUEURSKETCH2TETBTE40DELINS736-40",
+    "purchase_price": 3995.0,
+    "initial_quantity": 1,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTRESCWASHABLE12CWOWDELIC165-12",
+    "name_fr": "FEUTRESCWASHABLE12CWOWDELIC165-12",
+    "purchase_price": 195.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTREECOLIERDE12PVCVERSALVR-30713",
+    "name_fr": "FEUTREECOLIERDE12PVCVERSALVR-30713",
+    "purchase_price": 145.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTREECOLIERDE06PVCVERSALVR-30706",
+    "name_fr": "FEUTREECOLIERDE06PVCVERSALVR-30706",
+    "purchase_price": 75.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTREDE06ECOEASYEXINEIS0025",
+    "name_fr": "FEUTREDE06ECOEASYEXINEIS0025",
+    "purchase_price": 125.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTREDE12ECOEASYEXINEIS0026",
+    "name_fr": "FEUTREDE12ECOEASYEXINEIS0026",
+    "purchase_price": 195.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTREDE12COULNY0812",
+    "name_fr": "FEUTREDE12COULNY0812",
+    "purchase_price": 155.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTREDE06COULNY0806",
+    "name_fr": "FEUTREDE06COULNY0806",
+    "purchase_price": 85.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTREDE06VERTEXVS4901",
+    "name_fr": "FEUTREDE06VERTEXVS4901",
+    "purchase_price": 150.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTRECOLEURDE06TECHNO6976T",
+    "name_fr": "FEUTRECOLEURDE06TECHNO6976T",
+    "purchase_price": 145.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTRECOLEURDE12TECHNO6977",
+    "name_fr": "FEUTRECOLEURDE12TECHNO6977",
+    "purchase_price": 255.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASSCOLVERTEXB12VS2119",
+    "name_fr": "COMPASSCOLVERTEXB12VS2119",
+    "purchase_price": 385.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLE18PRESERERESTEV1140",
+    "name_fr": "AQUARELLE18PRESERERESTEV1140",
+    "purchase_price": 345.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLEDE12VERTEXVS4820",
+    "name_fr": "AQUARELLEDE12VERTEXVS4820",
+    "purchase_price": 227.5,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLEDE12VERSALVR-2512",
+    "name_fr": "AQUARELLEDE12VERSALVR-2512",
+    "purchase_price": 145.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLEDE12VERTEXVS4804",
+    "name_fr": "AQUARELLEDE12VERTEXVS4804",
+    "purchase_price": 325.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTREDE06COLEURVERTEXVS4913",
+    "name_fr": "FEUTREDE06COLEURVERTEXVS4913",
+    "purchase_price": 225.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "EXINES01307",
+    "name_fr": "FEUTEDE06*ECOEASY*EXINES01307",
+    "purchase_price": 85.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "EXINES01308",
+    "name_fr": "FEUTEDE06*ECOEASY*EXINES01308",
+    "purchase_price": 155.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTREDE06COLB24VERTEXVS4907",
+    "name_fr": "FEUTREDE06COLB24VERTEXVS4907",
+    "purchase_price": 155.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTREDE12COLB12VERTEXVS4908",
+    "name_fr": "FEUTREDE12COLB12VERTEXVS4908",
+    "purchase_price": 325.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTREDE12COLVERTEXVS4919",
+    "name_fr": "FEUTREDE12COLVERTEXVS4919",
+    "purchase_price": 325.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "MARQUEURSKETCH2TETDELHM106-24",
+    "name_fr": "MARQUEURSKETCH2TETDELHM106-24",
+    "purchase_price": 1250.0,
     "initial_quantity": 2,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "CH05...CH15-1",
-    "name_fr": "CH05/CH16/CH12/CH11/CH13/CH10/CH08/CH14/CH09/CH SAC ADOS CLEVER - CHOROUM (8p)",
-    "purchase_price": 1750.0,
-    "initial_quantity": 8,
-    "barcode": null,
-    "buyer": "Houari"
-  },
-  {
-    "code_article": "BK17/BK18",
-    "name_fr": "SAC A DOS BK17/BK18 - CHOROUM",
-    "purchase_price": 1650.0,
-    "initial_quantity": 10,
-    "barcode": null,
-    "buyer": "Houari"
-  },
-  {
-    "code_article": "BK14",
-    "name_fr": "SAC A DOS BK14 - CHOROUM",
-    "purchase_price": 1550.0,
+    "code_article": "FEUTRE6DUO2TETEVERTEXVS0680",
+    "name_fr": "FEUTRE6DUO2TETEVERTEXVS0680",
+    "purchase_price": 158.0,
     "initial_quantity": 12,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK09/BK10/BK11-1",
-    "name_fr": "SAC A DOS BK09/BK10/BK11/BK12/BK13 - CHOROUM (10p)",
-    "purchase_price": 1700.0,
+    "code_article": "FEUTREDE06ENPOUCHVERTEXVS0693",
+    "name_fr": "FEUTREDE06ENPOUCHVERTEXVS0693",
+    "purchase_price": 148.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTRE6VERTEX",
+    "name_fr": "FEUTRE6VERTEX",
+    "purchase_price": 128.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "FEUTREEVERESTEV4023",
+    "name_fr": "FEUTREEVERESTEV4023",
+    "purchase_price": 265.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLE2IPRESERERESTEV1133",
+    "name_fr": "AQUARELLE2IPRESERERESTEV1133",
+    "purchase_price": 265.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLEDE08VERTEXVS4801",
+    "name_fr": "AQUARELLEDE08VERTEXVS4801",
+    "purchase_price": 185.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLEDE16VERTEXVS4803",
+    "name_fr": "AQUARELLEDE16VERTEXVS4803",
+    "purchase_price": 335.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLEI2PRESERERESTEV1139",
+    "name_fr": "AQUARELLEI2PRESERERESTEV1139",
+    "purchase_price": 215.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLEBUBBLES12PASTLTECHNO7100",
+    "name_fr": "AQUARELLEBUBBLES12PASTLTECHNO7100",
+    "purchase_price": 338.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AQUARELLEDE12VERTEXVS4802",
+    "name_fr": "AQUARELLEDE12VERTEXVS4802",
+    "purchase_price": 325.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASECOLIERG0684",
+    "name_fr": "COMPASECOLIERG0684",
+    "purchase_price": 95.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASABAGUEACTIVETECHNO7283",
+    "name_fr": "COMPASABAGUEACTIVETECHNO7283",
+    "purchase_price": 425.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASMETALVERTEXVS0503",
+    "name_fr": "COMPASMETALVERTEXVS0503",
+    "purchase_price": 345.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASBOITEEVRESTEVI538",
+    "name_fr": "COMPASBOITEEVRESTEVI538",
+    "purchase_price": 185.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASBOITEEVERESTEV1532",
+    "name_fr": "COMPASBOITEEVERESTEV1532",
+    "purchase_price": 78.5,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASBOITEEVERESTEV1532M",
+    "name_fr": "COMPASBOITEEVERESTEV1532M",
+    "purchase_price": 85.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASMETALCOLEURTECHNO5325",
+    "name_fr": "COMPASMETALCOLEURTECHNO5325",
+    "purchase_price": 215.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASBAGUESWELLTECHNO7691",
+    "name_fr": "COMPASBAGUESWELLTECHNO7691",
+    "purchase_price": 255.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASBOITEEVRESTEVI533",
+    "name_fr": "COMPASBOITEEVRESTEVI533",
+    "purchase_price": 155.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASBOITLUXNY2128",
+    "name_fr": "COMPASBOITLUXNY2128",
+    "purchase_price": 145.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASBAGUE3PCSTECHNO5324",
+    "name_fr": "COMPASBAGUE3PCSTECHNO5324",
+    "purchase_price": 215.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASABAGUERINGPOTTECHNO690IT",
+    "name_fr": "COMPASABAGUERINGPOTTECHNO690IT",
+    "purchase_price": 425.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASVERTEXVS2101",
+    "name_fr": "COMPASVERTEXVS2101",
+    "purchase_price": 355.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASECOLIERPLASIQUEVERSALVR-148",
+    "name_fr": "COMPASECOLIERPLASIQUEVERSALVR-148",
+    "purchase_price": 75.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASBAGUE3PCSTECHNO6519",
+    "name_fr": "COMPASBAGUE3PCSTECHNO6519",
+    "purchase_price": 215.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASBAGUEMORANDITECHNO7849",
+    "name_fr": "COMPASBAGUEMORANDITECHNO7849",
+    "purchase_price": 215.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASSCOLVERTEXB12VS2120",
+    "name_fr": "COMPASSCOLVERTEXB12VS2120",
+    "purchase_price": 355.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASSCOLVERTEXB12VS2117",
+    "name_fr": "COMPASSCOLVERTEXB12VS2117",
+    "purchase_price": 565.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASSCOLVERTEXB12VS2110",
+    "name_fr": "COMPASSCOLVERTEXB12VS2110",
+    "purchase_price": 375.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASSCOLVERTEXB12VS2115",
+    "name_fr": "COMPASSCOLVERTEXB12VS2115",
+    "purchase_price": 515.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASMITALIQUESET12PVS0506",
+    "name_fr": "COMPASMITALIQUESET12PVS0506",
+    "purchase_price": 345.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "VERTEXVS0522",
+    "name_fr": "COMPASMET\"LEGO\"VERTEXVS0522",
+    "purchase_price": 375.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "COMPASBOITEEVRESTEV1542",
+    "name_fr": "COMPASBOITEEVRESTEV1542",
+    "purchase_price": 235.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ENSEMBLEGEMOETRIQUE5PCSDELIH600",
+    "name_fr": "ENSEMBLEGEMOETRIQUE5PCSDELIH600",
+    "purchase_price": 395.0,
     "initial_quantity": 10,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "NBS660/667",
-    "name_fr": "SAC A DOS NBS660/667 - CHOROUM",
-    "purchase_price": 1000.0,
-    "initial_quantity": 6,
+    "code_article": "COMPASBOITEEVERESTEV1539",
+    "name_fr": "COMPASBOITEEVERESTEV1539",
+    "purchase_price": 245.0,
+    "initial_quantity": 12,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "CH05...CH15-2",
-    "name_fr": "CH05/CH16/CH12/CH11/CH13/CH10/CH08/CH14/CH09/CH SAC ADOS CLEVER - CHOROUM (6p)",
-    "purchase_price": 1750.0,
-    "initial_quantity": 6,
+    "code_article": "ART-0275",
+    "name_fr": "MARQUEURET/BFLUORESCENTEB55.2.",
+    "purchase_price": 65.0,
+    "initial_quantity": 108,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK17-3/BK18-3-2",
-    "name_fr": "SAC A DOS BK17-3/BK18-3 - CHOROUM (6p)",
-    "purchase_price": 1850.0,
-    "initial_quantity": 6,
+    "code_article": "MARQUEURT/B7COLEURYAPAPYA14137",
+    "name_fr": "MARQUEURT/B7COLEURYAPAPYA14137",
+    "purchase_price": 425.0,
+    "initial_quantity": 9,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK09/BK10/BK11-2",
-    "name_fr": "SAC A DOS BK09/BK10/BK11/BK12/BK13 - CHOROUM (7p)",
-    "purchase_price": 1700.0,
-    "initial_quantity": 7,
+    "code_article": "MARQUEURT-BRECHARGTECHNO7806",
+    "name_fr": "MARQUEURT-BRECHARGTECHNO7806",
+    "purchase_price": 865.0,
+    "initial_quantity": 4,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK104",
-    "name_fr": "SAC A DOS BK104 - CHOROUM",
-    "purchase_price": 1500.0,
+    "code_article": "MARQUEURT/BRECHATHINKYTECHNO8516",
+    "name_fr": "MARQUEURT/BRECHATHINKYTECHNO8516",
+    "purchase_price": 550.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0279",
+    "name_fr": "MARQUEURT/BRECHATHINKYTECHNO85..",
+    "purchase_price": 72.0,
+    "initial_quantity": 216,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "MARQUEURARDOISEBLEUEVERESTEV4028",
+    "name_fr": "MARQUEURARDOISEBLEUEVERESTEV4028",
+    "purchase_price": 13.5,
+    "initial_quantity": 200,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "MARQUEURARDOISEBLEUIS10301",
+    "name_fr": "MARQUEURARDOISEBLEUIS10301",
+    "purchase_price": 26.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "MARQUEURARDOISEBLEUIS10300",
+    "name_fr": "MARQUEURARDOISEBLEUIS10300",
+    "purchase_price": 26.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0283",
+    "name_fr": "MARQUEURET/BCOUPVERSALVR-2..",
+    "purchase_price": 52.5,
+    "initial_quantity": 120,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0284",
+    "name_fr": "MARQUEURET/BRECHARGENASEB551..",
+    "purchase_price": 32.5,
+    "initial_quantity": 288,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "RECHARGEMARQEUREVERTEXV617R",
+    "name_fr": "RECHARGEMARQEUREVERTEXV617R",
+    "purchase_price": 18.5,
+    "initial_quantity": 576,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "VIB5000",
+    "name_fr": "MARQUEURET/BRECHARGB.N.R.VIB5000",
+    "purchase_price": 55.0,
+    "initial_quantity": 240,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0287",
+    "name_fr": "RECHARGEMARQT/BFLUORESCENTRBB55.2..",
+    "purchase_price": 18.5,
+    "initial_quantity": 360,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "MARQUEURT/BRECHATECHNO4990/1/2/3",
+    "name_fr": "MARQUEURT/BRECHATECHNO4990/1/2/3",
+    "purchase_price": 72.0,
+    "initial_quantity": 240,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0289",
+    "name_fr": "CARTOUCHEMARQUEURTECHNO499..",
+    "purchase_price": 21.5,
+    "initial_quantity": 192,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0290",
+    "name_fr": "RECHARGEMARQUEURT/BGIANTG177.",
+    "purchase_price": 12.5,
+    "initial_quantity": 576,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0291",
+    "name_fr": "RECHARGEMARQUEURNASRB55..",
+    "purchase_price": 10.5,
+    "initial_quantity": 640,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNEURCORNITOEVERESTEV4042",
+    "name_fr": "SURLIGNEURCORNITOEVERESTEV4042",
+    "purchase_price": 65.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNEURBUBOEXINEIS14010",
+    "name_fr": "SURLIGNEURBUBOEXINEIS14010",
+    "purchase_price": 45.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNEURFLOURPRESVERTEXV301002M",
+    "name_fr": "SURLIGNEURFLOURPRESVERTEXV301002M",
+    "purchase_price": 85.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNEURFLUORTECHNO5645",
+    "name_fr": "SURLIGNEURFLUORTECHNO5645",
+    "purchase_price": 78.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNEURPRESENT36PCSNYP139",
+    "name_fr": "SURLIGNEURPRESENT36PCSNYP139",
+    "purchase_price": 55.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNEURPRES36VERTEXV301029",
+    "name_fr": "SURLIGNEURPRES36VERTEXV301029",
+    "purchase_price": 55.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNEURPRE36EVERESTEV4056",
+    "name_fr": "SURLIGNEURPRE36EVERESTEV4056",
+    "purchase_price": 45.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNEUREVERESTEV4013",
+    "name_fr": "SURLIGNEUREVERESTEV4013",
+    "purchase_price": 45.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNEURMINIEVERESTEV4043",
+    "name_fr": "SURLIGNEURMINIEVERESTEV4043",
+    "purchase_price": 52.5,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "MARQUEURFLOUR-NOIREVERESTEV4023",
+    "name_fr": "MARQUEURFLOUR-NOIREVERESTEV4023",
+    "purchase_price": 45.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNEURMINISHOWTECHNO5646",
+    "name_fr": "SURLIGNEURMINISHOWTECHNO5646",
+    "purchase_price": 72.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNEUREVERESTEV4041",
+    "name_fr": "SURLIGNEUREVERESTEV4041",
+    "purchase_price": 52.5,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0304",
+    "name_fr": "SURLIGNEURMINIBOSEXINEIS1400..",
+    "purchase_price": 65.01,
+    "initial_quantity": 72,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLINGEUR06PETVERTEXV301021",
+    "name_fr": "SURLINGEUR06PETVERTEXV301021",
+    "purchase_price": 450.0,
     "initial_quantity": 8,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK78",
-    "name_fr": "SAC A DOS BK78 - CHOROUM",
-    "purchase_price": 1050.0,
+    "code_article": "SURLIGNEURPOTSELECTEP10-0123",
+    "name_fr": "SURLIGNEURPOTSELECTEP10-0123",
+    "purchase_price": 34.5,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNEURPOCH4VERTEXV301037",
+    "name_fr": "SURLIGNEURPOCH4VERTEXV301037",
+    "purchase_price": 480.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNEURPOCHET4TECHNO6404",
+    "name_fr": "SURLIGNEURPOCHET4TECHNO6404",
+    "purchase_price": 325.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNPOCH04EVERESTEV4008",
+    "name_fr": "SURLIGNPOCH04EVERESTEV4008",
+    "purchase_price": 185.0,
     "initial_quantity": 15,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK109",
-    "name_fr": "SAC A DOS BK109 - CHOROUM",
-    "purchase_price": 1950.0,
-    "initial_quantity": 4,
+    "code_article": "ART-0310",
+    "name_fr": "SURLIGNEURPOCH04TECHNORB55.107",
+    "purchase_price": 165.0,
+    "initial_quantity": 16,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK05/BK06/BK07-1",
-    "name_fr": "SAC A DOS BKF04/BKF08 - CHOROUM (5p)",
-    "purchase_price": 1600.0,
+    "code_article": "SURLIGNEURJAUNEVERTEXV301002J",
+    "name_fr": "SURLIGNEURJAUNEVERTEXV301002J",
+    "purchase_price": 85.0,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNEURBOITEDE10VERTEXV301036",
+    "name_fr": "SURLIGNEURBOITEDE10VERTEXV301036",
+    "purchase_price": 95.0,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNEURPOCH4PCSVERTEXV301002",
+    "name_fr": "SURLIGNEURPOCH4PCSVERTEXV301002",
+    "purchase_price": 345.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNEURPOCH04VERTEXV301036",
+    "name_fr": "SURLIGNEURPOCH04VERTEXV301036",
+    "purchase_price": 385.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNEUR06COLVERTEXV301028",
+    "name_fr": "SURLIGNEUR06COLVERTEXV301028",
+    "purchase_price": 165.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURLIGNEUREVERESTEV4055",
+    "name_fr": "SURLIGNEUREVERESTEV4055",
+    "purchase_price": 42.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AGRAFEUSEMINIEVERESTEV1610",
+    "name_fr": "AGRAFEUSEMINIEVERESTEV1610",
+    "purchase_price": 165.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "MINIAGRAFEUSEEVERESTEV1650",
+    "name_fr": "MINIAGRAFEUSEEVERESTEV1650",
+    "purchase_price": 165.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SURIGNEURSHO24PCSTECHNO7801",
+    "name_fr": "SURIGNEURSHO24PCSTECHNO7801",
+    "purchase_price": 75.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "KITMINIAGRAFEUSEEVERESTEV1614",
+    "name_fr": "KITMINIAGRAFEUSEEVERESTEV1614",
+    "purchase_price": 165.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AGRAFEUSEMINIVERTEXV1865",
+    "name_fr": "AGRAFEUSEMINIVERTEXV1865",
+    "purchase_price": 450.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AGRAFEUSEBASTEL6/24NY1079",
+    "name_fr": "AGRAFEUSEBASTEL6/24NY1079",
+    "purchase_price": 425.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AGRAFEUSEBURE6/24EXINEIB01008",
+    "name_fr": "AGRAFEUSEBURE6/24EXINEIB01008",
+    "purchase_price": 450.0,
     "initial_quantity": 5,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK05/BK06/BK07-2",
-    "name_fr": "SAC A DOS BKF04/BKF08 - CHOROUM (8p)",
-    "purchase_price": 1600.0,
-    "initial_quantity": 8,
+    "code_article": "AGRAFEUSEMINILUXVERTEXV1900",
+    "name_fr": "AGRAFEUSEMINILUXVERTEXV1900",
+    "purchase_price": 185.0,
+    "initial_quantity": 12,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK76/BK77",
-    "name_fr": "SAC A DOS BK76/BK77 - CHOROUM",
-    "purchase_price": 1850.0,
+    "code_article": "AGRAFEUSEMINI24/6TECHNO7896",
+    "name_fr": "AGRAFEUSEMINI24/6TECHNO7896",
+    "purchase_price": 175.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AGRAFEUSEMINI24/6TECHNO7893",
+    "name_fr": "AGRAFEUSEMINI24/6TECHNO7893",
+    "purchase_price": 185.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AGRAFEUSEMINI24/6TECHNO7894",
+    "name_fr": "AGRAFEUSEMINI24/6TECHNO7894",
+    "purchase_price": 175.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AGRAFEUSEMINI24/6TECHNO7895",
+    "name_fr": "AGRAFEUSEMINI24/6TECHNO7895",
+    "purchase_price": 185.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "T-CRAYONGIANTG0220",
+    "name_fr": "AGRAFEUSE+T-CRAYONGIANTG0220",
+    "purchase_price": 185.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0330",
+    "name_fr": "AGRAFES6/24ALRODESSRB56.105",
+    "purchase_price": 38.0,
+    "initial_quantity": 30,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AGRAFES24/6GIANTG0229",
+    "name_fr": "AGRAFES24/6GIANTG0229",
+    "purchase_price": 43.0,
+    "initial_quantity": 30,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AGRAFES24/6VERTEX",
+    "name_fr": "AGRAFES24/6VERTEX",
+    "purchase_price": 60.0,
+    "initial_quantity": 30,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AGRAFEUSEVERTEXV1886",
+    "name_fr": "AGRAFEUSEVERTEXV1886",
+    "purchase_price": 450.0,
+    "initial_quantity": 4,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AGRAFEUSEVERTEXV1887",
+    "name_fr": "AGRAFEUSEVERTEXV1887",
+    "purchase_price": 450.0,
+    "initial_quantity": 1,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AGRAFEUSEDEBUREAUIY038",
+    "name_fr": "AGRAFEUSEDEBUREAUIY038",
+    "purchase_price": 495.0,
+    "initial_quantity": 5,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0336",
+    "name_fr": "AGRAFEUSEMAGISKARB63.3",
+    "purchase_price": 355.0,
+    "initial_quantity": 5,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "AGRAFEUSEMETALEVERESTEV1640",
+    "name_fr": "AGRAFEUSEMETALEVERESTEV1640",
+    "purchase_price": 345.0,
+    "initial_quantity": 5,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYBHME2110",
+    "name_fr": "GOMME+TAILLECRAYBHME2110",
+    "purchase_price": 145.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0339",
+    "name_fr": "GOMMEB30RS04.101",
+    "purchase_price": 10.5,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMEBLANCHMMDELIH00210",
+    "name_fr": "GOMMEBLANCHMMDELIH00210",
+    "purchase_price": 23.8,
+    "initial_quantity": 40,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMEBLANCHPMDELIEH00110",
+    "name_fr": "GOMMEBLANCHPMDELIEH00110",
+    "purchase_price": 16.8,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMEBLANCHE20EVERESTEV2540",
+    "name_fr": "GOMMEBLANCHE20EVERESTEV2540",
+    "purchase_price": 16.5,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMEAL20VERSALVR-106001",
+    "name_fr": "GOMMEAL20VERSALVR-106001",
+    "purchase_price": 21.5,
+    "initial_quantity": 40,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYON-EXINEIS06125",
+    "name_fr": "GOMME+TAILLECRAYON-EXINEIS06125",
+    "purchase_price": 115.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMEBOIT24VERTEXVS5018",
+    "name_fr": "GOMMEBOIT24VERTEXVS5018",
+    "purchase_price": 125.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMEBLANCHGMDELIH03110",
+    "name_fr": "GOMMEBLANCHGMDELIH03110",
+    "purchase_price": 45.8,
+    "initial_quantity": 40,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMEBOIT24VERTEXVS5014",
+    "name_fr": "GOMMEBOIT24VERTEXVS5014",
+    "purchase_price": 135.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BOIT24VERTEXVS5022",
+    "name_fr": "GOMME BOIT24VERTEXVS5022",
+    "purchase_price": 67.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMEBOIT30VERTEXVS5016",
+    "name_fr": "GOMMEBOIT30VERTEXVS5016",
+    "purchase_price": 47.5,
+    "initial_quantity": 30,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMEBLANCHE30EVERESTEV2541",
+    "name_fr": "GOMMEBLANCHE30EVERESTEV2541",
+    "purchase_price": 10.5,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMECOULEURPOCH03DELIH305",
+    "name_fr": "GOMMECOULEURPOCH03DELIH305",
+    "purchase_price": 75.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMECLEANBOIT32VERTEXVS5007",
+    "name_fr": "GOMMECLEANBOIT32VERTEXVS5007",
+    "purchase_price": 47.5,
+    "initial_quantity": 32,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMEBLANCHEGMVERTEXV1503",
+    "name_fr": "GOMMEBLANCHEGMVERTEXV1503",
+    "purchase_price": 25.5,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMEBLANPM30PVERTEXV1502",
+    "name_fr": "GOMMEBLANPM30PVERTEXV1502",
+    "purchase_price": 20.5,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMEB20NY",
+    "name_fr": "GOMMEB20NY",
+    "purchase_price": 16.5,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMESCOLEXINEIS05103",
+    "name_fr": "GOMMESCOLEXINEIS05103",
+    "purchase_price": 29.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMEAL30RODESSROD201",
+    "name_fr": "GOMMEAL30RODESSROD201",
+    "purchase_price": 9.5,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMEBLANCHEGIANTG1533",
+    "name_fr": "GOMMEBLANCHEGIANTG1533",
+    "purchase_price": 18.5,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0359",
+    "name_fr": "GOMMEB20RS04.100",
+    "purchase_price": 16.5,
+    "initial_quantity": 40,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMEBOIT24VERTEXVS5012",
+    "name_fr": "GOMMEBOIT24VERTEXVS5012",
+    "purchase_price": 65.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMEBLANCHEMMB20EXINEIS05019",
+    "name_fr": "GOMMEBLANCHEMMB20EXINEIS05019",
+    "purchase_price": 18.5,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMEBLANCHEGIANTG1534",
+    "name_fr": "GOMMEBLANCHEGIANTG1534",
+    "purchase_price": 19.5,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMECOULEURGIANTG1535",
+    "name_fr": "GOMMECOULEURGIANTG1535",
+    "purchase_price": 19.5,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMENOIR4BB30DELIVP411",
+    "name_fr": "GOMMENOIR4BB30DELIVP411",
+    "purchase_price": 22.5,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMEBLANCHE2BPMPOT15PCSDELIVP408",
+    "name_fr": "GOMMEBLANCHE2BPMPOT15PCSDELIVP408",
+    "purchase_price": 22.5,
+    "initial_quantity": 30,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0366",
+    "name_fr": "GOMMEB20RS04.200",
+    "purchase_price": 14.5,
+    "initial_quantity": 40,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONEXINEIS05120",
+    "name_fr": "GOMME+TAILLECRAYONEXINEIS05120",
+    "purchase_price": 215.0,
+    "initial_quantity": 16,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "GOMMESCOLAIREPM45PVERTEX",
+    "name_fr": "GOMMESCOLAIREPM45PVERTEX",
+    "purchase_price": 15.5,
+    "initial_quantity": 135,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "KITETRACE20CMOPAQUEXZML0687XZ",
+    "name_fr": "KITETRACE20CMOPAQUEXZML0687XZ",
+    "purchase_price": 45.0,
+    "initial_quantity": 64,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ENSEMBLETRACALUMNARU15CMDELI79539",
+    "name_fr": "ENSEMBLETRACALUMNARU15CMDELI79539",
+    "purchase_price": 445.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "KITEDETRACAGEVERTEXVS0168",
+    "name_fr": "KITEDETRACAGEVERTEXVS0168",
+    "purchase_price": 65.0,
+    "initial_quantity": 25,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "KITETRACE20CMCRISTALXZML0700XZ",
+    "name_fr": "KITETRACE20CMCRISTALXZML0700XZ",
+    "purchase_price": 45.0,
+    "initial_quantity": 64,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "KITTRACAGEFLEXI20CMXZML0618",
+    "name_fr": "KITTRACAGEFLEXI20CMXZML0618",
+    "purchase_price": 105.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ENSEMBLETRACAGEDELIH649",
+    "name_fr": "ENSEMBLETRACAGEDELIH649",
+    "purchase_price": 215.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "KITTRACAGEFLEXEVERESTEV8015",
+    "name_fr": "KITTRACAGEFLEXEVERESTEV8015",
+    "purchase_price": 115.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ENSEMBLETRASAGE20CMFLEXIBLENY1140",
+    "name_fr": "ENSEMBLETRASAGE20CMFLEXIBLENY1140",
+    "purchase_price": 115.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "KITDETRAC20CMFLEXIBLEVERTEXVS4321",
+    "name_fr": "KITDETRAC20CMFLEXIBLEVERTEXVS4321",
+    "purchase_price": 185.0,
+    "initial_quantity": 40,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "KITETRACAGE20CM4PCSVERTEXVS4302",
+    "name_fr": "KITETRACAGE20CM4PCSVERTEXVS4302",
+    "purchase_price": 425.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE20CMCRISTALVERTEXVS0166",
+    "name_fr": "REGLE20CMCRISTALVERTEXVS0166",
+    "purchase_price": 19.5,
+    "initial_quantity": 100,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE20CMCRISTALEVERESTEV8008",
+    "name_fr": "REGLE20CMCRISTALEVERESTEV8008",
+    "purchase_price": 15.5,
+    "initial_quantity": 120,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE20CMPLATETECHNO9931",
+    "name_fr": "REGLE20CMPLATETECHNO9931",
+    "purchase_price": 26.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0382",
+    "name_fr": "REGLE20CMOPAQUEXZML0137XZ.",
+    "purchase_price": 13.5,
+    "initial_quantity": 200,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLEECOL20CMTECHNO9502",
+    "name_fr": "REGLEECOL20CMTECHNO9502",
+    "purchase_price": 26.8,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE20CMXZML2006",
+    "name_fr": "REGLE20CMXZML2006",
+    "purchase_price": 13.5,
+    "initial_quantity": 120,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "RAPPORTEURFLEXB48TAZIRITZ0251",
+    "name_fr": "RAPPORTEURFLEXB48TAZIRITZ0251",
+    "purchase_price": 35.0,
+    "initial_quantity": 96,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE20CMCOLORVRSALVR-144",
+    "name_fr": "REGLE20CMCOLORVRSALVR-144",
+    "purchase_price": 28.8,
+    "initial_quantity": 9,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "RAPPORTEURFLEXEVERESTEV8014",
+    "name_fr": "RAPPORTEURFLEXEVERESTEV8014",
+    "purchase_price": 35.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE20CMULTRAFLEX48PSCDELIH20",
+    "name_fr": "REGLE20CMULTRAFLEX48PSCDELIH20",
+    "purchase_price": 75.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE20CMFLEXITWISTDELIH650",
+    "name_fr": "REGLE20CMFLEXITWISTDELIH650",
+    "purchase_price": 75.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "RAPPORTEURFLEXIBLENY1132",
+    "name_fr": "RAPPORTEURFLEXIBLENY1132",
+    "purchase_price": 35.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE20CMFLEXEVERESTEV8012",
+    "name_fr": "REGLE20CMFLEXEVERESTEV8012",
+    "purchase_price": 35.0,
+    "initial_quantity": 96,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE20CMFLEXIBLENY1120",
+    "name_fr": "REGLE20CMFLEXIBLENY1120",
+    "purchase_price": 35.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE20CMCRISTALVERTEXVS0165",
+    "name_fr": "REGLE20CMCRISTALVERTEXVS0165",
+    "purchase_price": 19.5,
+    "initial_quantity": 100,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE20CMVERTEXVS0274",
+    "name_fr": "REGLE20CMVERTEXVS0274",
+    "purchase_price": 19.5,
+    "initial_quantity": 100,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE20CMSABLVERTEXVS0164",
+    "name_fr": "REGLE20CMSABLVERTEXVS0164",
+    "purchase_price": 25.8,
+    "initial_quantity": 100,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "RAPPORTEURFLEXIBLEVERTEXVS4320",
+    "name_fr": "RAPPORTEURFLEXIBLEVERTEXVS4320",
+    "purchase_price": 51.5,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE20CMFLIXIVERTEXVS0155",
+    "name_fr": "REGLE20CMFLIXIVERTEXVS0155",
+    "purchase_price": 55.0,
+    "initial_quantity": 72,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE20CMVERTEXVS4300",
+    "name_fr": "REGLE20CMVERTEXVS4300",
+    "purchase_price": 35.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLESOUPL20CMMAPED279210",
+    "name_fr": "REGLESOUPL20CMMAPED279210",
+    "purchase_price": 205.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLESTUDY20CMMABED223507",
+    "name_fr": "REGLESTUDY20CMMABED223507",
+    "purchase_price": 78.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLEMETAL20CMFANTAISIEBHM96218C-20",
+    "name_fr": "REGLEMETAL20CMFANTAISIEBHM96218C-20",
+    "purchase_price": 147.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BOIT20VERTEXVS5281",
+    "name_fr": "GOMME+T-CRAYON BOIT20VERTEXVS5281",
+    "purchase_price": 145.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONEXINEIS05125",
+    "name_fr": "GOMME+TAILLECRAYONEXINEIS05125",
+    "purchase_price": 215.0,
+    "initial_quantity": 16,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONEXINEIS05127",
+    "name_fr": "GOMME+TAILLECRAYONEXINEIS05127",
+    "purchase_price": 225.0,
+    "initial_quantity": 16,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "T-CRAYONFOGUAAEVERESTEV1387",
+    "name_fr": "GOMME+T-CRAYONFOGUAAEVERESTEV1387",
+    "purchase_price": 115.0,
+    "initial_quantity": 16,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAIILECRAYONEVERESTEV1385",
+    "name_fr": "GOMME+TAIILECRAYONEVERESTEV1385",
+    "purchase_price": 135.0,
+    "initial_quantity": 16,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONEVERESTEV1394",
+    "name_fr": "GOMME+TAILLECRAYONEVERESTEV1394",
+    "purchase_price": 225.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONEVERESTEVI326",
+    "name_fr": "GOMME+TAILLECRAYONEVERESTEVI326",
+    "purchase_price": 135.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONEXINEIS05124",
+    "name_fr": "GOMME+TAILLECRAYONEXINEIS05124",
+    "purchase_price": 195.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONEXINEISO5115",
+    "name_fr": "GOMME+TAILLECRAYONEXINEISO5115",
+    "purchase_price": 135.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BOIT16VERTEXVS5270",
+    "name_fr": "GOMME+T-CRAYON BOIT16VERTEXVS5270",
+    "purchase_price": 195.0,
+    "initial_quantity": 16,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONEVERESTEV1324",
+    "name_fr": "GOMME+TAILLECRAYONEVERESTEV1324",
+    "purchase_price": 115.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0413",
+    "name_fr": "AncjenSolde: 1283 949,72",
+    "purchase_price": 0.0,
+    "initial_quantity": 1,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0414",
+    "name_fr": "0,00",
+    "purchase_price": 0.0,
+    "initial_quantity": 1,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONEVERESTEV1394-2",
+    "name_fr": "GOMME+TAILLECRAYONEVERESTEV1394",
+    "purchase_price": 225.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "RAPPORTEURFLEXIBLEVERTEXVS4320-2",
+    "name_fr": "RAPPORTEURFLEXIBLEVERTEXVS4320",
+    "purchase_price": 51.5,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONEVERESTEV1393",
+    "name_fr": "GOMME+TAILLECRAYONEVERESTEV1393",
+    "purchase_price": 215.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONEXINEIS05122",
+    "name_fr": "GOMME+TAILLECRAYONEXINEIS05122",
+    "purchase_price": 165.0,
+    "initial_quantity": 16,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONEXINEIS05114",
+    "name_fr": "GOMME+TAILLECRAYONEXINEIS05114",
+    "purchase_price": 135.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONEVERESTEV1392",
+    "name_fr": "GOMME+TAILLECRAYONEVERESTEV1392",
+    "purchase_price": 145.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONEXINEIS0072",
+    "name_fr": "TAILLECRAYONEXINEIS0072",
+    "purchase_price": 10.5,
+    "initial_quantity": 208,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLECARREECRESTAL20CMBHM2060-20",
+    "name_fr": "REGLECARREECRESTAL20CMBHM2060-20",
+    "purchase_price": 199.5,
+    "initial_quantity": 15,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE30CMARDITECRPT30",
+    "name_fr": "REGLE30CMARDITECRPT30",
+    "purchase_price": 25.0,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONITREVERESTEVI314",
+    "name_fr": "TAILLECRAYONITREVERESTEVI314",
+    "purchase_price": 7.5,
+    "initial_quantity": 72,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONECOLPLUMAPL7927",
+    "name_fr": "TAILLECRAYONECOLPLUMAPL7927",
+    "purchase_price": 36.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE30CMXZML2007",
+    "name_fr": "REGLE30CMXZML2007",
+    "purchase_price": 21.5,
+    "initial_quantity": 120,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE30CMOPAQUEXZML2016",
+    "name_fr": "REGLE30CMOPAQUEXZML2016",
+    "purchase_price": 17.5,
+    "initial_quantity": 120,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE30CMCRISTALVERTEXVS0162",
+    "name_fr": "REGLE30CMCRISTALVERTEXVS0162",
+    "purchase_price": 37.5,
+    "initial_quantity": 9,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE30CMFLEXIBLEVERTEXVS4318",
+    "name_fr": "REGLE30CMFLEXIBLEVERTEXVS4318",
+    "purchase_price": 85.0,
+    "initial_quantity": 72,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "EQUERREFLEXIBLEVERTEXVS4319",
+    "name_fr": "EQUERREFLEXIBLEVERTEXVS4319",
+    "purchase_price": 51.5,
+    "initial_quantity": 72,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE30CMVERTEXVS4304",
+    "name_fr": "REGLE30CMVERTEXVS4304",
+    "purchase_price": 65.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE20CMNTAANABOK20CM",
+    "name_fr": "REGLE20CMNTAANABOK20CM",
+    "purchase_price": 13.5,
+    "initial_quantity": 100,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "EQUERREFLEXEVERESTEV8002",
+    "name_fr": "EQUERREFLEXEVERESTEV8002",
+    "purchase_price": 35.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "XZML2008",
+    "name_fr": "EQUERRES60°XZML2008",
+    "purchase_price": 13.5,
+    "initial_quantity": 120,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "RAPPORTEURECOLCRISTALTAZIRITZ0598",
+    "name_fr": "RAPPORTEURECOLCRISTALTAZIRITZ0598",
+    "purchase_price": 13.5,
+    "initial_quantity": 120,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "EQUERREVERTEXVS0273",
+    "name_fr": "EQUERREVERTEXVS0273",
+    "purchase_price": 17.5,
+    "initial_quantity": 100,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "OPAQUEXZML0625XZ",
+    "name_fr": "EQUERRE60°OPAQUEXZML0625XZ",
+    "purchase_price": 13.5,
+    "initial_quantity": 120,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "EQUERREFLEXEVERESTEV8013",
+    "name_fr": "EQUERREFLEXEVERESTEV8013",
+    "purchase_price": 35.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONSUGARITRTECHNO7508",
+    "name_fr": "TAILLECRAYONSUGARITRTECHNO7508",
+    "purchase_price": 38.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONITRFISHTECHNO7521",
+    "name_fr": "TAILLECRAYONITRFISHTECHNO7521",
+    "purchase_price": 105.0,
     "initial_quantity": 11,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "CR-PC01",
-    "name_fr": "SAC A DOS CR-PC01 - CHOROUM",
-    "purchase_price": 2250.0,
-    "initial_quantity": 5,
+    "code_article": "TAILLECRAYONRESERV2USAGEDELIH558",
+    "name_fr": "TAILLECRAYONRESERV2USAGEDELIH558",
+    "purchase_price": 135.0,
+    "initial_quantity": 12,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "5039",
-    "name_fr": "SAC A DOS ONE 5039 - CHOROUM",
-    "purchase_price": 1900.0,
-    "initial_quantity": 6,
+    "code_article": "TAILLECRAYON3USBOIT24VERTEXVS5273",
+    "name_fr": "TAILLECRAYON3USBOIT24VERTEXVS5273",
+    "purchase_price": 135.0,
+    "initial_quantity": 24,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "1060",
-    "name_fr": "SAC A DOS 1060 - CHOROUM",
-    "purchase_price": 2000.0,
-    "initial_quantity": 3,
+    "code_article": "TAILLECRAYON2TROUBHM9318",
+    "name_fr": "TAILLECRAYON2TROUBHM9318",
+    "purchase_price": 95.0,
+    "initial_quantity": 24,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "AD9320/AD9338",
-    "name_fr": "SAC A DOS AD9320/AD9338 - CHOROUM",
-    "purchase_price": 2450.0,
-    "initial_quantity": 4,
+    "code_article": "TAILLECRAYON2USAGDELI39768",
+    "name_fr": "TAILLECRAYON2USAGDELI39768",
+    "purchase_price": 75.0,
+    "initial_quantity": 12,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BR-1-1",
-    "name_fr": "SAC A DOS BR-1 USB - CHOROUM (6p)",
-    "purchase_price": 800.0,
-    "initial_quantity": 6,
+    "code_article": "GOMMEOBLIQUE36PCSVERTEXVS5004",
+    "name_fr": "GOMMEOBLIQUE36PCSVERTEXVS5004",
+    "purchase_price": 26.5,
+    "initial_quantity": 36,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "H-54",
-    "name_fr": "SAC A DOS COOL PACK H-54 - CHOROUM",
-    "purchase_price": 1500.0,
-    "initial_quantity": 4,
+    "code_article": "GOMMEBLANCHMMDELIEH308",
+    "name_fr": "GOMMEBLANCHMMDELIEH308",
+    "purchase_price": 42.8,
+    "initial_quantity": 27,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "9105-16",
-    "name_fr": "SAC A DOS 9105-16 - CHOROUM",
-    "purchase_price": 1100.0,
-    "initial_quantity": 5,
+    "code_article": "TAILLECRAYONBHM13006",
+    "name_fr": "TAILLECRAYONBHM13006",
+    "purchase_price": 67.5,
+    "initial_quantity": 12,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "9105-33",
-    "name_fr": "SAC A DOS 9105-33 - CHOROUM",
-    "purchase_price": 1050.0,
-    "initial_quantity": 6,
+    "code_article": "TAILLECRAYON2USVERTEXVS5276",
+    "name_fr": "TAILLECRAYON2USVERTEXVS5276",
+    "purchase_price": 135.0,
+    "initial_quantity": 24,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "9105-53",
-    "name_fr": "SAC A DOS 9105-53 - CHOROUM",
-    "purchase_price": 1200.0,
-    "initial_quantity": 4,
+    "code_article": "TAILLECRAYONVERTEXVS5266",
+    "name_fr": "TAILLECRAYONVERTEXVS5266",
+    "purchase_price": 145.0,
+    "initial_quantity": 12,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "9105-129",
-    "name_fr": "SAC A DOS 9105-129 - CHOROUM",
-    "purchase_price": 1400.0,
-    "initial_quantity": 5,
+    "code_article": "TAILLECRAYONTRICUL1TRTECHNO7529",
+    "name_fr": "TAILLECRAYONTRICUL1TRTECHNO7529",
+    "purchase_price": 85.0,
+    "initial_quantity": 12,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "9105-71",
-    "name_fr": "SAC A DOS 9105-71 - CHOROUM",
-    "purchase_price": 1300.0,
-    "initial_quantity": 6,
+    "code_article": "TAILLECRAYON2USVERTEXVS5264",
+    "name_fr": "TAILLECRAYON2USVERTEXVS5264",
+    "purchase_price": 135.0,
+    "initial_quantity": 12,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "9105-80",
-    "name_fr": "SAC A DOS 9105-80 - CHOROUM",
-    "purchase_price": 1200.0,
-    "initial_quantity": 5,
+    "code_article": "TAILLECRAYON3USVERTEXVS5265",
+    "name_fr": "TAILLECRAYON3USVERTEXVS5265",
+    "purchase_price": 135.0,
+    "initial_quantity": 12,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "9105-65",
-    "name_fr": "SAC A DOS 9105-65 - CHOROUM",
-    "purchase_price": 1300.0,
-    "initial_quantity": 5,
+    "code_article": "TAILLECRAYON2USU-TOUCHDELIR01100",
+    "name_fr": "TAILLECRAYON2USU-TOUCHDELIR01100",
+    "purchase_price": 95.0,
+    "initial_quantity": 12,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "9105-147",
-    "name_fr": "SAC A DOS 9105-147 - CHOROUM",
-    "purchase_price": 2000.0,
-    "initial_quantity": 4,
+    "code_article": "TAILLECRAYON1TRFOCULTECHNO7526",
+    "name_fr": "TAILLECRAYON1TRFOCULTECHNO7526",
+    "purchase_price": 47.5,
+    "initial_quantity": 22,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "9105-42",
-    "name_fr": "SAC A DOS 16IN 9105-42 - CHOROUM",
-    "purchase_price": 1400.0,
-    "initial_quantity": 8,
+    "code_article": "TAILLECRAYONVERTEXVS1547",
+    "name_fr": "TAILLECRAYONVERTEXVS1547",
+    "purchase_price": 26.5,
+    "initial_quantity": 48,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "9105-38",
-    "name_fr": "SAC A DOS 16IN 9105-38 - CHOROUM",
-    "purchase_price": 1400.0,
+    "code_article": "TAIILECRAYONEVERESTEV1353",
+    "name_fr": "TAIILECRAYONEVERESTEV1353",
+    "purchase_price": 24.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYON1TRPOKTECHNO7514",
+    "name_fr": "TAILLECRAYON1TRPOKTECHNO7514",
+    "purchase_price": 57.5,
     "initial_quantity": 14,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BK55-2",
-    "name_fr": "SAC A DOS BK55 - CHOROUM (Bon 1978)",
-    "purchase_price": 950.0,
+    "code_article": "TAILLECRAYONECOLPLUMAPL7924",
+    "name_fr": "TAILLECRAYONECOLPLUMAPL7924",
+    "purchase_price": 27.5,
+    "initial_quantity": 32,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONEXINEIS0064",
+    "name_fr": "TAILLECRAYONEXINEIS0064",
+    "purchase_price": 75.0,
+    "initial_quantity": 30,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAIILECRAYONEVERESTEV1355",
+    "name_fr": "TAIILECRAYONEVERESTEV1355",
+    "purchase_price": 85.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAIILECRAYONEVERESTEV1377",
+    "name_fr": "TAIILECRAYONEVERESTEV1377",
+    "purchase_price": 38.5,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONITRBASKETTECHNO7533",
+    "name_fr": "TAILLECRAYONITRBASKETTECHNO7533",
+    "purchase_price": 82.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYON2USBOIT24VERTEXVS5272",
+    "name_fr": "TAILLECRAYON2USBOIT24VERTEXVS5272",
+    "purchase_price": 125.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BOIT24VERTEXVS5267",
+    "name_fr": "TAILLECRAYON BOIT24VERTEXVS5267",
+    "purchase_price": 155.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYON1USAGEDELIH556",
+    "name_fr": "TAILLECRAYON1USAGEDELIH556",
+    "purchase_price": 35.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYON2USAGDELI0576",
+    "name_fr": "TAILLECRAYON2USAGDELI0576",
+    "purchase_price": 78.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONVERSALVR-521",
+    "name_fr": "TAILLECRAYONVERSALVR-521",
+    "purchase_price": 45.0,
+    "initial_quantity": 30,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONEVERESTEV1320",
+    "name_fr": "TAILLECRAYONEVERESTEV1320",
+    "purchase_price": 37.5,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONMETALF8MMDELIR01700",
+    "name_fr": "TAILLECRAYONMETALF8MMDELIR01700",
+    "purchase_price": 155.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYONMETALB24VERTEXVS5284",
+    "name_fr": "TAILLECRAYONMETALB24VERTEXVS5284",
+    "purchase_price": 105.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CISEAUXSCOLRODESS18-001",
+    "name_fr": "CISEAUXSCOLRODESS18-001",
+    "purchase_price": 45.0,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CISEAUECOLIER24PCSVERTEXVS0852",
+    "name_fr": "CISEAUECOLIER24PCSVERTEXVS0852",
+    "purchase_price": 155.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CISEAUFAMOUSEVERESTEV1931",
+    "name_fr": "CISEAUFAMOUSEVERESTEV1931",
+    "purchase_price": 75.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CISEAUSCOLAIREVERESTEV1939",
+    "name_fr": "CISEAUSCOLAIREVERESTEV1939",
+    "purchase_price": 105.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CISEAUXSCOLRODESS18-022",
+    "name_fr": "CISEAUXSCOLRODESS18-022",
+    "purchase_price": 125.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CISEAUECO24PVERTEXVS2302",
+    "name_fr": "CISEAUECO24PVERTEXVS2302",
+    "purchase_price": 205.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CISEAUECO24PVERTEXVS2301",
+    "name_fr": "CISEAUECO24PVERTEXVS2301",
+    "purchase_price": 205.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CISEAUECOLIERVERSALVR-1605",
+    "name_fr": "CISEAUECOLIERVERSALVR-1605",
+    "purchase_price": 95.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CISEAUSCOLAIREVERESTEV1937",
+    "name_fr": "CISEAUSCOLAIREVERESTEV1937",
+    "purchase_price": 105.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CISEAUECOLIER24PCSVERTEXVS0850",
+    "name_fr": "CISEAUECOLIER24PCSVERTEXVS0850",
+    "purchase_price": 205.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CISEAUECO24PVERTEXVS2310",
+    "name_fr": "CISEAUECO24PVERTEXVS2310",
+    "purchase_price": 205.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CISEAUECO24PVERTEXVS0838",
+    "name_fr": "CISEAUECO24PVERTEXVS0838",
+    "purchase_price": 135.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CISEAUECO24PVERTEXVS2314",
+    "name_fr": "CISEAUECO24PVERTEXVS2314",
+    "purchase_price": 135.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CISEAUECOLIER24PCSVERTEXVS0851",
+    "name_fr": "CISEAUECOLIER24PCSVERTEXVS0851",
+    "purchase_price": 185.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CISEAUECO24PVERTEXVS2303",
+    "name_fr": "CISEAUECO24PVERTEXVS2303",
+    "purchase_price": 155.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CISEAUECOLIER24PCSVERTEXVS0846",
+    "name_fr": "CISEAUECOLIER24PCSVERTEXVS0846",
+    "purchase_price": 185.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CISEAUECO24PVERTEXVS0836",
+    "name_fr": "CISEAUECO24PVERTEXVS0836",
+    "purchase_price": 125.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CISEAUXSCOLAIRNR1114",
+    "name_fr": "CISEAUXSCOLAIRNR1114",
+    "purchase_price": 85.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAIEBLANCHEB10VERTEXVS980",
+    "name_fr": "CRAIEBLANCHEB10VERTEXVS980",
+    "purchase_price": 55.0,
+    "initial_quantity": 40,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAIECOULEURDE10EANTTECHNO6843",
+    "name_fr": "CRAIECOULEURDE10EANTTECHNO6843",
+    "purchase_price": 650.0,
+    "initial_quantity": 4,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONNOIRHEXAGONALEVERESTEV1501",
+    "name_fr": "CRAYONNOIRHEXAGONALEVERESTEV1501",
+    "purchase_price": 9.5,
+    "initial_quantity": 144,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "V1171",
+    "name_fr": "CRAYONNOIRVERTEX\"GRAPHIC\"V1171",
+    "purchase_price": 225.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONNOIRENPOTLUXEVERESTEV1502",
+    "name_fr": "CRAYONNOIRENPOTLUXEVERESTEV1502",
+    "purchase_price": 17.5,
+    "initial_quantity": 288,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONNOIRRESINEPOT72MAPEDS52002",
+    "name_fr": "CRAYONNOIRRESINEPOT72MAPEDS52002",
+    "purchase_price": 65.0,
+    "initial_quantity": 144,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "V1155",
+    "name_fr": "CRAYONNOIROFFICEVERTEX\"V1155",
+    "purchase_price": 19.5,
+    "initial_quantity": 80,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "V1136",
+    "name_fr": "CRAYONNOIR\"ALPHAP\"V1136",
+    "purchase_price": 22.5,
+    "initial_quantity": 96,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONNOIRPVC36PCSVERSALVR-66041",
+    "name_fr": "CRAYONNOIRPVC36PCSVERSALVR-66041",
+    "purchase_price": 17.5,
+    "initial_quantity": 72,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONNOIRHBPASTELGIANTG1625",
+    "name_fr": "CRAYONNOIRHBPASTELGIANTG1625",
+    "purchase_price": 17.5,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONNOIRCORPNOIRPOT36GAINTG2431",
+    "name_fr": "CRAYONNOIRCORPNOIRPOT36GAINTG2431",
+    "purchase_price": 16.5,
+    "initial_quantity": 72,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONNOIRMATHIO50PCSVERTEXV1160",
+    "name_fr": "CRAYONNOIRMATHIO50PCSVERTEXV1160",
+    "purchase_price": 19.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PRESVERTEXSII38",
+    "name_fr": "CRAYONNOIR\"NEIZO\"PRESVERTEXSII38",
+    "purchase_price": 29.5,
+    "initial_quantity": 40,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "V1152",
+    "name_fr": "CRAYONNOIR40PCSVERTEX\"V1152",
+    "purchase_price": 26.5,
+    "initial_quantity": 40,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONNOIRBOITDE50VERTEXVII58",
+    "name_fr": "CRAYONNOIRBOITDE50VERTEXVII58",
+    "purchase_price": 19.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "V1100",
+    "name_fr": "CRAYONNOIRVERTEX\"V1100",
+    "purchase_price": 20.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONNOIROFFICEVERTEXV1102",
+    "name_fr": "CRAYONNOIROFFICEVERTEXV1102",
+    "purchase_price": 19.5,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONNOIROFICE40PCSVERTEXV1157",
+    "name_fr": "CRAYONNOIROFICE40PCSVERTEXV1157",
+    "purchase_price": 20.5,
+    "initial_quantity": 40,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TCVERTEXV1166/B",
+    "name_fr": "CRAYONNOIRJUMBO10+TCVERTEXV1166/B",
+    "purchase_price": 31.5,
+    "initial_quantity": 40,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONNOIRPRST192EXINEIS01117",
+    "name_fr": "CRAYONNOIRPRST192EXINEIS01117",
+    "purchase_price": 29.8,
+    "initial_quantity": 192,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CRAYONNOIRB12PASTELEXINEIS01123",
+    "name_fr": "CRAYONNOIRB12PASTELEXINEIS01123",
+    "purchase_price": 9.5,
+    "initial_quantity": 144,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "5/14ECXCELESEP-0393",
+    "name_fr": "CARNETSPIRAL192P9.5/14ECXCELESEP-0393",
+    "purchase_price": 155.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "MYDIARYBOOKA6E100FEP-0478",
+    "name_fr": "MYDIARYBOOKA6E100FEP-0478",
+    "purchase_price": 235.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SMARTNOTEA6EXCELEP-0317",
+    "name_fr": "SMARTNOTEA6EXCELEP-0317",
+    "purchase_price": 135.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CARNETSP120PPEACEBOOKEXCELEP0389",
+    "name_fr": "CARNETSP120PPEACEBOOKEXCELEP0389",
+    "purchase_price": 75.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "10A7EXCELEP-0625",
+    "name_fr": "MINIBLOCNOTE7.4*10A7EXCELEP-0625",
+    "purchase_price": 32.5,
+    "initial_quantity": 40,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "MINIBOOKA6--SPLASH--EXCELLEEP-0341",
+    "name_fr": "MINIBOOKA6--SPLASH--EXCELLEEP-0341",
+    "purchase_price": 135.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CARNET160PCCEXCELEP-0146",
+    "name_fr": "CARNET160PCCEXCELEP-0146",
+    "purchase_price": 67.5,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "MINIBLOCNOTEA6EXCELLESEP-0626",
+    "name_fr": "MINIBLOCNOTEA6EXCELLESEP-0626",
+    "purchase_price": 55.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "EXCELLESEP-0318",
+    "name_fr": "MINIREGISTRE\"CELVER\"EXCELLESEP-0318",
+    "purchase_price": 195.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "14160PCCHILLAL2856",
+    "name_fr": "PETITCARNET10*14160PCCHILLAL2856",
+    "purchase_price": 55.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CARNETSPIRAL70PEXCELLEEP-0141",
+    "name_fr": "CARNETSPIRAL70PEXCELLEEP-0141",
+    "purchase_price": 45.0,
+    "initial_quantity": 30,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PETITCARNET96PSPIRALHILLAL3419",
+    "name_fr": "PETITCARNET96PSPIRALHILLAL3419",
+    "purchase_price": 47.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CARNETSPIRALFANTEXCELEP-0145",
+    "name_fr": "CARNETSPIRALFANTEXCELEP-0145",
+    "purchase_price": 26.5,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CARNETSPIRAL70PEXCELLEEP-0142",
+    "name_fr": "CARNETSPIRAL70PEXCELLEEP-0142",
+    "purchase_price": 26.5,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "7MMBLEUVERTEXVS5862",
+    "name_fr": "STYLOEFFACABLE0.7MMBLEUVERTEXVS5862",
+    "purchase_price": 185.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "7MMBLEUVERTEXVS5861",
+    "name_fr": "STYLO0.7MMBLEUVERTEXVS5861",
+    "purchase_price": 195.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "7MMBLEUVERTEXVS5864",
+    "name_fr": "STYLOEFFACABLE0.7MMBLEUVERTEXVS5864",
+    "purchase_price": 175.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "6MMUNO-GOLE",
+    "name_fr": "STYLOUNOMAXORIONGOLD0.6MMUNO-GOLE",
+    "purchase_price": 75.0,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "6MMVERTEXV5851",
+    "name_fr": "1eTVIOROELER1000M0.6MMVERTEXV5851",
+    "purchase_price": 75.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "7VERTEXVS1694",
+    "name_fr": "STYLOROLLER0.7VERTEXVS1694",
+    "purchase_price": 75.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOVISIONPRESENTLUXEXINEISI5116",
+    "name_fr": "STYLOVISIONPRESENTLUXEXINEISI5116",
+    "purchase_price": 75.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOVISIONPRESENTLUXEXINEISI5113",
+    "name_fr": "STYLOVISIONPRESENTLUXEXINEISI5113",
+    "purchase_price": 75.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PAPIERGOMMEA410FVERTEXVP059",
+    "name_fr": "PAPIERGOMMEA410FVERTEXVP059",
+    "purchase_price": 275.0,
+    "initial_quantity": 15,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PAPIERGOMMEA510FVERTEXVP058",
+    "name_fr": "PAPIERGOMMEA510FVERTEXVP058",
+    "purchase_price": 155.0,
+    "initial_quantity": 15,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PAPIERGOMMEA5POCH6FVERTEXVP061",
+    "name_fr": "PAPIERGOMMEA5POCH6FVERTEXVP061",
+    "purchase_price": 95.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PAPIERAGOMMEA510COLEXELLESEP-0180",
+    "name_fr": "PAPIERAGOMMEA510COLEXELLESEP-0180",
+    "purchase_price": 155.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PAPIERAGOMMEA410COLEXELLESEP-0181",
+    "name_fr": "PAPIERAGOMMEA410COLEXELLESEP-0181",
+    "purchase_price": 275.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PAPIERGOMMEPMPA2340",
+    "name_fr": "PAPIERGOMMEPMPA2340",
+    "purchase_price": 55.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PAPIERGOMMEMMPA2341",
+    "name_fr": "PAPIERGOMMEMMPA2341",
+    "purchase_price": 75.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PAPIERGOMME06COULA5EXINEIS0078",
+    "name_fr": "PAPIERGOMME06COULA5EXINEIS0078",
+    "purchase_price": 55.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "OPAIERGOMMEPFAUTOEVERESTEV9062",
+    "name_fr": "OPAIERGOMMEPFAUTOEVERESTEV9062",
+    "purchase_price": 55.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PAPIERGOMMEGFAUTOEVERESTEV9063",
+    "name_fr": "PAPIERGOMMEGFAUTOEVERESTEV9063",
+    "purchase_price": 105.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOMAGIQUEEXINEIS15016",
+    "name_fr": "STYLOMAGIQUEEXINEIS15016",
+    "purchase_price": 115.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "7VERTEXVS1675",
+    "name_fr": "STYLOEFFACABLE0.7VERTEXVS1675",
+    "purchase_price": 165.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOMAGIQUEEXINEIS15012",
+    "name_fr": "STYLOMAGIQUEEXINEIS15012",
+    "purchase_price": 115.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOLUXSCOOP50PCSVERSALVR-924",
+    "name_fr": "STYLOLUXSCOOP50PCSVERSALVR-924",
+    "purchase_price": 45.0,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOLUXCHROMA50PCSVERSALVR-932",
+    "name_fr": "STYLOLUXCHROMA50PCSVERSALVR-932",
+    "purchase_price": 35.0,
+    "initial_quantity": 50,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0547",
+    "name_fr": "STABILOSNAS1.0N/BRODESSRB54.1...",
+    "purchase_price": 65.0,
+    "initial_quantity": 72,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "5MMVERTEXV164P",
+    "name_fr": "STYLOROLLERANGELIKO0.5MMVERTEXV164P",
+    "purchase_price": 95.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STYLOMAGICPRESBOIT122MMM380",
+    "name_fr": "STYLOMAGICPRESBOIT122MMM380",
+    "purchase_price": 47.5,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "136ETIQUETTEAUTOEVERESTEV9069",
+    "name_fr": "136ETIQUETTEAUTOEVERESTEV9069",
+    "purchase_price": 105.0,
+    "initial_quantity": 30,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "EP-0670",
+    "name_fr": "37ETQUETTESCOL-CONTACT-P12 EXCELL EP-0670",
+    "purchase_price": 35.0,
+    "initial_quantity": 175,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "138ETIQUETTESCOLAIREVERTEXVP053",
+    "name_fr": "138ETIQUETTESCOLAIREVERTEXVP053",
+    "purchase_price": 45.0,
+    "initial_quantity": 100,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ETIQUETTESCOOLAUTOEVERESTEV9023",
+    "name_fr": "ETIQUETTESCOOLAUTOEVERESTEV9023",
+    "purchase_price": 155.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "STICKERSAUTOCLEVERESTEV9025",
+    "name_fr": "STICKERSAUTOCLEVERESTEV9025",
+    "purchase_price": 155.0,
+    "initial_quantity": 15,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ETIQUETTEAUTOEVERESTEV9073",
+    "name_fr": "ETIQUETTEAUTOEVERESTEV9073",
+    "purchase_price": 115.0,
+    "initial_quantity": 15,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ETIQUETTESCOOLAUTOEVERESTEV9024",
+    "name_fr": "ETIQUETTESCOOLAUTOEVERESTEV9024",
+    "purchase_price": 175.0,
+    "initial_quantity": 15,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TRACECERCLE20CMVERTEXVS0179",
+    "name_fr": "TRACECERCLE20CMVERTEXVS0179",
+    "purchase_price": 65.0,
+    "initial_quantity": 80,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLE30CMENSTAINLESSSTEELDELI8463",
+    "name_fr": "REGLE30CMENSTAINLESSSTEELDELI8463",
+    "purchase_price": 285.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLEMETAL30CMFANTAISIEBHM96218C-30",
+    "name_fr": "REGLEMETAL30CMFANTAISIEBHM96218C-30",
+    "purchase_price": 185.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLET30CMEXINEIS12036",
+    "name_fr": "REGLET30CMEXINEIS12036",
+    "purchase_price": 105.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TRACELETTREEXINEIS12008",
+    "name_fr": "148 151TRACE CERCLE ALGO 2415 149 150 REGLE MOTIF ADL BT40BC-6008 SCOTCH DECOR10M ROD 50.105 REGLE SERCL ADL BT40 BC-6012 TRACELETTREEXINEIS12008",
+    "purchase_price": 78.0,
+    "initial_quantity": 2,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "LESFLEX20CMEXINEIS12027",
+    "name_fr": "LESFLEX20CMEXINEIS12027",
+    "purchase_price": 85.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "REGLEPLIABLEMULTI-F30CMDELIG01102",
+    "name_fr": "REGLEPLIABLEMULTI-F30CMDELIG01102",
+    "purchase_price": 148.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BROSSEECOLPORTCRAIETECHNO9500",
+    "name_fr": "BROSSEECOLPORTCRAIETECHNO9500",
+    "purchase_price": 55.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "EQUERREVERTEXVS0273-2",
+    "name_fr": "EQUERREVERTEXVS0273",
+    "purchase_price": 17.5,
+    "initial_quantity": 100,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "TAILLECRAYON2USAGDELI39768-2",
+    "name_fr": "TAILLECRAYON2USAGDELI39768",
+    "purchase_price": 75.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BROSSEECOLIERVERSALVR-1567",
+    "name_fr": "BROSSEECOLIERVERSALVR-1567",
+    "purchase_price": 45.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BROSSET-PORTMARQUVERTEXVS5520",
+    "name_fr": "BROSSET-PORTMARQUVERTEXVS5520",
+    "purchase_price": 75.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BROSSEPORTECRAIEEVERESTEV2508",
+    "name_fr": "BROSSEPORTECRAIEEVERESTEV2508",
+    "purchase_price": 37.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BROSSETABLEAUMULTICOUCHNY2017NY",
+    "name_fr": "BROSSETABLEAUMULTICOUCHNY2017NY",
+    "purchase_price": 105.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BROSSEPORTECRAIEDELTAYA38017",
+    "name_fr": "BROSSEPORTECRAIEDELTAYA38017",
+    "purchase_price": 37.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BROSSEPORTECRAIEXZML2000XZ",
+    "name_fr": "BROSSEPORTECRAIEXZML2000XZ",
+    "purchase_price": 35.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BROSSETABLEAUVERSALVR-125",
+    "name_fr": "BROSSETABLEAUVERSALVR-125",
+    "purchase_price": 105.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BROSSET/BGMPLUMAPL5504",
+    "name_fr": "BROSSET/BGMPLUMAPL5504",
+    "purchase_price": 135.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BROSSEECOLP-MXZML2005",
+    "name_fr": "BROSSEECOLP-MXZML2005",
+    "purchase_price": 22.5,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BROSSEARDOISEGMYAPYA14109",
+    "name_fr": "BROSSEARDOISEGMYAPYA14109",
+    "purchase_price": 35.0,
+    "initial_quantity": 48,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BROSSEECOLIERPMVERTEXVS5521",
+    "name_fr": "BROSSEECOLIERPMVERTEXVS5521",
+    "purchase_price": 24.5,
+    "initial_quantity": 72,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PORMARQVISION4486",
+    "name_fr": "BROSSETABLEAU+PORMARQVISION4486",
+    "purchase_price": 245.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CARNETFANTALGO2096-16",
+    "name_fr": "CARNETFANTALGO2096-16",
+    "purchase_price": 125.0,
+    "initial_quantity": 16,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CARNETFANTALGO146-24",
+    "name_fr": "CARNETFANTALGO146-24",
+    "purchase_price": 125.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "CARNETFANTALGO444-24",
+    "name_fr": "CARNETFANTALGO444-24",
+    "purchase_price": 125.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "NOTEPADA5200PALRAYANERNOTA50582",
+    "name_fr": "NOTEPADA5200PALRAYANERNOTA50582",
+    "purchase_price": 195.0,
+    "initial_quantity": 15,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "NOTEPADA6200PALRAYANERNOTA60575",
+    "name_fr": "NOTEPADA6200PALRAYANERNOTA60575",
+    "purchase_price": 115.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "MINIREGISTRLUXEXCELLESEP-0205",
+    "name_fr": "MINIREGISTRLUXEXCELLESEP-0205",
+    "purchase_price": 185.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "MINIREGISTRLUXEXCELLESEP-0206",
+    "name_fr": "MINIREGISTRLUXEXCELLESEP-0206",
+    "purchase_price": 205.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "MINIREGISTRLUXEXCELLESEP-0282",
+    "name_fr": "MINIREGISTRLUXEXCELLESEP-0282",
+    "purchase_price": 195.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "MINIBOOK140P70GELHILLAL3099",
+    "name_fr": "MINIBOOK140P70GELHILLAL3099",
+    "purchase_price": 155.0,
+    "initial_quantity": 15,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "MINIBOOK140PPVCELASTIQUE70CRAYAN",
+    "name_fr": "MINIBOOK140PPVCELASTIQUE70CRAYAN",
+    "purchase_price": 165.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "75TECHNO5275",
+    "name_fr": "NOTEADHS400F75*75TECHNO5275",
+    "purchase_price": 375.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "NOTEADHESI400FTECHNO5150",
+    "name_fr": "NOTEADHESI400FTECHNO5150",
+    "purchase_price": 450.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "75FARAS90018",
+    "name_fr": "POST-ITNEON75*75FARAS90018",
+    "purchase_price": 82.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "POSTITMULTCOLEVERESTEV1122",
+    "name_fr": "POSTITMULTCOLEVERESTEV1122",
+    "purchase_price": 82.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "INTERCALAIREPMEV1124",
+    "name_fr": "INTERCALAIREPMEV1124",
+    "purchase_price": 115.0,
+    "initial_quantity": 72,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "POSTITMULTCOLEVERESTEVI121",
+    "name_fr": "POSTITMULTCOLEVERESTEVI121",
+    "purchase_price": 82.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "NOTESTICKNEON100VERTEXVP3335",
+    "name_fr": "NOTESTICKNEON100VERTEXVP3335",
+    "purchase_price": 82.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "NOTESFLACHEGINATG1346",
+    "name_fr": "NOTESFLACHEGINATG1346",
+    "purchase_price": 125.0,
+    "initial_quantity": 60,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "NOTESTICKNEON100VERTEXVP3333",
+    "name_fr": "NOTESTICKNEON100VERTEXVP3333",
+    "purchase_price": 185.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "LETTREMAGNETIQUEA/FEVERESTEV9234",
+    "name_fr": "LETTREMAGNETIQUEA/FEVERESTEV9234",
+    "purchase_price": 165.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0599",
+    "name_fr": "KITJUTONBUCHETTEROD07.123",
+    "purchase_price": 145.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ENSEMBLEJETO/BUCHETTESVERTEXVS0295",
+    "name_fr": "ENSEMBLEJETO/BUCHETTESVERTEXVS0295",
+    "purchase_price": 245.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "JETVERTEXVS0195",
+    "name_fr": "ENSEMBLEBUCH+JETVERTEXVS0195",
+    "purchase_price": 205.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BUCHETTEETJETONSTECHNO9396",
+    "name_fr": "BUCHETTEETJETONSTECHNO9396",
+    "purchase_price": 205.0,
+    "initial_quantity": 15,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "BUCHETTESPOTGIANTG1767",
+    "name_fr": "BUCHETTESPOTGIANTG1767",
+    "purchase_price": 65.0,
+    "initial_quantity": 40,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "JETONSPOTGIANTG1766",
+    "name_fr": "JETONSPOTGIANTG1766",
+    "purchase_price": 65.0,
+    "initial_quantity": 40,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0605",
+    "name_fr": "BUCHETTERODESS25.03",
+    "purchase_price": 65.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0606",
+    "name_fr": "JUTONRODESS25.02",
+    "purchase_price": 57.5,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "JETONPMENPOTVERTEXVS0146",
+    "name_fr": "JETONPMENPOTVERTEXVS0146",
+    "purchase_price": 75.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PUCHETTEPMENPOTVERTEXVS0145",
+    "name_fr": "PUCHETTEPMENPOTVERTEXVS0145",
+    "purchase_price": 75.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "JUTON/BUCHETTEOPEQUEXZML2024/2025",
+    "name_fr": "JUTON/BUCHETTEOPEQUEXZML2024/2025",
+    "purchase_price": 52.5,
+    "initial_quantity": 96,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS1336",
+    "name_fr": "PATEAMODLERVERTEXVS1336",
+    "purchase_price": 125.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERPLISTEREVRESTEV1458",
+    "name_fr": "PATEAMODLERPLISTEREVRESTEV1458",
+    "purchase_price": 105.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERPLISTEREVRESTEV1456",
+    "name_fr": "PATEAMODLERPLISTEREVRESTEV1456",
+    "purchase_price": 215.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS4081",
+    "name_fr": "PATEAMODLERVERTEXVS4081",
+    "purchase_price": 225.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATESLIMEBHM1023",
+    "name_fr": "PATESLIMEBHM1023",
+    "purchase_price": 275.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "SLIMEAHUILNY6033",
+    "name_fr": "SLIMEAHUILNY6033",
+    "purchase_price": 255.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS4033",
+    "name_fr": "PATEAMODLERVERTEXVS4033",
+    "purchase_price": 65.0,
+    "initial_quantity": 40,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS4032",
+    "name_fr": "PATEAMODLERVERTEXVS4032",
+    "purchase_price": 45.0,
+    "initial_quantity": 40,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODELERENPRESVERTEXVS0124",
+    "name_fr": "PATEAMODELERENPRESVERTEXVS0124",
+    "purchase_price": 27.5,
+    "initial_quantity": 40,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ENSEMBLEJETO/BUCHGAINTI545",
+    "name_fr": "ENSEMBLEJETO/BUCHGAINTI545",
+    "purchase_price": 125.0,
+    "initial_quantity": 30,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "KITEB/JPOTFLUORESCENTEVERESTEV9245",
+    "name_fr": "KITEB/JPOTFLUORESCENTEVERESTEV9245",
+    "purchase_price": 145.0,
+    "initial_quantity": 20,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS4063",
+    "name_fr": "PATEAMODLERVERTEXVS4063",
+    "purchase_price": 265.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERPLISTEREXINEIS04182",
+    "name_fr": "PATEAMODLERPLISTEREXINEIS04182",
+    "purchase_price": 65.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERPLISTEREXINEIS04177",
+    "name_fr": "PATEAMODLERPLISTEREXINEIS04177",
+    "purchase_price": 135.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS4041",
+    "name_fr": "PATEAMODLERVERTEXVS4041",
+    "purchase_price": 105.0,
+    "initial_quantity": 11,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS1312",
+    "name_fr": "PATEAMODLERVERTEXVS1312",
+    "purchase_price": 205.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERGAINTG1632",
+    "name_fr": "PATEAMODLERGAINTG1632",
+    "purchase_price": 235.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS4050",
+    "name_fr": "PATEAMODLERVERTEXVS4050",
+    "purchase_price": 145.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERGAINTG1626",
+    "name_fr": "PATEAMODLERGAINTG1626",
+    "purchase_price": 95.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERGAINTG1627",
+    "name_fr": "PATEAMODLERGAINTG1627",
+    "purchase_price": 115.0,
+    "initial_quantity": 10,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERPOT12TECHNO6949T",
+    "name_fr": "PATEAMODLERPOT12TECHNO6949T",
+    "purchase_price": 380.0,
     "initial_quantity": 5,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "A006",
-    "name_fr": "SAC A DOS A006 - CHOROUM",
-    "purchase_price": 850.0,
+    "code_article": "PATEAMODLERGAINTG1630",
+    "name_fr": "PATEAMODLERGAINTG1630",
+    "purchase_price": 235.0,
+    "initial_quantity": 3,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS1309",
+    "name_fr": "PATEAMODLERVERTEXVS1309",
+    "purchase_price": 295.0,
+    "initial_quantity": 3,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATAMODLERPOTEVERESTEV1447",
+    "name_fr": "PATAMODLERPOTEVERESTEV1447",
+    "purchase_price": 205.0,
     "initial_quantity": 7,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "BR-1-2",
-    "name_fr": "SAC A DOS BR-1 USB - CHOROUM (5p)",
-    "purchase_price": 800.0,
+    "code_article": "PATEAMODLERGAINTG1633",
+    "name_fr": "PATEAMODLERGAINTG1633",
+    "purchase_price": 248.0,
+    "initial_quantity": 4,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "ART-0635",
+    "name_fr": "PATEAMODLERPLISTERROD07.103",
+    "purchase_price": 155.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS1337",
+    "name_fr": "PATEAMODLERVERTEXVS1337",
+    "purchase_price": 105.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS1339",
+    "name_fr": "PATEAMODLERVERTEXVS1339",
+    "purchase_price": 150.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS4079",
+    "name_fr": "PATEAMODLERVERTEXVS4079",
+    "purchase_price": 265.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS4073",
+    "name_fr": "PATEAMODLERVERTEXVS4073",
+    "purchase_price": 135.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERCRISTALSK-T106/2MT",
+    "name_fr": "PATEAMODLERCRISTALSK-T106/2MT",
+    "purchase_price": 275.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLEREVERESTEV1402",
+    "name_fr": "PATEAMODLEREVERESTEV1402",
+    "purchase_price": 135.0,
+    "initial_quantity": 15,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERCARTEVERESTEV1408",
+    "name_fr": "PATEAMODLERCARTEVERESTEV1408",
+    "purchase_price": 165.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS1345",
+    "name_fr": "PATEAMODLERVERTEXVS1345",
+    "purchase_price": 105.0,
+    "initial_quantity": 30,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERPOTEVERESTEV1448",
+    "name_fr": "PATEAMODLERPOTEVERESTEV1448",
+    "purchase_price": 145.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERPOTEVERESTEV1446",
+    "name_fr": "PATEAMODLERPOTEVERESTEV1446",
+    "purchase_price": 155.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS4043",
+    "name_fr": "PATEAMODLERVERTEXVS4043",
+    "purchase_price": 115.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERISAAFVERTEXVS4038",
+    "name_fr": "PATEAMODLERISAAFVERTEXVS4038",
+    "purchase_price": 105.0,
+    "initial_quantity": 30,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS4044",
+    "name_fr": "PATEAMODLERVERTEXVS4044",
+    "purchase_price": 115.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS4045",
+    "name_fr": "PATEAMODLERVERTEXVS4045",
+    "purchase_price": 115.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERPLISTEREXINEIS041S1",
+    "name_fr": "PATEAMODLERPLISTEREXINEIS041S1",
+    "purchase_price": 80.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERPLISTEREXINEIS04183",
+    "name_fr": "PATEAMODLERPLISTEREXINEIS04183",
+    "purchase_price": 95.0,
+    "initial_quantity": 24,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATAMODLEREVERESTEV1404",
+    "name_fr": "PATAMODLEREVERESTEV1404",
+    "purchase_price": 155.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "MOULESPOTDELIH720-5",
+    "name_fr": "PATEAMODLER+MOULESPOTDELIH720-5",
+    "purchase_price": 545.0,
+    "initial_quantity": 2,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS4056",
+    "name_fr": "PATEAMODLERVERTEXVS4056",
+    "purchase_price": 255.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERISAAFVERTEXVS4037",
+    "name_fr": "PATEAMODLERISAAFVERTEXVS4037",
+    "purchase_price": 275.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS1311",
+    "name_fr": "PATEAMODLERVERTEXVS1311",
+    "purchase_price": 225.0,
+    "initial_quantity": 6,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERGAINTG1635",
+    "name_fr": "PATEAMODLERGAINTG1635",
+    "purchase_price": 380.0,
     "initial_quantity": 5,
     "barcode": null,
     "buyer": "Houari"
   },
   {
-    "code_article": "505..",
-    "name_fr": "SAC A DOS 505 - CHOROUM",
-    "purchase_price": 1000.0,
-    "initial_quantity": 6,
+    "code_article": "PATAMODLERPOTEVERESTEV1449",
+    "name_fr": "PATAMODLERPOTEVERESTEV1449",
+    "purchase_price": 175.0,
+    "initial_quantity": 7,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERPLISTEREVRESTEV1457",
+    "name_fr": "PATEAMODLERPLISTEREVRESTEV1457",
+    "purchase_price": 195.0,
+    "initial_quantity": 12,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERPLISTEREVRESTEV1400P",
+    "name_fr": "PATEAMODLERPLISTEREVRESTEV1400P",
+    "purchase_price": 65.0,
+    "initial_quantity": 36,
+    "barcode": null,
+    "buyer": "Houari"
+  },
+  {
+    "code_article": "PATEAMODLERVERTEXVS1326",
+    "name_fr": "PATEAMODLERVERTEXVS1326",
+    "purchase_price": 95.0,
+    "initial_quantity": 24,
     "barcode": null,
     "buyer": "Houari"
   }
