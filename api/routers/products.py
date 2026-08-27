@@ -14,10 +14,29 @@ router = APIRouter(prefix="/api/products", tags=["products"])
 def gen_code():
     return "ART-" + "".join(random.choices(string.digits, k=6))
 
+def normalize_barcodes(barcode_val: Optional[str] = None, barcodes_list: Optional[List[str]] = None) -> Optional[str]:
+    codes = []
+    if barcode_val:
+        codes.extend(re.split(r'[,;|\s]+', str(barcode_val).strip()))
+    if barcodes_list:
+        for b in barcodes_list:
+            if b:
+                codes.extend(re.split(r'[,;|\s]+', str(b).strip()))
+    
+    seen = set()
+    clean = []
+    for c in codes:
+        c_s = c.strip()
+        if c_s and c_s not in seen:
+            seen.add(c_s)
+            clean.append(c_s)
+    return ", ".join(clean[:5]) if clean else None
+
 class ProductCreate(BaseModel):
     name_fr: str
     name_ar: Optional[str] = None
     barcode: Optional[str] = None
+    barcodes: Optional[List[str]] = None
     code_article: Optional[str] = None
     category: Optional[str] = None
     purchase_price: float = 0.0
@@ -31,6 +50,7 @@ class ProductUpdate(BaseModel):
     name_fr: Optional[str] = None
     name_ar: Optional[str] = None
     barcode: Optional[str] = None
+    barcodes: Optional[List[str]] = None
     code_article: Optional[str] = None
     category: Optional[str] = None
     purchase_price: Optional[float] = None
@@ -41,7 +61,9 @@ class ProductUpdate(BaseModel):
 
 def product_to_admin_dict(p: Product) -> dict:
     return {
-        "id": p.id, "code_article": p.code_article, "barcode": p.barcode,
+        "id": p.id, "code_article": p.code_article,
+        "barcode": p.barcode,
+        "barcodes": p.barcode_list,
         "name_fr": p.name_fr, "name_ar": p.name_ar, "category": p.category,
         "purchase_price": p.purchase_price, "sell_price": p.sell_price,
         "min_quantity": p.min_quantity, "description": p.description,
@@ -52,7 +74,9 @@ def product_to_admin_dict(p: Product) -> dict:
 
 def product_to_seller_dict(p: Product, seller_qty: int) -> dict:
     return {
-        "id": p.id, "code_article": p.code_article, "barcode": p.barcode,
+        "id": p.id, "code_article": p.code_article,
+        "barcode": p.barcode,
+        "barcodes": p.barcode_list,
         "name_fr": p.name_fr, "name_ar": p.name_ar, "category": p.category,
         "sell_price": p.sell_price, "min_quantity": p.min_quantity,
         "seller_stock_quantity": seller_qty,
@@ -77,21 +101,28 @@ def search_products(
     if current_user.role == UserRole.admin:
         query = db.query(Product)
         if barcode:
-            p = query.filter(Product.barcode == barcode).first()
+            bc_q = barcode.strip()
+            p = query.filter(Product.barcode.ilike(f"%{bc_q}%")).first()
             return [product_to_admin_dict(p)] if p else []
         if q:
-            query = query.filter(Product.name_fr.ilike(f"%{q}%") | Product.code_article.ilike(f"%{q}%"))
-        return [product_to_admin_dict(p) for p in query.limit(20).all()]
+            query = query.filter(
+                Product.name_fr.ilike(f"%{q}%") | 
+                Product.code_article.ilike(f"%{q}%") |
+                Product.barcode.ilike(f"%{q}%")
+            )
+        return [product_to_admin_dict(p) for p in query.limit(30).all()]
     else:
         stocks = db.query(SellerStock).filter(SellerStock.seller_id == current_user.id, SellerStock.quantity > 0).all()
         results = []
         for ss in stocks:
             p = ss.product
-            if barcode and p.barcode == barcode:
-                return [product_to_seller_dict(p, ss.quantity)]
-            if q and (q.lower() in p.name_fr.lower() or q in (p.code_article or "")):
+            if barcode:
+                bc_q = barcode.strip()
+                if bc_q in p.barcode_list or (p.barcode and bc_q in p.barcode):
+                    return [product_to_seller_dict(p, ss.quantity)]
+            if q and (q.lower() in p.name_fr.lower() or q in (p.code_article or "") or q in (p.barcode or "")):
                 results.append(product_to_seller_dict(p, ss.quantity))
-        return results[:20]
+        return results[:30]
 
 @router.get("/{product_id}")
 def get_product(product_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
@@ -105,12 +136,14 @@ def create_product(data: ProductCreate, db: Session = Depends(get_db), admin: Us
     code = data.code_article or gen_code()
     while db.query(Product).filter(Product.code_article == code).first():
         code = gen_code()
+    
+    bc_clean = normalize_barcodes(data.barcode, data.barcodes)
     p = Product(
-        code_article=code, barcode=data.barcode or None,
+        code_article=code, barcode=bc_clean,
         name_fr=data.name_fr, name_ar=data.name_ar, category=data.category,
         purchase_price=data.purchase_price, sell_price=data.sell_price,
         min_quantity=data.min_quantity, description=data.description,
-        buyer=data.buyer or "Bilal",
+        buyer=data.buyer or "Bilal"
     )
     db.add(p)
     db.flush()
@@ -125,8 +158,14 @@ def update_product(product_id: int, data: ProductUpdate, db: Session = Depends(g
     p = db.query(Product).filter(Product.id == product_id).first()
     if not p:
         raise HTTPException(404, "Produit introuvable")
-    for field, val in data.dict(exclude_none=True).items():
-        setattr(p, field, val)
+    
+    update_data = data.dict(exclude_unset=True)
+    if "barcode" in update_data or "barcodes" in update_data:
+        update_data["barcode"] = normalize_barcodes(update_data.get("barcode"), update_data.get("barcodes"))
+        update_data.pop("barcodes", None)
+        
+    for k, v in update_data.items():
+        setattr(p, k, v)
     db.commit()
     db.refresh(p)
     return product_to_admin_dict(p)
