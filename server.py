@@ -41,7 +41,16 @@ except Exception as e:
     print(f"[WARN] Seed initialization failed: {e}")
 
 # ── FastAPI app ───────────────────────────────────────────────────────────────
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(title="EduShop", version="2.0", docs_url="/api/docs")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # ── Static files and templates ────────────────────────────────────────────────
 BASE_DIR = Path(__file__).resolve().parent
