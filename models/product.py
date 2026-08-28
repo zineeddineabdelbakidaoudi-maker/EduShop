@@ -23,7 +23,7 @@ class Product(Base):
     def barcode_list(self) -> list:
         if not self.barcode:
             return []
-        return [b.strip() for b in re.split(r'[,;|\s]+', self.barcode) if b.strip()][:5]
+        return [b.strip() for b in re.split(r'[,;|\s]+', self.barcode) if b.strip()][:50]
 
     global_stock = relationship("GlobalStock", back_populates="product", uselist=False, cascade="all, delete-orphan")
     seller_stock = relationship("SellerStock", back_populates="product", cascade="all, delete-orphan")

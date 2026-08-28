@@ -30,7 +30,7 @@ def normalize_barcodes(barcode_val: Optional[str] = None, barcodes_list: Optiona
         if c_s and c_s not in seen:
             seen.add(c_s)
             clean.append(c_s)
-    return ", ".join(clean[:5]) if clean else None
+    return ", ".join(clean[:50]) if clean else None
 
 class ProductCreate(BaseModel):
     name_fr: str
