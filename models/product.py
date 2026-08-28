@@ -1,6 +1,6 @@
 import datetime
 import re
-from sqlalchemy import Column, Integer, String, Float, DateTime
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean
 from sqlalchemy.orm import relationship
 from db.base import Base
 
@@ -17,6 +17,7 @@ class Product(Base):
     min_quantity = Column(Integer, default=5)
     description = Column(String, nullable=True)
     buyer = Column(String, default="Bilal", nullable=True)
+    fast_panel = Column(Boolean, default=False, nullable=True)  # Admin toggle for POS fast-access sidebar
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     @property

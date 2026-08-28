@@ -1,4 +1,4 @@
-﻿from typing import List, Optional
+from typing import List, Optional
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -47,6 +47,7 @@ def sync_pull(db: Session = Depends(get_db), seller: User = Depends(require_sell
                 "category": p.category,
                 "sell_price": p.sell_price,
                 "min_quantity": p.min_quantity,
+                "fast_panel": bool(p.fast_panel),
                 "quantity": ss.quantity
             })
     return {

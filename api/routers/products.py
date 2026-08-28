@@ -44,6 +44,7 @@ class ProductCreate(BaseModel):
     min_quantity: int = 5
     description: Optional[str] = None
     buyer: Optional[str] = "Bilal"
+    fast_panel: Optional[bool] = False
     initial_quantity: int = 0
 
 class ProductUpdate(BaseModel):
@@ -58,6 +59,7 @@ class ProductUpdate(BaseModel):
     min_quantity: Optional[int] = None
     description: Optional[str] = None
     buyer: Optional[str] = None
+    fast_panel: Optional[bool] = None
 
 def product_to_admin_dict(p: Product) -> dict:
     return {
@@ -68,6 +70,7 @@ def product_to_admin_dict(p: Product) -> dict:
         "purchase_price": p.purchase_price, "sell_price": p.sell_price,
         "min_quantity": p.min_quantity, "description": p.description,
         "buyer": p.buyer or "Bilal",
+        "fast_panel": bool(p.fast_panel),
         "created_at": p.created_at,
         "global_stock_quantity": p.global_stock.quantity if p.global_stock else 0,
     }
@@ -79,6 +82,7 @@ def product_to_seller_dict(p: Product, seller_qty: int) -> dict:
         "barcodes": p.barcode_list,
         "name_fr": p.name_fr, "name_ar": p.name_ar, "category": p.category,
         "sell_price": p.sell_price, "min_quantity": p.min_quantity,
+        "fast_panel": bool(p.fast_panel),
         "seller_stock_quantity": seller_qty,
     }
 
@@ -131,6 +135,16 @@ def get_product(product_id: int, db: Session = Depends(get_db), admin: User = De
         raise HTTPException(404, "Produit introuvable")
     return product_to_admin_dict(p)
 
+@router.post("/{product_id}/toggle-fast-panel")
+def toggle_fast_panel(product_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+    p = db.query(Product).filter(Product.id == product_id).first()
+    if not p:
+        raise HTTPException(404, "Produit introuvable")
+    p.fast_panel = not bool(p.fast_panel)
+    db.commit()
+    db.refresh(p)
+    return {"id": p.id, "fast_panel": p.fast_panel, "name_fr": p.name_fr}
+
 @router.post("", status_code=201)
 def create_product(data: ProductCreate, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     code = data.code_article or gen_code()
@@ -143,7 +157,8 @@ def create_product(data: ProductCreate, db: Session = Depends(get_db), admin: Us
         name_fr=data.name_fr, name_ar=data.name_ar, category=data.category,
         purchase_price=data.purchase_price, sell_price=data.sell_price,
         min_quantity=data.min_quantity, description=data.description,
-        buyer=data.buyer or "Bilal"
+        buyer=data.buyer or "Bilal",
+        fast_panel=bool(data.fast_panel)
     )
     db.add(p)
     db.flush()
