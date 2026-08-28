@@ -6,7 +6,19 @@ async function api(method, url, body = null) {
     const res = await fetch(url, opts);
     if (res.status === 401) { window.location.href = "/"; return null; }
     if (res.status === 204) return true;
-    const data = await res.json();
+    
+    let data;
+    const text = await res.text();
+    try {
+      data = JSON.parse(text);
+    } catch(err) {
+      if (!res.ok) {
+        showToast("Erreur serveur (" + res.status + "): " + text.slice(0, 80), "error");
+        return null;
+      }
+      return text;
+    }
+
     if (!res.ok) {
       showToast(data.detail || "Erreur serveur", "error");
       return null;

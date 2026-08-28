@@ -17,10 +17,21 @@ import models  # noqa: F401
 
 # ── Create all tables ─────────────────────────────────────────────────────────
 from db.base import engine, Base
+from sqlalchemy import text
 try:
     Base.metadata.create_all(bind=engine)
+    with engine.connect() as conn:
+        for col_sql in [
+            "ALTER TABLE products ADD COLUMN fast_panel BOOLEAN DEFAULT FALSE",
+            "ALTER TABLE products ADD COLUMN buyer VARCHAR DEFAULT 'Bilal'"
+        ]:
+            try:
+                conn.execute(text(col_sql))
+                conn.commit()
+            except Exception:
+                pass
 except Exception as e:
-    print(f"[WARN] Table creation failed on primary engine ({e})")
+    print(f"[WARN] Table creation or auto-migration failed on primary engine ({e})")
 
 # ── Import and run seed ───────────────────────────────────────────────────────
 from db.seed import seed
