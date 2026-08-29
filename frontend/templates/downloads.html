@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduShop — Téléchargement des Applications Desktop</title>
+  <link rel="stylesheet" href="/static/css/app.css">
+  <style>
+    body {
+      background: radial-gradient(circle at top, #1e1e38 0%, #0b0b16 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #f8fafc;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    .dl-container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+      width: 100%;
+    }
+    .dl-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .dl-header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #f5a623;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+    .dl-header p {
+      color: #94a3b8;
+      font-size: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .dl-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    .dl-card {
+      background: #16162d;
+      border: 1px solid #2d2d54;
+      border-radius: 16px;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .dl-card:hover {
+      transform: translateY(-4px);
+      border-color: #3b82f6;
+    }
+    .dl-badge {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .dl-badge-pos { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981; }
+    .dl-badge-admin { background: rgba(245, 166, 35, 0.2); color: #f5a623; border: 1px solid #f59e0b; }
+    .dl-badge-pack { background: rgba(59, 130, 246, 0.2); color: #38bdf8; border: 1px solid #3b82f6; }
+    .dl-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+    .dl-desc {
+      color: #94a3b8;
+      font-size: 13.5px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+    .dl-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 24px 0;
+      color: #cbd5e1;
+      font-size: 13px;
+    }
+    .dl-features li {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-dl-main {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #fff;
+      padding: 13px 20px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: opacity 0.2s, transform 0.1s;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.4);
+    }
+    .btn-dl-main:hover {
+      opacity: 0.95;
+      color: #fff;
+      transform: scale(1.02);
+    }
+    .btn-dl-pos {
+      background: linear-gradient(135deg, #10b981, #059669);
+      box-shadow: 0 4px 14px rgba(16,185,129,0.4);
+    }
+    .btn-dl-admin {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      box-shadow: 0 4px 14px rgba(245,158,11,0.4);
+    }
+    .btn-dl-sub {
+      background: transparent;
+      color: #94a3b8;
+      border: 1px solid #334155;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      margin-top: 10px;
+      transition: background 0.15s;
+    }
+    .btn-dl-sub:hover {
+      background: #1e293b;
+      color: #fff;
+    }
+    .dl-footer-nav {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .dl-footer-nav a {
+      color: #f5a623;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="dl-container">
+    <div class="dl-header">
+      <h1>📥 Centre de Téléchargement EduShop</h1>
+      <p>Téléchargez les applications officielles pour Windows (10 / 11). Prêtes à l'emploi sans installation requise !</p>
+    </div>
+
+    <div class="dl-grid">
+      <!-- Card 1: Caisse POS -->
+      <div class="dl-card">
+        <span class="dl-badge dl-badge-pos">💻 Postes de Caisse</span>
+        <h2 class="dl-title">EduShop Caisse (POS)</h2>
+        <p class="dl-desc">Logiciel ultra-rapide pour les caissiers, vente au comptoir, tickets et encaissement direct.</p>
+        <ul class="dl-features">
+          <li>⚡ Panneau latéral d'accès rapide (Protèges & Favoris)</li>
+          <li>🔫 Compatible tous scanners code-barres USB</li>
+          <li>🖨️ Impression tickets XPrinter (58mm / 80mm)</li>
+          <li>🌐 Fonctionne en ligne et hors ligne (Auto-sync)</li>
+        </ul>
+        <a href="/static/downloads/EduShop_Caisse.exe" download="EduShop_Caisse.exe" class="btn-dl-main btn-dl-pos">
+          ⬇️ Télécharger Caisse.exe (48 MB)
+        </a>
+        <a href="/static/downloads/EduShop_Caisse.zip" download="EduShop_Caisse.zip" class="btn-dl-sub">
+          📦 Télécharger version .ZIP
+        </a>
+      </div>
+
+      <!-- Card 2: Admin & Etiquettes -->
+      <div class="dl-card">
+        <span class="dl-badge dl-badge-admin">👑 Gestion & Impression</span>
+        <h2 class="dl-title">EduShop Admin & Étiquettes</h2>
+        <p class="dl-desc">Générateur de codes-barres GS1 EAN-13, impression d'étiquettes thermiques et gestion des articles.</p>
+        <ul class="dl-features">
+          <li>🏷️ Génération 1-clic de codes EAN-13 valides</li>
+          <li>🖨️ Impression d'étiquettes (40x30, 50x30, 58x40...)</li>
+          <li>🔍 Tableau de recherche rapide & filtres combinables</li>
+          <li>⭐ Activation directe sur le Panneau Caisse</li>
+        </ul>
+        <a href="/static/downloads/EduShop_Admin.exe" download="EduShop_Admin.exe" class="btn-dl-main btn-dl-admin">
+          ⬇️ Télécharger Admin.exe (47 MB)
+        </a>
+        <a href="/static/downloads/EduShop_Admin.zip" download="EduShop_Admin.zip" class="btn-dl-sub">
+          📦 Télécharger version .ZIP
+        </a>
+      </div>
+
+      <!-- Card 3: Pack Complet -->
+      <div class="dl-card">
+        <span class="dl-badge dl-badge-pack">📦 Tout-en-Un</span>
+        <h2 class="dl-title">Pack Complet EduShop</h2>
+        <p class="dl-desc">Contient l'ensemble des logiciels (Caisse + Admin) dans une seule archive compressée.</p>
+        <ul class="dl-features">
+          <li>✅ EduShop_Caisse.exe inclus</li>
+          <li>✅ EduShop_Admin.exe inclus</li>
+          <li>🚀 Idéal pour installer rapidement un nouveau PC</li>
+          <li>🔒 Mises à jour Cloud automatiques</li>
+        </ul>
+        <a href="/static/downloads/EduShop_Pack_Complet.zip" download="EduShop_Pack_Complet.zip" class="btn-dl-main">
+          📦 Télécharger le Pack ZIP (94 MB)
+        </a>
+        <div style="text-align:center;font-size:11px;color:#64748b;margin-top:14px;">
+          Compatible Windows 7, 8, 10, 11 (64-bit)
+        </div>
+      </div>
+    </div>
+
+    <div class="dl-footer-nav">
+      <a href="/admin/products">⬅️ Revenir au Catalogue Web Admin</a> &nbsp;|&nbsp; 
+      <a href="/">🔐 Page de Connexion</a>
+    </div>
+  </div>
+</body>
+</html>

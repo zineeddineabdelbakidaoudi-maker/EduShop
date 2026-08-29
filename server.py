@@ -8,7 +8,7 @@ from pathlib import Path
 
 import uvicorn
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -72,6 +72,31 @@ app.include_router(inventory.router)
 app.include_router(ws_router)
 
 # ── Frontend page routes ──────────────────────────────────────────────────────
+@app.get("/downloads", response_class=HTMLResponse)
+def downloads_page(request: Request):
+    return templates.TemplateResponse(request=request, name="downloads.html")
+
+@app.get("/download/caisse")
+def download_caisse():
+    p = BASE_DIR / "frontend" / "static" / "downloads" / "EduShop_Caisse.exe"
+    if p.exists():
+        return FileResponse(path=str(p), filename="EduShop_Caisse.exe", media_type="application/octet-stream")
+    return RedirectResponse("/downloads")
+
+@app.get("/download/admin")
+def download_admin():
+    p = BASE_DIR / "frontend" / "static" / "downloads" / "EduShop_Admin.exe"
+    if p.exists():
+        return FileResponse(path=str(p), filename="EduShop_Admin.exe", media_type="application/octet-stream")
+    return RedirectResponse("/downloads")
+
+@app.get("/download/pack")
+def download_pack():
+    p = BASE_DIR / "frontend" / "static" / "downloads" / "EduShop_Pack_Complet.zip"
+    if p.exists():
+        return FileResponse(path=str(p), filename="EduShop_Pack_Complet.zip", media_type="application/zip")
+    return RedirectResponse("/downloads")
+
 @app.get("/", response_class=HTMLResponse)
 def login_page(request: Request):
     return templates.TemplateResponse(request=request, name="login.html")
