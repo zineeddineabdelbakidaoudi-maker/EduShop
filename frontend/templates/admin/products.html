@@ -33,34 +33,59 @@
         <button class="btn btn-primary" onclick="openCreate()">+ Nouveau Produit</button>
       </div>
     </div>
-    <div class="card">
-      <div class="toolbar" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between;padding:12px 16px;background:rgba(255,255,255,0.02);border-radius:10px;margin-bottom:14px;border:1px solid var(--border)">
-        <input class="search-box" id="search" placeholder="🔍 Rechercher par nom, code article, code-barres, gérant..." oninput="filterTable()" style="max-width:380px;flex:1">
+
+    <!-- Top Summary KPI Cards -->
+    <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-bottom: 16px;">
+      <div class="kpi-card" onclick="setBarcodeFilter('all')" style="cursor:pointer;border-left:4px solid #3b82f6;background:var(--card);border-radius:10px;padding:14px 18px;border-top:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border);" title="Afficher tous les articles">
+        <div class="kpi-label" style="font-size:12px;color:var(--text2);font-weight:700;">📦 TOTAL CATALOGUE</div>
+        <div class="kpi-value" id="kpi-all" style="color:#3b82f6;font-size:26px;font-weight:800;margin:4px 0;">0</div>
+        <div style="font-size:11px;color:var(--text2);">Tous les articles enregistrés</div>
+      </div>
+      <div class="kpi-card" onclick="setBarcodeFilter('with')" style="cursor:pointer;border-left:4px solid #10b981;background:var(--card);border-radius:10px;padding:14px 18px;border-top:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border);" title="Afficher avec code-barres">
+        <div class="kpi-label" style="font-size:12px;color:var(--text2);font-weight:700;">🏷️ AVEC CODE-BARRES</div>
+        <div class="kpi-value" id="kpi-with" style="color:#10b981;font-size:26px;font-weight:800;margin:4px 0;">0</div>
+        <div style="font-size:11px;color:var(--text2);">Prêts pour scanner USB</div>
+      </div>
+      <div class="kpi-card" onclick="setBarcodeFilter('without')" style="cursor:pointer;border-left:4px solid #f59e0b;background:var(--card);border-radius:10px;padding:14px 18px;border-top:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border);" title="Afficher sans code-barres">
+        <div class="kpi-label" style="font-size:12px;color:var(--text2);font-weight:700;">⚠️ SANS CODE-BARRES</div>
+        <div class="kpi-value" id="kpi-without" style="color:#f59e0b;font-size:26px;font-weight:800;margin:4px 0;">0</div>
+        <div style="font-size:11px;color:var(--text2);">À étiqueter / imprimer</div>
+      </div>
+      <div class="kpi-card" onclick="setBarcodeFilter('fast')" style="cursor:pointer;border-left:4px solid #eab308;background:var(--card);border-radius:10px;padding:14px 18px;border-top:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border);" title="Afficher accès rapide caisse">
+        <div class="kpi-label" style="font-size:12px;color:var(--text2);font-weight:700;">⚡ CAISSE RAPIDE</div>
+        <div class="kpi-value" id="kpi-fast" style="color:#eab308;font-size:26px;font-weight:800;margin:4px 0;">0</div>
+        <div style="font-size:11px;color:var(--text2);">Favoris en 1 clic caissier</div>
+      </div>
+    </div>
+
+    <div class="card" style="box-shadow: 0 4px 20px rgba(0,0,0,0.15); border: 1px solid var(--border);">
+      <div class="toolbar" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between;padding:14px 18px;background:rgba(255,255,255,0.02);border-radius:10px;margin-bottom:14px;border:1px solid var(--border)">
+        <input class="search-box" id="search" placeholder="🔍 Rechercher par nom, code article, code-barres, gérant..." oninput="filterTable()" style="max-width:380px;flex:1;padding:10px 14px;font-size:14px;border-radius:8px;">
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-          <span style="font-size:13px;color:var(--text2);font-weight:600">Filtrage Code-barres :</span>
-          <button type="button" class="btn btn-secondary bc-filter-btn active-filter" id="btn-filter-all" onclick="setBarcodeFilter('all')" style="padding:6px 14px;border-radius:20px;font-size:13px;font-weight:bold;background:#2563eb;color:#fff">
+          <span style="font-size:13px;color:var(--text2);font-weight:700">Filtres :</span>
+          <button type="button" class="btn btn-secondary bc-filter-btn active-filter" id="btn-filter-all" onclick="setBarcodeFilter('all')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;background:#2563eb;color:#fff">
             📋 Tous <span id="count-all" style="background:rgba(255,255,255,0.25);padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
           </button>
-          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-with" onclick="setBarcodeFilter('with')" style="padding:6px 14px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #10b981;color:#10b981">
+          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-with" onclick="setBarcodeFilter('with')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #10b981;color:#10b981">
             ✅ Avec Code-barres <span id="count-with" style="background:#10b981;color:#fff;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
           </button>
-          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-without" onclick="setBarcodeFilter('without')" style="padding:6px 14px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #f59e0b;color:#f59e0b">
+          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-without" onclick="setBarcodeFilter('without')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #f59e0b;color:#f59e0b">
             ⚠️ Sans Code-barres <span id="count-without" style="background:#f59e0b;color:#111;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
           </button>
-          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-fast" onclick="setBarcodeFilter('fast')" style="padding:6px 14px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #eab308;color:#eab308">
+          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-fast" onclick="setBarcodeFilter('fast')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #eab308;color:#eab308">
             ⚡ Panneau Caisse <span id="count-fast" style="background:#eab308;color:#111;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
           </button>
         </div>
       </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px 10px;font-size:12px;color:var(--text2);flex-wrap:wrap;gap:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px 12px;font-size:12px;color:var(--text2);flex-wrap:wrap;gap:8px">
         <div>
           <span>⌨️ Raccourcis clavier : 
-            <kbd style="background:var(--border);padding:2px 7px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">E</kbd> Modifier &bull; 
-            <kbd style="background:var(--border);padding:2px 7px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">P</kbd> Prix Achat &bull; 
-            <kbd style="background:var(--border);padding:2px 7px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">V</kbd> Marge % &bull; 
-            <kbd style="background:var(--border);padding:2px 7px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">S</kbd> Stock &bull; 
-            <kbd style="background:var(--border);padding:2px 7px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">Espace</kbd> ou <kbd style="background:var(--border);padding:2px 7px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">Entrée</kbd> Enregistrer &bull; 
-            <kbd style="background:var(--border);padding:2px 7px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">↑ / ↓</kbd> Naviguer
+            <kbd style="background:var(--border);padding:3px 8px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">E</kbd> Modifier &bull; 
+            <kbd style="background:var(--border);padding:3px 8px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">P</kbd> Prix Achat &bull; 
+            <kbd style="background:var(--border);padding:3px 8px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">V</kbd> Marge % &bull; 
+            <kbd style="background:var(--border);padding:3px 8px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">S</kbd> Stock &bull; 
+            <kbd style="background:var(--border);padding:3px 8px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">Espace</kbd> ou <kbd style="background:var(--border);padding:3px 8px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">Entrée</kbd> Enregistrer &bull; 
+            <kbd style="background:var(--border);padding:3px 8px;border-radius:4px;color:var(--accent);font-weight:bold;font-family:monospace">↑ / ↓</kbd> Naviguer
           </span>
         </div>
         <div style="font-size:11px;color:var(--green);font-weight:600">
@@ -68,20 +93,20 @@
         </div>
       </div>
       <div class="table-wrap">
-        <table>
+        <table style="border:1px solid var(--border);border-radius:8px;overflow:hidden;">
           <thead>
-            <tr>
-              <th>Code Art.</th>
-              <th>Code-barres</th>
-              <th>Désignation FR</th>
-              <th>Gérant / Acheteur</th>
-              <th>Catégorie</th>
-              <th>⚡ Caisse Rapide</th>
-              <th>Prix Achat [P]</th>
-              <th>Marge % [V]</th>
-              <th>Prix Vente</th>
-              <th>Stock Global [S]</th>
-              <th>Actions</th>
+            <tr style="background:#1e293b;border-bottom:2px solid var(--accent);">
+              <th style="padding:12px 14px;color:#38bdf8;font-size:12px;font-weight:bold;">CODE ART.</th>
+              <th style="padding:12px 14px;color:#38bdf8;font-size:12px;font-weight:bold;">CODE-BARRES</th>
+              <th style="padding:12px 14px;color:#f8fafc;font-size:12px;font-weight:bold;">DÉSIGNATION FR</th>
+              <th style="padding:12px 14px;color:#38bdf8;font-size:12px;font-weight:bold;">GÉRANT</th>
+              <th style="padding:12px 14px;color:#94a3b8;font-size:12px;font-weight:bold;">CATÉGORIE</th>
+              <th style="padding:12px 14px;color:#eab308;font-size:12px;font-weight:bold;text-align:center;">⚡ CAISSE</th>
+              <th style="padding:12px 14px;color:#94a3b8;font-size:12px;font-weight:bold;">PRIX ACHAT [P]</th>
+              <th style="padding:12px 14px;color:#10b981;font-size:12px;font-weight:bold;">MARGE % [V]</th>
+              <th style="padding:12px 14px;color:#fbbf24;font-size:12px;font-weight:bold;">PRIX VENTE</th>
+              <th style="padding:12px 14px;color:#38bdf8;font-size:12px;font-weight:bold;text-align:center;">STOCK [S]</th>
+              <th style="padding:12px 14px;color:#94a3b8;font-size:12px;font-weight:bold;text-align:center;">ACTIONS</th>
             </tr>
           </thead>
           <tbody id="products-table"></tbody>
@@ -230,6 +255,16 @@ function updateCounts(){
   if(elWith) elWith.textContent = withBc;
   if(elWithout) elWithout.textContent = withoutBc;
   if(elFast) elFast.textContent = fastCount;
+
+  const kpiAll = document.getElementById("kpi-all");
+  const kpiWith = document.getElementById("kpi-with");
+  const kpiWithout = document.getElementById("kpi-without");
+  const kpiFast = document.getElementById("kpi-fast");
+
+  if(kpiAll) kpiAll.textContent = total;
+  if(kpiWith) kpiWith.textContent = withBc;
+  if(kpiWithout) kpiWithout.textContent = withoutBc;
+  if(kpiFast) kpiFast.textContent = fastCount;
 }
 
 function setBarcodeFilter(mode){
@@ -265,6 +300,7 @@ async function toggleFastPanel(id){
     const p = products.find(x => x.id === id);
     if(p) p.fast_panel = res.fast_panel;
     showToast(res.fast_panel ? `⭐ "${res.name_fr}" activé sur le Panneau Rapide Caisse !` : `"${res.name_fr}" retiré du Panneau Rapide.`);
+    updateCounts();
     filterTable();
   }
 }
@@ -272,7 +308,7 @@ async function toggleFastPanel(id){
 function renderTable(data){
   currentFilteredProducts = data || [];
   if(!currentFilteredProducts.length){
-    document.getElementById("products-table").innerHTML = `<tr><td colspan="11" style="text-align:center;padding:30px;color:var(--text2)">Aucun produit correspondant au filtre sélectionné.</td></tr>`;
+    document.getElementById("products-table").innerHTML = `<tr><td colspan="11" style="text-align:center;padding:35px;font-size:14px;color:var(--text2)">Aucun produit correspondant au filtre sélectionné.</td></tr>`;
     return;
   }
   
@@ -285,35 +321,37 @@ function renderTable(data){
     const margin = p.purchase_price > 0 ? ((p.sell_price - p.purchase_price) / p.purchase_price * 100).toFixed(1) : "—";
     const buyerVal = p.buyer || "Bilal";
     const buyerBadge = (buyerVal.toLowerCase() === "houari") ?
-      `<span style="background:#7c3aed;color:#fff;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:bold">👤 Houari</span>` :
-      `<span style="background:#2563eb;color:#fff;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:bold">👤 ${buyerVal}</span>`;
+      `<span style="background:#7c3aed;color:#fff;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:bold;display:inline-block">👤 Houari</span>` :
+      `<span style="background:#2563eb;color:#fff;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:bold;display:inline-block">👤 ${buyerVal}</span>`;
     
     const isFast = !!p.fast_panel;
     const fastBtn = isFast ?
-      `<button type="button" class="btn" style="background:#f59e0b;color:#111;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:bold" onclick="event.stopPropagation();toggleFastPanel(${p.id})" title="Cliquer pour retirer du panneau rapide caisse">⭐ Actif</button>` :
-      `<button type="button" class="btn" style="background:rgba(255,255,255,0.06);color:var(--text2);padding:3px 8px;border-radius:12px;font-size:11px" onclick="event.stopPropagation();toggleFastPanel(${p.id})" title="Cliquer pour activer sur le panneau rapide caisse">☆ Inactif</button>`;
+      `<button type="button" class="btn" style="background:#f59e0b;color:#111;padding:4px 10px;border-radius:14px;font-size:11px;font-weight:bold;box-shadow:0 2px 8px rgba(245,158,11,0.3)" onclick="event.stopPropagation();toggleFastPanel(${p.id})" title="Cliquer pour retirer du panneau rapide caisse">⭐ Actif</button>` :
+      `<button type="button" class="btn" style="background:rgba(255,255,255,0.06);color:var(--text2);padding:4px 10px;border-radius:14px;font-size:11px;border:1px solid var(--border)" onclick="event.stopPropagation();toggleFastPanel(${p.id})" title="Cliquer pour activer sur le panneau rapide caisse">☆ Inactif</button>`;
 
     const bcs = (p.barcodes && p.barcodes.length) ? p.barcodes : (p.barcode ? p.barcode.split(/[,;\s]+/).filter(Boolean) : []);
     const bcDisplay = bcs.length ?
-      bcs.map(b => `<span style="display:inline-block;margin:1px;color:#10b981;font-weight:bold;font-family:monospace;background:rgba(16,185,129,0.12);padding:2px 6px;border-radius:4px;font-size:11px">🏷️ ${b}</span>`).join(" ") :
-      `<span style="color:#f59e0b;font-size:11px;font-weight:600;background:rgba(245,158,11,0.1);padding:2px 6px;border-radius:4px">⚠️ Sans code-barres</span>`;
+      bcs.map(b => `<span style="display:inline-block;margin:1px;color:#10b981;font-weight:bold;font-family:monospace;background:rgba(16,185,129,0.12);padding:3px 7px;border-radius:4px;font-size:11px">🏷️ ${b}</span>`).join(" ") :
+      `<span style="color:#f59e0b;font-size:11px;font-weight:bold;background:rgba(245,158,11,0.12);padding:3px 7px;border-radius:4px">⚠️ Sans code-barres</span>`;
 
-    const rowStyle = isSelected ? "background:rgba(37,99,235,0.18) !important;outline:2px solid var(--accent);outline-offset:-2px" : "";
+    const rowStyle = isSelected ? "background:rgba(37,99,235,0.2) !important;outline:2px solid #38bdf8;outline-offset:-2px" : "";
 
     return `<tr onclick="selectRow(${p.id})" ondblclick="openEdit(${p.id})" class="${isSelected ? 'selected-prod-row' : ''}" style="cursor:pointer;${rowStyle}" title="💡 Cliquez pour sélectionner ([E] Modifier, [P] Prix Achat, [V] Marge, [S] Stock)">
-      <td><code>${p.code_article}</code></td>
+      <td><code style="background:rgba(56,189,248,0.1);color:#38bdf8;padding:3px 6px;border-radius:4px;font-weight:bold;font-size:12px">${p.code_article}</code></td>
       <td>${bcDisplay}</td>
-      <td><b>${p.name_fr}</b>${p.name_ar ? `<br><small style="color:var(--text2)">${p.name_ar}</small>` : ""}</td>
+      <td><span style="font-size:14px;font-weight:700;color:var(--text)">${p.name_fr}</span>${p.name_ar ? `<br><small style="color:var(--text2);font-weight:600">${p.name_ar}</small>` : ""}</td>
       <td>${buyerBadge}</td>
-      <td>${p.category || "—"}</td>
+      <td style="color:var(--text2);font-weight:600">${p.category || "—"}</td>
       <td style="text-align:center">${fastBtn}</td>
-      <td>${fmtDA(p.purchase_price)}</td>
-      <td style="color:var(--green)">${margin}%</td>
-      <td style="color:var(--accent);font-weight:700">${fmtDA(p.sell_price)}</td>
-      <td class="${p.global_stock_quantity <= p.min_quantity ? "low-stock" : ""}"><b>${p.global_stock_quantity}</b></td>
-      <td style="display:flex;gap:6px">
-        <button class="btn btn-secondary" style="padding:4px 8px;font-size:12px" onclick="event.stopPropagation();openEdit(${p.id})" title="Modifier [Touche E]">✏️</button>
-        <button class="btn btn-danger" style="padding:4px 8px;font-size:12px" onclick="event.stopPropagation();deleteProduct(${p.id},'${p.name_fr}')">🗑️</button>
+      <td style="color:var(--text2);font-weight:600">${fmtDA(p.purchase_price)}</td>
+      <td><span style="color:#10b981;font-weight:bold;background:rgba(16,185,129,0.1);padding:2px 6px;border-radius:4px">${margin}%</span></td>
+      <td><span style="color:#fbbf24;font-weight:800;font-size:14px;background:rgba(251,191,36,0.12);padding:3px 8px;border-radius:6px;display:inline-block">${fmtDA(p.sell_price)}</span></td>
+      <td style="text-align:center"><span style="font-weight:800;font-size:13px;padding:3px 10px;border-radius:12px;display:inline-block;background:${p.global_stock_quantity <= p.min_quantity ? 'rgba(239,68,68,0.2)' : 'rgba(16,185,129,0.15)'};color:${p.global_stock_quantity <= p.min_quantity ? '#ef4444' : '#10b981'}">${p.global_stock_quantity}</span></td>
+      <td style="text-align:center">
+        <div style="display:flex;gap:6px;justify-content:center">
+          <button class="btn btn-secondary" style="padding:4px 8px;font-size:12px" onclick="event.stopPropagation();openEdit(${p.id})" title="Modifier [Touche E]">✏️</button>
+          <button class="btn btn-danger" style="padding:4px 8px;font-size:12px" onclick="event.stopPropagation();deleteProduct(${p.id},'${p.name_fr}')" title="Supprimer">🗑️</button>
+        </div>
       </td>
     </tr>`;
   }).join("");
