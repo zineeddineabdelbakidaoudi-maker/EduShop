@@ -47,6 +47,9 @@
           <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-without" onclick="setBarcodeFilter('without')" style="padding:6px 14px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #f59e0b;color:#f59e0b">
             ⚠️ Sans Code-barres <span id="count-without" style="background:#f59e0b;color:#111;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
           </button>
+          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-fast" onclick="setBarcodeFilter('fast')" style="padding:6px 14px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #eab308;color:#eab308">
+            ⚡ Panneau Caisse <span id="count-fast" style="background:#eab308;color:#111;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
+          </button>
         </div>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px 10px;font-size:12px;color:var(--text2);flex-wrap:wrap;gap:8px">
@@ -216,14 +219,17 @@ function updateCounts(){
     return bcs.length > 0;
   }).length;
   const withoutBc = total - withBc;
+  const fastCount = products.filter(p => !!p.fast_panel).length;
   
   const elAll = document.getElementById("count-all");
   const elWith = document.getElementById("count-with");
   const elWithout = document.getElementById("count-without");
+  const elFast = document.getElementById("count-fast");
 
   if(elAll) elAll.textContent = total;
   if(elWith) elWith.textContent = withBc;
   if(elWithout) elWithout.textContent = withoutBc;
+  if(elFast) elFast.textContent = fastCount;
 }
 
 function setBarcodeFilter(mode){
@@ -244,6 +250,9 @@ function setBarcodeFilter(mode){
       activeBtn.style.color = "#fff";
     } else if(mode === "without"){
       activeBtn.style.background = "#f59e0b";
+      activeBtn.style.color = "#111";
+    } else if(mode === "fast"){
+      activeBtn.style.background = "#eab308";
       activeBtn.style.color = "#111";
     }
   }
@@ -366,6 +375,7 @@ function filterTable(){
     const hasBc = bcs.length > 0;
     if(barcodeFilter === "with" && !hasBc) return false;
     if(barcodeFilter === "without" && hasBc) return false;
+    if(barcodeFilter === "fast" && !p.fast_panel) return false;
     
     if(!q) return true;
     const bcsStr = bcs.join(" ").toLowerCase();
