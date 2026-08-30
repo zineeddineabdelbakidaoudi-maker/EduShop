@@ -195,15 +195,19 @@ def delete_product(product_id: int, db: Session = Depends(get_db), admin: User =
 
 @router.post("/batch-import")
 def batch_import_products(items: list[dict], db: Session = Depends(get_db), admin: User = Depends(require_admin)):
-    """Import multiple products in 1 atomic transaction from JSON."""
+    """Import and auto-update existing products (UPSERT) in 1 atomic transaction from JSON."""
     imported_count = 0
+    updated_count = 0
+    created_count = 0
+    
     for it in items:
         name_fr = it.get("name_fr", "").strip()
         if not name_fr:
             continue
-        code = it.get("code_article") or gen_code()
-        while db.query(Product).filter(Product.code_article == code).first():
-            code = gen_code()
+            
+        code = it.get("code_article")
+        prod_id = it.get("id")
+        barcode_val = normalize_barcodes(it.get("barcode"), it.get("barcodes"))
         
         pa = float(it.get("purchase_price", 0.0))
         pv = float(it.get("sell_price", 0.0))
@@ -211,26 +215,74 @@ def batch_import_products(items: list[dict], db: Session = Depends(get_db), admi
             pv = round(pa * 1.25, 2)
             
         qty = int(it.get("quantity", it.get("initial_quantity", 0)))
-        buyer_val = it.get("buyer") or "Bilal"
+        buyer_val = it.get("buyer") or "Houari"
+        cat_val = it.get("category") or "Général"
+        desc_val = it.get("description")
+        is_fast = bool(it.get("fast_panel", False))
         
-        p = Product(
-            code_article=code,
-            barcode=it.get("barcode") or None,
-            name_fr=name_fr,
-            name_ar=it.get("name_ar") or None,
-            category=it.get("category") or "Général",
-            purchase_price=pa,
-            sell_price=pv,
-            min_quantity=int(it.get("min_quantity", 5)),
-            description=it.get("description") or None,
-            buyer=buyer_val,
-        )
-        db.add(p)
-        db.flush()
-        gs = GlobalStock(product_id=p.id, quantity=qty)
-        db.add(gs)
-        imported_count += 1
-        
+        # Check if product exists by: id, code_article, or exact name_fr
+        existing = None
+        if prod_id:
+            existing = db.query(Product).filter(Product.id == int(prod_id)).first()
+        if not existing and code:
+            existing = db.query(Product).filter(Product.code_article == code).first()
+        if not existing and name_fr:
+            existing = db.query(Product).filter(Product.name_fr == name_fr).first()
+            
+        if existing:
+            # ── AUTO-WRITE / UPDATE EXISTING PRODUCT ─────────────────────────
+            existing.name_fr = name_fr
+            if it.get("name_ar"): existing.name_ar = it.get("name_ar")
+            if code: existing.code_article = code
+            if barcode_val: existing.barcode = barcode_val
+            existing.category = cat_val
+            existing.purchase_price = pa
+            existing.sell_price = pv
+            existing.buyer = buyer_val
+            existing.fast_panel = is_fast
+            if desc_val: existing.description = desc_val
+            if "min_quantity" in it: existing.min_quantity = int(it["min_quantity"])
+            
+            # Update or create GlobalStock
+            if existing.global_stock:
+                if qty > 0:
+                    existing.global_stock.quantity = qty
+            else:
+                db.add(GlobalStock(product_id=existing.id, quantity=qty))
+                
+            updated_count += 1
+            imported_count += 1
+        else:
+            # ── CREATE NEW PRODUCT ───────────────────────────────────────────
+            if not code:
+                code = gen_code()
+            while db.query(Product).filter(Product.code_article == code).first():
+                code = gen_code()
+                
+            p = Product(
+                code_article=code,
+                barcode=barcode_val or None,
+                name_fr=name_fr,
+                name_ar=it.get("name_ar") or None,
+                category=cat_val,
+                purchase_price=pa,
+                sell_price=pv,
+                min_quantity=int(it.get("min_quantity", 5)),
+                description=desc_val,
+                buyer=buyer_val,
+                fast_panel=is_fast
+            )
+            db.add(p)
+            db.flush()
+            db.add(GlobalStock(product_id=p.id, quantity=qty))
+            created_count += 1
+            imported_count += 1
+            
     db.commit()
-    return {"imported_count": imported_count, "message": f"{imported_count} produits importés avec succès."}
+    return {
+        "imported_count": imported_count,
+        "updated_count": updated_count,
+        "created_count": created_count,
+        "message": f"Succès : {updated_count} produit(s) mis à jour (écrasés) et {created_count} nouveau(x) produit(s) créés."
+    }
 

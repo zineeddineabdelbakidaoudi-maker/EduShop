@@ -673,13 +673,13 @@ async function processJsonImport(){
 
   const res = await api("POST", "/api/products/batch-import", items);
   if(res){
-    succBox.textContent = `✅ ${res.imported_count} produit(s) importé(s) avec succès dans le catalogue et stock !`;
+    succBox.textContent = res.message || `✅ ${res.imported_count} produit(s) importé(s) / mis à jour avec succès !`;
     succBox.style.display = "block";
-    showToast(`✅ ${res.imported_count} produit(s) importé(s) !`);
+    showToast(res.message || `✅ ${res.imported_count} produit(s) importé(s) !`);
     setTimeout(() => {
       closeJsonModal();
       init();
-    }, 1200);
+    }, 1500);
   } else {
     errBox.textContent = "Erreur lors de l'importation.";
     errBox.style.display = "block";
