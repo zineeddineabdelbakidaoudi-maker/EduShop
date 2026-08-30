@@ -28,10 +28,10 @@
     <div class="page-header">
       <span class="page-title">📦 Catalogue Produits</span>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-        <button class="btn btn-secondary theme-toggle-btn" onclick="toggleTheme()" style="font-size:12px">☀️ Mode Clair</button>
-        <button class="btn btn-secondary" onclick="openJsonModal()">📥 Importer JSON</button>
-        <button class="btn btn-secondary" onclick="downloadJsonTemplate()">📄 Modèle JSON</button>
-        <button class="btn btn-primary" onclick="openCreate()">+ Nouveau Produit</button>
+        <button type="button" class="btn btn-secondary theme-toggle-btn" onclick="toggleTheme()" style="font-size:12px">☀️ Mode Clair</button>
+        <button type="button" class="btn btn-secondary" onclick="exportFullJsonCatalog()" style="font-weight:bold;color:#f5a623;border:1px solid rgba(245,166,35,0.4);background:rgba(245,166,35,0.08)" title="Télécharger le fichier JSON complet avec tous les produits">📤 Exporter Tout le JSON</button>
+        <button type="button" class="btn btn-secondary" onclick="openJsonModal()" style="font-weight:bold">📥 Importer JSON</button>
+        <button type="button" class="btn btn-primary" onclick="openCreate()" style="font-weight:bold">+ Nouveau Produit</button>
       </div>
     </div>
 
