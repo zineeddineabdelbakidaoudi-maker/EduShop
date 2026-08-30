@@ -213,11 +213,14 @@
     <div id="json-error" class="error-box" style="display:none"></div>
     <div id="json-success" class="success-box" style="display:none"></div>
 
-    <div class="modal-actions" style="justify-content:space-between;margin-top:16px">
-      <button class="btn btn-secondary" onclick="downloadJsonTemplate()">📄 Télécharger Modèle</button>
+    <div class="modal-actions" style="justify-content:space-between;margin-top:16px;flex-wrap:wrap;gap:8px">
+      <div style="display:flex;gap:6px">
+        <button type="button" class="btn btn-secondary" onclick="exportFullJsonCatalog()" style="font-weight:bold;color:#f5a623;border-color:rgba(245,166,35,0.4)" title="Exporter les 956 produits actuels">📤 Exporter Tout le Catalogue</button>
+        <button type="button" class="btn btn-secondary" onclick="downloadJsonTemplate()">📄 Modèle Vierge</button>
+      </div>
       <div style="display:flex;gap:8px">
-        <button class="btn btn-secondary" onclick="closeJsonModal()">Annuler</button>
-        <button class="btn btn-primary" onclick="processJsonImport()">Importer</button>
+        <button type="button" class="btn btn-secondary" onclick="closeJsonModal()">Annuler</button>
+        <button type="button" class="btn btn-primary" onclick="processJsonImport()" style="font-weight:bold">🚀 Lancer l'Importation</button>
       </div>
     </div>
   </div>
@@ -589,6 +592,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+function exportFullJsonCatalog(){
+  if(!products || !products.length){
+    showToast("Le catalogue est vide.");
+    return;
+  }
+  const blob = new Blob([JSON.stringify(products, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "catalogue_complet_edushop.json";
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast(`✅ ${products.length} produits exportés dans catalogue_complet_edushop.json !`);
+}
 
 function downloadJsonTemplate(){
   const example = [
