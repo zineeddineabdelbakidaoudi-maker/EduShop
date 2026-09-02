@@ -256,7 +256,7 @@
     /* ── Main Workspace ── */
     .pos-grid-layout {
       display: grid;
-      grid-template-columns: 280px 1fr 440px;
+      grid-template-columns: 290px 1fr 440px;
       gap: 12px;
       padding: 12px;
       flex: 1;
@@ -265,7 +265,7 @@
 
     @media (max-width: 1200px) {
       .pos-grid-layout {
-        grid-template-columns: 240px 1fr 390px;
+        grid-template-columns: 250px 1fr 390px;
       }
     }
 
@@ -279,9 +279,9 @@
       overflow: hidden;
     }
 
-    /* ── Column 1: Favoris ── */
+    /* ── Column 1: Favoris & Category Filters ── */
     .favoris-header {
-      padding: 12px 14px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -308,6 +308,42 @@
     }
     .gear-btn:hover {
       color: var(--text-white);
+    }
+
+    /* Category Filter Bar */
+    .category-filter-bar {
+      display: flex;
+      gap: 4px;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-color);
+      overflow-x: auto;
+      background: #0f1828;
+      scrollbar-width: none;
+    }
+    .category-filter-bar::-webkit-scrollbar {
+      display: none;
+    }
+    .cat-pill-btn {
+      background: #111a2c;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      border-radius: 14px;
+      padding: 3px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .cat-pill-btn:hover {
+      background: var(--card-hover);
+      color: var(--text-white);
+      border-color: var(--border-focus);
+    }
+    .cat-pill-btn.active {
+      background: var(--blue-btn);
+      color: #ffffff;
+      border-color: var(--blue-btn);
     }
 
     .favoris-scroll-area {
@@ -346,11 +382,6 @@
       overflow: hidden;
       flex-shrink: 0;
       border: 1px solid var(--border-color);
-    }
-    .favori-thumb img {
-      max-width: 90%;
-      max-height: 90%;
-      object-fit: contain;
     }
     .favori-thumb-placeholder {
       font-size: 22px;
@@ -957,9 +988,9 @@
         </button>
       </div>
 
-      <!-- Archive Ventes [F2] -->
+      <!-- Historique de Vente [F10 / F2] -->
       <button class="btn-archive" onclick="openArchiveModal()">
-        📜 Archive Ventes [F2]
+        📜 HISTORIQUE VENTES [F10]
       </button>
     </div>
 
@@ -983,11 +1014,17 @@
   <!-- ── 3-Column Main Layout ── -->
   <main class="pos-grid-layout">
     
-    <!-- ── Column 1: Accès Rapide / Favoris ── -->
+    <!-- ── Column 1: Accès Rapide / Favoris avec FILTRES PAR CATÉGORIES ── -->
     <section class="pos-card">
       <div class="favoris-header">
         <span><span class="star-icon">★</span> ACCÈS RAPIDE / FAVORIS</span>
         <button class="gear-btn" title="Configurer favoris">⚙</button>
+      </div>
+
+      <!-- Dynamic Category Filter Bar -->
+      <div class="category-filter-bar" id="category-filter-bar">
+        <button class="cat-pill-btn active" onclick="filterFavorisByCategory('all')">Tous</button>
+        <!-- Categories injected dynamically -->
       </div>
 
       <div class="favoris-scroll-area" id="favoris-list-container">
@@ -1118,7 +1155,7 @@
     </div>
 
     <div class="status-center">
-      Raccourcis : F1 (Mode) • F2 (Archive) • F3 (Recherche) • F4 (Recharger) • F5 (Actualiser) • Entrée (Encaisser) • Échap (Annuler)
+      Raccourcis : F1 (Mode) • F10 / F2 (Historique Ventes) • F3 (Recherche) • F4 (Recharger) • F5 (Actualiser) • Entrée (Encaisser) • Échap (Annuler)
     </div>
 
     <div class="status-right">
@@ -1166,11 +1203,11 @@
     </div>
   </div>
 
-  <!-- ── Archive Modal ── -->
+  <!-- ── Archive / Historique Modal [F10 / F2] ── -->
   <div class="modal-overlay" id="archive-modal" style="display:none;">
-    <div class="pos-popup-modal" style="max-width:820px;width:95%;">
+    <div class="pos-popup-modal" style="max-width:850px;width:95%;">
       <div class="modal-head">
-        <span>📜 Archive & Historique des Ventes [F2]</span>
+        <span>📜 Historique & Archive des Ventes [F10]</span>
         <button onclick="closeArchiveModal()" style="background:none;border:none;color:var(--text-muted);font-size:18px;cursor:pointer;">✕</button>
       </div>
       <div class="modal-body" style="padding:12px;">
@@ -1236,19 +1273,17 @@
     let isReturnMode = false;
     let archiveList = [];
     let currentUser = null;
+    let selectedCategory = 'all';
 
-    // Currency Formatter matching mockup: 15,00 DA
     function fmtPrice(v) {
       const n = Number(v) || 0;
       return n.toFixed(2).replace('.', ',') + ' DA';
     }
 
-    // ── Init ──
     async function init() {
       updateLiveClock();
       setInterval(updateLiveClock, 1000);
 
-      // Default dates
       const today = new Date().toISOString().split('T')[0];
       document.getElementById("arch-date-from").value = today;
       document.getElementById("arch-date-to").value = today;
@@ -1277,24 +1312,55 @@
 
     async function loadProducts() {
       allProducts = await api("GET", "/api/products/seller") || [];
+      renderCategoryFilterPills(allProducts);
       renderFavoris(allProducts);
       renderCatalog(allProducts);
     }
 
-    // ── Favoris Rendering ──
+    // ── Dynamic Category Filter Pills for Side Panel ──
+    function renderCategoryFilterPills(prods) {
+      const bar = document.getElementById("category-filter-bar");
+      const cats = Array.from(new Set(prods.map(p => (p.category || 'Fournitures').trim()).filter(Boolean)));
+      
+      let html = `<button class="cat-pill-btn ${selectedCategory === 'all' ? 'active' : ''}" onclick="filterFavorisByCategory('all')">Tous</button>`;
+      
+      cats.forEach(c => {
+        html += `<button class="cat-pill-btn ${selectedCategory === c ? 'active' : ''}" onclick="filterFavorisByCategory('${c}')">${c}</button>`;
+      });
+
+      bar.innerHTML = html;
+    }
+
+    function filterFavorisByCategory(cat) {
+      selectedCategory = cat;
+      const btns = document.querySelectorAll(".cat-pill-btn");
+      btns.forEach(b => b.classList.remove("active"));
+      event.target.classList.add("active");
+      renderFavoris(allProducts);
+    }
+
+    // ── Favoris Side Panel Rendering ──
     function renderFavoris(prods) {
       const container = document.getElementById("favoris-list-container");
-      // Choose fast panel or top products
-      const list = prods.filter(p => p.fast_panel == 1 || p.seller_stock_quantity > 0).slice(0, 10);
+      let list = prods;
+
+      if (selectedCategory !== 'all') {
+        list = prods.filter(p => (p.category || '').toLowerCase() === selectedCategory.toLowerCase());
+      } else {
+        list = prods.filter(p => p.fast_panel == 1 || p.seller_stock_quantity > 0);
+      }
+
+      list = list.slice(0, 15);
+
       if (!list.length) {
-        container.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:30px 0;">Aucun favori configuré.</div>';
+        container.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:30px 0;">Aucun article dans cette catégorie.</div>';
         return;
       }
 
       const defaultIcons = {
         'stylo': '🖊️', 'bic': '🖊️', 'cahier': '📗', 'gomme': '🧼', 'crayon': '✏️',
         'taille': '🔷', 'colle': '🧴', 'regle': '📏', 'marqueur': '🖍️', 'feutre': '🎨',
-        'protege': '📁', 'trousse': '👝'
+        'protege': '📁', 'trousse': '👝', 'papier': '📄', 'ardoise': '📋'
       };
 
       container.innerHTML = list.map(p => {
@@ -1614,7 +1680,7 @@
       window.print();
     }
 
-    // ── Archive Modal ──
+    // ── Archive Modal [F10 / F2] ──
     async function openArchiveModal() {
       document.getElementById("archive-modal").style.display = "flex";
       await loadArchiveSales();
@@ -1684,13 +1750,13 @@
       document.getElementById("input-bon-num").value = "";
     }
 
-    // ── Keyboard Shortcuts ──
+    // ── Keyboard Shortcuts (F1, F2, F3, F4, F5, F10, Enter, Escape) ──
     function setupKeyShortcuts() {
       window.addEventListener("keydown", (e) => {
         if (e.key === "F1") {
           e.preventDefault();
           setMode(!isReturnMode);
-        } else if (e.key === "F2") {
+        } else if (e.key === "F10" || e.key === "F2") {
           e.preventDefault();
           openArchiveModal();
         } else if (e.key === "F3") {
