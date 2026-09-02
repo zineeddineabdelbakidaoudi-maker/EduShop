@@ -5,3 +5,8 @@ __pycache__/
 .pytest_cache/
 *.db
 .env
+ 
+*.exe
+*.zip
+frontend/static/downloads/
+
