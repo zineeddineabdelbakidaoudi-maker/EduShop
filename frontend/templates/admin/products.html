@@ -76,6 +76,12 @@
           <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-fast" onclick="setBarcodeFilter('fast')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #eab308;color:#eab308">
             ⚡ Panneau Caisse <span id="count-fast" style="background:#eab308;color:#111;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
           </button>
+          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-matched" onclick="setBarcodeFilter('matched')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #a855f7;color:#a855f7" title="Afficher les articles correspondants / partagés entre plusieurs bons">
+            🔗 Correspondances Bons (16+) <span id="count-matched" style="background:#a855f7;color:#fff;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
+          </button>
+          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-cartables" onclick="setBarcodeFilter('cartables')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #38bdf8;color:#38bdf8" title="Afficher les articles des 4 Bons Cartables">
+            🎒 Bons Cartables <span id="count-cartables" style="background:#38bdf8;color:#111;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
+          </button>
         </div>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px 12px;font-size:12px;color:var(--text2);flex-wrap:wrap;gap:8px">
@@ -249,11 +255,18 @@ function updateCounts(){
   }).length;
   const withoutBc = total - withBc;
   const fastCount = products.filter(p => !!p.fast_panel).length;
+  const matchedCount = products.filter(p => isMatchedProduct(p)).length;
+  const cartablesCount = products.filter(p => isCartableProduct(p)).length;
   
   const elAll = document.getElementById("count-all");
   const elWith = document.getElementById("count-with");
   const elWithout = document.getElementById("count-without");
   const elFast = document.getElementById("count-fast");
+  const elMatched = document.getElementById("count-matched");
+  const elCartables = document.getElementById("count-cartables");
+
+  if(elMatched) elMatched.textContent = matchedCount;
+  if(elCartables) elCartables.textContent = cartablesCount;
 
   if(elAll) elAll.textContent = total;
   if(elWith) elWith.textContent = withBc;
@@ -292,6 +305,12 @@ function setBarcodeFilter(mode){
       activeBtn.style.color = "#111";
     } else if(mode === "fast"){
       activeBtn.style.background = "#eab308";
+      activeBtn.style.color = "#111";
+    } else if(mode === "matched"){
+      activeBtn.style.background = "#a855f7";
+      activeBtn.style.color = "#fff";
+    } else if(mode === "cartables"){
+      activeBtn.style.background = "#38bdf8";
       activeBtn.style.color = "#111";
     }
   }
@@ -410,6 +429,44 @@ function calcMarginFromSell(){
   }
 }
 
+
+const MATCHED_KEYWORDS = [
+  "TROUSSE ECOLIER CARREE VERTEX VS3728",
+  "TROUSSE ECOLIER 3COL ROND VERTEX VS3725",
+  "TROUSSE ECOLIER 3COL ROND VERTEX VS3723",
+  "TROUSSE 3D+CALCULATRICE EVEREST EV91030",
+  "TROUSSE 3D PM EVEREST EV91019",
+  "TROUSSE ECOLIER VERTEX VS3503",
+  "TROUSSE WD PVC ROND CRISTAL CR1366",
+  "TROUSSE ECO RONDE EVEREST EV91006",
+  "TROUSSE ECOL RS 06.112",
+  "TROUSSE ECOLIER 3COLCARR VERTEX VS3730",
+  "TROUSSE CRISTAL COLEC 2026 CR1950",
+  "TROUSSE WD PVC ROND CRISTAL CR1367",
+  "TROUSSE CRISTAL CR11018",
+  "TROUSSE CRISTAL CR1907",
+  "TROUSSE DELI 66977",
+  "TROUSSE ECOLIER CARREE VERTEX VS3729",
+  "SAC A DOS DE LUX LUX DIGNO 667794",
+  "SAC A DOS DE LUX LUX DIGNO 502024051",
+  "SAC A DOS EXINE IS03576"
+];
+
+function isMatchedProduct(p){
+  if(!p || !p.name_fr) return false;
+  const nameNorm = p.name_fr.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  return MATCHED_KEYWORDS.some(k => nameNorm.includes(k.replace(/[^A-Z0-9]/g, '')) || k.replace(/[^A-Z0-9]/g, '').includes(nameNorm));
+}
+
+function isCartableProduct(p){
+  if(!p) return false;
+  const cat = (p.category || '').toLowerCase();
+  const name = (p.name_fr || '').toLowerCase();
+  const desc = (p.description || '').toLowerCase();
+  const code = (p.code_article || '').toLowerCase();
+  return cat.includes("cartable") || cat.includes("sac") || name.includes("sac a dos") || desc.includes("bl0239") || desc.includes("bl0240") || code.includes("art-bil");
+}
+
 function filterTable(){ 
   const q = document.getElementById("search").value.toLowerCase().trim(); 
   const filtered = products.filter(p => {
@@ -418,6 +475,8 @@ function filterTable(){
     if(barcodeFilter === "with" && !hasBc) return false;
     if(barcodeFilter === "without" && hasBc) return false;
     if(barcodeFilter === "fast" && !p.fast_panel) return false;
+    if(barcodeFilter === "matched" && !isMatchedProduct(p)) return false;
+    if(barcodeFilter === "cartables" && !isCartableProduct(p)) return false;
     
     if(!q) return true;
     const bcsStr = bcs.join(" ").toLowerCase();
