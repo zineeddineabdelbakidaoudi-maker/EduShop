@@ -2,6 +2,7 @@ import random, string, re, io
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 from pydantic import BaseModel
 from db.base import get_db
 from models.product import Product
@@ -13,6 +14,34 @@ router = APIRouter(prefix="/api/products", tags=["products"])
 
 def gen_code():
     return "ART-" + "".join(random.choices(string.digits, k=6))
+
+
+def ensure_barcode_not_unique(db: Session):
+    """Removes any unique constraint/index on barcode in both SQLite and PostgreSQL."""
+    drop_sqls = [
+        "DROP INDEX IF EXISTS ix_products_barcode",
+        "ALTER TABLE products DROP CONSTRAINT IF EXISTS uq_products_barcode",
+        "ALTER TABLE products DROP CONSTRAINT IF EXISTS products_barcode_key",
+        """DO $$
+        DECLARE r RECORD;
+        BEGIN
+            FOR r IN (
+                SELECT conname FROM pg_constraint 
+                WHERE conrelid = 'products'::regclass 
+                AND contype = 'u' 
+                AND conname LIKE '%barcode%'
+            ) LOOP
+                EXECUTE 'ALTER TABLE products DROP CONSTRAINT IF EXISTS ' || quote_ident(r.conname);
+            END LOOP;
+        END $$;""",
+        "CREATE INDEX IF NOT EXISTS ix_products_barcode ON products (barcode)"
+    ]
+    for s in drop_sqls:
+        try:
+            db.execute(text(s))
+            db.commit()
+        except Exception:
+            db.rollback()
 
 def normalize_barcodes(barcode_val: Optional[str] = None, barcodes_list: Optional[List[str]] = None) -> Optional[str]:
     codes = []
@@ -106,8 +135,8 @@ def search_products(
         query = db.query(Product)
         if barcode:
             bc_q = barcode.strip()
-            p = query.filter(Product.barcode.ilike(f"%{bc_q}%")).first()
-            return [product_to_admin_dict(p)] if p else []
+            prods = query.filter(Product.barcode.ilike(f"%{bc_q}%")).all()
+            return [product_to_admin_dict(p) for p in prods]
         if q:
             query = query.filter(
                 Product.name_fr.ilike(f"%{q}%") | 
@@ -164,8 +193,22 @@ def create_product(data: ProductCreate, db: Session = Depends(get_db), admin: Us
     db.flush()
     gs = GlobalStock(product_id=p.id, quantity=data.initial_quantity)
     db.add(gs)
-    db.commit()
-    db.refresh(p)
+    try:
+        db.commit()
+        db.refresh(p)
+    except Exception as e:
+        db.rollback()
+        ensure_barcode_not_unique(db)
+        # re-add and commit
+        db.add(p)
+        db.flush()
+        db.add(GlobalStock(product_id=p.id, quantity=data.initial_quantity))
+        try:
+            db.commit()
+            db.refresh(p)
+        except Exception as e2:
+            db.rollback()
+            raise HTTPException(400, f"Erreur création produit : {str(e2)}")
     return product_to_admin_dict(p)
 
 @router.put("/{product_id}")
@@ -181,8 +224,21 @@ def update_product(product_id: int, data: ProductUpdate, db: Session = Depends(g
         
     for k, v in update_data.items():
         setattr(p, k, v)
-    db.commit()
-    db.refresh(p)
+    try:
+        db.commit()
+        db.refresh(p)
+    except Exception as e:
+        db.rollback()
+        # Auto-heal: remove unique index/constraint on barcode and retry
+        ensure_barcode_not_unique(db)
+        for k, v in update_data.items():
+            setattr(p, k, v)
+        try:
+            db.commit()
+            db.refresh(p)
+        except Exception as e2:
+            db.rollback()
+            raise HTTPException(400, f"Erreur enregistrement produit : {str(e2)}")
     return product_to_admin_dict(p)
 
 @router.delete("/{product_id}", status_code=204)
@@ -293,3 +349,54 @@ def batch_import_products(items: list[dict], db: Session = Depends(get_db), admi
         "message": f"Succès : {updated_count} produit(s) mis à jour (écrasés) et {created_count} nouveau(x) produit(s) créés."
     }
 
+@router.post("/sync-matched-barcodes")
+def sync_matched_barcodes(db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+    """Automatically copies barcodes from Houari's products to Bilel's matching duplicate products."""
+    ensure_barcode_not_unique(db)
+    
+    houari_prods = db.query(Product).filter(Product.buyer == "Houari").all()
+    bilel_prods = db.query(Product).filter(Product.buyer == "Bilel").all()
+    
+    def norm_str(s):
+        return re.sub(r'[^A-Z0-9]', '', (s or '').upper())
+    
+    houari_map = {}
+    for hp in houari_prods:
+        if hp.barcode and hp.barcode.strip():
+            houari_map[norm_str(hp.name_fr)] = hp.barcode.strip()
+            
+    synced = []
+    for bp in bilel_prods:
+        bn = norm_str(bp.name_fr)
+        matched_bc = None
+        for hn, hbc in houari_map.items():
+            if bn == hn or bn in hn or hn in bn:
+                matched_bc = hbc
+                break
+        
+        if matched_bc and (not bp.barcode or bp.barcode.strip() == ""):
+            bp.barcode = matched_bc
+            synced.append({
+                "id": bp.id,
+                "code_article": bp.code_article,
+                "name_fr": bp.name_fr,
+                "barcode": matched_bc
+            })
+            
+    try:
+        db.commit()
+    except Exception as ex:
+        db.rollback()
+        ensure_barcode_not_unique(db)
+        try:
+            db.commit()
+        except Exception as ex2:
+            db.rollback()
+            raise HTTPException(500, f"Erreur lors de la synchronisation : {ex2}")
+        
+    return {
+        "success": True,
+        "synced_count": len(synced),
+        "synced_items": synced,
+        "message": f"Succès : {len(synced)} codes-barres synchronisés de Houari vers Bilel !"
+    }

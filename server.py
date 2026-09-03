@@ -30,6 +30,32 @@ try:
                 conn.commit()
             except Exception:
                 pass
+
+        # Ensure barcode is NOT UNIQUE: allows same barcode across different gérants (Houari, Bilel, etc.)
+        barcode_drop_sqls = [
+            "DROP INDEX IF EXISTS ix_products_barcode",
+            "ALTER TABLE products DROP CONSTRAINT IF EXISTS uq_products_barcode",
+            "ALTER TABLE products DROP CONSTRAINT IF EXISTS products_barcode_key",
+            """DO $$
+            DECLARE r RECORD;
+            BEGIN
+                FOR r IN (
+                    SELECT conname FROM pg_constraint 
+                    WHERE conrelid = 'products'::regclass 
+                    AND contype = 'u' 
+                    AND conname LIKE '%barcode%'
+                ) LOOP
+                    EXECUTE 'ALTER TABLE products DROP CONSTRAINT IF EXISTS ' || quote_ident(r.conname);
+                END LOOP;
+            END $$;""",
+            "CREATE INDEX IF NOT EXISTS ix_products_barcode ON products (barcode)"
+        ]
+        for b_sql in barcode_drop_sqls:
+            try:
+                conn.execute(text(b_sql))
+                conn.commit()
+            except Exception:
+                pass
 except Exception as e:
     print(f"[WARN] Table creation or auto-migration failed on primary engine ({e})")
 
