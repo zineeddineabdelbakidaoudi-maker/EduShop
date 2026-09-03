@@ -79,8 +79,8 @@
           <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-matched" onclick="setBarcodeFilter('matched')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #a855f7;color:#a855f7" title="Afficher les articles correspondants / partagés entre plusieurs bons">
             🔗 Correspondances Bons (16+) <span id="count-matched" style="background:#a855f7;color:#fff;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
           </button>
-          <button type="button" class="btn btn-secondary" onclick="syncDuplicateBarcodes()" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #ec4899;color:#ec4899;background:rgba(236,72,153,0.1)" title="Copier automatiquement les codes-barres de Houari vers les 16 articles identiques de Bilel en 1 clic">
-            ⚡ Synchro Codes-barres Houari ➔ Bilel (16)
+          <button type="button" class="btn btn-secondary" onclick="syncDuplicateBarcodes()" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #ec4899;color:#ec4899;background:rgba(236,72,153,0.1)" title="Copier et synchroniser automatiquement les codes-barres vers tous les articles correspondants de Bilel (563+)">
+            ⚡ Synchro Codes-barres Global (563+)
           </button>
           <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-cartables" onclick="setBarcodeFilter('cartables')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #38bdf8;color:#38bdf8" title="Afficher les articles des 4 Bons Cartables">
             🎒 Bons Cartables <span id="count-cartables" style="background:#38bdf8;color:#111;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
@@ -472,7 +472,7 @@ function isCartableProduct(p){
 
 
 async function syncDuplicateBarcodes(){
-  if(!confirm("Voulez-vous copier automatiquement les codes-barres de Houari vers les 16 trousses correspondantes de Bilel ?\n\n(Le même code-barres sera autorisé pour les deux gérants sans aucun conflit).")) return;
+  if(!confirm("Voulez-vous synchroniser automatiquement les codes-barres existants vers tous les articles correspondants de Bilel ?\n\n(Les codes-barres identiques sont 100% autorisés entre différents gérants sans aucun conflit).")) return;
   
   try {
     const res = await api("POST", "/api/products/sync-matched-barcodes");

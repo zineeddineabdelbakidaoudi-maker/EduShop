@@ -354,24 +354,30 @@ def sync_matched_barcodes(db: Session = Depends(get_db), admin: User = Depends(r
     """Automatically copies barcodes from Houari's products to Bilel's matching duplicate products."""
     ensure_barcode_not_unique(db)
     
-    houari_prods = db.query(Product).filter(Product.buyer == "Houari").all()
+    # Match against ANY existing catalog product with a barcode (Houari, Bilal, etc.)
+    source_prods = db.query(Product).filter(
+        Product.barcode.isnot(None), 
+        Product.barcode != ""
+    ).all()
     bilel_prods = db.query(Product).filter(Product.buyer == "Bilel").all()
     
     def norm_str(s):
         return re.sub(r'[^A-Z0-9]', '', (s or '').upper())
     
-    houari_map = {}
-    for hp in houari_prods:
-        if hp.barcode and hp.barcode.strip():
-            houari_map[norm_str(hp.name_fr)] = hp.barcode.strip()
+    source_map = {}
+    for sp in source_prods:
+        if sp.barcode and sp.barcode.strip():
+            k = norm_str(sp.name_fr)
+            if k and k not in source_map:
+                source_map[k] = sp.barcode.strip()
             
     synced = []
     for bp in bilel_prods:
         bn = norm_str(bp.name_fr)
         matched_bc = None
-        for hn, hbc in houari_map.items():
-            if bn == hn or bn in hn or hn in bn:
-                matched_bc = hbc
+        for sn, sbc in source_map.items():
+            if bn == sn or (len(bn) >= 8 and len(sn) >= 8 and (bn in sn or sn in bn)):
+                matched_bc = sbc
                 break
         
         if matched_bc and (not bp.barcode or bp.barcode.strip() == ""):
