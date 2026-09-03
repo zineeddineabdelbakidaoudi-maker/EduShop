@@ -220,20 +220,27 @@ def batch_import_products(items: list[dict], db: Session = Depends(get_db), admi
         desc_val = it.get("description")
         is_fast = bool(it.get("fast_panel", False))
         
-        # Check if product exists by: id, code_article, or exact name_fr
+        # Check if product exists by: id, code_article, or (exact name_fr + same buyer)
+        # KEY RULE: Same product name with DIFFERENT buyer = NEW separate product
+        # (Houari and Bilel can each own the same product independently)
         existing = None
         if prod_id:
             existing = db.query(Product).filter(Product.id == int(prod_id)).first()
         if not existing and code:
             existing = db.query(Product).filter(Product.code_article == code).first()
         if not existing and name_fr:
-            existing = db.query(Product).filter(Product.name_fr == name_fr).first()
+            # Match ONLY if same name AND same buyer — different gérant = different product
+            existing = db.query(Product).filter(
+                Product.name_fr == name_fr,
+                Product.buyer == buyer_val
+            ).first()
             
         if existing:
             # ── AUTO-WRITE / UPDATE EXISTING PRODUCT ─────────────────────────
             existing.name_fr = name_fr
             if it.get("name_ar"): existing.name_ar = it.get("name_ar")
             if code: existing.code_article = code
+            # Same barcode allowed across different buyers — set it freely
             if barcode_val: existing.barcode = barcode_val
             existing.category = cat_val
             existing.purchase_price = pa
