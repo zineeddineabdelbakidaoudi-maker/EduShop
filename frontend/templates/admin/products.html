@@ -57,6 +57,14 @@
         <div class="kpi-value" id="kpi-fast" style="color:#eab308;font-size:26px;font-weight:800;margin:4px 0;">0</div>
         <div style="font-size:11px;color:var(--text2);">Favoris en 1 clic caissier</div>
       </div>
+      <div class="kpi-card" id="kpi-card-capital" onclick="cycleCapitalFilter()" style="cursor:pointer;border-left:4px solid #38bdf8;background:var(--card);border-radius:10px;padding:14px 18px;border-top:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border);" title="Cliquer pour basculer : Tous ➔ Houari ➔ Bilel">
+        <div class="kpi-label" style="font-size:12px;color:var(--text2);font-weight:700;display:flex;justify-content:space-between;align-items:center;">
+          <span>💰 CAPITAL STOCK (ACHAT)</span>
+          <span id="capital-buyer-badge" style="font-size:10px;background:rgba(56,189,248,0.2);color:#38bdf8;padding:2px 8px;border-radius:10px;font-weight:bold">TOUS</span>
+        </div>
+        <div class="kpi-value" id="kpi-capital" style="color:#38bdf8;font-size:24px;font-weight:800;margin:4px 0;">0 DA</div>
+        <div id="kpi-capital-sub" style="font-size:11px;color:var(--text2);">Vente : 0 DA &bull; Marge : +0%</div>
+      </div>
     </div>
 
     <div class="card" style="box-shadow: 0 4px 20px rgba(0,0,0,0.15); border: 1px solid var(--border);">
@@ -75,6 +83,12 @@
           </button>
           <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-fast" onclick="setBarcodeFilter('fast')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #eab308;color:#eab308">
             ⚡ Panneau Caisse <span id="count-fast" style="background:#eab308;color:#111;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
+          </button>
+          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-houari" onclick="setBarcodeFilter('houari')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #8b5cf6;color:#8b5cf6" title="Filtrer et afficher le Capital Stock de Houari">
+            👤 Capital Houari <span id="count-houari" style="background:#8b5cf6;color:#fff;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
+          </button>
+          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-bilel" onclick="setBarcodeFilter('bilel')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #06b6d4;color:#06b6d4" title="Filtrer et afficher le Capital Stock de Bilel">
+            👤 Capital Bilel <span id="count-bilel" style="background:#06b6d4;color:#fff;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
           </button>
           <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-matched" onclick="setBarcodeFilter('matched')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #a855f7;color:#a855f7" title="Afficher les articles correspondants / partagés entre plusieurs bons">
             🔗 Correspondances Bons (16+) <span id="count-matched" style="background:#a855f7;color:#fff;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
@@ -238,9 +252,15 @@
 <script src="/static/js/app.js"></script>
 <script>
 let products = [], editId = null, barcodeFilter = "all", selectedProductId = null, currentFilteredProducts = [];
+let searchDebounceTimer = null;
 
 async function init(){ 
   products = await api("GET","/api/products") || []; 
+  // Build fast search index on all products for instant 60fps search
+  products.forEach(p => {
+    const bcs = (p.barcodes && p.barcodes.length) ? p.barcodes.join(" ") : (p.barcode || "");
+    p._searchStr = `${p.name_fr || ""} ${p.name_ar || ""} ${p.code_article || ""} ${bcs} ${p.buyer || ""} ${p.category || ""}`.toLowerCase();
+  });
   updateCounts();
   filterTable(); 
 }
@@ -261,15 +281,22 @@ function updateCounts(){
   const matchedCount = products.filter(p => isMatchedProduct(p)).length;
   const cartablesCount = products.filter(p => isCartableProduct(p)).length;
   
+  const houariProds = products.filter(p => (p.buyer || '').toLowerCase() === "houari");
+  const bilelProds = products.filter(p => (p.buyer || '').toLowerCase() === "bilel");
+  
   const elAll = document.getElementById("count-all");
   const elWith = document.getElementById("count-with");
   const elWithout = document.getElementById("count-without");
   const elFast = document.getElementById("count-fast");
   const elMatched = document.getElementById("count-matched");
   const elCartables = document.getElementById("count-cartables");
+  const elHouari = document.getElementById("count-houari");
+  const elBilel = document.getElementById("count-bilel");
 
   if(elMatched) elMatched.textContent = matchedCount;
   if(elCartables) elCartables.textContent = cartablesCount;
+  if(elHouari) elHouari.textContent = houariProds.length;
+  if(elBilel) elBilel.textContent = bilelProds.length;
 
   if(elAll) elAll.textContent = total;
   if(elWith) elWith.textContent = withBc;
@@ -285,6 +312,60 @@ function updateCounts(){
   if(kpiWith) kpiWith.textContent = withBc;
   if(kpiWithout) kpiWithout.textContent = withoutBc;
   if(kpiFast) kpiFast.textContent = fastCount;
+  
+  updateCapitalKPI();
+}
+
+function updateCapitalKPI(filteredList = null){
+  const targetList = filteredList !== null ? filteredList : products;
+  let capAchat = 0;
+  let capVente = 0;
+  
+  for(let i = 0; i < targetList.length; i++){
+    const p = targetList[i];
+    const qty = (p.global_stock_quantity !== undefined) ? p.global_stock_quantity : (p.quantity || 0);
+    capAchat += (p.purchase_price || 0) * qty;
+    capVente += (p.sell_price || 0) * qty;
+  }
+  
+  const margeVal = capVente - capAchat;
+  const margePct = capAchat > 0 ? (margeVal / capAchat * 100).toFixed(1) : "0.0";
+  
+  const elCap = document.getElementById("kpi-capital");
+  const elSub = document.getElementById("kpi-capital-sub");
+  const elBadge = document.getElementById("capital-buyer-badge");
+  
+  if(elCap){
+    elCap.textContent = fmtDA(capAchat);
+  }
+  if(elSub){
+    elSub.innerHTML = `Vente : <b style="color:#fbbf24">${fmtDA(capVente)}</b> &bull; Marge : <b style="color:#10b981">+${margePct}% (${fmtDA(margeVal)})</b>`;
+  }
+  if(elBadge){
+    if(barcodeFilter === "houari"){
+      elBadge.textContent = "HOUARI";
+      elBadge.style.background = "rgba(139,92,246,0.2)";
+      elBadge.style.color = "#8b5cf6";
+    } else if(barcodeFilter === "bilel"){
+      elBadge.textContent = "BILEL";
+      elBadge.style.background = "rgba(6,182,212,0.2)";
+      elBadge.style.color = "#06b6d4";
+    } else {
+      elBadge.textContent = "TOTAL (" + targetList.length + ")";
+      elBadge.style.background = "rgba(56,189,248,0.2)";
+      elBadge.style.color = "#38bdf8";
+    }
+  }
+}
+
+function cycleCapitalFilter(){
+  if(barcodeFilter === "all"){
+    setBarcodeFilter("houari");
+  } else if(barcodeFilter === "houari"){
+    setBarcodeFilter("bilel");
+  } else {
+    setBarcodeFilter("all");
+  }
 }
 
 function setBarcodeFilter(mode){
@@ -315,6 +396,12 @@ function setBarcodeFilter(mode){
     } else if(mode === "cartables"){
       activeBtn.style.background = "#38bdf8";
       activeBtn.style.color = "#111";
+    } else if(mode === "houari"){
+      activeBtn.style.background = "#8b5cf6";
+      activeBtn.style.color = "#fff";
+    } else if(mode === "bilel"){
+      activeBtn.style.background = "#06b6d4";
+      activeBtn.style.color = "#fff";
     }
   }
   filterTable();
@@ -490,6 +577,8 @@ async function syncDuplicateBarcodes(){
 
 function filterTable(){ 
   const q = document.getElementById("search").value.toLowerCase().trim(); 
+  const tokens = q ? q.split(/\s+/).filter(Boolean) : [];
+  
   const filtered = products.filter(p => {
     const bcs = (p.barcodes && p.barcodes.length) ? p.barcodes : (p.barcode ? p.barcode.split(/[,;\s]+/).filter(Boolean) : []);
     const hasBc = bcs.length > 0;
@@ -498,18 +587,20 @@ function filterTable(){
     if(barcodeFilter === "fast" && !p.fast_panel) return false;
     if(barcodeFilter === "matched" && !isMatchedProduct(p)) return false;
     if(barcodeFilter === "cartables" && !isCartableProduct(p)) return false;
+    if(barcodeFilter === "houari" && (p.buyer || '').toLowerCase() !== "houari") return false;
+    if(barcodeFilter === "bilel" && (p.buyer || '').toLowerCase() !== "bilel") return false;
     
-    if(!q) return true;
-    const bcsStr = bcs.join(" ").toLowerCase();
-    return (
-      (p.name_fr && p.name_fr.toLowerCase().includes(q)) || 
-      (p.code_article && p.code_article.toLowerCase().includes(q)) || 
-      (p.barcode && p.barcode.toLowerCase().includes(q)) ||
-      bcsStr.includes(q) ||
-      (p.buyer && p.buyer.toLowerCase().includes(q)) ||
-      (p.category && p.category.toLowerCase().includes(q))
-    );
+    if(tokens.length === 0) return true;
+    
+    // Fast index match: every token must be present in precomputed _searchStr
+    const str = p._searchStr || "";
+    for(let i = 0; i < tokens.length; i++){
+      if(!str.includes(tokens[i])) return false;
+    }
+    return true;
   });
+  
+  updateCapitalKPI(filtered);
   renderTable(filtered); 
 }
 

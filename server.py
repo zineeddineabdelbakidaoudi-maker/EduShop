@@ -48,7 +48,15 @@ try:
                     EXECUTE 'ALTER TABLE products DROP CONSTRAINT IF EXISTS ' || quote_ident(r.conname);
                 END LOOP;
             END $$;""",
-            "CREATE INDEX IF NOT EXISTS ix_products_barcode ON products (barcode)"
+            "CREATE INDEX IF NOT EXISTS ix_products_barcode ON products (barcode)",
+            "CREATE INDEX IF NOT EXISTS ix_products_buyer ON products (buyer)",
+            "CREATE INDEX IF NOT EXISTS ix_products_category ON products (category)",
+            "CREATE INDEX IF NOT EXISTS ix_products_name_fr ON products (name_fr)",
+            "CREATE INDEX IF NOT EXISTS ix_products_code_article ON products (code_article)",
+            "CREATE INDEX IF NOT EXISTS ix_products_fast_panel ON products (fast_panel)",
+            "CREATE INDEX IF NOT EXISTS ix_products_buyer_cat ON products (buyer, category)",
+            "CREATE INDEX IF NOT EXISTS ix_seller_stock_seller ON seller_stock (seller_id)",
+            "CREATE INDEX IF NOT EXISTS ix_sales_seller_date ON sales (seller_id, created_at)"
         ]
         for b_sql in barcode_drop_sqls:
             try:
