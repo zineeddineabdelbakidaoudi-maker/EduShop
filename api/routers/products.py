@@ -1,7 +1,7 @@
 import random, string, re, io
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import text
 from pydantic import BaseModel
 from db.base import get_db
@@ -117,7 +117,7 @@ def product_to_seller_dict(p: Product, seller_qty: int) -> dict:
 
 @router.get("")
 def list_products(db: Session = Depends(get_db), admin: User = Depends(require_admin)):
-    products = db.query(Product).all()
+    products = db.query(Product).options(joinedload(Product.global_stock)).all()
     return [product_to_admin_dict(p) for p in products]
 
 @router.get("/seller")

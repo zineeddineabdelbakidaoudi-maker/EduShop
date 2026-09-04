@@ -68,6 +68,7 @@ except Exception as e:
 
 # ── FastAPI app ───────────────────────────────────────────────────────────────
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 app = FastAPI(title="EduShop", version="2.0", docs_url="/api/docs")
 
 app.add_middleware(
@@ -77,6 +78,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 # ── Static files and templates ────────────────────────────────────────────────
 BASE_DIR = Path(__file__).resolve().parent
