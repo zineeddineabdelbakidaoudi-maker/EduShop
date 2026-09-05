@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terminal Scanner & Édition Rapide — EduShop Admin</title>
+  <link rel="stylesheet" href="/static/css/app.css">
+  <style>
+    :root {
+      --bilel-color: #ef4444;
+      --houari-color: #8b5cf6;
+      --abdrahman-color: #10b981;
+      --general-color: #64748b;
+    }
+
+    /* Scanner Hero Box */
+    .scanner-hero {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98));
+      border: 2px solid var(--accent);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 30px rgba(59, 130, 246, 0.15);
+      position: relative;
+    }
+    .scanner-hero.active {
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3), 0 10px 35px rgba(59, 130, 246, 0.25);
+    }
+    .scanner-input-wrap {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .scanner-big-input {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.85);
+      border: 2px solid rgba(59, 130, 246, 0.5);
+      border-radius: 12px;
+      padding: 16px 22px;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.5px;
+      outline: none;
+      transition: all .2s ease;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    .scanner-big-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25);
+      background: rgba(15, 23, 42, 1);
+    }
+    .scanner-big-input::placeholder {
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text2);
+    }
+    .scanner-btn {
+      padding: 16px 28px;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+    }
+    .scanner-tips {
+      margin-top: 10px;
+      font-size: 12.5px;
+      color: var(--text2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .pulse-dot {
+      width: 10px;
+      height: 10px;
+      background: #10b981;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 0 rgba(16, 185, 129, 0.7);
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    /* Product Edit Card */
+    .edit-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+      display: none;
+      animation: fadeIn .25s ease-out;
+    }
+    .edit-card.visible {
+      display: block;
+    }
+    .edit-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 18px;
+      margin-bottom: 20px;
+      gap: 16px;
+    }
+    .prod-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .prod-badges {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .p-badge {
+      padding: 3px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .p-badge-code {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+    .p-badge-fast {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    /* Owner Selector Pills */
+    .owner-pills-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .owner-pill {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 13.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all .15s ease;
+    }
+    .owner-pill:hover {
+      transform: translateY(-1px);
+    }
+    .owner-pill.active.bilel {
+      border-color: var(--bilel-color);
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+    }
+    .owner-pill.active.houari {
+      border-color: var(--houari-color);
+      background: rgba(139, 92, 246, 0.15);
+      color: #c4b5fd;
+    }
+    .owner-pill.active.abdrahman {
+      border-color: var(--abdrahman-color);
+      background: rgba(16, 185, 129, 0.15);
+      color: #86efac;
+    }
+
+    /* Form Grid */
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 860px) {
+      .form-grid-2 { grid-template-columns: 1fr; }
+    }
+    .form-group-full {
+      grid-column: 1 / -1;
+    }
+    .field-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text2);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .field-input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      outline: none;
+      transition: border-color .15s ease;
+      box-sizing: border-box;
+    }
+    .field-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    /* Highlight Sell Price Field */
+    .field-sell-price {
+      background: rgba(16, 185, 129, 0.06);
+      border: 2px solid var(--green);
+      font-size: 24px;
+      font-weight: 800;
+      color: #10b981;
+    }
+    .field-sell-price:focus {
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+    }
+    .margin-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #10b981;
+      margin-top: 6px;
+    }
+
+    /* Quantity Steppers */
+    .qty-stepper {
+      display: flex;
+      align-items: center;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .qty-btn {
+      width: 44px;
+      height: 44px;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .15s ease;
+    }
+    .qty-btn:hover {
+      background: var(--card2);
+    }
+    .qty-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      text-align: center;
+      color: var(--text);
+      font-size: 18px;
+      font-weight: 800;
+      outline: none;
+    }
+
+    /* Action bar */
+    .edit-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: flex-end;
+      border-top: 1px solid var(--border);
+      padding-top: 18px;
+      margin-top: 10px;
+    }
+    .btn-save-big {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+      transition: all .2s ease;
+    }
+    .btn-save-big:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+    }
+
+    /* Empty state banner */
+    .empty-state {
+      background: var(--card);
+      border: 2px dashed var(--border);
+      border-radius: 16px;
+      padding: 50px 20px;
+      text-align: center;
+      color: var(--text2);
+    }
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    /* Recent table */
+    .recent-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .recent-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">🛒 EduShop</div>
+    <nav class="sidebar-nav">
+      <a href="/admin">📊 Tableau de bord</a>
+      <a href="/admin/scanner" class="active">⚡ Scan & Édition Rapide</a>
+      <a href="/admin/products">📦 Produits</a>
+      <a href="/admin/stock">🏪 Stock</a>
+      <a href="/admin/inventory">📝 Inventaire & Audit</a>
+      <a href="/admin/sellers">👥 Vendeurs</a>
+      <a href="/admin/vendeurs-progress">📈 Progression Vendeurs</a>
+      <a href="/admin/sales">💰 Ventes</a>
+      <a href="/admin/transfers">📋 Transferts Vendeurs</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="#" onclick="logout()">🚪 Déconnexion</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <span class="page-title">⚡ Terminal Scanner & Édition Rapide</span>
+        <div style="font-size:13px;color:var(--text2);margin-top:4px">
+          Scannez avec votre douchette USB pour afficher, vérifier et modifier immédiatement les informations du produit
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button id="btn-sound-toggle" class="btn btn-secondary" onclick="toggleSound()">
+          🔔 Bip Audio : Actif
+        </button>
+      </div>
+    </div>
+
+    <!-- 1. BIG SCANNER FIELD -->
+    <div class="scanner-hero" id="scanner-box">
+      <form id="scanner-form" onsubmit="handleScanSubmit(event)">
+        <div class="scanner-input-wrap">
+          <input 
+            type="text" 
+            id="scanner-input" 
+            class="scanner-big-input" 
+            placeholder="Scannez un code-barres ou tapez Code Article / Réf (Entrée pour valider)..." 
+            autocomplete="off" 
+            autofocus
+          >
+          <button type="submit" class="btn btn-primary scanner-btn">
+            🔍 Rechercher
+          </button>
+        </div>
+      </form>
+      <div class="scanner-tips">
+        <span style="display:flex;align-items:center;gap:8px">
+          <span class="pulse-dot"></span> 
+          Lecteur Code-barres USB en écoute active (Validation auto par touche Entrée)
+        </span>
+        <span>Raccourcis : <b>Entrée</b> = Rechercher / Valider | <b>Ctrl+S</b> = Enregistrer | <b>Échap</b> = Nouveau Scan</span>
+      </div>
+    </div>
+
+    <!-- 2. EMPTY STATE WHEN NO PRODUCT LOADED -->
+    <div id="empty-state" class="empty-state">
+      <div class="empty-icon">📟</div>
+      <h3 style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px">En attente de scan...</h3>
+      <p style="font-size:14px;max-width:500px;margin:0 auto">
+        Passez le code-barres d'un article devant votre douchette laser ou saisissez son code article ci-dessus pour charger sa fiche modifiable.
+      </p>
+    </div>
+
+    <!-- 3. PRODUCT EDIT CARD -->
+    <div id="edit-card" class="edit-card">
+      <form id="product-edit-form" onsubmit="handleSaveProduct(event)">
+        <input type="hidden" id="edit-product-id">
+
+        <div class="edit-header">
+          <div>
+            <div id="edit-display-title" class="prod-title">Nom du Produit</div>
+            <div class="prod-badges">
+              <span id="badge-code-art" class="p-badge p-badge-code">Code: —</span>
+              <span id="badge-id" class="p-badge" style="background:var(--card2);color:var(--text2)">ID: #0</span>
+              <span id="badge-owner" class="p-badge" style="background:rgba(139,92,246,0.15);color:#c4b5fd">Gérant: —</span>
+              <span id="badge-fast-panel" class="p-badge p-badge-fast" style="display:none">⚡ Caisse Rapide</span>
+            </div>
+          </div>
+          <div>
+            <button type="button" class="btn btn-secondary" onclick="resetToScanner()" style="font-size:13px">
+              ⚡ Scanner Autre Produit (Échap)
+            </button>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <!-- Nom FR -->
+          <div class="form-group-full">
+            <label class="field-label" for="edit-name-fr">Désignation du Produit (Nom FR) *</label>
+            <input type="text" id="edit-name-fr" class="field-input" required>
+          </div>
+
+          <!-- Code Barres -->
+          <div>
+            <label class="field-label" for="edit-barcode">Code-Barres Fabricant (EAN-13)</label>
+            <div style="display:flex;gap:6px">
+              <input type="text" id="edit-barcode" class="field-input" placeholder="Ex: 6132528295034">
+              <button type="button" class="btn btn-secondary" onclick="copyBarcode()" title="Copier le code-barres">📋</button>
+            </div>
+          </div>
+
+          <!-- Code Article -->
+          <div>
+            <label class="field-label" for="edit-code-art">Code Article Unique</label>
+            <input type="text" id="edit-code-art" class="field-input" placeholder="Ex: 1027 ou ART-001">
+          </div>
+
+          <!-- Propriétaire / Gérant (Pour qui) -->
+          <div class="form-group-full">
+            <label class="field-label">Gérant / Propriétaire ("Pour qui ?") *</label>
+            <div class="owner-pills-row">
+              <button type="button" class="owner-pill bilel" onclick="selectOwner('Bilel')">
+                🔴 Gérant Bilel
+              </button>
+              <button type="button" class="owner-pill houari" onclick="selectOwner('Houari')">
+                🟣 Gérant Houari
+              </button>
+              <button type="button" class="owner-pill abdrahman" onclick="selectOwner('Abdrahman')">
+                🟢 Gérant Abdrahman
+              </button>
+            </div>
+            <input type="hidden" id="edit-buyer" value="Bilel">
+          </div>
+
+          <!-- Prix de Vente (Big) -->
+          <div>
+            <label class="field-label" for="edit-sell-price" style="color:var(--green)">Prix de Vente (DA) *</label>
+            <input 
+              type="number" 
+              step="0.01" 
+              id="edit-sell-price" 
+              class="field-input field-sell-price" 
+              required
+              oninput="calcMarginLive()"
+            >
+            <div id="margin-indicator" class="margin-badge">
+              📈 Marge : Calcul en cours...
+            </div>
+          </div>
+
+          <!-- Prix d'Achat -->
+          <div>
+            <label class="field-label" for="edit-purchase-price">Prix d'Achat (DA)</label>
+            <input 
+              type="number" 
+              step="0.01" 
+              id="edit-purchase-price" 
+              class="field-input" 
+              oninput="calcMarginLive()"
+            >
+            <div style="font-size:12px;color:var(--text2);margin-top:6px">
+              Coût fournisseur (sert au calcul de bénéfice)
+            </div>
+          </div>
+
+          <!-- Stock Caisse (Vendeur) -->
+          <div>
+            <label class="field-label" for="edit-seller-qty">Quantité en Caisse (Vendeur assigné)</label>
+            <div class="qty-stepper">
+              <button type="button" class="qty-btn" onclick="stepQty('edit-seller-qty', -1)">−</button>
+              <input type="number" id="edit-seller-qty" class="qty-input" min="0" value="0">
+              <button type="button" class="qty-btn" onclick="stepQty('edit-seller-qty', 1)">+</button>
+            </div>
+          </div>
+
+          <!-- Stock Global (Entrepôt) -->
+          <div>
+            <label class="field-label" for="edit-global-qty">Quantité Stock Entrepôt (Global)</label>
+            <div class="qty-stepper">
+              <button type="button" class="qty-btn" onclick="stepQty('edit-global-qty', -1)">−</button>
+              <input type="number" id="edit-global-qty" class="qty-input" min="0" value="0">
+              <button type="button" class="qty-btn" onclick="stepQty('edit-global-qty', 1)">+</button>
+            </div>
+          </div>
+
+          <!-- Caisse Rapide Switch -->
+          <div>
+            <label class="field-label" for="edit-fast-panel">Bouton Caisse Rapide</label>
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding-top:8px">
+              <input type="checkbox" id="edit-fast-panel" style="width:20px;height:20px;accent-color:var(--accent)">
+              <span style="font-size:14px;font-weight:600;color:var(--text)">⚡ Activer dans le panneau Caisse Rapide</span>
+            </label>
+          </div>
+
+          <!-- Catégorie -->
+          <div>
+            <label class="field-label" for="edit-category">Catégorie</label>
+            <input type="text" id="edit-category" class="field-input" placeholder="Ex: Fournitures, Sac à dos...">
+          </div>
+        </div>
+
+        <div class="edit-actions">
+          <button type="button" class="btn btn-secondary" onclick="resetToScanner()">
+            Annuler
+          </button>
+          <button type="submit" class="btn-save-big">
+            💾 Enregistrer les Modifications (Ctrl+S)
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 4. RECENT SCANS LIST -->
+    <div class="recent-card">
+      <div class="recent-title">
+        <span>🕒 Produits Récemment Modifiés dans cette Session</span>
+        <span id="recent-count-badge" class="p-badge p-badge-code">0 modification(s)</span>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="table" style="margin:0">
+          <thead>
+            <tr>
+              <th>HEURE</th>
+              <th>CODE ART.</th>
+              <th>CODE-BARRES</th>
+              <th>DÉSIGNATION</th>
+              <th>GÉRANT</th>
+              <th style="text-align:right">PRIX VENTE</th>
+              <th style="text-align:center">STOCK CAISSE</th>
+              <th>ACTION</th>
+            </tr>
+          </thead>
+          <tbody id="recent-tbody">
+            <tr>
+              <td colspan="8" style="text-align:center;padding:24px;color:var(--text2)">
+                Aucun produit scanné pour le moment dans cette session.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="/static/js/app.js"></script>
+<script>
+// State
+let audioEnabled = true;
+let currentProduct = null;
+const sessionHistory = [];
+
+// Web Audio synthesizer for instant feedback
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+function playBeep(freq = 880, type = 'sine', duration = 0.08) {
+  if (!audioEnabled) return;
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + duration);
+  } catch (e) {}
+}
+
+function playSuccessChime() {
+  if (!audioEnabled) return;
+  playBeep(659, 'sine', 0.08);
+  setTimeout(() => playBeep(880, 'sine', 0.12), 90);
+}
+
+function playBuzz() {
+  if (!audioEnabled) return;
+  playBeep(220, 'sawtooth', 0.18);
+}
+
+function toggleSound() {
+  audioEnabled = !audioEnabled;
+  const btn = document.getElementById("btn-sound-toggle");
+  btn.textContent = audioEnabled ? "🔔 Bip Audio : Actif" : "🔕 Bip Audio : Coupé";
+  btn.style.color = audioEnabled ? "var(--green)" : "var(--text2)";
+}
+
+// Focus scanner on load
+window.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("scanner-input");
+  if (input) {
+    input.focus();
+    input.select();
+  }
+});
+
+// Global keyboard shortcuts
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    e.preventDefault();
+    resetToScanner();
+  } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+    e.preventDefault();
+    if (currentProduct) {
+      document.getElementById("product-edit-form").requestSubmit();
+    }
+  }
+});
+
+// Scan Submit handler
+async function handleScanSubmit(e) {
+  if (e) e.preventDefault();
+  const input = document.getElementById("scanner-input");
+  const query = (input.value || "").trim();
+  if (!query) return;
+
+  document.getElementById("scanner-box").classList.add("active");
+  try {
+    const res = await api("GET", `/api/products/scanner/lookup?q=${encodeURIComponent(query)}`);
+    if (!res || !res.id) {
+      playBuzz();
+      showToast(`Produit introuvable pour "${query}"`, "warn");
+      input.select();
+      return;
+    }
+
+    playBeep(988, "sine", 0.1);
+    currentProduct = res;
+    populateEditForm(res);
+  } catch (err) {
+    playBuzz();
+    showToast("Erreur lors de la recherche du produit", "error");
+    input.select();
+  } finally {
+    document.getElementById("scanner-box").classList.remove("active");
+  }
+}
+
+// Populate Edit Form
+function populateEditForm(p) {
+  document.getElementById("empty-state").style.display = "none";
+  const card = document.getElementById("edit-card");
+  card.classList.add("visible");
+
+  document.getElementById("edit-product-id").value = p.id;
+  document.getElementById("edit-display-title").textContent = p.name_fr;
+  document.getElementById("badge-code-art").textContent = `Code: ${p.code_article || "—"}`;
+  document.getElementById("badge-id").textContent = `ID: #${p.id}`;
+
+  const fastBadge = document.getElementById("badge-fast-panel");
+  fastBadge.style.display = p.fast_panel ? "inline-block" : "none";
+
+  document.getElementById("edit-name-fr").value = p.name_fr;
+  document.getElementById("edit-barcode").value = p.barcode || "";
+  document.getElementById("edit-code-art").value = p.code_article || "";
+  document.getElementById("edit-sell-price").value = p.sell_price;
+  document.getElementById("edit-purchase-price").value = p.purchase_price;
+  document.getElementById("edit-seller-qty").value = p.seller_stock_quantity || 0;
+  document.getElementById("edit-global-qty").value = p.global_stock_quantity || 0;
+  document.getElementById("edit-fast-panel").checked = Boolean(p.fast_panel);
+  document.getElementById("edit-category").value = p.category || "Général";
+
+  selectOwner(p.buyer || "Bilel");
+  calcMarginLive();
+
+  // Scroll to edit form smoothly and focus price field
+  card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  setTimeout(() => {
+    const priceField = document.getElementById("edit-sell-price");
+    if (priceField) {
+      priceField.focus();
+      priceField.select();
+    }
+  }, 150);
+}
+
+// Owner Selection
+function selectOwner(buyer) {
+  const norm = (buyer || "").toLowerCase();
+  let selected = "Bilel";
+  if (norm.includes("houari")) selected = "Houari";
+  else if (norm.includes("abd")) selected = "Abdrahman";
+
+  document.getElementById("edit-buyer").value = selected;
+
+  document.querySelectorAll(".owner-pill").forEach(p => p.classList.remove("active"));
+  const pillKey = selected.toLowerCase();
+  const pill = document.querySelector(`.owner-pill.${pillKey}`);
+  if (pill) pill.classList.add("active");
+
+  const badgeOwner = document.getElementById("badge-owner");
+  if (selected === "Houari") {
+    badgeOwner.textContent = "Gérant : 🟣 Houari";
+    badgeOwner.style.color = "#c4b5fd";
+    badgeOwner.style.background = "rgba(139,92,246,0.15)";
+  } else if (selected === "Abdrahman") {
+    badgeOwner.textContent = "Gérant : 🟢 Abdrahman";
+    badgeOwner.style.color = "#86efac";
+    badgeOwner.style.background = "rgba(16,185,129,0.15)";
+  } else {
+    badgeOwner.textContent = "Gérant : 🔴 Bilel";
+    badgeOwner.style.color = "#fca5a5";
+    badgeOwner.style.background = "rgba(239,68,68,0.15)";
+  }
+}
+
+// Live margin calculation
+function calcMarginLive() {
+  const pa = parseFloat(document.getElementById("edit-purchase-price").value) || 0;
+  const pv = parseFloat(document.getElementById("edit-sell-price").value) || 0;
+  const ind = document.getElementById("margin-indicator");
+
+  if (pv > 0) {
+    const profit = pv - pa;
+    const margin = ((profit / pv) * 100).toFixed(1);
+    const profitFmt = fmtDA(profit);
+    ind.innerHTML = `📈 Bénéfice Net : <b>${profitFmt}</b> (Marge : <b>${margin}%</b>)`;
+    ind.style.color = profit >= 0 ? "#10b981" : "#ef4444";
+  } else {
+    ind.textContent = "Saisissez un prix de vente";
+    ind.style.color = "var(--text2)";
+  }
+}
+
+// Quantity stepper
+function stepQty(inputId, delta) {
+  const inp = document.getElementById(inputId);
+  if (!inp) return;
+  const val = Math.max(0, (parseInt(inp.value) || 0) + delta);
+  inp.value = val;
+}
+
+// Copy barcode
+function copyBarcode() {
+  const val = document.getElementById("edit-barcode").value;
+  if (!val) return;
+  navigator.clipboard.writeText(val);
+  showToast("Code-barres copié dans le presse-papier !", "success");
+}
+
+// Save Product
+async function handleSaveProduct(e) {
+  if (e) e.preventDefault();
+  if (!currentProduct) return;
+
+  const payload = {
+    product_id: parseInt(document.getElementById("edit-product-id").value),
+    name_fr: document.getElementById("edit-name-fr").value.trim(),
+    barcode: document.getElementById("edit-barcode").value.trim(),
+    code_article: document.getElementById("edit-code-art").value.trim(),
+    buyer: document.getElementById("edit-buyer").value,
+    sell_price: parseFloat(document.getElementById("edit-sell-price").value) || 0,
+    purchase_price: parseFloat(document.getElementById("edit-purchase-price").value) || 0,
+    seller_stock_quantity: parseInt(document.getElementById("edit-seller-qty").value) || 0,
+    global_stock_quantity: parseInt(document.getElementById("edit-global-qty").value) || 0,
+    fast_panel: document.getElementById("edit-fast-panel").checked,
+    category: document.getElementById("edit-category").value.trim()
+  };
+
+  try {
+    const res = await api("POST", "/api/products/scanner/save", payload);
+    if (!res || res.status !== "success") {
+      playBuzz();
+      showToast(res ? res.message : "Erreur lors de l'enregistrement", "error");
+      return;
+    }
+
+    playSuccessChime();
+    showToast(`✅ "${payload.name_fr}" sauvegardé avec succès !`, "success");
+
+    // Add to session history
+    addToHistory({
+      time: new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }),
+      code_article: payload.code_article,
+      barcode: payload.barcode,
+      name_fr: payload.name_fr,
+      buyer: payload.buyer,
+      sell_price: payload.sell_price,
+      stock: payload.seller_stock_quantity
+    });
+
+    // Reset scanner ready for next scan
+    resetToScanner();
+  } catch (err) {
+    playBuzz();
+    showToast("Erreur serveur lors de la sauvegarde", "error");
+  }
+}
+
+// Reset view and refocus scanner
+function resetToScanner() {
+  document.getElementById("edit-card").classList.remove("visible");
+  document.getElementById("empty-state").style.display = "block";
+  currentProduct = null;
+
+  const scanInp = document.getElementById("scanner-input");
+  scanInp.value = "";
+  scanInp.focus();
+  scanInp.select();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// Session History Management
+function addToHistory(item) {
+  sessionHistory.unshift(item);
+  renderHistory();
+}
+
+function renderHistory() {
+  const tbody = document.getElementById("recent-tbody");
+  const badge = document.getElementById("recent-count-badge");
+  badge.textContent = `${sessionHistory.length} modification(s)`;
+
+  if (sessionHistory.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--text2)">Aucun produit scanné pour le moment dans cette session.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = sessionHistory.map(it => {
+    let ownerBadge = `<span style="color:#fca5a5">🔴 Bilel</span>`;
+    if (it.buyer === "Houari") ownerBadge = `<span style="color:#c4b5fd">🟣 Houari</span>`;
+    else if (it.buyer === "Abdrahman") ownerBadge = `<span style="color:#86efac">🟢 Abdrahman</span>`;
+
+    return `
+      <tr>
+        <td style="color:var(--text2);font-size:12px">${it.time}</td>
+        <td><b>${escapeHtml(it.code_article || "—")}</b></td>
+        <td style="font-family:monospace;font-size:12px">${escapeHtml(it.barcode || "—")}</td>
+        <td><div style="font-weight:600">${escapeHtml(it.name_fr)}</div></td>
+        <td>${ownerBadge}</td>
+        <td style="text-align:right;font-weight:700;color:var(--green)">${fmtDA(it.sell_price)}</td>
+        <td style="text-align:center"><b>${it.stock}</b></td>
+        <td>
+          <button class="btn btn-secondary btn-sm" onclick="reopenProduct('${it.code_article || it.barcode}')">
+            ✏️ Rouvrir
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join("");
+}
+
+function reopenProduct(code) {
+  if (!code) return;
+  document.getElementById("scanner-input").value = code;
+  handleScanSubmit();
+}
+</script>
+</body>
+</html>

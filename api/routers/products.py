@@ -454,3 +454,160 @@ def sync_matched_barcodes(target: Optional[str] = "all", db: Session = Depends(g
         "synced_items": synced,
         "message": f"Succès : {len(synced)} codes-barres synchronisés vers {target.upper()} !"
     }
+
+
+# ── Quick Scanner & Edit Terminal ─────────────────────────────────────────────
+class ScannerSaveRequest(BaseModel):
+    product_id: int
+    name_fr: str
+    name_ar: Optional[str] = None
+    code_article: Optional[str] = None
+    barcode: Optional[str] = None
+    buyer: str
+    sell_price: float
+    purchase_price: Optional[float] = None
+    category: Optional[str] = None
+    fast_panel: Optional[bool] = False
+    global_stock_quantity: Optional[int] = None
+    seller_stock_quantity: Optional[int] = None
+    seller_username: Optional[str] = None
+
+@router.get("/scanner/lookup")
+def scanner_lookup(q: str, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+    search_q = (q or "").strip()
+    if not search_q:
+        raise HTTPException(400, "Veuillez scanner ou saisir un code")
+    
+    # 1. Match barcode
+    prod = db.query(Product).options(joinedload(Product.global_stock)).filter(
+        (Product.barcode == search_q) |
+        (Product.barcode.like(f"%{search_q}%"))
+    ).first()
+    
+    # 2. Match code_article
+    if not prod:
+        prod = db.query(Product).options(joinedload(Product.global_stock)).filter(
+            func.lower(Product.code_article) == search_q.lower()
+        ).first()
+
+    # 3. Match name_fr
+    if not prod:
+        prod = db.query(Product).options(joinedload(Product.global_stock)).filter(
+            Product.name_fr.ilike(f"%{search_q}%")
+        ).first()
+
+    if not prod:
+        raise HTTPException(404, f"Aucun produit trouvé pour '{search_q}'")
+
+    seller_stocks = db.query(SellerStock).options(joinedload(SellerStock.seller)).filter(
+        SellerStock.product_id == prod.id
+    ).all()
+    
+    sellers_info = [
+        {"seller_id": ss.seller_id, "username": ss.seller.username, "quantity": ss.quantity}
+        for ss in seller_stocks if ss.seller
+    ]
+
+    b_low = (prod.buyer or "bilel").lower()
+    default_sqty = 0
+    default_seller_name = "bilel"
+    if "houari" in b_low:
+        default_seller_name = "houarii"
+    elif "abd" in b_low:
+        default_seller_name = "abderahman"
+    else:
+        default_seller_name = "bilel"
+
+    for ss in sellers_info:
+        if ss["username"].lower() == default_seller_name.lower():
+            default_sqty = ss["quantity"]
+            break
+
+    return {
+        "id": prod.id,
+        "name_fr": prod.name_fr,
+        "name_ar": prod.name_ar or "",
+        "code_article": prod.code_article or "",
+        "barcode": prod.barcode or "",
+        "barcodes": prod.barcode_list,
+        "category": prod.category or "Général",
+        "purchase_price": prod.purchase_price or 0.0,
+        "sell_price": prod.sell_price or 0.0,
+        "buyer": prod.buyer or "Bilel",
+        "fast_panel": bool(prod.fast_panel),
+        "global_stock_quantity": prod.global_stock.quantity if prod.global_stock else 0,
+        "seller_stock_quantity": default_sqty,
+        "default_seller_username": default_seller_name,
+        "seller_stocks": sellers_info,
+        "total_stock": (prod.global_stock.quantity if prod.global_stock else 0) + sum(s["quantity"] for s in sellers_info)
+    }
+
+@router.post("/scanner/save")
+def scanner_save_product(data: ScannerSaveRequest, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+    prod = db.query(Product).options(joinedload(Product.global_stock)).filter(Product.id == data.product_id).first()
+    if not prod:
+        raise HTTPException(404, "Produit introuvable")
+
+    prod.name_fr = data.name_fr.strip()
+    if data.name_ar is not None:
+        prod.name_ar = data.name_ar.strip() or None
+    if data.code_article:
+        prod.code_article = data.code_article.strip()
+    if data.barcode is not None:
+        prod.barcode = normalize_barcodes(data.barcode)
+    if data.buyer:
+        prod.buyer = data.buyer.strip()
+    prod.sell_price = round(data.sell_price, 2)
+    if data.purchase_price is not None:
+        prod.purchase_price = round(data.purchase_price, 2)
+    if data.category:
+        prod.category = data.category.strip()
+    if data.fast_panel is not None:
+        prod.fast_panel = bool(data.fast_panel)
+
+    if data.global_stock_quantity is not None:
+        if prod.global_stock:
+            prod.global_stock.quantity = max(0, data.global_stock_quantity)
+        else:
+            gs = GlobalStock(product_id=prod.id, quantity=max(0, data.global_stock_quantity))
+            db.add(gs)
+
+    if data.seller_stock_quantity is not None:
+        target_uname = data.seller_username
+        if not target_uname:
+            b_low = (prod.buyer or "bilel").lower()
+            target_uname = "houarii" if "houari" in b_low else ("abderahman" if "abd" in b_low else "bilel")
+        
+        seller_user = db.query(User).filter(func.lower(User.username) == target_uname.lower()).first()
+        if seller_user:
+            ss = db.query(SellerStock).filter(
+                SellerStock.seller_id == seller_user.id,
+                SellerStock.product_id == prod.id
+            ).first()
+            if ss:
+                ss.quantity = max(0, data.seller_stock_quantity)
+            else:
+                ss = SellerStock(
+                    seller_id=seller_user.id,
+                    product_id=prod.id,
+                    quantity=max(0, data.seller_stock_quantity)
+                )
+                db.add(ss)
+
+    db.commit()
+    db.refresh(prod)
+    return {
+        "status": "success",
+        "message": f"Produit '{prod.name_fr}' mis à jour avec succès !",
+        "product": {
+            "id": prod.id,
+            "name_fr": prod.name_fr,
+            "code_article": prod.code_article,
+            "barcode": prod.barcode,
+            "buyer": prod.buyer,
+            "sell_price": prod.sell_price,
+            "purchase_price": prod.purchase_price,
+            "global_stock_quantity": prod.global_stock.quantity if prod.global_stock else 0,
+            "fast_panel": prod.fast_panel
+        }
+    }

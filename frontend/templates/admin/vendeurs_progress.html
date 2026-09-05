@@ -238,6 +238,7 @@
     <div class="sidebar-logo">🛒 EduShop</div>
     <nav class="sidebar-nav">
       <a href="/admin">📊 Tableau de bord</a>
+      <a href="/admin/scanner">⚡ Scan & Édition Rapide</a>
       <a href="/admin/products">📦 Produits</a>
       <a href="/admin/stock">🏪 Stock</a>
       <a href="/admin/inventory">📝 Inventaire & Audit</a>
@@ -349,6 +350,10 @@
 
 <script src="/static/js/app.js"></script>
 <script>
+function escapeHtml(str) {
+  if (!str) return "";
+  return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
 let progressData = null;
 let currentPill = "all";
 let currentSellerFilter = "all";
@@ -396,7 +401,7 @@ function renderSellerCards() {
   const container = document.getElementById("sellers-cards-container");
   container.innerHTML = "";
 
-  progressData.sellers.forEach(s => {
+  progressData.sellers.filter(s => (s.items_count > 0 || s.capital_sent > 0 || s.total_sales_count > 0) && s.username !== 'houari').forEach(s => {
     const theme = getSellerTheme(s.username);
     const initial = s.username.charAt(0).toUpperCase();
 
@@ -453,7 +458,7 @@ function populateSellerDropdown() {
   const sel = document.getElementById("seller-select-filter");
   const curVal = sel.value;
   sel.innerHTML = '<option value="all">👥 Tous les vendeurs</option>';
-  progressData.sellers.forEach(s => {
+  progressData.sellers.filter(s => (s.items_count > 0 || s.capital_sent > 0) && s.username !== 'houari').forEach(s => {
     const opt = document.createElement("option");
     opt.value = s.id;
     opt.textContent = `👤 ${s.username} (${s.items_count} articles)`;

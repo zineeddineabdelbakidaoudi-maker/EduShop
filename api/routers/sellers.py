@@ -55,7 +55,7 @@ def list_sellers(db: Session = Depends(get_db), admin: User = Depends(require_ad
 @router.get("/progress")
 def get_sellers_progress(db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     """Comprehensive progress tracking: Capital sent, Revenue, Profit, Remaining Stock per seller."""
-    users = db.query(User).filter(User.username != "admin").order_by(User.id.asc()).all()
+    users = db.query(User).filter(User.username != "admin", User.username != "houari").order_by(User.id.asc()).all()
     
     sellers_progress = []
     
@@ -161,9 +161,9 @@ def get_sellers_progress(db: Session = Depends(get_db), admin: User = Depends(re
         u_units_remaining = 0
 
         for pid, item in prod_map.items():
-            handled = item["qty_sold"] + item["qty_remaining"]
-            if item["qty_transferred"] < handled:
-                item["qty_transferred"] = handled
+            item["qty_transferred"] = item["qty_sold"] + item["qty_remaining"]
+            if item["qty_transferred"] == 0:
+                continue
 
             pa = item["purchase_price"]
             pv = item["sell_price"]

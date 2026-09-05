@@ -50,6 +50,10 @@ function showToast(msg, type = "success") {
 // ── Format helpers ──────────────────────────────────────────────────────────────
 function fmtDA(n) { return (n || 0).toLocaleString("fr-DZ", { minimumFractionDigits: 2 }) + " DA"; }
 function fmtDate(d) { return new Date(d).toLocaleString("fr-FR"); }
+function escapeHtml(str) {
+  if (!str) return "";
+  return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
 
 // ── Offline queue for seller sales ─────────────────────────────────────────────
 const QUEUE_KEY = "edushop_sale_queue";

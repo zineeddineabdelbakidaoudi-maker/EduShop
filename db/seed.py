@@ -22,9 +22,17 @@ def seed():
             ("admin", "1234", UserRole.admin),
             ("bilel", "0000", UserRole.admin),
             ("abdrahman", "0000", UserRole.admin),
-            ("houari", "0000", UserRole.admin),
+            ("houarii", "0000", UserRole.seller),
             ("caisse1", "0000", UserRole.seller),
         ]
+        # Remove deprecated 'houari' if present
+        deprecated_houari = db.query(User).filter_by(username="houari").first()
+        if deprecated_houari:
+            try:
+                db.delete(deprecated_houari)
+                db.commit()
+            except Exception:
+                db.rollback()
         for uname, upin, urole in user_configs:
             u = db.query(User).filter_by(username=uname).first()
             if not u:
