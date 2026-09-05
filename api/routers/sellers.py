@@ -1,4 +1,4 @@
-﻿from typing import Optional
+from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import func
@@ -22,13 +22,17 @@ class SellerUpdate(BaseModel):
     pin: Optional[str] = None
 
 def seller_stats(user: User, db: Session) -> dict:
-    sales = db.query(Sale).filter(Sale.seller_id == user.id, Sale.is_return == False).all()
-    returns = db.query(Sale).filter(Sale.seller_id == user.id, Sale.is_return == True).count()
-    revenue = sum(s.total for s in sales)
-    profit = sum(
-        sum((si.unit_price - si.purchase_price) * si.quantity for si in s.items)
-        for s in sales
-    )
+    try:
+        sales = db.query(Sale).filter(Sale.seller_id == user.id, Sale.is_return == False).all()
+        returns = db.query(Sale).filter(Sale.seller_id == user.id, Sale.is_return == True).count()
+        revenue = sum(s.total for s in sales)
+        profit = sum(
+            sum((si.unit_price - si.purchase_price) * si.quantity for si in s.items)
+            for s in sales
+        )
+    except Exception as e:
+        sales, returns, revenue, profit = [], 0, 0.0, 0.0
+
     return {
         "id": user.id, "username": user.username, "role": user.role,
         "created_at": user.created_at,

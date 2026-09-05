@@ -129,11 +129,19 @@ def list_products(db: Session = Depends(get_db), admin: User = Depends(require_a
 @router.get("/seller")
 def list_seller_products(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     role_str = getattr(current_user.role, "value", str(current_user.role)).lower()
+    products = db.query(Product).options(joinedload(Product.global_stock)).all()
     if role_str == "admin":
-        products = db.query(Product).options(joinedload(Product.global_stock)).all()
         return [product_to_seller_dict(p, p.global_stock.quantity if p.global_stock else 0) for p in products]
-    stocks = db.query(SellerStock).filter(SellerStock.seller_id == current_user.id, SellerStock.quantity > 0).all()
-    return [product_to_seller_dict(ss.product, ss.quantity) for ss in stocks]
+    
+    # For sellers: map their specific seller stocks, fallback to global stock
+    seller_stocks = {ss.product_id: ss.quantity for ss in db.query(SellerStock).filter_by(seller_id=current_user.id).all()}
+    results = []
+    for p in products:
+        qty = seller_stocks.get(p.id)
+        if qty is None:
+            qty = p.global_stock.quantity if p.global_stock else 0
+        results.append(product_to_seller_dict(p, qty))
+    return results
 
 @router.get("/search")
 def search_products(

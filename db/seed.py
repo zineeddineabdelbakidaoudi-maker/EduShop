@@ -17,19 +17,28 @@ pwd_ctx = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def seed():
     db = SessionLocal()
     try:
-        # 1. Create admin account only if it does not already exist
-        admin = db.query(User).filter_by(username="admin").first()
-        if not admin:
-            admin = User(
-                username="admin",
-                pin_hash=pwd_ctx.hash("1234"),
-                role=UserRole.admin
-            )
-            db.add(admin)
-            db.commit()
-            print("[OK] Admin account created: admin / PIN 1234")
-        else:
-            print("[OK] Admin account already exists.")
+        # 1. Create or update core user accounts
+        user_configs = [
+            ("admin", "1234", UserRole.admin),
+            ("bilel", "0000", UserRole.admin),
+            ("abdrahman", "0000", UserRole.admin),
+            ("houari", "0000", UserRole.admin),
+            ("caisse1", "0000", UserRole.seller),
+        ]
+        for uname, upin, urole in user_configs:
+            u = db.query(User).filter_by(username=uname).first()
+            if not u:
+                u = User(username=uname, pin_hash=pwd_ctx.hash(upin), role=urole)
+                db.add(u)
+                db.commit()
+                print(f"[OK] Account created: {uname} / PIN {upin} / {urole}")
+            else:
+                # Ensure pin is valid
+                if not pwd_ctx.verify(upin, u.pin_hash):
+                    u.pin_hash = pwd_ctx.hash(upin)
+                    u.role = urole
+                    db.commit()
+                    print(f"[OK] Account updated/reset: {uname} / PIN {upin}")
 
         # 2. Seed initial 80 products if products table is empty
         prod_count = db.query(Product).count()

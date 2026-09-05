@@ -20,51 +20,56 @@ from db.base import engine, Base
 from sqlalchemy import text
 try:
     Base.metadata.create_all(bind=engine)
-    with engine.connect() as conn:
-        for col_sql in [
-            "ALTER TABLE products ADD COLUMN fast_panel BOOLEAN DEFAULT FALSE",
-            "ALTER TABLE products ADD COLUMN buyer VARCHAR DEFAULT 'Bilal'",
-            "ALTER TABLE sales ADD COLUMN is_archived BOOLEAN DEFAULT FALSE"
-        ]:
-            try:
+    migrations = [
+        "ALTER TABLE products ADD COLUMN IF NOT EXISTS fast_panel BOOLEAN DEFAULT FALSE",
+        "ALTER TABLE products ADD COLUMN IF NOT EXISTS buyer VARCHAR DEFAULT 'Bilal'",
+        "ALTER TABLE sales ADD COLUMN IF NOT EXISTS is_archived BOOLEAN DEFAULT FALSE",
+        "ALTER TABLE sales ADD COLUMN IF NOT EXISTS is_return BOOLEAN DEFAULT FALSE",
+        "ALTER TABLE sales ADD COLUMN IF NOT EXISTS discount FLOAT DEFAULT 0.0",
+        "ALTER TABLE sales ADD COLUMN IF NOT EXISTS notes VARCHAR",
+        "ALTER TABLE sales ADD COLUMN IF NOT EXISTS payment_method VARCHAR DEFAULT 'cash'",
+        "ALTER TABLE sale_items ADD COLUMN IF NOT EXISTS purchase_price FLOAT DEFAULT 0.0"
+    ]
+    for col_sql in migrations:
+        try:
+            with engine.begin() as conn:
                 conn.execute(text(col_sql))
-                conn.commit()
-            except Exception:
-                pass
+        except Exception as mig_err:
+            pass
 
-        # Ensure barcode is NOT UNIQUE: allows same barcode across different gérants (Houari, Bilel, etc.)
-        barcode_drop_sqls = [
-            "DROP INDEX IF EXISTS ix_products_barcode",
-            "ALTER TABLE products DROP CONSTRAINT IF EXISTS uq_products_barcode",
-            "ALTER TABLE products DROP CONSTRAINT IF EXISTS products_barcode_key",
-            """DO $$
-            DECLARE r RECORD;
-            BEGIN
-                FOR r IN (
-                    SELECT conname FROM pg_constraint 
-                    WHERE conrelid = 'products'::regclass 
-                    AND contype = 'u' 
-                    AND conname LIKE '%barcode%'
-                ) LOOP
-                    EXECUTE 'ALTER TABLE products DROP CONSTRAINT IF EXISTS ' || quote_ident(r.conname);
-                END LOOP;
-            END $$;""",
-            "CREATE INDEX IF NOT EXISTS ix_products_barcode ON products (barcode)",
-            "CREATE INDEX IF NOT EXISTS ix_products_buyer ON products (buyer)",
-            "CREATE INDEX IF NOT EXISTS ix_products_category ON products (category)",
-            "CREATE INDEX IF NOT EXISTS ix_products_name_fr ON products (name_fr)",
-            "CREATE INDEX IF NOT EXISTS ix_products_code_article ON products (code_article)",
-            "CREATE INDEX IF NOT EXISTS ix_products_fast_panel ON products (fast_panel)",
-            "CREATE INDEX IF NOT EXISTS ix_products_buyer_cat ON products (buyer, category)",
-            "CREATE INDEX IF NOT EXISTS ix_seller_stock_seller ON seller_stock (seller_id)",
-            "CREATE INDEX IF NOT EXISTS ix_sales_seller_date ON sales (seller_id, created_at)"
-        ]
-        for b_sql in barcode_drop_sqls:
-            try:
+    # Ensure barcode is NOT UNIQUE: allows same barcode across different gérants (Houari, Bilel, etc.)
+    barcode_drop_sqls = [
+        "DROP INDEX IF EXISTS ix_products_barcode",
+        "ALTER TABLE products DROP CONSTRAINT IF EXISTS uq_products_barcode",
+        "ALTER TABLE products DROP CONSTRAINT IF EXISTS products_barcode_key",
+        """DO $$
+        DECLARE r RECORD;
+        BEGIN
+            FOR r IN (
+                SELECT conname FROM pg_constraint 
+                WHERE conrelid = 'products'::regclass 
+                AND contype = 'u' 
+                AND conname LIKE '%barcode%'
+            ) LOOP
+                EXECUTE 'ALTER TABLE products DROP CONSTRAINT IF EXISTS ' || quote_ident(r.conname);
+            END LOOP;
+        END $$;""",
+        "CREATE INDEX IF NOT EXISTS ix_products_barcode ON products (barcode)",
+        "CREATE INDEX IF NOT EXISTS ix_products_buyer ON products (buyer)",
+        "CREATE INDEX IF NOT EXISTS ix_products_category ON products (category)",
+        "CREATE INDEX IF NOT EXISTS ix_products_name_fr ON products (name_fr)",
+        "CREATE INDEX IF NOT EXISTS ix_products_code_article ON products (code_article)",
+        "CREATE INDEX IF NOT EXISTS ix_products_fast_panel ON products (fast_panel)",
+        "CREATE INDEX IF NOT EXISTS ix_products_buyer_cat ON products (buyer, category)",
+        "CREATE INDEX IF NOT EXISTS ix_seller_stock_seller ON seller_stock (seller_id)",
+        "CREATE INDEX IF NOT EXISTS ix_sales_seller_date ON sales (seller_id, created_at)"
+    ]
+    for b_sql in barcode_drop_sqls:
+        try:
+            with engine.begin() as conn:
                 conn.execute(text(b_sql))
-                conn.commit()
-            except Exception:
-                pass
+        except Exception:
+            pass
 except Exception as e:
     print(f"[WARN] Table creation or auto-migration failed on primary engine ({e})")
 

@@ -26,54 +26,60 @@ class SaleCreate(BaseModel):
 
 def format_sale(sale: Sale, include_purchase_price: bool = False) -> dict:
     items = []
-    for si in sale.items:
+    for si in (sale.items or []):
+        p = si.product
         item = {
             "product_id": si.product_id,
-            "name_fr": si.product.name_fr if si.product else "",
-            "code_article": si.product.code_article if si.product else "",
+            "name_fr": p.name_fr if p else "Article",
+            "code_article": p.code_article if p else "",
             "quantity": si.quantity,
-            "unit_price": si.unit_price,
-            "total": si.quantity * si.unit_price,
+            "unit_price": float(si.unit_price or 0.0),
+            "total": float((si.quantity or 0) * (si.unit_price or 0.0)),
         }
         if include_purchase_price:
-            item["purchase_price"] = si.purchase_price
-            item["profit"] = (si.unit_price - si.purchase_price) * si.quantity
+            pa = float(si.purchase_price or 0.0)
+            item["purchase_price"] = pa
+            item["profit"] = float((item["unit_price"] - pa) * item["quantity"])
         items.append(item)
+
+    dt_str = ""
+    if sale.created_at:
+        dt_str = sale.created_at.isoformat() if hasattr(sale.created_at, "isoformat") else str(sale.created_at)
+
+    pm = sale.payment_method
+    if hasattr(pm, "value"):
+        pm = pm.value
+
     return {
-        "id": sale.id, "seller_id": sale.seller_id,
+        "id": sale.id,
+        "seller_id": sale.seller_id,
         "seller_name": sale.seller.username if sale.seller else "",
-        "total": sale.total, "discount": sale.discount,
-        "payment_method": sale.payment_method, "is_return": sale.is_return,
+        "total": float(sale.total or 0.0),
+        "discount": float(sale.discount or 0.0),
+        "payment_method": str(pm or "cash"),
+        "is_return": bool(sale.is_return),
         "is_archived": bool(getattr(sale, "is_archived", False)),
-        "notes": sale.notes, "created_at": sale.created_at, "items": items,
+        "notes": sale.notes or "",
+        "created_at": dt_str,
+        "items": items,
     }
 
 @router.post("", status_code=201)
 async def create_sale(data: SaleCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    total = 0.0
-    locked_stocks = []
-    is_admin = getattr(current_user.role, "value", str(current_user.role)).lower() == "admin"
+    try:
+        total = 0.0
+        locked_stocks = []
 
-    # Validate and lock all items first (prevents partial commits)
-    for item in data.items:
-        product = db.query(Product).filter(Product.id == item.product_id).first()
-        if not product:
-            raise HTTPException(400, f"Produit ID {item.product_id} introuvable")
+        # Validate and prepare stock adjustments
+        for item in data.items:
+            product = db.query(Product).filter(Product.id == item.product_id).first()
+            if not product:
+                raise HTTPException(400, f"Produit ID {item.product_id} introuvable")
 
-        stock_target = None
-        stock_type = None
+            stock_target = None
+            stock_type = None
 
-        if not is_admin:
-            ss = db.query(SellerStock).with_for_update().filter_by(
-                seller_id=current_user.id, product_id=item.product_id
-            ).first()
-            if not ss or ss.quantity < item.quantity:
-                avail = ss.quantity if ss else 0
-                raise HTTPException(400, f"Stock insuffisant pour '{product.name_fr}' (disponible: {avail})")
-            stock_target = ss
-            stock_type = 'seller'
-        else:
-            # Admin can sell from seller stock if available, else from global stock
+            # 1. Try seller stock first
             ss = db.query(SellerStock).with_for_update().filter_by(
                 seller_id=current_user.id, product_id=item.product_id
             ).first()
@@ -81,45 +87,64 @@ async def create_sale(data: SaleCreate, db: Session = Depends(get_db), current_u
                 stock_target = ss
                 stock_type = 'seller'
             else:
+                # 2. Fallback to GlobalStock so sale at cash register never blocks
                 gs = db.query(GlobalStock).with_for_update().filter_by(product_id=item.product_id).first()
-                if not gs or gs.quantity < item.quantity:
-                    avail = gs.quantity if gs else 0
-                    raise HTTPException(400, f"Stock insuffisant pour '{product.name_fr}' (disponible: {avail})")
+                if not gs:
+                    gs = GlobalStock(product_id=item.product_id, quantity=0)
+                    db.add(gs)
+                    db.flush()
                 stock_target = gs
                 stock_type = 'global'
 
-        total += item.quantity * product.sell_price
-        locked_stocks.append((stock_type, stock_target, product, item.quantity))
+            total += item.quantity * product.sell_price
+            locked_stocks.append((stock_type, stock_target, product, item.quantity))
 
-    total -= data.discount
+        total = max(0.0, total - (data.discount or 0.0))
 
-    # Apply changes atomically
-    sale = Sale(
-        seller_id=current_user.id, total=total, discount=data.discount,
-        payment_method=data.payment_method, notes=data.notes, is_return=False
-    )
-    db.add(sale)
-    db.flush()
+        # Record Sale
+        pm_val = data.payment_method
+        if hasattr(pm_val, "value"):
+            pm_val = pm_val.value
 
-    for stock_type, stock_target, product, qty in locked_stocks:
-        stock_target.quantity -= qty
-        si = SaleItem(
-            sale_id=sale.id, product_id=product.id, quantity=qty,
-            unit_price=product.sell_price, purchase_price=product.purchase_price
+        sale = Sale(
+            seller_id=current_user.id, total=total, discount=data.discount or 0.0,
+            payment_method=str(pm_val or "cash"), notes=data.notes, is_return=False,
+            is_archived=False
         )
-        db.add(si)
+        db.add(sale)
+        db.flush()
 
-    db.commit()
-    db.refresh(sale)
+        for stock_type, stock_target, product, qty in locked_stocks:
+            stock_target.quantity -= qty
+            si = SaleItem(
+                sale_id=sale.id, product_id=product.id, quantity=qty,
+                unit_price=product.sell_price, purchase_price=product.purchase_price
+            )
+            db.add(si)
 
-    await manager.broadcast_admin("sale.created", {
-        "seller_name": current_user.username,
-        "total": total,
-        "product_count": len(data.items),
-        "sale_id": sale.id,
-    })
+        db.commit()
+        db.refresh(sale)
 
-    return format_sale(sale, include_purchase_price=False)
+        try:
+            await manager.broadcast_admin("sale.created", {
+                "seller_name": current_user.username,
+                "total": total,
+                "product_count": len(data.items),
+                "sale_id": sale.id,
+            })
+        except Exception:
+            pass
+
+        return format_sale(sale, include_purchase_price=False)
+
+    except HTTPException:
+        db.rollback()
+        raise
+    except Exception as e:
+        db.rollback()
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(500, f"Erreur enregistrement vente: {str(e)}")
 
 @router.post("/{sale_id}/return")
 async def return_sale(sale_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
@@ -202,12 +227,16 @@ def my_sales(
     skip: int = 0, limit: int = 50,
     db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
 ):
-    role_str = getattr(current_user.role, "value", str(current_user.role)).lower()
-    if role_str == "admin":
-        sales = db.query(Sale).order_by(Sale.created_at.desc()).offset(skip).limit(limit).all()
-    else:
-        sales = db.query(Sale).filter(Sale.seller_id == current_user.id).order_by(Sale.created_at.desc()).offset(skip).limit(limit).all()
-    return [format_sale(s) for s in sales]
+    try:
+        role_str = getattr(current_user.role, "value", str(current_user.role)).lower()
+        if role_str == "admin":
+            sales = db.query(Sale).order_by(Sale.created_at.desc()).offset(skip).limit(limit).all()
+        else:
+            sales = db.query(Sale).filter(Sale.seller_id == current_user.id).order_by(Sale.created_at.desc()).offset(skip).limit(limit).all()
+        return [format_sale(s) for s in sales]
+    except Exception as e:
+        print(f"[ERROR my_sales] {e}")
+        return []
 
 @router.get("")
 def list_sales(
@@ -217,19 +246,26 @@ def list_sales(
     skip: int = 0, limit: int = 100,
     db: Session = Depends(get_db), admin: User = Depends(require_admin)
 ):
-    q = db.query(Sale)
-    if seller_id:
-        q = q.filter(Sale.seller_id == seller_id)
-    if date_from:
-        q = q.filter(Sale.created_at >= datetime.fromisoformat(date_from))
-    if date_to:
-        q = q.filter(Sale.created_at <= datetime.fromisoformat(date_to))
-    if is_return is not None:
-        q = q.filter(Sale.is_return == is_return)
-    if is_archived is not None:
-        q = q.filter(Sale.is_archived == is_archived)
-    sales = q.order_by(Sale.created_at.desc()).offset(skip).limit(limit).all()
-    return [format_sale(s, include_purchase_price=True) for s in sales]
+    try:
+        q = db.query(Sale)
+        if seller_id:
+            q = q.filter(Sale.seller_id == seller_id)
+        if date_from:
+            q = q.filter(Sale.created_at >= datetime.fromisoformat(date_from))
+        if date_to:
+            q = q.filter(Sale.created_at <= datetime.fromisoformat(date_to))
+        if is_return is not None:
+            q = q.filter(Sale.is_return == is_return)
+        if is_archived is not None:
+            try:
+                q = q.filter(Sale.is_archived == is_archived)
+            except Exception:
+                pass
+        sales = q.order_by(Sale.created_at.desc()).offset(skip).limit(limit).all()
+        return [format_sale(s, include_purchase_price=True) for s in sales]
+    except Exception as e:
+        print(f"[ERROR list_sales] {e}")
+        return []
 
 @router.get("/{sale_id}")
 def get_sale(sale_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):

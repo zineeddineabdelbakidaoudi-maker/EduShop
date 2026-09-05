@@ -14,7 +14,7 @@ class Sale(Base):
     seller_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     total = Column(Float, nullable=False)
     discount = Column(Float, default=0.0)
-    payment_method = Column(Enum(PaymentMethod), default=PaymentMethod.cash)
+    payment_method = Column(String, default="cash")
     is_return = Column(Boolean, default=False)
     is_archived = Column(Boolean, default=False)
     notes = Column(String, nullable=True)
