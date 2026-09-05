@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Response, Request
 from fastapi.responses import RedirectResponse
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from pydantic import BaseModel
@@ -16,7 +17,8 @@ class LoginRequest(BaseModel):
 
 @router.post("/login")
 def login(req: LoginRequest, response: Response, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.username == req.username).first()
+    clean_user = (req.username or "").strip().lower()
+    user = db.query(User).filter(func.lower(User.username) == clean_user).first()
     if not user or not pwd_ctx.verify(req.pin, user.pin_hash):
         raise HTTPException(status_code=401, detail="Identifiant ou PIN incorrect")
     token = create_access_token({"sub": str(user.id), "role": user.role})
