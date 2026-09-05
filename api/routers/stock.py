@@ -179,7 +179,7 @@ def add_global_stock(product_id: int, data: StockAddRequest, db: Session = Depen
 @router.post("/transfer")
 async def transfer_stock(data: TransferRequest, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     # Validate seller exists
-    seller = db.query(User).filter(User.id == data.seller_id, User.role == UserRole.seller).first()
+    seller = db.query(User).filter(User.id == data.seller_id).first()
     if not seller:
         raise HTTPException(404, "Vendeur introuvable")
 
@@ -222,7 +222,7 @@ async def transfer_stock(data: TransferRequest, db: Session = Depends(get_db), a
 
 @router.post("/transfer-batch")
 async def transfer_stock_batch(data: BatchTransferRequest, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
-    seller = db.query(User).filter(User.id == data.seller_id, User.role == UserRole.seller).first()
+    seller = db.query(User).filter(User.id == data.seller_id).first()
     if not seller:
         raise HTTPException(404, "Vendeur introuvable")
 
@@ -321,7 +321,7 @@ def get_my_stock(db: Session = Depends(get_db), seller: User = Depends(require_s
 
 @router.post("/transfer-by-buyer")
 async def transfer_stock_by_buyer(data: TransferAllByBuyerRequest, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
-    seller = db.query(User).filter(User.id == data.seller_id, User.role == UserRole.seller).first()
+    seller = db.query(User).filter(User.id == data.seller_id).first()
     if not seller:
         raise HTTPException(404, "Vendeur introuvable")
 
@@ -469,3 +469,41 @@ def get_transfers_by_seller(seller_id: int, db: Session = Depends(get_db), admin
         "transferred_by": t.transferred_by.username,
         "quantity": t.quantity,
     } for t in transfers]
+
+
+class AssignSellerStockRequest(BaseModel):
+    seller_id: int
+    product_ids: list[int]
+    quantity: int = 5
+    notes: Optional[str] = None
+
+@router.post("/assign-seller-stock")
+def assign_seller_stock(data: AssignSellerStockRequest, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+    seller = db.query(User).filter(User.id == data.seller_id).first()
+    if not seller:
+        raise HTTPException(404, "Vendeur introuvable")
+    
+    assigned = 0
+    for pid in data.product_ids:
+        prod = db.query(Product).filter(Product.id == pid).first()
+        if not prod:
+            continue
+        ss = db.query(SellerStock).filter_by(seller_id=data.seller_id, product_id=pid).first()
+        if ss:
+            ss.quantity = max(ss.quantity, data.quantity)
+        else:
+            ss = SellerStock(seller_id=data.seller_id, product_id=pid, quantity=data.quantity)
+            db.add(ss)
+        
+        # Log transfer
+        transfer = StockTransfer(
+            product_id=pid,
+            seller_id=data.seller_id,
+            transferred_by_id=admin.id,
+            quantity=data.quantity
+        )
+        db.add(transfer)
+        assigned += 1
+    
+    db.commit()
+    return {"detail": f"{assigned} produits assignés au vendeur {seller.username}", "assigned_count": assigned}

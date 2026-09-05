@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progression Vendeurs — EduShop Admin</title>
+  <link rel="stylesheet" href="/static/css/app.css">
+  <style>
+    :root {
+      --bilel-color: #dc2626;
+      --abdrahman-color: #16a34a;
+      --houari-color: #8b5cf6;
+      --caisse1-color: #0284c7;
+    }
+    .kpi-row-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .kpi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+    .kpi-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .kpi-value {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+    .kpi-sub {
+      font-size: 12px;
+      color: var(--text2);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Vendeurs Profiles Cards */
+    .sellers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .seller-profile-card {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      transition: all .2s ease;
+    }
+    .seller-profile-card.bilel { border-color: rgba(220, 38, 38, 0.4); }
+    .seller-profile-card.abdrahman { border-color: rgba(22, 163, 74, 0.4); }
+    .seller-profile-card.houari { border-color: rgba(139, 92, 246, 0.4); }
+    .seller-profile-card.caisse1 { border-color: rgba(2, 132, 199, 0.4); }
+
+    .seller-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+    .seller-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .seller-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .seller-avatar.bilel { background: linear-gradient(135deg, #dc2626, #ef4444); }
+    .seller-avatar.abdrahman { background: linear-gradient(135deg, #16a34a, #22c55e); }
+    .seller-avatar.houari { background: linear-gradient(135deg, #8b5cf6, #a855f7); }
+    .seller-avatar.caisse1 { background: linear-gradient(135deg, #0284c7, #38bdf8); }
+    .seller-avatar.default { background: linear-gradient(135deg, #64748b, #94a3b8); }
+
+    .seller-name {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+      text-transform: capitalize;
+    }
+    .seller-role-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: var(--card2);
+      color: var(--text2);
+      border: 1px solid var(--border);
+    }
+
+    .metrics-2x2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      background: var(--card2);
+      padding: 12px 14px;
+      border-radius: 10px;
+    }
+    .m-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .m-lbl {
+      font-size: 11px;
+      color: var(--text2);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .m-val {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    /* Progress bar */
+    .prog-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .prog-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .progress-bar-bg {
+      height: 9px;
+      background: var(--border);
+      border-radius: 5px;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 5px;
+      transition: width .5s ease;
+    }
+    .progress-bar-fill.bilel { background: linear-gradient(90deg, #dc2626, #ef4444); }
+    .progress-bar-fill.abdrahman { background: linear-gradient(90deg, #16a34a, #22c55e); }
+    .progress-bar-fill.houari { background: linear-gradient(90deg, #8b5cf6, #a855f7); }
+    .progress-bar-fill.default { background: linear-gradient(90deg, #38bdf8, #0284c7); }
+
+    /* Filter Toolbar */
+    .toolbar-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 14px 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 18px;
+    }
+    .search-input {
+      min-width: 280px;
+      padding: 9px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card2);
+      color: var(--text);
+      font-size: 13.5px;
+    }
+    .pill-btn {
+      padding: 7px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--card2);
+      color: var(--text2);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .15s ease;
+    }
+    .pill-btn:hover {
+      border-color: var(--text2);
+      color: var(--text);
+    }
+    .pill-btn.active {
+      background: var(--accent);
+      color: #111;
+      border-color: var(--accent);
+    }
+
+    /* Print styling */
+    @media print {
+      .sidebar, .toolbar-box, .btn, .page-header button { display: none !important; }
+      .layout { display: block !important; }
+      .main { padding: 0 !important; }
+      .kpi-card, .seller-profile-card, .card { box-shadow: none !important; border: 1px solid #ccc !important; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">🛒 EduShop</div>
+    <nav class="sidebar-nav">
+      <a href="/admin">📊 Tableau de bord</a>
+      <a href="/admin/products">📦 Produits</a>
+      <a href="/admin/stock">🏪 Stock</a>
+      <a href="/admin/inventory">📝 Inventaire & Audit</a>
+      <a href="/admin/sellers">👥 Vendeurs</a>
+      <a href="/admin/vendeurs-progress" class="active">📈 Progression Vendeurs</a>
+      <a href="/admin/sales">💰 Ventes</a>
+      <a href="/admin/transfers">📋 Transferts Vendeurs</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="#" onclick="logout()">🚪 Déconnexion</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <span class="page-title">📈 Suivi & Progression des Vendeurs</span>
+        <div style="font-size:13px;color:var(--text2);margin-top:4px">
+          Capital envoyé par l'acheteur, CA réalisé, Bénéfices nets et Capital restant en caisse
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-secondary" onclick="window.print()">🖨️ Imprimer Rapport</button>
+        <button class="btn btn-primary" onclick="init()">🔄 Actualiser</button>
+      </div>
+    </div>
+
+    <!-- 1. KPI SUMMARY GLOBALE (TOUS LES VENDEURS) -->
+    <div class="kpi-row-4">
+      <div class="kpi-card" style="border-left:4px solid #38bdf8">
+        <div class="kpi-title">📦 Capital Total Envoyé</div>
+        <div class="kpi-value" id="kpi-capital-sent" style="color:#38bdf8">0,00 DA</div>
+        <div class="kpi-sub" id="kpi-units-sent">0 unités transférées aux caisses</div>
+      </div>
+      <div class="kpi-card" style="border-left:4px solid var(--accent)">
+        <div class="kpi-title">💰 Chiffre d'Affaires Réalisé (CA)</div>
+        <div class="kpi-value" id="kpi-revenue" style="color:var(--accent)">0,00 DA</div>
+        <div class="kpi-sub" id="kpi-units-sold">0 articles encaissés</div>
+      </div>
+      <div class="kpi-card" style="border-left:4px solid var(--green)">
+        <div class="kpi-title">📈 Bénéfice Net Réalisé</div>
+        <div class="kpi-value" id="kpi-profit" style="color:var(--green)">0,00 DA</div>
+        <div class="kpi-sub" id="kpi-margin-rate">Marge moyenne : 0.0%</div>
+      </div>
+      <div class="kpi-card" style="border-left:4px solid #f97316">
+        <div class="kpi-title">🏪 Capital Restant en Caisse</div>
+        <div class="kpi-value" id="kpi-capital-remaining" style="color:#f97316">0,00 DA</div>
+        <div class="kpi-sub" id="kpi-units-remaining">0 articles encore en stock vendeur</div>
+      </div>
+    </div>
+
+    <!-- 2. CARTES PROFILES PAR VENDEUR -->
+    <div class="sellers-grid" id="sellers-cards-container">
+      <!-- Generated dynamically -->
+    </div>
+
+    <!-- 3. TABLEAU DÉTAILLÉ DES ARTICLES PAR VENDEUR -->
+    <div class="card">
+      <div class="toolbar-box">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <select id="seller-select-filter" class="search-input" style="min-width:200px" onchange="applyFilters()">
+            <option value="all">👥 Tous les vendeurs</option>
+          </select>
+          <input type="text" id="table-search" class="search-input" placeholder="🔍 Rechercher article, code ou code-barres..." oninput="applyFilters()">
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <button type="button" class="pill-btn active" id="pill-all" onclick="setPillFilter('all')">Tous</button>
+          <button type="button" class="pill-btn" id="pill-instock" onclick="setPillFilter('instock')">En Stock</button>
+          <button type="button" class="pill-btn" id="pill-sold" onclick="setPillFilter('sold')">Déjà Vendus</button>
+          <button type="button" class="pill-btn" id="pill-highmargin" onclick="setPillFilter('highmargin')">Forte Marge (>25%)</button>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:0 8px 12px;font-size:12.5px;color:var(--text2)">
+        <span id="items-count-badge">Chargement des données...</span>
+        <span style="font-weight:600;color:var(--green)">⚡ Synchronisé en temps réel avec le Cloud</span>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:90px">CODE ART.</th>
+              <th style="width:130px">CODE-BARRES</th>
+              <th>DÉSIGNATION ARTICLE</th>
+              <th style="width:110px">ACHETEUR</th>
+              <th style="width:110px">VENDEUR</th>
+              <th style="text-align:right">P. ACHAT</th>
+              <th style="text-align:right">P. VENTE</th>
+              <th style="text-align:center;color:#38bdf8">ENVOYÉ</th>
+              <th style="text-align:center;color:var(--green)">VENDU</th>
+              <th style="text-align:center;color:#f97316">RESTE</th>
+              <th style="text-align:right;color:var(--accent)">CA TOTAL</th>
+              <th style="text-align:right;color:var(--green)">BÉNÉFICE</th>
+              <th style="text-align:right;color:#f97316">RESTE (DA)</th>
+              <th style="width:130px">ÉCOULEMENT</th>
+            </tr>
+          </thead>
+          <tbody id="progress-table-body">
+            <tr><td colspan="14" style="text-align:center;padding:30px;color:var(--text2)">Chargement en cours...</td></tr>
+          </tbody>
+          <tfoot id="progress-table-footer" style="background:var(--card2);font-weight:bold;border-top:2px solid var(--border)">
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="/static/js/app.js"></script>
+<script>
+let progressData = null;
+let currentPill = "all";
+let currentSellerFilter = "all";
+
+async function init() {
+  try {
+    const res = await api("GET", "/api/sellers/progress");
+    if (!res) return;
+    progressData = res;
+    renderSummary();
+    renderSellerCards();
+    populateSellerDropdown();
+    applyFilters();
+  } catch (err) {
+    console.error("Error loading progress data:", err);
+    showToast("Erreur lors du chargement des progrès", "error");
+  }
+}
+
+function renderSummary() {
+  const sum = progressData.summary;
+  document.getElementById("kpi-capital-sent").textContent = fmtDA(sum.total_capital_sent);
+  document.getElementById("kpi-units-sent").textContent = `${sum.total_units_sent.toLocaleString()} unités transférées aux caisses`;
+
+  document.getElementById("kpi-revenue").textContent = fmtDA(sum.total_revenue);
+  document.getElementById("kpi-units-sold").textContent = `${sum.total_units_sold.toLocaleString()} articles encaissés`;
+
+  document.getElementById("kpi-profit").textContent = fmtDA(sum.total_profit);
+  document.getElementById("kpi-margin-rate").textContent = `Marge moyenne : ${sum.global_margin_rate}%`;
+
+  document.getElementById("kpi-capital-remaining").textContent = fmtDA(sum.total_capital_remaining);
+  document.getElementById("kpi-units-remaining").textContent = `${sum.total_units_remaining.toLocaleString()} articles encore en stock vendeur`;
+}
+
+function getSellerTheme(name) {
+  const low = (name || "").toLowerCase();
+  if (low.includes("bilel") || low.includes("bilal")) return "bilel";
+  if (low.includes("abd")) return "abdrahman";
+  if (low.includes("houari")) return "houari";
+  if (low.includes("caisse")) return "caisse1";
+  return "default";
+}
+
+function renderSellerCards() {
+  const container = document.getElementById("sellers-cards-container");
+  container.innerHTML = "";
+
+  progressData.sellers.forEach(s => {
+    const theme = getSellerTheme(s.username);
+    const initial = s.username.charAt(0).toUpperCase();
+
+    const card = document.createElement("div");
+    card.className = `seller-profile-card ${theme}`;
+    card.innerHTML = `
+      <div class="seller-header">
+        <div class="seller-title-group">
+          <div class="seller-avatar ${theme}">${initial}</div>
+          <div>
+            <div class="seller-name">${s.username}</div>
+            <span class="seller-role-badge">${s.role} • ${s.items_count} articles</span>
+          </div>
+        </div>
+        <button class="btn btn-secondary" style="padding:5px 12px;font-size:12px" onclick="filterBySeller('${s.id}')">
+          🔍 Filtrer
+        </button>
+      </div>
+
+      <div class="metrics-2x2">
+        <div class="m-item">
+          <span class="m-lbl">📦 Capital Envoyé</span>
+          <span class="m-val" style="color:#38bdf8">${fmtDA(s.capital_sent)}</span>
+        </div>
+        <div class="m-item">
+          <span class="m-lbl">💰 CA Encaissé</span>
+          <span class="m-val" style="color:var(--accent)">${fmtDA(s.revenue)}</span>
+        </div>
+        <div class="m-item">
+          <span class="m-lbl">📈 Bénéfice Net</span>
+          <span class="m-val" style="color:var(--green)">${fmtDA(s.profit)} <small style="font-size:11px">(${s.margin_rate}%)</small></span>
+        </div>
+        <div class="m-item">
+          <span class="m-lbl">🏪 Capital Restant</span>
+          <span class="m-val" style="color:#f97316">${fmtDA(s.capital_remaining)}</span>
+        </div>
+      </div>
+
+      <div class="prog-wrap">
+        <div class="prog-info">
+          <span>Taux d'Écoulement : ${s.ecoulement_pct}%</span>
+          <span>${s.units_sold} / ${s.units_sent} unités vendues</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill ${theme}" style="width: ${Math.min(s.ecoulement_pct, 100)}%"></div>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function populateSellerDropdown() {
+  const sel = document.getElementById("seller-select-filter");
+  const curVal = sel.value;
+  sel.innerHTML = '<option value="all">👥 Tous les vendeurs</option>';
+  progressData.sellers.forEach(s => {
+    const opt = document.createElement("option");
+    opt.value = s.id;
+    opt.textContent = `👤 ${s.username} (${s.items_count} articles)`;
+    sel.appendChild(opt);
+  });
+  if (curVal) sel.value = curVal;
+}
+
+function filterBySeller(sellerId) {
+  document.getElementById("seller-select-filter").value = sellerId;
+  applyFilters();
+  window.scrollTo({ top: document.querySelector(".toolbar-box").offsetTop - 20, behavior: "smooth" });
+}
+
+function setPillFilter(pill) {
+  currentPill = pill;
+  document.querySelectorAll(".pill-btn").forEach(b => b.classList.remove("active"));
+  const btn = document.getElementById(`pill-${pill}`);
+  if (btn) btn.classList.add("active");
+  applyFilters();
+}
+
+function applyFilters() {
+  if (!progressData) return;
+
+  const sellerFilter = document.getElementById("seller-select-filter").value;
+  const search = (document.getElementById("table-search").value || "").trim().toLowerCase();
+
+  let allItems = [];
+  progressData.sellers.forEach(s => {
+    if (sellerFilter !== "all" && String(s.id) !== String(sellerFilter)) return;
+    s.items.forEach(it => {
+      allItems.push({ ...it, seller_username: s.username, seller_id: s.id });
+    });
+  });
+
+  // Filter by search
+  if (search) {
+    allItems = allItems.filter(it => 
+      (it.name_fr || "").toLowerCase().includes(search) ||
+      (it.code_article || "").toLowerCase().includes(search) ||
+      (it.barcode || "").toLowerCase().includes(search)
+    );
+  }
+
+  // Filter by pill
+  if (currentPill === "instock") {
+    allItems = allItems.filter(it => it.qty_remaining > 0);
+  } else if (currentPill === "sold") {
+    allItems = allItems.filter(it => it.qty_sold > 0);
+  } else if (currentPill === "highmargin") {
+    allItems = allItems.filter(it => {
+      const margin = it.sell_price > 0 ? ((it.sell_price - it.purchase_price) / it.sell_price * 100) : 0;
+      return margin >= 25;
+    });
+  }
+
+  renderTable(allItems);
+}
+
+function renderTable(items) {
+  const tbody = document.getElementById("progress-table-body");
+  const tfoot = document.getElementById("progress-table-footer");
+  const badge = document.getElementById("items-count-badge");
+
+  badge.textContent = `${items.length} article(s) affiché(s)`;
+
+  if (items.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="14" style="text-align:center;padding:40px;color:var(--text2)">Aucun article ne correspond aux filtres sélectionnés.</td></tr>`;
+    tfoot.innerHTML = "";
+    return;
+  }
+
+  let totSentQty = 0, totSoldQty = 0, totRemQty = 0;
+  let totRevenue = 0, totProfit = 0, totCapRem = 0;
+
+  tbody.innerHTML = items.map(it => {
+    totSentQty += it.qty_transferred;
+    totSoldQty += it.qty_sold;
+    totRemQty += it.qty_remaining;
+    totRevenue += it.revenue_generated;
+    totProfit += it.profit_generated;
+    totCapRem += it.capital_remaining;
+
+    const theme = getSellerTheme(it.seller_username);
+    const ecoul = it.ecoulement_pct;
+    const fastIcon = it.fast_panel ? ' <span title="Caisse Rapide">⚡</span>' : '';
+
+    return `
+      <tr>
+        <td><b>${it.code_article || "—"}</b>${fastIcon}</td>
+        <td style="font-family:monospace;font-size:12px;color:var(--text2)">${it.barcode || "—"}</td>
+        <td>
+          <div style="font-weight:600;color:var(--text)">${escapeHtml(it.name_fr)}</div>
+          <div style="font-size:11px;color:var(--text2)">${it.category || ""}</div>
+        </td>
+        <td><span class="badge badge-orange">${it.buyer || "Bilel"}</span></td>
+        <td><span class="badge ${theme === "bilel" ? "badge-red" : (theme === "abdrahman" ? "badge-green" : "badge-blue")}">${it.seller_username}</span></td>
+        <td style="text-align:right">${fmtDA(it.purchase_price)}</td>
+        <td style="text-align:right;font-weight:700">${fmtDA(it.sell_price)}</td>
+        <td style="text-align:center;font-weight:700;color:#38bdf8">${it.qty_transferred}</td>
+        <td style="text-align:center;font-weight:700;color:var(--green)">${it.qty_sold}</td>
+        <td style="text-align:center;font-weight:700;color:#f97316">${it.qty_remaining}</td>
+        <td style="text-align:right;font-weight:700;color:var(--accent)">${fmtDA(it.revenue_generated)}</td>
+        <td style="text-align:right;font-weight:700;color:var(--green)">${fmtDA(it.profit_generated)}</td>
+        <td style="text-align:right;font-weight:700;color:#f97316">${fmtDA(it.capital_remaining)}</td>
+        <td>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden">
+              <div style="height:100%;width:${Math.min(ecoul, 100)}%;background:var(--green)"></div>
+            </div>
+            <span style="font-size:11px;font-weight:700;min-width:32px">${ecoul}%</span>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join("");
+
+  tfoot.innerHTML = `
+    <tr>
+      <td colspan="7" style="text-align:right">TOTAL (${items.length} lignes) :</td>
+      <td style="text-align:center;color:#38bdf8">${totSentQty}</td>
+      <td style="text-align:center;color:var(--green)">${totSoldQty}</td>
+      <td style="text-align:center;color:#f97316">${totRemQty}</td>
+      <td style="text-align:right;color:var(--accent)">${fmtDA(totRevenue)}</td>
+      <td style="text-align:right;color:var(--green)">${fmtDA(totProfit)}</td>
+      <td style="text-align:right;color:#f97316">${fmtDA(totCapRem)}</td>
+      <td style="text-align:center">${totSentQty > 0 ? Math.round(totSoldQty / totSentQty * 100) : 0}% global</td>
+    </tr>
+  `;
+}
+
+async function logout() {
+  await api("POST", "/api/auth/logout");
+  window.location.href = "/";
+}
+
+init();
+</script>
+</body>
+</html>

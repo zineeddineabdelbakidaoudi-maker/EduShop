@@ -16,7 +16,7 @@
       <a href="/admin/transfers">📋 Transferts Vendeurs</a>
       <a href="/admin/sellers">👥 Vendeurs</a>
       <a href="/admin/sales">💰 Ventes</a>
-      <a href="/admin/suppliers">🚚 Fournisseurs</a>
+      <a href="/admin/vendeurs-progress">📈 Progression Vendeurs</a>
       <a href="/downloads" style="color:#f5a623;font-weight:700;background:rgba(245,166,35,0.08);border-radius:6px;margin-top:6px">📥 Télécharger .EXE</a>
     </nav>
     <div class="sidebar-footer" style="display:flex;flex-direction:column;gap:8px">
@@ -102,9 +102,7 @@
           <button type="button" class="btn btn-secondary" onclick="syncDuplicateBarcodes('abdrahman')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #16a34a;color:#10b981;background:rgba(22,163,74,0.1)" title="Synchroniser spécifiquement les codes-barres vers Abdrahman">
             🟢 Synchro Barcodes Abdrahman
           </button>
-          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-cartables" onclick="setBarcodeFilter('cartables')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #38bdf8;color:#38bdf8" title="Afficher les articles des 4 Bons Cartables">
-            🎒 Bons Cartables <span id="count-cartables" style="background:#38bdf8;color:#111;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
-          </button>
+          
         </div>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px 12px;font-size:12px;color:var(--text2);flex-wrap:wrap;gap:8px">
@@ -297,13 +295,13 @@ function updateCounts(){
   const elWithout = document.getElementById("count-without");
   const elFast = document.getElementById("count-fast");
   const elMatched = document.getElementById("count-matched");
-  const elCartables = document.getElementById("count-cartables");
+  // removed cartables button
   const elHouari = document.getElementById("count-houari");
   const elBilel = document.getElementById("count-bilel");
   const elAbdrahman = document.getElementById("count-abdrahman");
 
   if(elMatched) elMatched.textContent = matchedCount;
-  if(elCartables) elCartables.textContent = cartablesCount;
+  
   if(elHouari) elHouari.textContent = houariProds.length;
   if(elBilel) elBilel.textContent = bilelProds.length;
   if(elAbdrahman) elAbdrahman.textContent = abdrahmanProds.length;

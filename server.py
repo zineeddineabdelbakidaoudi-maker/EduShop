@@ -159,6 +159,10 @@ def admin_stock(request: Request):
 def admin_inventory(request: Request):
     return templates.TemplateResponse(request=request, name="admin/inventory.html")
 
+@app.get("/admin/vendeurs-progress", response_class=HTMLResponse)
+def admin_vendeurs_progress(request: Request):
+    return templates.TemplateResponse(request=request, name="admin/vendeurs_progress.html")
+
 @app.get("/admin/sellers", response_class=HTMLResponse)
 def admin_sellers(request: Request):
     return templates.TemplateResponse(request=request, name="admin/sellers.html")
