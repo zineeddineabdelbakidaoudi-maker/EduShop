@@ -1,7 +1,8 @@
 from typing import Optional
 import datetime
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
+from sqlalchemy import func
 from pydantic import BaseModel, validator
 from db.base import get_db
 from models.product import Product
@@ -11,6 +12,12 @@ from api.deps import require_admin, require_seller
 from api.websocket import manager
 
 router = APIRouter(prefix="/api/stock", tags=["stock"])
+
+class TransferAllByBuyerRequest(BaseModel):
+    buyer: str
+    seller_id: int
+    notes: Optional[str] = None
+
 
 class TransferItem(BaseModel):
     product_id: int
@@ -49,19 +56,63 @@ class StockAddRequest(BaseModel):
 
 @router.get("/global")
 def get_global_stock(db: Session = Depends(get_db), admin: User = Depends(require_admin)):
-    stocks = db.query(GlobalStock).all()
+    stocks = db.query(GlobalStock).options(joinedload(GlobalStock.product)).all()
     return [{
         "product_id": gs.product_id,
-        "name_fr": gs.product.name_fr,
-        "barcode": gs.product.barcode,
-        "code_article": gs.product.code_article,
-        "sell_price": gs.product.sell_price,
-        "purchase_price": gs.product.purchase_price,
-        "buyer": gs.product.buyer or "Bilal",
+        "name_fr": gs.product.name_fr if gs.product else "—",
+        "barcode": gs.product.barcode if gs.product else "",
+        "code_article": gs.product.code_article if gs.product else "",
+        "category": (gs.product.category if gs.product else "") or "Général",
+        "sell_price": gs.product.sell_price if gs.product else 0.0,
+        "purchase_price": gs.product.purchase_price if gs.product else 0.0,
+        "buyer": (gs.product.buyer if gs.product else "Bilal") or "Bilal",
         "quantity": gs.quantity,
-        "min_quantity": gs.product.min_quantity,
-        "low_stock": gs.quantity <= gs.product.min_quantity,
+        "min_quantity": gs.product.min_quantity if gs.product else 5,
+        "low_stock": gs.quantity <= (gs.product.min_quantity if gs.product else 5),
     } for gs in stocks]
+
+@router.get("/by-buyer-summary")
+def get_stock_by_buyer_summary(db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+    """Breakdown of global stock by buyer (Bilel, Houari, Abdrahman)."""
+    stocks = db.query(GlobalStock).options(joinedload(GlobalStock.product)).all()
+    summary = {}
+    for gs in stocks:
+        p = gs.product
+        if not p:
+            continue
+        buyer = (p.buyer or "Bilal").strip()
+        b_lower = buyer.lower()
+        if b_lower in ["bilel", "bilal"]:
+            canonical = "Bilel"
+        elif b_lower == "houari":
+            canonical = "Houari"
+        elif b_lower in ["abdrahman", "abderrahmane", "bouderouaz"]:
+            canonical = "Abdrahman"
+        else:
+            canonical = buyer
+
+        if canonical not in summary:
+            summary[canonical] = {
+                "product_count": 0,
+                "products_with_stock": 0,
+                "total_units": 0,
+                "total_capital": 0.0,
+                "total_sell_value": 0.0,
+            }
+        
+        qty = gs.quantity or 0
+        pa = p.purchase_price or 0.0
+        pv = p.sell_price or 0.0
+        
+        summary[canonical]["product_count"] += 1
+        if qty > 0:
+            summary[canonical]["products_with_stock"] += 1
+            summary[canonical]["total_units"] += qty
+            summary[canonical]["total_capital"] += qty * pa
+            summary[canonical]["total_sell_value"] += qty * pv
+
+    return summary
+
 
 @router.post("/global/{product_id}/add")
 def add_global_stock(product_id: int, data: StockAddRequest, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
@@ -215,22 +266,139 @@ def get_my_stock(db: Session = Depends(get_db), seller: User = Depends(require_s
         "quantity": ss.quantity,
     } for ss in stocks]
 
+@router.post("/transfer-by-buyer")
+async def transfer_stock_by_buyer(data: TransferAllByBuyerRequest, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+    seller = db.query(User).filter(User.id == data.seller_id, User.role == UserRole.seller).first()
+    if not seller:
+        raise HTTPException(404, "Vendeur introuvable")
+
+    buyer_name = (data.buyer or "").strip()
+    b_lower = buyer_name.lower()
+    if b_lower in ["bilel", "bilal"]:
+        buyer_filter = func.lower(Product.buyer).in_(["bilel", "bilal"])
+        canonical_buyer = "Bilel"
+    elif b_lower == "houari":
+        buyer_filter = (func.lower(Product.buyer) == "houari")
+        canonical_buyer = "Houari"
+    elif b_lower in ["abdrahman", "abderrahmane", "bouderouaz"]:
+        buyer_filter = func.lower(Product.buyer).in_(["abdrahman", "abderrahmane", "bouderouaz"])
+        canonical_buyer = "Abdrahman"
+    else:
+        buyer_filter = (func.lower(Product.buyer) == b_lower)
+        canonical_buyer = buyer_name
+
+    stocks = db.query(GlobalStock).join(Product, Product.id == GlobalStock.product_id)\
+               .options(joinedload(GlobalStock.product))\
+               .filter(buyer_filter, GlobalStock.quantity > 0).all()
+
+    if not stocks:
+        raise HTTPException(400, f"Aucun stock global disponible (> 0) à transférer pour le gérant '{canonical_buyer}'")
+
+    prod_ids = [gs.product_id for gs in stocks]
+    existing_seller_stocks = {
+        ss.product_id: ss
+        for ss in db.query(SellerStock).filter(
+            SellerStock.seller_id == data.seller_id,
+            SellerStock.product_id.in_(prod_ids)
+        ).all()
+    }
+
+    now = datetime.datetime.utcnow()
+    transferred_count = 0
+    total_units = 0
+    total_capital = 0.0
+    total_sell_val = 0.0
+    new_seller_stocks = []
+    transfers_to_insert = []
+
+    for gs in stocks:
+        product = gs.product
+        qty = gs.quantity
+        if qty <= 0:
+            continue
+
+        # 100% of available stock is transferred
+        gs.quantity = 0
+
+        if gs.product_id in existing_seller_stocks:
+            existing_seller_stocks[gs.product_id].quantity += qty
+        else:
+            ss = SellerStock(seller_id=data.seller_id, product_id=gs.product_id, quantity=qty)
+            new_seller_stocks.append(ss)
+            existing_seller_stocks[gs.product_id] = ss
+
+        transfers_to_insert.append(StockTransfer(
+            product_id=gs.product_id,
+            seller_id=data.seller_id,
+            transferred_by_id=admin.id,
+            quantity=qty,
+            created_at=now
+        ))
+
+        transferred_count += 1
+        total_units += qty
+        pa = product.purchase_price or 0.0 if product else 0.0
+        pv = product.sell_price or 0.0 if product else 0.0
+        total_capital += qty * pa
+        total_sell_val += qty * pv
+
+    if new_seller_stocks:
+        db.bulk_save_objects(new_seller_stocks)
+    if transfers_to_insert:
+        db.bulk_save_objects(transfers_to_insert)
+
+    db.commit()
+
+    # WebSocket events
+    try:
+        await manager.broadcast_admin("stock.transfer", {
+            "seller_name": seller.username,
+            "product_name": f"Capital {canonical_buyer} ({transferred_count} articles)",
+            "quantity": total_units,
+        })
+        await manager.broadcast_seller(data.seller_id, "stock.updated_all", {
+            "seller_id": data.seller_id,
+            "items_count": transferred_count,
+            "units_count": total_units
+        })
+    except Exception:
+        pass
+
+    return {
+        "status": "success",
+        "buyer": canonical_buyer,
+        "seller_name": seller.username,
+        "seller_id": seller.id,
+        "transferred_products": transferred_count,
+        "total_units": total_units,
+        "total_capital_da": round(total_capital, 2),
+        "total_sell_val_da": round(total_sell_val, 2),
+        "message": f"Transfert complet réussi : {transferred_count} articles ({total_units:,} unités, {total_capital:,.2f} DA) de {canonical_buyer} transférés vers le vendeur {seller.username}."
+    }
+
 @router.get("/transfers")
 def get_all_transfers(db: Session = Depends(get_db), admin: User = Depends(require_admin)):
-    transfers = db.query(StockTransfer).order_by(StockTransfer.created_at.desc()).all()
+    transfers = db.query(StockTransfer)\
+                  .options(
+                      joinedload(StockTransfer.product),
+                      joinedload(StockTransfer.seller),
+                      joinedload(StockTransfer.transferred_by)
+                  )\
+                  .order_by(StockTransfer.created_at.desc()).all()
     return [{
         "id": t.id,
         "created_at": t.created_at.isoformat(),
-        "product_name": t.product.name_fr,
-        "barcode": t.product.barcode or "",
-        "code_article": t.product.code_article or "",
-        "sell_price": t.product.sell_price,
-        "purchase_price": t.product.purchase_price,
-        "buyer": t.product.buyer or "Bilal",
-        "seller_name": t.seller.username,
-        "transferred_by": t.transferred_by.username,
+        "product_name": t.product.name_fr if t.product else "—",
+        "barcode": (t.product.barcode or "") if t.product else "",
+        "code_article": (t.product.code_article or "") if t.product else "",
+        "sell_price": t.product.sell_price if t.product else 0.0,
+        "purchase_price": t.product.purchase_price if t.product else 0.0,
+        "buyer": (t.product.buyer if t.product else "Bilal") or "Bilal",
+        "seller_name": t.seller.username if t.seller else "—",
+        "transferred_by": t.transferred_by.username if t.transferred_by else "admin",
         "quantity": t.quantity,
     } for t in transfers]
+
 
 @router.get("/transfers/seller/{seller_id}")
 def get_transfers_by_seller(seller_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):

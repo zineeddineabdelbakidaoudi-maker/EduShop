@@ -9,6 +9,224 @@
   #print-area { position: absolute; left: 0; top: 0; width: 100%; color: #000; background: #fff; padding: 20px; font-family: Arial, sans-serif; }
   .no-print { display: none !important; }
 }
+
+/* Gérant identity colors */
+:root {
+  --bilel-color: #ea580c;
+  --bilel-bg: rgba(234, 88, 12, 0.12);
+  --bilel-border: rgba(234, 88, 12, 0.4);
+
+  --houari-color: #7c3aed;
+  --houari-bg: rgba(124, 58, 237, 0.12);
+  --houari-border: rgba(124, 58, 237, 0.4);
+
+  --abd-color: #059669;
+  --abd-bg: rgba(5, 150, 105, 0.12);
+  --abd-border: rgba(5, 150, 105, 0.4);
+}
+
+/* Quick Transfer Card styling */
+.quick-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 24px;
+  transition: all .25s ease;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+}
+.quick-card.theme-bilel {
+  border-color: var(--bilel-color);
+  background: linear-gradient(135deg, var(--card) 60%, var(--bilel-bg));
+}
+.quick-card.theme-houari {
+  border-color: var(--houari-color);
+  background: linear-gradient(135deg, var(--card) 60%, var(--houari-bg));
+}
+.quick-card.theme-abd {
+  border-color: var(--abd-color);
+  background: linear-gradient(135deg, var(--card) 60%, var(--abd-bg));
+}
+
+/* Gerant Filter Pills */
+.pill-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.g-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 24px;
+  font-size: 13.5px;
+  font-weight: 700;
+  border: 2px solid var(--border);
+  background: var(--card2);
+  color: var(--text2);
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.g-pill:hover {
+  border-color: var(--text2);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+.g-pill .count-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.1);
+  color: inherit;
+}
+.g-pill.active.g-all {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #111;
+}
+.g-pill.active.g-all .count-badge {
+  background: rgba(0,0,0,0.18);
+  color: #111;
+}
+.g-pill.active.g-bilel {
+  border-color: var(--bilel-color);
+  background: var(--bilel-color);
+  color: #fff;
+  box-shadow: 0 3px 12px rgba(234, 88, 12, 0.4);
+}
+.g-pill.active.g-bilel .count-badge {
+  background: rgba(0,0,0,0.22);
+  color: #fff;
+}
+.g-pill.active.g-houari {
+  border-color: var(--houari-color);
+  background: var(--houari-color);
+  color: #fff;
+  box-shadow: 0 3px 12px rgba(124, 58, 237, 0.4);
+}
+.g-pill.active.g-houari .count-badge {
+  background: rgba(0,0,0,0.22);
+  color: #fff;
+}
+.g-pill.active.g-abd {
+  border-color: var(--abd-color);
+  background: var(--abd-color);
+  color: #fff;
+  box-shadow: 0 3px 12px rgba(5, 150, 105, 0.4);
+}
+.g-pill.active.g-abd .count-badge {
+  background: rgba(0,0,0,0.22);
+  color: #fff;
+}
+
+/* Quick Action Panel Layout */
+.action-box {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: center;
+  padding: 16px;
+  background: rgba(0,0,0,0.15);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+@media (max-width: 900px) {
+  .action-box { grid-template-columns: 1fr; }
+}
+.stats-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+.stat-item {
+  background: var(--card);
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.stat-item .stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text2);
+  letter-spacing: .5px;
+}
+.stat-item .stat-val {
+  font-size: 18px;
+  font-weight: 800;
+  margin-top: 3px;
+}
+
+/* Buttons */
+.btn-transfer-big {
+  padding: 12px 22px;
+  font-size: 14.5px;
+  font-weight: 800;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all .2s ease;
+  white-space: nowrap;
+}
+.btn-transfer-big:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+.btn-transfer-bilel {
+  background: linear-gradient(135deg, #ea580c, #c2410c);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(234, 88, 12, 0.45);
+}
+.btn-transfer-houari {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.45);
+}
+.btn-transfer-abd {
+  background: linear-gradient(135deg, #059669, #047857);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(5, 150, 105, 0.45);
+}
+
+/* Modal styling */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  max-width: 520px;
+  width: 92%;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
 </style>
 </head><body>
 <div class="layout">
@@ -28,54 +246,145 @@
   </aside>
   <main class="main">
     <div class="page-header no-print">
-      <span class="page-title">📋 Historique des Transferts aux Vendeurs</span>
-      <div style="display:flex;gap:8px">
-        <a href="/admin/stock" class="btn btn-primary">➕ Nouveau Transfert</a>
+      <div>
+        <span class="page-title">📋 Transferts de Stock & Capital aux Vendeurs</span>
+        <p style="color:var(--text2);font-size:13px;margin-top:4px">Transférez le capital par gérant ou par produit vers les caisses des vendeurs.</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-secondary" onclick="openBulkTransferModal()">📦 Sélection Manuelle Produits</button>
         <button class="btn btn-secondary" onclick="window.print()">🖨️ Imprimer</button>
       </div>
     </div>
-    <div class="kpi-grid no-print" style="margin-bottom:20px">
-      <div class="kpi-card"><div class="kpi-label">Total Transferts</div><div class="kpi-value" id="kpi-total">—</div></div>
-      <div class="kpi-card"><div class="kpi-label">Unités Transférées</div><div class="kpi-value blue" id="kpi-units">—</div></div>
-      <div class="kpi-card"><div class="kpi-label">Valeur Totale Estimée</div><div class="kpi-value green" id="kpi-value">—</div></div>
-      <div class="kpi-card"><div class="kpi-label">Part Bilal / Houari</div><div class="kpi-value" id="kpi-buyers" style="font-size:15px;margin-top:4px">—</div></div>
-    </div>
-    <div class="card no-print" style="margin-bottom:20px">
-      <div class="toolbar" style="flex-wrap:wrap;gap:12px;align-items:center">
+
+    <!-- ════════════════════════════════════════════════════════════════════════
+         SECTION : TRANSFERT RAPIDE DE CAPITAL PAR GÉRANT
+         ════════════════════════════════════════════════════════════════════════ -->
+    <div class="quick-card no-print" id="quickCard">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
         <div>
-          <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:4px">Gérant / Acheteur :</label>
-          <select id="filter-buyer" onchange="filterTable()" style="padding:8px 12px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px;min-width:180px;font-weight:600">
-            <option value="">👤 Tous les gérants</option>
-            <option value="Bilal">👤 Bilal</option>
-            <option value="Houari">👤 Houari</option>
-          </select>
+          <h3 style="margin:0;font-size:17px;display:flex;align-items:center;gap:8px">
+            <span>⚡</span> Transfert Intégral de Capital par Gérant
+          </h3>
+          <p style="font-size:12.5px;color:var(--text2);margin-top:2px">
+            Cliquez sur un gérant pour calculer instantanément son capital disponible et le transférer au vendeur.
+          </p>
         </div>
-        <div>
-          <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:4px">Vendeur :</label>
-          <select id="filter-seller" onchange="filterTable()" style="padding:8px 12px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px;min-width:180px">
-            <option value="">Tous les vendeurs</option>
-          </select>
+        <button class="btn btn-secondary btn-sm" onclick="loadStockSummary()" title="Rafraîchir les données de stock">🔄 Actualiser Stock</button>
+      </div>
+
+      <!-- Filter Buttons / Pills for Gérant -->
+      <div class="pill-row">
+        <span style="font-size:12.5px;font-weight:700;color:var(--text2);margin-right:4px">Gérant :</span>
+        <button class="g-pill g-bilel active" id="btn-g-bilel" onclick="selectQuickBuyer('Bilel')">
+          🟠 Bilel <span class="count-badge" id="badge-quick-bilel">Chargement...</span>
+        </button>
+        <button class="g-pill g-houari" id="btn-g-houari" onclick="selectQuickBuyer('Houari')">
+          🟣 Houari <span class="count-badge" id="badge-quick-houari">Chargement...</span>
+        </button>
+        <button class="g-pill g-abd" id="btn-g-abd" onclick="selectQuickBuyer('Abdrahman')">
+          🟢 Abdrahman <span class="count-badge" id="badge-quick-abd">Chargement...</span>
+        </button>
+        <button class="g-pill g-all" id="btn-g-all" onclick="selectQuickBuyer('all')">
+          👥 Tous les Gérants <span class="count-badge" id="badge-quick-all">—</span>
+        </button>
+      </div>
+
+      <!-- Dynamic Action Panel for Selected Gérant -->
+      <div class="action-box">
+        <div class="stats-summary">
+          <div class="stat-item">
+            <div class="stat-label">Références en Stock</div>
+            <div class="stat-val" id="stat-prods-count">0</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Unités en Réserve</div>
+            <div class="stat-val blue" id="stat-units-count">0</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Capital Achat Total</div>
+            <div class="stat-val green" id="stat-capital-val">0.00 DA</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Valeur Vente Estimée</div>
+            <div class="stat-val" id="stat-sell-val" style="color:var(--accent)">0.00 DA</div>
+          </div>
         </div>
-        <div>
-          <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:4px">Du :</label>
-          <input type="date" id="filter-from" onchange="filterTable()" style="padding:8px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px">
-        </div>
-        <div>
-          <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:4px">Au :</label>
-          <input type="date" id="filter-to" onchange="filterTable()" style="padding:8px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px">
-        </div>
-        <div style="flex:1;min-width:200px">
-          <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:4px">Recherche :</label>
-          <input class="search-box" id="search" placeholder="Rechercher produit, code..." oninput="filterTable()" style="width:100%">
-        </div>
-        <div style="margin-top:20px">
-          <button class="btn btn-secondary" onclick="clearFilters()">✕ Effacer</button>
+
+        <div style="display:flex;flex-direction:column;gap:10px;min-width:280px">
+          <div>
+            <label style="font-size:11.5px;color:var(--text2);display:block;margin-bottom:4px;font-weight:700">
+              Vendeur Destinataire :
+            </label>
+            <select id="quick-seller" style="padding:10px 12px;font-weight:700;border-radius:8px">
+              <option value="">Chargement des vendeurs...</option>
+            </select>
+          </div>
+
+          <button id="btn-quick-transfer-exec" class="btn-transfer-big btn-transfer-bilel" onclick="confirmTransferAll()">
+            <span>⚡</span> <span id="btn-quick-text">Transférer TOUT le Capital de Bilel</span>
+          </button>
+
+          <button class="btn btn-secondary" onclick="openBulkTransferModal(currentBuyer)" style="font-size:12px;padding:6px 12px">
+            📋 Sélection Manuelle des Articles
+          </button>
         </div>
       </div>
     </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════════
+         SECTION : KPI HISTORIQUE DES TRANSFERTS
+         ════════════════════════════════════════════════════════════════════════ -->
+    <div class="kpi-grid no-print" style="margin-bottom:20px">
+      <div class="kpi-card"><div class="kpi-label">Total Transferts Enregistrés</div><div class="kpi-value" id="kpi-total">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Unités Transférées</div><div class="kpi-value blue" id="kpi-units">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Valeur Totale Estimée</div><div class="kpi-value green" id="kpi-value">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Répartition par Gérant</div><div class="kpi-value" id="kpi-buyers" style="font-size:13.5px;margin-top:4px">—</div></div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════════
+         TOOLBAR FILTRES DE L'HISTORIQUE
+         ════════════════════════════════════════════════════════════════════════ -->
+    <div class="card no-print" style="margin-bottom:20px">
+      <div style="font-size:13px;font-weight:700;color:var(--text2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">
+        🔍 Filtrer l'Historique des Transferts
+      </div>
+      <div class="toolbar" style="flex-wrap:wrap;gap:12px;align-items:center">
+        <!-- Quick Gérant Buttons for Table Filter -->
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          <button class="btn btn-secondary btn-sm active" id="tbl-f-all" onclick="setTableBuyerFilter('')">👥 Tous</button>
+          <button class="btn btn-secondary btn-sm" id="tbl-f-bilel" onclick="setTableBuyerFilter('Bilel')" style="color:var(--bilel-color)">🟠 Bilel</button>
+          <button class="btn btn-secondary btn-sm" id="tbl-f-houari" onclick="setTableBuyerFilter('Houari')" style="color:var(--houari-color)">🟣 Houari</button>
+          <button class="btn btn-secondary btn-sm" id="tbl-f-abd" onclick="setTableBuyerFilter('Abdrahman')" style="color:var(--abd-color)">🟢 Abdrahman</button>
+        </div>
+
+        <div style="width:1px;height:24px;background:var(--border);margin:0 4px"></div>
+
+        <div>
+          <select id="filter-seller" onchange="filterTable()" style="padding:8px 12px;min-width:170px">
+            <option value="">👤 Tous les vendeurs</option>
+          </select>
+        </div>
+        <div>
+          <input type="date" id="filter-from" onchange="filterTable()" style="padding:8px" title="Date début">
+        </div>
+        <div>
+          <input type="date" id="filter-to" onchange="filterTable()" style="padding:8px" title="Date fin">
+        </div>
+        <div style="flex:1;min-width:200px">
+          <input class="search-box" id="search" placeholder="Rechercher produit, code-barres..." oninput="filterTable()" style="width:100%">
+        </div>
+        <div>
+          <button class="btn btn-secondary" onclick="clearFilters()">✕ Réinitialiser</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════════
+         TABLEAU DE L'HISTORIQUE DES TRANSFERTS
+         ════════════════════════════════════════════════════════════════════════ -->
     <div id="print-area">
       <div style="display:none" id="print-header">
-        <h2 style="text-align:center;margin-bottom:4px">EduShop — Historique des Transferts</h2>
+        <h2 style="text-align:center;margin-bottom:4px">EduShop — Historique des Transferts de Stock</h2>
         <p style="text-align:center;color:#555;font-size:13px" id="print-date-range"></p>
         <hr style="margin:10px 0">
       </div>
@@ -87,11 +396,11 @@
                 <th>#</th>
                 <th>Date & Heure</th>
                 <th>Produit</th>
-                <th>Gérant / Acheteur</th>
+                <th>Gérant</th>
                 <th>Code-barres</th>
-                <th>Caissier Destinataire</th>
+                <th>Vendeur Destinataire</th>
                 <th>Transféré Par</th>
-                <th>Qté</th>
+                <th style="text-align:center">Qté</th>
                 <th>Prix Vente</th>
                 <th>Valeur Totale</th>
               </tr>
@@ -104,34 +413,389 @@
     </div>
   </main>
 </div>
+
+<!-- ════════════════════════════════════════════════════════════════════════
+     MODAL DE CONFIRMATION DE TRANSFERT INTEGRAL DE CAPITAL
+     ════════════════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="confirm-modal">
+  <div class="modal" style="max-width:520px">
+    <h3 style="margin:0 0 10px;display:flex;align-items:center;gap:8px;font-size:18px">
+      <span>⚠️</span> Confirmer le Transfert de Capital
+    </h3>
+    <p style="color:var(--text2);font-size:13px;line-height:1.4;margin-bottom:16px">
+      Vous êtes sur le point de transférer <b style="color:#fff">l'intégralité du stock disponible</b> de ce gérant vers la caisse du vendeur sélectionné.
+    </p>
+
+    <div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)">
+        <span style="color:var(--text2);font-size:13px">Gérant Source :</span>
+        <span id="conf-buyer-name" style="font-weight:800;font-size:14px">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)">
+        <span style="color:var(--text2);font-size:13px">Vendeur Destinataire :</span>
+        <span id="conf-seller-name" style="font-weight:800;font-size:14px;color:var(--blue)">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)">
+        <span style="color:var(--text2);font-size:13px">Articles Concernés :</span>
+        <span id="conf-prods-count" style="font-weight:700">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)">
+        <span style="color:var(--text2);font-size:13px">Total Unités à Envoyer :</span>
+        <span id="conf-units-count" style="font-weight:800;color:var(--accent)">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0">
+        <span style="color:var(--text2);font-size:13px">Capital Achat Total :</span>
+        <span id="conf-capital-val" style="font-weight:900;color:var(--green);font-size:15px">—</span>
+      </div>
+    </div>
+
+    <div id="conf-error" class="error-box" style="display:none;margin-bottom:12px"></div>
+
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeConfirmModal()">Annuler</button>
+      <button class="btn btn-primary" id="conf-submit-btn" onclick="executeTransferAll()" style="font-weight:800">
+        ✅ Confirmer &amp; Transférer Tout
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════════
+     MODAL DE SELECTION MANUELLE MULTI-PRODUITS
+     ════════════════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="bulk-modal">
+  <div class="modal" style="max-width:720px;width:96%">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <h3 style="margin:0;font-size:17px;display:flex;align-items:center;gap:8px">
+        <span>📦</span> Sélection Manuelle de Produits à Transférer
+      </h3>
+      <button class="btn btn-secondary" onclick="closeBulkModal()" style="padding:4px 8px">✕</button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+      <div>
+        <label style="font-size:11.5px;color:var(--text2);display:block;margin-bottom:4px">Gérant :</label>
+        <div style="display:flex;gap:4px">
+          <button class="btn btn-secondary btn-sm" id="bmodal-f-all" onclick="filterBulkProducts('')">Tous</button>
+          <button class="btn btn-secondary btn-sm" id="bmodal-f-bilel" onclick="filterBulkProducts('Bilel')">🟠 Bilel</button>
+          <button class="btn btn-secondary btn-sm" id="bmodal-f-houari" onclick="filterBulkProducts('Houari')">🟣 Houari</button>
+          <button class="btn btn-secondary btn-sm" id="bmodal-f-abd" onclick="filterBulkProducts('Abdrahman')">🟢 Abdrahman</button>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:11.5px;color:var(--text2);display:block;margin-bottom:4px">Vendeur Destinataire *</label>
+        <select id="bulk-modal-seller" style="padding:8px"></select>
+      </div>
+    </div>
+
+    <div style="margin-bottom:10px">
+      <input class="search-box" id="bulk-search" placeholder="Filtrer les articles..." oninput="renderBulkTable()" style="width:100%">
+    </div>
+
+    <div style="max-height:340px;overflow-y:auto;border:1px solid var(--border);border-radius:8px">
+      <table style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr style="background:var(--card2);position:sticky;top:0;z-index:1">
+            <th style="padding:8px;width:32px;text-align:center">
+              <input type="checkbox" id="bulk-check-all" onchange="toggleBulkAll(this.checked)">
+            </th>
+            <th style="padding:8px;text-align:left">Produit</th>
+            <th style="padding:8px;text-align:center">Gérant</th>
+            <th style="padding:8px;width:80px;text-align:center">En Réserve</th>
+            <th style="padding:8px;width:110px;text-align:center">Qté à Envoyer</th>
+          </tr>
+        </thead>
+        <tbody id="bulk-products-tbody"></tbody>
+      </table>
+    </div>
+
+    <div id="bulk-summary" style="margin-top:10px;font-size:13px;color:var(--accent);font-weight:700"></div>
+    <div id="bulk-error" class="error-box" style="display:none;margin-top:8px"></div>
+
+    <div class="modal-actions" style="margin-top:16px">
+      <button class="btn btn-secondary" onclick="closeBulkModal()">Annuler</button>
+      <button class="btn btn-primary" onclick="submitBulkTransfer()" style="background:var(--green);font-weight:bold">
+        ✅ Confirmer le Transfert Sélectionné
+      </button>
+    </div>
+  </div>
+</div>
+
 <script src="/static/js/app.js"></script>
 <script>
-let allTransfers=[], sellers=[];
+let allTransfers = [], sellers = [], stockList = [], buyerSummary = {};
+let currentBuyer = "Bilel"; // Default selected gérant
+let tableBuyerFilter = "";
+let bulkSelectedBuyer = "";
 
-async function init(){
+/* ── Init ── */
+async function init() {
   const today = new Date().toISOString().split("T")[0];
   const ago = new Date(Date.now() - 30*24*60*60*1000).toISOString().split("T")[0];
   document.getElementById("filter-from").value = ago;
   document.getElementById("filter-to").value = today;
-  
-  [allTransfers, sellers] = await Promise.all([
-    api("GET", "/api/stock/transfers") || [],
-    api("GET", "/api/sellers") || []
+
+  // Load all initial data
+  await Promise.all([
+    loadTransfers(),
+    loadSellers(),
+    loadStockSummary()
   ]);
 
-  const sel = document.getElementById("filter-seller");
-  sellers.forEach(s => {
-    const o = document.createElement("option");
-    o.value = s.username;
-    o.textContent = s.username;
-    sel.appendChild(o);
-  });
-
+  // Set default buyer selection to Bilel
+  selectQuickBuyer("Bilel");
   filterTable();
 }
 
-function filterTable(){
-  const bv = document.getElementById("filter-buyer").value.toLowerCase();
+/* ── Loaders ── */
+async function loadTransfers() {
+  allTransfers = await api("GET", "/api/stock/transfers") || [];
+}
+
+async function loadSellers() {
+  sellers = await api("GET", "/api/sellers") || [];
+  
+  // Populate filter-seller in toolbar
+  const fSel = document.getElementById("filter-seller");
+  fSel.innerHTML = '<option value="">👤 Tous les vendeurs</option>';
+  sellers.forEach(s => {
+    const o = document.createElement("option");
+    o.value = s.username;
+    o.textContent = `👤 ${s.username}`;
+    fSel.appendChild(o);
+  });
+
+  // Populate quick-seller
+  const qSel = document.getElementById("quick-seller");
+  qSel.innerHTML = sellers.map(s => `<option value="${s.id}">👤 Vendeur : ${s.username}</option>`).join("");
+
+  // Populate bulk modal seller
+  const bSel = document.getElementById("bulk-modal-seller");
+  bSel.innerHTML = sellers.map(s => `<option value="${s.id}">👤 ${s.username}</option>`).join("");
+}
+
+async function loadStockSummary() {
+  // Try by-buyer-summary endpoint first
+  const sum = await api("GET", "/api/stock/by-buyer-summary");
+  if (sum) {
+    buyerSummary = sum;
+  }
+  
+  // Also load global stock for manual bulk modal and detailed metrics
+  stockList = await api("GET", "/api/stock/global") || [];
+  
+  // If summary not available from API, compute from stockList
+  if (!sum || Object.keys(buyerSummary).length === 0) {
+    buyerSummary = {};
+    stockList.forEach(item => {
+      let b = (item.buyer || "Bilal").trim();
+      let bLow = b.toLowerCase();
+      let canon = (bLow === "bilel" || bLow === "bilal") ? "Bilel" :
+                  (bLow === "houari") ? "Houari" :
+                  (bLow === "abdrahman" || bLow === "abderrahmane" || bLow === "bouderouaz") ? "Abdrahman" : b;
+      
+      if (!buyerSummary[canon]) {
+        buyerSummary[canon] = { product_count: 0, products_with_stock: 0, total_units: 0, total_capital: 0, total_sell_value: 0 };
+      }
+      buyerSummary[canon].product_count++;
+      const q = item.quantity || 0;
+      if (q > 0) {
+        buyerSummary[canon].products_with_stock++;
+        buyerSummary[canon].total_units += q;
+        buyerSummary[canon].total_capital += q * (item.purchase_price || 0);
+        buyerSummary[canon].total_sell_value += q * (item.sell_price || 0);
+      }
+    });
+  }
+
+  updateQuickBuyerPillBadges();
+  updateQuickActionDisplay();
+}
+
+function updateQuickBuyerPillBadges() {
+  const getInfo = (key) => buyerSummary[key] || { product_count: 0, total_capital: 0, total_units: 0 };
+  
+  const bInfo = getInfo("Bilel");
+  const hInfo = getInfo("Houari");
+  const aInfo = getInfo("Abdrahman");
+
+  const fmtCap = (c) => c >= 1000000 ? (c/1000000).toFixed(1) + "M DA" : c >= 1000 ? Math.round(c/1000) + "K DA" : Math.round(c) + " DA";
+
+  document.getElementById("badge-quick-bilel").textContent = `${bInfo.products_with_stock} réf · ${fmtCap(bInfo.total_capital)}`;
+  document.getElementById("badge-quick-houari").textContent = `${hInfo.products_with_stock} réf · ${fmtCap(hInfo.total_capital)}`;
+  document.getElementById("badge-quick-abd").textContent = `${aInfo.products_with_stock} réf · ${fmtCap(aInfo.total_capital)}`;
+
+  const totalProds = (bInfo.products_with_stock || 0) + (hInfo.products_with_stock || 0) + (aInfo.products_with_stock || 0);
+  const totalCap = (bInfo.total_capital || 0) + (hInfo.total_capital || 0) + (aInfo.total_capital || 0);
+  document.getElementById("badge-quick-all").textContent = `${totalProds} réf · ${fmtCap(totalCap)}`;
+}
+
+/* ── Select Quick Buyer ── */
+function selectQuickBuyer(buyer) {
+  currentBuyer = buyer;
+
+  // Update pills active state
+  ["btn-g-bilel", "btn-g-houari", "btn-g-abd", "btn-g-all"].forEach(id => {
+    document.getElementById(id).classList.remove("active");
+  });
+  if (buyer === "Bilel") document.getElementById("btn-g-bilel").classList.add("active");
+  else if (buyer === "Houari") document.getElementById("btn-g-houari").classList.add("active");
+  else if (buyer === "Abdrahman") document.getElementById("btn-g-abd").classList.add("active");
+  else document.getElementById("btn-g-all").classList.add("active");
+
+  // Update card theme class
+  const card = document.getElementById("quickCard");
+  card.className = "quick-card no-print " + (buyer === "Bilel" ? "theme-bilel" : buyer === "Houari" ? "theme-houari" : buyer === "Abdrahman" ? "theme-abd" : "");
+
+  // Update execute button class
+  const execBtn = document.getElementById("btn-quick-transfer-exec");
+  execBtn.className = "btn-transfer-big " + (buyer === "Bilel" ? "btn-transfer-bilel" : buyer === "Houari" ? "btn-transfer-houari" : buyer === "Abdrahman" ? "btn-transfer-abd" : "btn-primary");
+
+  // Auto-select matching seller if one exists
+  autoSelectMatchingSeller(buyer);
+
+  updateQuickActionDisplay();
+}
+
+function autoSelectMatchingSeller(buyer) {
+  if (buyer === "all" || !sellers.length) return;
+  const qSel = document.getElementById("quick-seller");
+  const bLow = buyer.toLowerCase();
+  
+  // Look for a seller whose username contains buyer name
+  const match = sellers.find(s => {
+    const sLow = s.username.toLowerCase();
+    if (bLow === "bilel" && (sLow.includes("bilel") || sLow.includes("bilal"))) return true;
+    if (bLow === "houari" && sLow.includes("houari")) return true;
+    if (bLow === "abdrahman" && (sLow.includes("abd") || sLow.includes("rahman"))) return true;
+    return sLow === bLow;
+  });
+
+  if (match) {
+    qSel.value = match.id;
+  }
+}
+
+function updateQuickActionDisplay() {
+  let count = 0, units = 0, cap = 0, sell = 0;
+
+  if (currentBuyer === "all") {
+    Object.values(buyerSummary).forEach(s => {
+      count += (s.products_with_stock || 0);
+      units += (s.total_units || 0);
+      cap += (s.total_capital || 0);
+      sell += (s.total_sell_value || 0);
+    });
+    document.getElementById("btn-quick-text").textContent = "Transférer TOUT le Capital de TOUS LES GÉRANTS";
+  } else {
+    const s = buyerSummary[currentBuyer] || { products_with_stock: 0, total_units: 0, total_capital: 0, total_sell_value: 0 };
+    count = s.products_with_stock || 0;
+    units = s.total_units || 0;
+    cap = s.total_capital || 0;
+    sell = s.total_sell_value || 0;
+    document.getElementById("btn-quick-text").textContent = `Transférer TOUT le Capital de ${currentBuyer.toUpperCase()}`;
+  }
+
+  document.getElementById("stat-prods-count").textContent = count.toLocaleString();
+  document.getElementById("stat-units-count").textContent = units.toLocaleString();
+  document.getElementById("stat-capital-val").textContent = fmtDA(cap);
+  document.getElementById("stat-sell-val").textContent = fmtDA(sell);
+}
+
+/* ── Confirmation Modal ── */
+function confirmTransferAll() {
+  const sellerId = parseInt(document.getElementById("quick-seller").value, 10);
+  if (!sellerId) {
+    showToast("Veuillez sélectionner un vendeur destinataire.", "warn");
+    return;
+  }
+  const seller = sellers.find(s => s.id === sellerId);
+  const sellerName = seller ? seller.username : "Vendeur #" + sellerId;
+
+  const s = (currentBuyer === "all")
+    ? {
+        products_with_stock: Object.values(buyerSummary).reduce((a,b)=>a+(b.products_with_stock||0),0),
+        total_units: Object.values(buyerSummary).reduce((a,b)=>a+(b.total_units||0),0),
+        total_capital: Object.values(buyerSummary).reduce((a,b)=>a+(b.total_capital||0),0),
+      }
+    : (buyerSummary[currentBuyer] || { products_with_stock: 0, total_units: 0, total_capital: 0 });
+
+  if (s.total_units <= 0) {
+    showToast(`Aucun stock disponible à transférer pour ${currentBuyer === 'all' ? 'les gérants' : currentBuyer}.`, "warn");
+    return;
+  }
+
+  document.getElementById("conf-buyer-name").textContent = currentBuyer === "all" ? "👥 Tous les Gérants" : (currentBuyer === "Bilel" ? "🟠 Bilel" : currentBuyer === "Houari" ? "🟣 Houari" : "🟢 Abdrahman");
+  document.getElementById("conf-seller-name").textContent = `👤 ${sellerName}`;
+  document.getElementById("conf-prods-count").textContent = `${s.products_with_stock} articles avec stock`;
+  document.getElementById("conf-units-count").textContent = `${s.total_units.toLocaleString()} unités`;
+  document.getElementById("conf-capital-val").textContent = fmtDA(s.total_capital);
+  document.getElementById("conf-error").style.display = "none";
+
+  document.getElementById("confirm-modal").classList.add("open");
+}
+
+function closeConfirmModal() {
+  document.getElementById("confirm-modal").classList.remove("open");
+}
+
+async function executeTransferAll() {
+  const sellerId = parseInt(document.getElementById("quick-seller").value, 10);
+  const btn = document.getElementById("conf-submit-btn");
+  const err = document.getElementById("conf-error");
+  err.style.display = "none";
+
+  btn.disabled = true;
+  btn.textContent = "⏳ Transfert en cours...";
+
+  try {
+    let res;
+    if (currentBuyer === "all") {
+      const buyers = ["Bilel", "Houari", "Abdrahman"];
+      let totalTransferred = 0;
+      for (const b of buyers) {
+        const r = await api("POST", "/api/stock/transfer-by-buyer", { buyer: b, seller_id: sellerId });
+        if (r && r.status === "success") totalTransferred += r.total_units;
+      }
+      res = { status: "success", message: `Transfert de tous les gérants effectué avec succès ! (${totalTransferred} unités au total)` };
+    } else {
+      res = await api("POST", "/api/stock/transfer-by-buyer", {
+        buyer: currentBuyer,
+        seller_id: sellerId
+      });
+    }
+
+    if (res && (res.status === "success" || res.transferred_products > 0)) {
+      showToast(res.message || `✅ Transfert de ${currentBuyer} effectué avec succès !`);
+      closeConfirmModal();
+      await Promise.all([loadTransfers(), loadStockSummary()]);
+      filterTable();
+    } else {
+      err.textContent = (res && res.detail) || "Erreur lors du transfert de capital.";
+      err.style.display = "block";
+    }
+  } catch (e) {
+    err.textContent = "Erreur : " + e.message;
+    err.style.display = "block";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "✅ Confirmer & Transférer Tout";
+  }
+}
+
+/* ── History Table Filtering & Rendering ── */
+function setTableBuyerFilter(buyer) {
+  tableBuyerFilter = buyer;
+  ["tbl-f-all", "tbl-f-bilel", "tbl-f-houari", "tbl-f-abd"].forEach(id => document.getElementById(id).classList.remove("active"));
+  if (!buyer) document.getElementById("tbl-f-all").classList.add("active");
+  else if (buyer === "Bilel") document.getElementById("tbl-f-bilel").classList.add("active");
+  else if (buyer === "Houari") document.getElementById("tbl-f-houari").classList.add("active");
+  else if (buyer === "Abdrahman") document.getElementById("tbl-f-abd").classList.add("active");
+  filterTable();
+}
+
+function filterTable() {
+  const bv = tableBuyerFilter.toLowerCase();
   const sv = document.getElementById("filter-seller").value;
   const from = document.getElementById("filter-from").value;
   const to = document.getElementById("filter-to").value;
@@ -141,11 +805,17 @@ function filterTable(){
     const d = t.created_at.split("T")[0];
     const buyer = (t.buyer || "bilal").toLowerCase();
     
-    if(bv && buyer !== bv) return false;
-    if(sv && t.seller_name !== sv) return false;
-    if(from && d < from) return false;
-    if(to && d > to) return false;
-    if(q && !t.product_name.toLowerCase().includes(q) && !(t.barcode || "").includes(q) && !(t.code_article || "").toLowerCase().includes(q)) return false;
+    if (bv) {
+      if (bv === "bilel" && buyer !== "bilel" && buyer !== "bilal") return false;
+      else if (bv === "houari" && buyer !== "houari") return false;
+      else if (bv === "abdrahman" && !buyer.includes("abd") && !buyer.includes("rahman")) return false;
+      else if (bv !== "bilel" && bv !== "houari" && bv !== "abdrahman" && buyer !== bv) return false;
+    }
+
+    if (sv && t.seller_name !== sv) return false;
+    if (from && d < from) return false;
+    if (to && d > to) return false;
+    if (q && !t.product_name.toLowerCase().includes(q) && !(t.barcode || "").includes(q) && !(t.code_article || "").toLowerCase().includes(q)) return false;
     return true;
   });
 
@@ -153,53 +823,224 @@ function filterTable(){
   updateKPIs(filtered);
 }
 
-function clearFilters(){
-  ["filter-buyer","filter-seller","filter-from","filter-to","search"].forEach(id => document.getElementById(id).value = "");
+function clearFilters() {
+  tableBuyerFilter = "";
+  ["tbl-f-all", "tbl-f-bilel", "tbl-f-houari", "tbl-f-abd"].forEach(id => document.getElementById(id).classList.remove("active"));
+  document.getElementById("tbl-f-all").classList.add("active");
+  document.getElementById("filter-seller").value = "";
+  document.getElementById("filter-from").value = "";
+  document.getElementById("filter-to").value = "";
+  document.getElementById("search").value = "";
   filterTable();
 }
 
-function renderTable(data){
+function renderTable(data) {
   const tbody = document.getElementById("transfers-table");
   document.getElementById("empty-msg").style.display = data.length === 0 ? "block" : "none";
 
   tbody.innerHTML = data.map(t => {
     const dt = new Date(t.created_at).toLocaleString("fr-DZ");
     const val = ((t.quantity || 0) * (t.sell_price || 0)).toFixed(2);
-    const buyerVal = t.buyer || "Bilal";
-    const buyerBadge = (buyerVal.toLowerCase() === "houari") ?
-      `<span style="background:#7c3aed;color:#fff;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:bold">👤 Houari</span>` :
-      `<span style="background:#2563eb;color:#fff;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:bold">👤 ${buyerVal}</span>`;
+    const bRaw = (t.buyer || "Bilal").trim();
+    const bLow = bRaw.toLowerCase();
+
+    let buyerBadge = "";
+    if (bLow === "houari") {
+      buyerBadge = `<span style="background:var(--houari-bg);color:var(--houari-color);border:1px solid var(--houari-border);padding:3px 9px;border-radius:12px;font-size:11.5px;font-weight:700">🟣 Houari</span>`;
+    } else if (bLow === "bilel" || bLow === "bilal") {
+      buyerBadge = `<span style="background:var(--bilel-bg);color:var(--bilel-color);border:1px solid var(--bilel-border);padding:3px 9px;border-radius:12px;font-size:11.5px;font-weight:700">🟠 Bilel</span>`;
+    } else {
+      buyerBadge = `<span style="background:var(--abd-bg);color:var(--abd-color);border:1px solid var(--abd-border);padding:3px 9px;border-radius:12px;font-size:11.5px;font-weight:700">🟢 Abdrahman</span>`;
+    }
 
     return `<tr>
       <td><code>#${t.id}</code></td>
-      <td>${dt}</td>
+      <td style="white-space:nowrap;font-size:12px">${dt}</td>
       <td><b>${t.product_name}</b></td>
       <td>${buyerBadge}</td>
-      <td><small>${t.barcode || "—"}</small></td>
-      <td><span style="background:var(--blue);color:#fff;padding:3px 8px;border-radius:10px;font-size:12px">👤 ${t.seller_name}</span></td>
-      <td>${t.transferred_by || "admin"}</td>
-      <td style="font-weight:700;color:var(--accent)">${t.quantity}</td>
+      <td><small style="font-family:monospace;font-size:11px">${t.barcode || "—"}</small></td>
+      <td><span style="background:rgba(37,99,235,0.15);color:var(--blue);border:1px solid rgba(37,99,235,0.3);padding:3px 8px;border-radius:10px;font-size:12px;font-weight:700">👤 ${t.seller_name}</span></td>
+      <td style="color:var(--text2);font-size:12px">${t.transferred_by || "admin"}</td>
+      <td style="font-weight:800;color:var(--accent);text-align:center">${t.quantity}</td>
       <td>${fmtDA(t.sell_price || 0)}</td>
-      <td style="color:var(--green);font-weight:700">${fmtDA(parseFloat(val))}</td>
+      <td style="color:var(--green);font-weight:800">${fmtDA(parseFloat(val))}</td>
     </tr>`;
   }).join("");
 }
 
-function updateKPIs(data){
+function updateKPIs(data) {
   document.getElementById("kpi-total").textContent = data.length;
   document.getElementById("kpi-units").textContent = data.reduce((s,t) => s + t.quantity, 0).toLocaleString();
   document.getElementById("kpi-value").textContent = fmtDA(data.reduce((s,t) => s + t.quantity * (t.sell_price || 0), 0));
 
-  const bilalUnits = data.filter(t => (t.buyer || "Bilal").toLowerCase() === "bilal").reduce((s,t) => s + t.quantity, 0);
+  const bilalUnits = data.filter(t => {
+    const b = (t.buyer || "bilal").toLowerCase();
+    return b === "bilal" || b === "bilel";
+  }).reduce((s,t) => s + t.quantity, 0);
+
   const houariUnits = data.filter(t => (t.buyer || "").toLowerCase() === "houari").reduce((s,t) => s + t.quantity, 0);
-  document.getElementById("kpi-buyers").innerHTML = `Bilal: <b>${bilalUnits}</b> u. | Houari: <b>${houariUnits}</b> u.`;
+  const abdUnits = data.filter(t => {
+    const b = (t.buyer || "").toLowerCase();
+    return b.includes("abd") || b.includes("rahman");
+  }).reduce((s,t) => s + t.quantity, 0);
+
+  document.getElementById("kpi-buyers").innerHTML = `🟠 <b>${bilalUnits.toLocaleString()}</b> u. | 🟣 <b>${houariUnits.toLocaleString()}</b> u. | 🟢 <b>${abdUnits.toLocaleString()}</b> u.`;
 }
 
-async function logout(){
+/* ── Bulk Manual Selection Modal ── */
+function openBulkTransferModal(preselectedBuyer = "") {
+  bulkSelectedBuyer = preselectedBuyer === "all" ? "" : preselectedBuyer;
+  
+  // Set buyer button active in modal
+  ["bmodal-f-all", "bmodal-f-bilel", "bmodal-f-houari", "bmodal-f-abd"].forEach(id => document.getElementById(id).classList.remove("active"));
+  if (!bulkSelectedBuyer) document.getElementById("bmodal-f-all").classList.add("active");
+  else if (bulkSelectedBuyer === "Bilel") document.getElementById("bmodal-f-bilel").classList.add("active");
+  else if (bulkSelectedBuyer === "Houari") document.getElementById("bmodal-f-houari").classList.add("active");
+  else if (bulkSelectedBuyer === "Abdrahman") document.getElementById("bmodal-f-abd").classList.add("active");
+
+  // Sync destination seller with quick seller selection
+  const qSel = document.getElementById("quick-seller");
+  if (qSel && qSel.value) {
+    document.getElementById("bulk-modal-seller").value = qSel.value;
+  }
+
+  renderBulkTable();
+  document.getElementById("bulk-error").style.display = "none";
+  document.getElementById("bulk-summary").textContent = "";
+  document.getElementById("bulk-modal").classList.add("open");
+}
+
+function closeBulkModal() {
+  document.getElementById("bulk-modal").classList.remove("open");
+}
+
+function filterBulkProducts(buyer) {
+  bulkSelectedBuyer = buyer;
+  ["bmodal-f-all", "bmodal-f-bilel", "bmodal-f-houari", "bmodal-f-abd"].forEach(id => document.getElementById(id).classList.remove("active"));
+  if (!buyer) document.getElementById("bmodal-f-all").classList.add("active");
+  else if (buyer === "Bilel") document.getElementById("bmodal-f-bilel").classList.add("active");
+  else if (buyer === "Houari") document.getElementById("bmodal-f-houari").classList.add("active");
+  else if (buyer === "Abdrahman") document.getElementById("bmodal-f-abd").classList.add("active");
+  renderBulkTable();
+}
+
+function renderBulkTable() {
+  const q = (document.getElementById("bulk-search").value || "").toLowerCase();
+  const bFilter = bulkSelectedBuyer.toLowerCase();
+
+  const filtered = stockList.filter(item => {
+    if (item.quantity <= 0) return false;
+    const b = (item.buyer || "bilal").toLowerCase();
+    if (bFilter) {
+      if (bFilter === "bilel" && b !== "bilel" && b !== "bilal") return false;
+      else if (bFilter === "houari" && b !== "houari") return false;
+      else if (bFilter === "abdrahman" && !b.includes("abd") && !b.includes("rahman")) return false;
+      else if (bFilter !== "bilel" && bFilter !== "houari" && bFilter !== "abdrahman" && b !== bFilter) return false;
+    }
+    if (q && !item.name_fr.toLowerCase().includes(q) && !(item.code_article || "").toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  const tbody = document.getElementById("bulk-products-tbody");
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--text2)">Aucun produit avec stock disponible.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(item => {
+    const bRaw = (item.buyer || "Bilal").trim();
+    const bLow = bRaw.toLowerCase();
+    let bBadge = (bLow === "houari") ? "🟣 Houari" : (bLow === "bilel" || bLow === "bilal") ? "🟠 Bilel" : "🟢 Abdrahman";
+
+    return `<tr style="border-bottom:1px solid var(--border)">
+      <td style="padding:7px;text-align:center">
+        <input type="checkbox" class="bulk-check" data-id="${item.product_id}" onchange="updateBulkSummary()">
+      </td>
+      <td style="padding:7px">
+        <b style="font-size:13px">${item.name_fr}</b>
+        <br><small style="color:var(--text2);font-family:monospace">${item.code_article || ""}</small>
+      </td>
+      <td style="padding:7px;text-align:center;font-size:11.5px;font-weight:700">${bBadge}</td>
+      <td style="padding:7px;text-align:center;font-weight:800;color:var(--green)">${item.quantity}</td>
+      <td style="padding:7px;text-align:center">
+        <input type="number" class="bulk-qty" data-id="${item.product_id}" data-max="${item.quantity}"
+          value="${item.quantity}" min="1" max="${item.quantity}"
+          style="width:72px;padding:4px;text-align:center;font-weight:700;border-radius:6px;border:1px solid var(--border)"
+          oninput="updateBulkSummary()">
+      </td>
+    </tr>`;
+  }).join("");
+
+  updateBulkSummary();
+}
+
+function toggleBulkAll(checked) {
+  document.querySelectorAll(".bulk-check").forEach(cb => cb.checked = checked);
+  updateBulkSummary();
+}
+
+function updateBulkSummary() {
+  const checked = document.querySelectorAll(".bulk-check:checked");
+  let totalLines = 0, totalUnits = 0;
+  checked.forEach(cb => {
+    const qtyEl = document.querySelector(`.bulk-qty[data-id="${cb.dataset.id}"]`);
+    const qty = parseInt(qtyEl?.value, 10) || 0;
+    totalLines++;
+    totalUnits += qty;
+  });
+  document.getElementById("bulk-summary").textContent = totalLines > 0
+    ? `${totalLines} article(s) sélectionné(s) — ${totalUnits.toLocaleString()} unité(s) prêtes à être transférées`
+    : "";
+}
+
+async function submitBulkTransfer() {
+  const sellerId = parseInt(document.getElementById("bulk-modal-seller").value, 10);
+  const errEl = document.getElementById("bulk-error");
+  errEl.style.display = "none";
+
+  const checked = document.querySelectorAll(".bulk-check:checked");
+  if (!checked.length) {
+    errEl.textContent = "Sélectionnez au moins un produit à transférer.";
+    errEl.style.display = "block";
+    return;
+  }
+
+  const items = [];
+  for (const cb of checked) {
+    const pid = parseInt(cb.dataset.id, 10);
+    const qtyEl = document.querySelector(`.bulk-qty[data-id="${pid}"]`);
+    const qty = parseInt(qtyEl?.value, 10) || 0;
+    const maxQty = parseInt(qtyEl?.dataset.max, 10) || 0;
+    if (qty > 0 && qty <= maxQty) {
+      items.push({ product_id: pid, quantity: qty });
+    }
+  }
+
+  if (!items.length) {
+    errEl.textContent = "Quantités invalides.";
+    errEl.style.display = "block";
+    return;
+  }
+
+  const res = await api("POST", "/api/stock/transfer-batch", { seller_id: sellerId, items: items });
+  if (res && res.status === "success") {
+    showToast(`✅ ${items.length} produit(s) transféré(s) avec succès (${res.total_items_count} unités) !`);
+    closeBulkModal();
+    await Promise.all([loadTransfers(), loadStockSummary()]);
+    filterTable();
+  } else {
+    errEl.textContent = (res && res.detail) || "Erreur lors du transfert par lot.";
+    errEl.style.display = "block";
+  }
+}
+
+/* ── Logout ── */
+async function logout() {
   await api("POST", "/api/auth/logout");
   window.location.href = "/";
 }
 
+/* ── Print ── */
 window.addEventListener("beforeprint", () => {
   document.getElementById("print-header").style.display = "block";
   const from = document.getElementById("filter-from").value, to = document.getElementById("filter-to").value;

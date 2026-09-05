@@ -1,7 +1,57 @@
-﻿<!DOCTYPE html><html lang="fr"><head>
+<!DOCTYPE html><html lang="fr"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stock Global — EduShop Admin</title>
 <link rel="stylesheet" href="/static/css/app.css">
+<style>
+/* Gérant identity colors */
+:root {
+  --bilel-color: #ea580c;
+  --bilel-bg: rgba(234, 88, 12, 0.12);
+  --bilel-border: rgba(234, 88, 12, 0.4);
+
+  --houari-color: #7c3aed;
+  --houari-bg: rgba(124, 58, 237, 0.12);
+  --houari-border: rgba(124, 58, 237, 0.4);
+
+  --abd-color: #059669;
+  --abd-bg: rgba(5, 150, 105, 0.12);
+  --abd-border: rgba(5, 150, 105, 0.4);
+}
+.g-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1.5px solid var(--border);
+  background: var(--card2);
+  color: var(--text2);
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.g-pill:hover { border-color: var(--text2); color: var(--text); }
+.g-pill.active { border-color: var(--accent); background: var(--accent); color: #111; }
+.g-pill.active.g-bilel { border-color: var(--bilel-color); background: var(--bilel-color); color: #fff; }
+.g-pill.active.g-houari { border-color: var(--houari-color); background: var(--houari-color); color: #fff; }
+.g-pill.active.g-abd { border-color: var(--abd-color); background: var(--abd-color); color: #fff; }
+
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000; opacity: 0; pointer-events: none;
+  transition: opacity .2s ease;
+}
+.modal-overlay.open { opacity: 1; pointer-events: auto; }
+.modal {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px;
+  max-width: 520px; width: 92%; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
+</style>
 </head><body>
 <div class="layout">
   <aside class="sidebar">
@@ -20,15 +70,34 @@
   </aside>
   <main class="main">
     <div class="page-header">
-      <span class="page-title">🏪 Stock Global</span>
+      <div>
+        <span class="page-title">🏪 Stock Global en Réserve</span>
+        <p style="color:var(--text2);font-size:13px;margin-top:2px">Gestion des réserves centrales et transferts vers les caisses vendeurs.</p>
+      </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <a href="/admin/transfers" class="btn btn-secondary" style="color:var(--accent)">📋 Page Transferts Vendeurs</a>
         <button class="btn btn-secondary" onclick="openBulkTransferModal()">📦 Transfert Multiple Produits</button>
         <button class="btn btn-primary" onclick="openTransferModal()">➡️ Transférer au Vendeur</button>
       </div>
     </div>
+
+    <!-- Quick Gerant Stock Filter Bar -->
+    <div class="card" style="margin-bottom:14px;padding:12px 18px">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span style="font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase">Filtrer par Gérant :</span>
+          <button class="g-pill active" id="stk-f-all" onclick="setStockBuyerFilter('')">👥 Tous (<span id="count-all">0</span>)</button>
+          <button class="g-pill" id="stk-f-bilel" onclick="setStockBuyerFilter('Bilel')">🟠 Bilel (<span id="count-bilel">0</span>)</button>
+          <button class="g-pill" id="stk-f-houari" onclick="setStockBuyerFilter('Houari')">🟣 Houari (<span id="count-houari">0</span>)</button>
+          <button class="g-pill" id="stk-f-abd" onclick="setStockBuyerFilter('Abdrahman')">🟢 Abdrahman (<span id="count-abd">0</span>)</button>
+        </div>
+        <div id="capital-badge" style="font-weight:800;font-size:13.5px;color:var(--green)">Capital : 0.00 DA</div>
+      </div>
+    </div>
+
     <div class="card">
-      <div class="toolbar">
-        <input class="search-box" id="search" placeholder="Rechercher par produit, code article..." oninput="filterStock()">
+      <div class="toolbar" style="margin-bottom:12px">
+        <input class="search-box" id="search" placeholder="Rechercher par produit, code article, code-barres..." oninput="filterStock()">
       </div>
       <div class="table-wrap">
         <table>
@@ -37,9 +106,11 @@
               <th style="width:30px"><input type="checkbox" id="check-all" onchange="toggleAllChecks(this.checked)" title="Tout sélectionner"></th>
               <th>Code Art.</th>
               <th>Désignation</th>
+              <th>Gérant</th>
               <th>Catégorie</th>
+              <th>Prix Achat</th>
               <th>Prix Vente</th>
-              <th>Stock Global</th>
+              <th style="text-align:center">Stock Global</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -82,17 +153,35 @@
   </div>
 </div>
 
-<!-- Modal: Bulk Multi-Product Transfer -->
+<!-- Modal: Bulk Multi-Product Transfer with Gerant Filter -->
 <div class="modal-overlay" id="bulk-modal">
-  <div class="modal" style="max-width:640px;width:96%">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <h3 style="margin:0">📦 Transfert Multiple Produits au Vendeur</h3>
+  <div class="modal" style="max-width:700px;width:96%">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h3 style="margin:0;font-size:17px">📦 Transfert Multiple Produits au Vendeur</h3>
       <button class="btn btn-secondary" onclick="closeBulkModal()" style="padding:4px 8px">✕</button>
     </div>
-    <label>Vendeur Destinataire *</label>
-    <select id="bulk-seller" style="margin-bottom:12px"></select>
-    <p style="color:var(--text2);font-size:12px;margin-bottom:8px">Cochez les produits à transférer et saisissez les quantités :</p>
-    <div style="max-height:320px;overflow-y:auto;border:1px solid var(--border);border-radius:8px">
+
+    <!-- Gerant Filter in Bulk Modal -->
+    <div style="display:flex;gap:6px;margin-bottom:12px;align-items:center;flex-wrap:wrap">
+      <span style="font-size:11.5px;color:var(--text2);font-weight:700">Filtrer par Gérant :</span>
+      <button class="btn btn-secondary btn-sm" id="bm-f-all" onclick="filterBulkByBuyer('')">Tous</button>
+      <button class="btn btn-secondary btn-sm" id="bm-f-bilel" onclick="filterBulkByBuyer('Bilel')">🟠 Bilel</button>
+      <button class="btn btn-secondary btn-sm" id="bm-f-houari" onclick="filterBulkByBuyer('Houari')">🟣 Houari</button>
+      <button class="btn btn-secondary btn-sm" id="bm-f-abd" onclick="filterBulkByBuyer('Abdrahman')">🟢 Abdrahman</button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+      <div>
+        <label style="font-size:11.5px;color:var(--text2);margin-bottom:3px">Vendeur Destinataire *</label>
+        <select id="bulk-seller" style="padding:8px"></select>
+      </div>
+      <div>
+        <label style="font-size:11.5px;color:var(--text2);margin-bottom:3px">Rechercher article :</label>
+        <input class="search-box" id="bulk-search" placeholder="Nom ou code..." oninput="renderBulkModalTable()" style="padding:8px">
+      </div>
+    </div>
+
+    <div style="max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px">
       <table style="width:100%;border-collapse:collapse">
         <thead>
           <tr style="background:var(--card2);position:sticky;top:0;z-index:1">
@@ -100,51 +189,112 @@
               <input type="checkbox" id="bulk-check-all" onchange="toggleBulkAll(this.checked)">
             </th>
             <th style="padding:8px;text-align:left">Produit</th>
-            <th style="padding:8px;width:80px;text-align:center">Dispo</th>
+            <th style="padding:8px;text-align:center">Gérant</th>
+            <th style="padding:8px;width:75px;text-align:center">Dispo</th>
             <th style="padding:8px;width:100px;text-align:center">Qté à Envoyer</th>
           </tr>
         </thead>
         <tbody id="bulk-products-tbody"></tbody>
       </table>
     </div>
+
     <div id="bulk-summary" style="margin-top:10px;font-size:13px;color:var(--accent);font-weight:700"></div>
     <div id="bulk-error" class="error-box" style="display:none;margin-top:8px"></div>
+
     <div class="modal-actions" style="margin-top:14px">
       <button class="btn btn-secondary" onclick="closeBulkModal()">Annuler</button>
-      <button class="btn btn-primary" onclick="submitBulkTransfer()" style="background:var(--green);font-weight:bold">✅ Confirmer Tous les Transferts</button>
+      <button class="btn btn-primary" onclick="submitBulkTransfer()" style="background:var(--green);font-weight:bold">
+        ✅ Confirmer le Transfert
+      </button>
     </div>
   </div>
 </div>
 
 <script src="/static/js/app.js"></script>
 <script>
-let stockList = [], selectedProdId = null;
+let stockList = [], selectedProdId = null, selectedBuyer = "", bulkBuyerFilter = "";
 
 async function init(){
   stockList = await api("GET", "/api/stock/global") || [];
-  renderTable(stockList);
+  updateGerantCounts();
+  filterStock();
 }
 
-function renderTable(data){
-  document.getElementById("stock-table").innerHTML = data.map(item => `
-    <tr>
-      <td style="text-align:center"><input type="checkbox" class="row-check" data-id="${item.product_id}"></td>
-      <td><code>${item.code_article}</code></td>
-      <td><b>${item.name_fr}</b></td>
-      <td>${item.category || "—"}</td>
-      <td style="color:var(--accent);font-weight:700">${fmtDA(item.sell_price)}</td>
-      <td class="${item.quantity <= item.min_quantity ? "low-stock" : ""}"><b>${item.quantity}</b></td>
-      <td style="display:flex;gap:6px">
-        <button class="btn btn-secondary" style="padding:4px 8px;font-size:12px" onclick="openAddModal(${item.product_id}, '${item.name_fr.replace(/'/g,"\\'")}', ${item.quantity})">+ Stock</button>
-        <button class="btn btn-primary" style="padding:4px 8px;font-size:12px" onclick="quickTransfer(${item.product_id}, '${item.name_fr.replace(/'/g,"\\'")}', ${item.quantity})">➡️ Vendeur</button>
-      </td>
-    </tr>
-  `).join("");
+function updateGerantCounts(){
+  let cAll = stockList.length, cBilel = 0, cHouari = 0, cAbd = 0;
+  let totalCap = 0;
+
+  stockList.forEach(item => {
+    const b = (item.buyer || "bilal").toLowerCase();
+    const cap = (item.quantity || 0) * (item.purchase_price || 0);
+    totalCap += cap;
+
+    if (b === "bilel" || b === "bilal") cBilel++;
+    else if (b === "houari") cHouari++;
+    else if (b.includes("abd") || b.includes("rahman")) cAbd++;
+  });
+
+  document.getElementById("count-all").textContent = cAll;
+  document.getElementById("count-bilel").textContent = cBilel;
+  document.getElementById("count-houari").textContent = cHouari;
+  document.getElementById("count-abd").textContent = cAbd;
+  document.getElementById("capital-badge").textContent = "Capital Global : " + fmtDA(totalCap);
+}
+
+function setStockBuyerFilter(b){
+  selectedBuyer = b;
+  ["stk-f-all","stk-f-bilel","stk-f-houari","stk-f-abd"].forEach(id => document.getElementById(id).classList.remove("active"));
+  if(!b) document.getElementById("stk-f-all").classList.add("active");
+  else if(b === "Bilel") document.getElementById("stk-f-bilel").classList.add("active");
+  else if(b === "Houari") document.getElementById("stk-f-houari").classList.add("active");
+  else if(b === "Abdrahman") document.getElementById("stk-f-abd").classList.add("active");
+  filterStock();
 }
 
 function filterStock(){
   const q = document.getElementById("search").value.toLowerCase();
-  renderTable(stockList.filter(s => s.name_fr.toLowerCase().includes(q) || s.code_article.toLowerCase().includes(q)));
+  const bFilter = selectedBuyer.toLowerCase();
+
+  const filtered = stockList.filter(s => {
+    if (bFilter) {
+      const b = (s.buyer || "bilal").toLowerCase();
+      if (bFilter === "bilel" && b !== "bilel" && b !== "bilal") return false;
+      else if (bFilter === "houari" && b !== "houari") return false;
+      else if (bFilter === "abdrahman" && !b.includes("abd") && !b.includes("rahman")) return false;
+      else if (bFilter !== "bilel" && bFilter !== "houari" && bFilter !== "abdrahman" && b !== bFilter) return false;
+    }
+    if (q && !s.name_fr.toLowerCase().includes(q) && !s.code_article.toLowerCase().includes(q) && !(s.barcode || "").includes(q)) return false;
+    return true;
+  });
+
+  renderTable(filtered);
+}
+
+function renderTable(data){
+  document.getElementById("stock-table").innerHTML = data.map(item => {
+    const bRaw = (item.buyer || "Bilal").trim();
+    const bLow = bRaw.toLowerCase();
+    let bBadge = (bLow === "houari")
+      ? `<span style="background:var(--houari-bg);color:var(--houari-color);border:1px solid var(--houari-border);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700">🟣 Houari</span>`
+      : (bLow === "bilel" || bLow === "bilal")
+      ? `<span style="background:var(--bilel-bg);color:var(--bilel-color);border:1px solid var(--bilel-border);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700">🟠 Bilel</span>`
+      : `<span style="background:var(--abd-bg);color:var(--abd-color);border:1px solid var(--abd-border);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700">🟢 Abdrahman</span>`;
+
+    return `<tr>
+      <td style="text-align:center"><input type="checkbox" class="row-check" data-id="${item.product_id}"></td>
+      <td><code>${item.code_article}</code></td>
+      <td><b>${item.name_fr}</b></td>
+      <td>${bBadge}</td>
+      <td>${item.category || "—"}</td>
+      <td style="color:var(--text2)">${fmtDA(item.purchase_price || 0)}</td>
+      <td style="color:var(--accent);font-weight:700">${fmtDA(item.sell_price)}</td>
+      <td style="text-align:center" class="${item.quantity <= item.min_quantity ? "low-stock" : ""}"><b>${item.quantity}</b></td>
+      <td style="display:flex;gap:6px">
+        <button class="btn btn-secondary" style="padding:4px 8px;font-size:12px" onclick="openAddModal(${item.product_id}, '${item.name_fr.replace(/'/g,"\'")}', ${item.quantity})">+ Stock</button>
+        <button class="btn btn-primary" style="padding:4px 8px;font-size:12px" onclick="quickTransfer(${item.product_id}, '${item.name_fr.replace(/'/g,"\'")}', ${item.quantity})">➡️ Vendeur</button>
+      </td>
+    </tr>`;
+  }).join("");
 }
 
 function toggleAllChecks(checked){
@@ -173,7 +323,7 @@ async function openTransferModal(preselectedPid = null){
   const prods = await api("GET", "/api/products") || [];
   const sellers = await api("GET", "/api/sellers") || [];
   document.getElementById("t-product").innerHTML = prods.map(p => `<option value="${p.id}" ${p.id === preselectedPid ? "selected" : ""}>${p.name_fr} (Dispo: ${p.global_stock_quantity})</option>`).join("");
-  document.getElementById("t-seller").innerHTML = sellers.map(s => `<option value="${s.id}">${s.username}</option>`).join("");
+  document.getElementById("t-seller").innerHTML = sellers.map(s => `<option value="${s.id}">👤 ${s.username}</option>`).join("");
   document.getElementById("t-qty").value = 5;
   document.getElementById("t-error").style.display = "none";
   document.getElementById("transfer-modal").classList.add("open");
@@ -198,33 +348,70 @@ async function submitTransfer(){
 // ── Bulk Multi-Product Transfer Modal ─────────────────────────────────────────
 async function openBulkTransferModal(){
   const sellers = await api("GET", "/api/sellers") || [];
-  document.getElementById("bulk-seller").innerHTML = sellers.map(s => `<option value="${s.id}">${s.username}</option>`).join("");
-  
-  // Populate table with all products
-  document.getElementById("bulk-products-tbody").innerHTML = stockList.map(item => `
-    <tr style="border-bottom:1px solid var(--border)">
-      <td style="padding:7px;text-align:center">
-        <input type="checkbox" class="bulk-check" data-id="${item.product_id}" onchange="updateBulkSummary()">
-      </td>
-      <td style="padding:7px">
-        <b style="font-size:13px">${item.name_fr}</b>
-        <br><small style="color:var(--text2)">${item.code_article}</small>
-      </td>
-      <td style="padding:7px;text-align:center;font-weight:700;color:${item.quantity <= item.min_quantity ? "var(--red)" : "var(--green)"}">${item.quantity}</td>
-      <td style="padding:7px;text-align:center">
-        <input type="number" class="bulk-qty" data-id="${item.product_id}" data-max="${item.quantity}"
-          value="5" min="1" max="${item.quantity}"
-          style="width:72px;padding:4px;text-align:center;background:var(--card2);border:1px solid var(--border);border-radius:6px;color:var(--text)"
-          oninput="updateBulkSummary()">
-      </td>
-    </tr>
-  `).join("");
-
+  document.getElementById("bulk-seller").innerHTML = sellers.map(s => `<option value="${s.id}">👤 ${s.username}</option>`).join("");
+  bulkBuyerFilter = "";
+  ["bm-f-all","bm-f-bilel","bm-f-houari","bm-f-abd"].forEach(id => document.getElementById(id).classList.remove("active"));
+  document.getElementById("bm-f-all").classList.add("active");
+  renderBulkModalTable();
   document.getElementById("bulk-error").style.display = "none";
   document.getElementById("bulk-summary").textContent = "";
   document.getElementById("bulk-modal").classList.add("open");
 }
 function closeBulkModal(){ document.getElementById("bulk-modal").classList.remove("open"); }
+
+function filterBulkByBuyer(b){
+  bulkBuyerFilter = b;
+  ["bm-f-all","bm-f-bilel","bm-f-houari","bm-f-abd"].forEach(id => document.getElementById(id).classList.remove("active"));
+  if(!b) document.getElementById("bm-f-all").classList.add("active");
+  else if(b === "Bilel") document.getElementById("bm-f-bilel").classList.add("active");
+  else if(b === "Houari") document.getElementById("bm-f-houari").classList.add("active");
+  else if(b === "Abdrahman") document.getElementById("bm-f-abd").classList.add("active");
+  renderBulkModalTable();
+}
+
+function renderBulkModalTable(){
+  const q = (document.getElementById("bulk-search").value || "").toLowerCase();
+  const bFilter = bulkBuyerFilter.toLowerCase();
+
+  const filtered = stockList.filter(item => {
+    if (item.quantity <= 0) return false;
+    const b = (item.buyer || "bilal").toLowerCase();
+    if (bFilter) {
+      if (bFilter === "bilel" && b !== "bilel" && b !== "bilal") return false;
+      else if (bFilter === "houari" && b !== "houari") return false;
+      else if (bFilter === "abdrahman" && !b.includes("abd") && !b.includes("rahman")) return false;
+      else if (bFilter !== "bilel" && bFilter !== "houari" && bFilter !== "abdrahman" && b !== bFilter) return false;
+    }
+    if (q && !item.name_fr.toLowerCase().includes(q) && !(item.code_article || "").toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  document.getElementById("bulk-products-tbody").innerHTML = filtered.map(item => {
+    const bRaw = (item.buyer || "Bilal").trim();
+    const bLow = bRaw.toLowerCase();
+    let bBadge = (bLow === "houari") ? "🟣 Houari" : (bLow === "bilel" || bLow === "bilal") ? "🟠 Bilel" : "🟢 Abdrahman";
+
+    return `<tr style="border-bottom:1px solid var(--border)">
+      <td style="padding:7px;text-align:center">
+        <input type="checkbox" class="bulk-check" data-id="${item.product_id}" onchange="updateBulkSummary()">
+      </td>
+      <td style="padding:7px">
+        <b style="font-size:13px">${item.name_fr}</b>
+        <br><small style="color:var(--text2);font-family:monospace">${item.code_article}</small>
+      </td>
+      <td style="padding:7px;text-align:center;font-size:11px;font-weight:700">${bBadge}</td>
+      <td style="padding:7px;text-align:center;font-weight:800;color:var(--green)">${item.quantity}</td>
+      <td style="padding:7px;text-align:center">
+        <input type="number" class="bulk-qty" data-id="${item.product_id}" data-max="${item.quantity}"
+          value="${item.quantity}" min="1" max="${item.quantity}"
+          style="width:72px;padding:4px;text-align:center;font-weight:700;border-radius:6px;border:1px solid var(--border)"
+          oninput="updateBulkSummary()">
+      </td>
+    </tr>`;
+  }).join("");
+
+  updateBulkSummary();
+}
 
 function toggleBulkAll(checked){
   document.querySelectorAll(".bulk-check").forEach(cb => cb.checked = checked);
@@ -241,7 +428,7 @@ function updateBulkSummary(){
     totalUnits += qty;
   });
   document.getElementById("bulk-summary").textContent = totalLines > 0
-    ? `${totalLines} produit(s) sélectionné(s) — ${totalUnits} unité(s) au total à transférer`
+    ? `${totalLines} produit(s) sélectionné(s) — ${totalUnits.toLocaleString()} unité(s) au total`
     : "";
 }
 
@@ -257,26 +444,24 @@ async function submitBulkTransfer(){
     return;
   }
 
-  let successCount = 0, failCount = 0;
-  for(const cb of checked){
+  const items = [];
+  for (const cb of checked) {
     const pid = parseInt(cb.dataset.id, 10);
     const qtyEl = document.querySelector(`.bulk-qty[data-id="${pid}"]`);
     const qty = parseInt(qtyEl?.value, 10) || 0;
     const maxQty = parseInt(qtyEl?.dataset.max, 10) || 0;
-
-    if(qty <= 0 || qty > maxQty){ failCount++; continue; }
-
-    const res = await api("POST", "/api/stock/transfer", { product_id: pid, seller_id: sellerId, quantity: qty });
-    if(res) successCount++;
-    else failCount++;
+    if (qty > 0 && qty <= maxQty) {
+      items.push({ product_id: pid, quantity: qty });
+    }
   }
 
-  if(successCount > 0){
-    showToast(`✅ ${successCount} transfert(s) effectué(s) avec succès !${failCount > 0 ? ` (${failCount} échec)` : ""}`);
+  const res = await api("POST", "/api/stock/transfer-batch", { seller_id: sellerId, items: items });
+  if(res && res.status === "success"){
+    showToast(`✅ ${items.length} transfert(s) effectué(s) avec succès (${res.total_items_count} unités) !`);
     closeBulkModal();
     init();
   } else {
-    errEl.textContent = `Tous les transferts ont échoué. Vérifiez les stocks disponibles.`;
+    errEl.textContent = (res && res.detail) || "Erreur lors du transfert par lot.";
     errEl.style.display = "block";
   }
 }
