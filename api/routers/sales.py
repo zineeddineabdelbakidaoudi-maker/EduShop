@@ -1,4 +1,4 @@
-﻿from typing import List, Optional
+from typing import List, Optional
 from datetime import datetime, date
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
@@ -7,9 +7,9 @@ from pydantic import BaseModel
 from db.base import get_db
 from models.sale import Sale, SaleItem, PaymentMethod
 from models.product import Product
-from models.stock import SellerStock
+from models.stock import SellerStock, GlobalStock
 from models.user import User, UserRole
-from api.deps import require_admin, require_seller, get_current_user
+from api.deps import require_admin, require_seller, get_current_user, get_current_user_any
 from api.websocket import manager
 
 router = APIRouter(prefix="/api/sales", tags=["sales"])
@@ -47,9 +47,10 @@ def format_sale(sale: Sale, include_purchase_price: bool = False) -> dict:
     }
 
 @router.post("", status_code=201)
-async def create_sale(data: SaleCreate, db: Session = Depends(get_db), seller: User = Depends(require_seller)):
+async def create_sale(data: SaleCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     total = 0.0
     locked_stocks = []
+    is_admin = getattr(current_user.role, "value", str(current_user.role)).lower() == "admin"
 
     # Validate and lock all items first (prevents partial commits)
     for item in data.items:
@@ -57,28 +58,49 @@ async def create_sale(data: SaleCreate, db: Session = Depends(get_db), seller: U
         if not product:
             raise HTTPException(400, f"Produit ID {item.product_id} introuvable")
 
-        ss = db.query(SellerStock).with_for_update().filter_by(
-            seller_id=seller.id, product_id=item.product_id
-        ).first()
-        if not ss or ss.quantity < item.quantity:
-            avail = ss.quantity if ss else 0
-            raise HTTPException(400, f"Stock insuffisant pour '{product.name_fr}' (disponible: {avail})")
+        stock_target = None
+        stock_type = None
+
+        if not is_admin:
+            ss = db.query(SellerStock).with_for_update().filter_by(
+                seller_id=current_user.id, product_id=item.product_id
+            ).first()
+            if not ss or ss.quantity < item.quantity:
+                avail = ss.quantity if ss else 0
+                raise HTTPException(400, f"Stock insuffisant pour '{product.name_fr}' (disponible: {avail})")
+            stock_target = ss
+            stock_type = 'seller'
+        else:
+            # Admin can sell from seller stock if available, else from global stock
+            ss = db.query(SellerStock).with_for_update().filter_by(
+                seller_id=current_user.id, product_id=item.product_id
+            ).first()
+            if ss and ss.quantity >= item.quantity:
+                stock_target = ss
+                stock_type = 'seller'
+            else:
+                gs = db.query(GlobalStock).with_for_update().filter_by(product_id=item.product_id).first()
+                if not gs or gs.quantity < item.quantity:
+                    avail = gs.quantity if gs else 0
+                    raise HTTPException(400, f"Stock insuffisant pour '{product.name_fr}' (disponible: {avail})")
+                stock_target = gs
+                stock_type = 'global'
 
         total += item.quantity * product.sell_price
-        locked_stocks.append((ss, product, item.quantity))
+        locked_stocks.append((stock_type, stock_target, product, item.quantity))
 
     total -= data.discount
 
     # Apply changes atomically
     sale = Sale(
-        seller_id=seller.id, total=total, discount=data.discount,
+        seller_id=current_user.id, total=total, discount=data.discount,
         payment_method=data.payment_method, notes=data.notes, is_return=False
     )
     db.add(sale)
     db.flush()
 
-    for ss, product, qty in locked_stocks:
-        ss.quantity -= qty
+    for stock_type, stock_target, product, qty in locked_stocks:
+        stock_target.quantity -= qty
         si = SaleItem(
             sale_id=sale.id, product_id=product.id, quantity=qty,
             unit_price=product.sell_price, purchase_price=product.purchase_price
@@ -89,7 +111,7 @@ async def create_sale(data: SaleCreate, db: Session = Depends(get_db), seller: U
     db.refresh(sale)
 
     await manager.broadcast_admin("sale.created", {
-        "seller_name": seller.username,
+        "seller_name": current_user.username,
         "total": total,
         "product_count": len(data.items),
         "sale_id": sale.id,
@@ -98,26 +120,32 @@ async def create_sale(data: SaleCreate, db: Session = Depends(get_db), seller: U
     return format_sale(sale, include_purchase_price=False)
 
 @router.post("/{sale_id}/return")
-async def return_sale(sale_id: int, db: Session = Depends(get_db), seller: User = Depends(require_seller)):
-    sale = db.query(Sale).filter(Sale.id == sale_id, Sale.seller_id == seller.id).first()
+async def return_sale(sale_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    is_admin = getattr(current_user.role, "value", str(current_user.role)).lower() == "admin"
+    if is_admin:
+        sale = db.query(Sale).filter(Sale.id == sale_id).first()
+    else:
+        sale = db.query(Sale).filter(Sale.id == sale_id, Sale.seller_id == current_user.id).first()
+        
     if not sale:
         raise HTTPException(404, "Vente introuvable")
     if sale.is_return:
         raise HTTPException(400, "Cette vente est déjà un retour")
 
+    target_seller_id = sale.seller_id or current_user.id
     for si in sale.items:
         ss = db.query(SellerStock).with_for_update().filter_by(
-            seller_id=seller.id, product_id=si.product_id
+            seller_id=target_seller_id, product_id=si.product_id
         ).first()
         if ss:
             ss.quantity += si.quantity
         else:
-            db.add(SellerStock(seller_id=seller.id, product_id=si.product_id, quantity=si.quantity))
+            db.add(SellerStock(seller_id=target_seller_id, product_id=si.product_id, quantity=si.quantity))
 
     sale.is_return = True
     db.commit()
 
-    await manager.broadcast_admin("sale.returned", {"sale_id": sale_id, "seller_name": seller.username})
+    await manager.broadcast_admin("sale.returned", {"sale_id": sale_id, "seller_name": current_user.username})
     return format_sale(sale, include_purchase_price=False)
 
 @router.get("/report")
@@ -170,9 +198,13 @@ def sales_report(
 @router.get("/me")
 def my_sales(
     skip: int = 0, limit: int = 50,
-    db: Session = Depends(get_db), seller: User = Depends(require_seller)
+    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
 ):
-    sales = db.query(Sale).filter(Sale.seller_id == seller.id).order_by(Sale.created_at.desc()).offset(skip).limit(limit).all()
+    role_str = getattr(current_user.role, "value", str(current_user.role)).lower()
+    if role_str == "admin":
+        sales = db.query(Sale).order_by(Sale.created_at.desc()).offset(skip).limit(limit).all()
+    else:
+        sales = db.query(Sale).filter(Sale.seller_id == current_user.id).order_by(Sale.created_at.desc()).offset(skip).limit(limit).all()
     return [format_sale(s) for s in sales]
 
 @router.get("")

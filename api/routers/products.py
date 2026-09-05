@@ -115,6 +115,7 @@ def product_to_seller_dict(p: Product, seller_qty: int) -> dict:
         "barcode": p.barcode,
         "barcodes": p.barcode_list,
         "name_fr": p.name_fr, "name_ar": p.name_ar, "category": p.category,
+        "buyer": p.buyer or "Bilal",
         "sell_price": p.sell_price, "min_quantity": p.min_quantity,
         "fast_panel": bool(p.fast_panel),
         "seller_stock_quantity": seller_qty,
@@ -126,8 +127,12 @@ def list_products(db: Session = Depends(get_db), admin: User = Depends(require_a
     return [product_to_admin_dict(p) for p in products]
 
 @router.get("/seller")
-def list_seller_products(db: Session = Depends(get_db), seller: User = Depends(require_seller)):
-    stocks = db.query(SellerStock).filter(SellerStock.seller_id == seller.id, SellerStock.quantity > 0).all()
+def list_seller_products(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    role_str = getattr(current_user.role, "value", str(current_user.role)).lower()
+    if role_str == "admin":
+        products = db.query(Product).options(joinedload(Product.global_stock)).all()
+        return [product_to_seller_dict(p, p.global_stock.quantity if p.global_stock else 0) for p in products]
+    stocks = db.query(SellerStock).filter(SellerStock.seller_id == current_user.id, SellerStock.quantity > 0).all()
     return [product_to_seller_dict(ss.product, ss.quantity) for ss in stocks]
 
 @router.get("/search")
