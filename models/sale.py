@@ -1,4 +1,4 @@
-﻿import datetime, enum
+import datetime, enum
 from sqlalchemy import Column, Integer, Float, Boolean, String, DateTime, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 from db.base import Base
@@ -16,6 +16,7 @@ class Sale(Base):
     discount = Column(Float, default=0.0)
     payment_method = Column(Enum(PaymentMethod), default=PaymentMethod.cash)
     is_return = Column(Boolean, default=False)
+    is_archived = Column(Boolean, default=False)
     notes = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     seller = relationship("User", back_populates="sales")

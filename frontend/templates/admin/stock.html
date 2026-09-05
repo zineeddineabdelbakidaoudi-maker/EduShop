@@ -81,6 +81,30 @@
       </div>
     </div>
 
+    <!-- Capital Restant Overview KPI Cards -->
+    <div class="kpi-grid" style="margin-bottom:14px">
+      <div class="kpi-card" style="border-left:4px solid var(--green)">
+        <div class="kpi-label">💰 Capital Restant Total (Achat)</div>
+        <div class="kpi-value green" id="cap-kpi-total">0.00 DA</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:4px" id="cap-sub-total">Réserve: 0 DA | Caisse: 0 DA</div>
+      </div>
+      <div class="kpi-card" style="border-left:4px solid var(--bilel-color)">
+        <div class="kpi-label">🔴 Capital Restant Bilel</div>
+        <div class="kpi-value" style="color:var(--bilel-color)" id="cap-kpi-bilel">0.00 DA</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:4px" id="cap-sub-bilel">Réserve: 0 DA | Caisse: 0 DA</div>
+      </div>
+      <div class="kpi-card" style="border-left:4px solid var(--abd-color)">
+        <div class="kpi-label">🟢 Capital Restant Abdrahman</div>
+        <div class="kpi-value" style="color:var(--abd-color)" id="cap-kpi-abd">0.00 DA</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:4px" id="cap-sub-abd">Réserve: 0 DA | Caisse: 0 DA</div>
+      </div>
+      <div class="kpi-card" style="border-left:4px solid var(--houari-color)">
+        <div class="kpi-label">🟣 Capital Restant Houari</div>
+        <div class="kpi-value" style="color:var(--houari-color)" id="cap-kpi-houari">0.00 DA</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:4px" id="cap-sub-houari">Réserve: 0 DA | Caisse: 0 DA</div>
+      </div>
+    </div>
+
     <!-- Quick Gerant Stock Filter Bar -->
     <div class="card" style="margin-bottom:14px;padding:12px 18px">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
@@ -212,23 +236,45 @@
 
 <script src="/static/js/app.js"></script>
 <script>
-let stockList = [], selectedProdId = null, selectedBuyer = "", bulkBuyerFilter = "";
+let stockList = [], capitalOverview = null, selectedProdId = null, selectedBuyer = "", bulkBuyerFilter = "";
 
 async function init(){
-  stockList = await api("GET", "/api/stock/global") || [];
+  const [stk, cap] = await Promise.all([
+    api("GET", "/api/stock/global"),
+    api("GET", "/api/stock/capital-overview")
+  ]);
+  stockList = stk || [];
+  capitalOverview = cap || {};
+  updateCapitalKPIs();
   updateGerantCounts();
   filterStock();
 }
 
+function updateCapitalKPIs(){
+  if(!capitalOverview || !capitalOverview.total) return;
+  const t = capitalOverview.total;
+  const b = capitalOverview.Bilel || {};
+  const a = capitalOverview.Abdrahman || {};
+  const h = capitalOverview.Houari || {};
+
+  document.getElementById("cap-kpi-total").textContent = fmtDA(t.total_capital);
+  document.getElementById("cap-sub-total").textContent = `Réserve: ${fmtDA(t.reserve_capital)} | Caisse: ${fmtDA(t.seller_capital)} (${t.total_units} unités)`;
+
+  document.getElementById("cap-kpi-bilel").textContent = fmtDA(b.total_capital || 0);
+  document.getElementById("cap-sub-bilel").textContent = `Réserve: ${fmtDA(b.reserve_capital || 0)} | Caisse: ${fmtDA(b.seller_capital || 0)}`;
+
+  document.getElementById("cap-kpi-abd").textContent = fmtDA(a.total_capital || 0);
+  document.getElementById("cap-sub-abd").textContent = `Réserve: ${fmtDA(a.reserve_capital || 0)} | Caisse: ${fmtDA(a.seller_capital || 0)}`;
+
+  document.getElementById("cap-kpi-houari").textContent = fmtDA(h.total_capital || 0);
+  document.getElementById("cap-sub-houari").textContent = `Réserve: ${fmtDA(h.reserve_capital || 0)} | Caisse: ${fmtDA(h.seller_capital || 0)}`;
+}
+
 function updateGerantCounts(){
   let cAll = stockList.length, cBilel = 0, cHouari = 0, cAbd = 0;
-  let totalCap = 0;
 
   stockList.forEach(item => {
     const b = (item.buyer || "bilal").toLowerCase();
-    const cap = (item.quantity || 0) * (item.purchase_price || 0);
-    totalCap += cap;
-
     if (b === "bilel" || b === "bilal") cBilel++;
     else if (b === "houari") cHouari++;
     else if (b.includes("abd") || b.includes("rahman")) cAbd++;
@@ -238,16 +284,26 @@ function updateGerantCounts(){
   document.getElementById("count-bilel").textContent = cBilel;
   document.getElementById("count-houari").textContent = cHouari;
   document.getElementById("count-abd").textContent = cAbd;
-  document.getElementById("capital-badge").textContent = "Capital Global : " + fmtDA(totalCap);
+  
+  const cap = capitalOverview?.total?.total_capital || 0;
+  document.getElementById("capital-badge").textContent = "Capital Restant Total : " + fmtDA(cap);
 }
 
 function setStockBuyerFilter(b){
   selectedBuyer = b;
   ["stk-f-all","stk-f-bilel","stk-f-houari","stk-f-abd"].forEach(id => document.getElementById(id).classList.remove("active"));
-  if(!b) document.getElementById("stk-f-all").classList.add("active");
-  else if(b === "Bilel") document.getElementById("stk-f-bilel").classList.add("active");
-  else if(b === "Houari") document.getElementById("stk-f-houari").classList.add("active");
-  else if(b === "Abdrahman") document.getElementById("stk-f-abd").classList.add("active");
+  if(!b) {
+    document.getElementById("stk-f-all").classList.add("active");
+    const cap = capitalOverview?.total?.total_capital || 0;
+    document.getElementById("capital-badge").textContent = "Capital Restant Total : " + fmtDA(cap);
+  } else {
+    const elId = b === "Bilel" ? "stk-f-bilel" : (b === "Houari" ? "stk-f-houari" : "stk-f-abd");
+    document.getElementById(elId).classList.add("active");
+    const gCap = capitalOverview?.[b]?.total_capital || 0;
+    const rCap = capitalOverview?.[b]?.reserve_capital || 0;
+    const sCap = capitalOverview?.[b]?.seller_capital || 0;
+    document.getElementById("capital-badge").textContent = `Capital ${b} : ${fmtDA(gCap)} (Rsv: ${fmtDA(rCap)} | Caisse: ${fmtDA(sCap)})`;
+  }
   filterStock();
 }
 

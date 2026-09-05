@@ -1,6 +1,17 @@
 ﻿<!DOCTYPE html><html lang="fr"><head>
-<meta charset="UTF-8"><title>Ventes — EduShop Admin</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ventes — EduShop Admin</title>
 <link rel="stylesheet" href="/static/css/app.css">
+<style>
+.sale-row { cursor: pointer; transition: background 0.15s ease; }
+.sale-row:hover { background: var(--card2) !important; }
+.pill-filter { padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; border: 1.5px solid var(--border); background: var(--card); color: var(--text2); cursor: pointer; }
+.pill-filter.active { border-color: var(--accent); background: var(--accent); color: #111; }
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity .2s ease; }
+.modal-overlay.open { opacity: 1; pointer-events: auto; }
+.modal { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; max-width: 680px; width: 92%; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
+</style>
 </head><body>
 <div class="layout">
   <aside class="sidebar">
@@ -18,43 +29,253 @@
     <div class="sidebar-footer"><a href="#" onclick="logout()">🚪 Déconnexion</a></div>
   </aside>
   <main class="main">
-    <div class="page-header"><span class="page-title">💰 Toutes les Ventes</span></div>
+    <div class="page-header">
+      <div>
+        <span class="page-title">💰 Historique des Ventes</span>
+        <p style="color:var(--text2);font-size:13px;margin-top:2px">Double-cliquez sur une vente pour inspecter son contenu complet.</p>
+      </div>
+    </div>
+    
     <div class="kpi-grid" id="kpi-grid">
-      <div class="kpi-card"><div class="kpi-label">Chiffre d affaires</div><div class="kpi-value" id="kpi-ca">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Chiffre d'affaires</div><div class="kpi-value" id="kpi-ca">—</div></div>
       <div class="kpi-card"><div class="kpi-label">Bénéfice net</div><div class="kpi-value green" id="kpi-profit">—</div></div>
       <div class="kpi-card"><div class="kpi-label">Transactions</div><div class="kpi-value blue" id="kpi-tx">—</div></div>
       <div class="kpi-card"><div class="kpi-label">Retours</div><div class="kpi-value red" id="kpi-ret">—</div></div>
     </div>
-    <div class="card">
-      <div class="toolbar">
-        <input type="date" id="from-date" style="width:auto">
-        <input type="date" id="to-date" style="width:auto">
-        <button class="btn btn-primary" onclick="init()">🔍 Filtrer</button>
+
+    <div class="card" style="margin-bottom:14px;padding:12px 18px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase">Statut :</span>
+          <button class="pill-filter active" id="f-all" onclick="setArchiveFilter(null)">Toutes (<span id="cnt-all">0</span>)</button>
+          <button class="pill-filter" id="f-active" onclick="setArchiveFilter(false)">Actives (<span id="cnt-act">0</span>)</button>
+          <button class="pill-filter" id="f-arch" onclick="setArchiveFilter(true)">Archivées (<span id="cnt-arch">0</span>)</button>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="date" id="from-date" style="width:auto">
+          <input type="date" id="to-date" style="width:auto">
+          <button class="btn btn-primary" onclick="loadSales()">🔍 Filtrer</button>
+        </div>
       </div>
+    </div>
+
+    <div class="card">
       <div class="table-wrap">
-        <table><thead><tr><th>#</th><th>Date</th><th>Vendeur</th><th>Total</th><th>Remise</th><th>Paiement</th><th>Type</th></tr></thead>
-        <tbody id="sales-table"></tbody></table>
+        <table>
+          <thead>
+            <tr>
+              <th>N° Vente</th>
+              <th>Date & Heure</th>
+              <th>Vendeur</th>
+              <th>Nb Articles</th>
+              <th>Total Net</th>
+              <th>Remise</th>
+              <th>Paiement</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="sales-table"></tbody>
+        </table>
       </div>
     </div>
   </main>
 </div>
+
+<!-- Modal: Détail du Contenu de la Vente -->
+<div class="modal-overlay" id="sale-modal">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:16px;">
+      <h3 style="margin:0" id="m-sale-title">Détail de la Vente #---</h3>
+      <button onclick="closeSaleModal()" style="background:transparent;border:none;color:var(--text2);font-size:20px;cursor:pointer">✕</button>
+    </div>
+    
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:10px;margin-bottom:16px;background:var(--card2);padding:12px;border-radius:var(--radius)">
+      <div><span style="font-size:11px;color:var(--text2)">Date & Heure</span><div style="font-weight:700" id="m-sale-date">—</div></div>
+      <div><span style="font-size:11px;color:var(--text2)">Caissier / Vendeur</span><div style="font-weight:700" id="m-sale-seller">—</div></div>
+      <div><span style="font-size:11px;color:var(--text2)">Mode Règlement</span><div style="font-weight:700" id="m-sale-pay">—</div></div>
+      <div><span style="font-size:11px;color:var(--text2)">Total Net</span><div style="font-weight:800;color:var(--accent);font-size:16px" id="m-sale-total">—</div></div>
+    </div>
+
+    <h4 style="margin:12px 0 8px 0">Articles Vendus :</h4>
+    <div class="table-wrap" style="max-height:280px;overflow-y:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Qté</th>
+            <th>Code Art.</th>
+            <th>Désignation</th>
+            <th style="text-align:right">P.U Vente</th>
+            <th style="text-align:right">Total Ligne</th>
+            <th style="text-align:right">Marge Net</th>
+          </tr>
+        </thead>
+        <tbody id="m-sale-items"></tbody>
+      </table>
+    </div>
+
+    <div class="modal-actions" style="margin-top:20px">
+      <button class="btn btn-secondary" id="m-btn-archive" onclick="toggleArchiveFromModal()">📁 Archiver</button>
+      <button class="btn btn-primary" onclick="printReceiptFromModal()">🖨️ Imprimer Ticket</button>
+      <button class="btn btn-secondary" onclick="closeSaleModal()">Fermer</button>
+    </div>
+  </div>
+</div>
+
 <script src="/static/js/app.js"></script>
 <script>
+let allSales = [], currentArchiveFilter = null, currentModalSale = null;
+
 async function init(){
-  const from=document.getElementById("from-date").value, to=document.getElementById("to-date").value;
-  let url="/api/sales?limit=200"; if(from)url+=`&date_from=${from}T00:00:00`; if(to)url+=`&date_to=${to}T23:59:59`;
-  const [sales,report]=await Promise.all([api("GET",url),api("GET",`/api/sales/report${from?`?from=${from}T00:00:00`:""}${to?`${from?"&":"?"}to=${to}T23:59:59`:""}`)]);
-  if(report){document.getElementById("kpi-ca").textContent=fmtDA(report.total_revenue);document.getElementById("kpi-profit").textContent=fmtDA(report.total_profit);document.getElementById("kpi-tx").textContent=report.total_transactions;document.getElementById("kpi-ret").textContent=report.total_returns;}
-  document.getElementById("sales-table").innerHTML=(sales||[]).map(s=>`<tr>
-    <td>#${s.id}</td><td>${new Date(s.created_at).toLocaleString()}</td>
-    <td><b>${s.seller_name}</b></td><td style="color:var(--accent);font-weight:700">${fmtDA(s.total)}</td>
-    <td>${fmtDA(s.discount)}</td><td>${s.payment_method}</td>
-    <td><span class="badge ${s.is_return?"badge-red":"badge-green"}">${s.is_return?"Retour":"Vente"}</span></td>
-  </tr>`).join("");
+  await loadSales();
 }
-async function logout(){ await api("POST","/api/auth/logout"); window.location.href="/"; }
+
+async function loadSales(){
+  const from = document.getElementById("from-date").value;
+  const to = document.getElementById("to-date").value;
+  let url = "/api/sales?limit=300";
+  if(from) url += `&date_from=${from}T00:00:00`;
+  if(to) url += `&date_to=${to}T23:59:59`;
+
+  const [sales, report] = await Promise.all([
+    api("GET", url),
+    api("GET", `/api/sales/report${from ? `?from=${from}T00:00:00` : ""}${to ? `${from?"&":"?"}to=${to}T23:59:59` : ""}`)
+  ]);
+
+  allSales = sales || [];
+  if(report){
+    document.getElementById("kpi-ca").textContent = fmtDA(report.total_revenue);
+    document.getElementById("kpi-profit").textContent = fmtDA(report.total_profit);
+    document.getElementById("kpi-tx").textContent = report.total_transactions;
+    document.getElementById("kpi-ret").textContent = report.total_returns;
+  }
+
+  updateArchiveCounts();
+  renderSalesTable();
+}
+
+function updateArchiveCounts(){
+  const all = allSales.length;
+  const act = allSales.filter(s => !s.is_archived).length;
+  const arch = allSales.filter(s => s.is_archived).length;
+  document.getElementById("cnt-all").textContent = all;
+  document.getElementById("cnt-act").textContent = act;
+  document.getElementById("cnt-arch").textContent = arch;
+}
+
+function setArchiveFilter(val){
+  currentArchiveFilter = val;
+  document.getElementById("f-all").classList.toggle("active", val === null);
+  document.getElementById("f-active").classList.toggle("active", val === false);
+  document.getElementById("f-arch").classList.toggle("active", val === true);
+  renderSalesTable();
+}
+
+function renderSalesTable(){
+  let list = allSales;
+  if(currentArchiveFilter !== null){
+    list = list.filter(s => Boolean(s.is_archived) === currentArchiveFilter);
+  }
+
+  const tbody = document.getElementById("sales-table");
+  if(list.length === 0){
+    tbody.innerHTML = "<tr><td colspan='9' style='text-align:center;color:var(--text2);padding:24px;'>Aucune vente trouvée.</td></tr>";
+    return;
+  }
+
+  tbody.innerHTML = list.map(s => {
+    const d = new Date(s.created_at);
+    const dateStr = d.toLocaleDateString() + " " + d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    const itemCount = (s.items || []).reduce((acc, i) => acc + i.quantity, 0);
+    const isArch = Boolean(s.is_archived);
+
+    return `
+      <tr class="sale-row" ondblclick="openSaleModal(${s.id})" title="Double-cliquez pour inspecter les articles">
+        <td><b>#${s.id}</b></td>
+        <td>${dateStr}</td>
+        <td><b>${s.seller_name || '—'}</b></td>
+        <td><span style="font-weight:700">${itemCount}</span> articles</td>
+        <td style="color:var(--accent);font-weight:800">${fmtDA(s.total)}</td>
+        <td>${s.discount > 0 ? fmtDA(s.discount) : '0 DA'}</td>
+        <td><span style="text-transform:capitalize">${s.payment_method}</span></td>
+        <td>
+          <span class="badge ${s.is_return ? 'badge-red' : 'badge-green'}">${s.is_return ? 'Retour' : 'Validée'}</span>
+          ${isArch ? '<span class="badge" style="background:#4b5563;color:#fff;margin-left:4px">📁 Archivée</span>' : ''}
+        </td>
+        <td>
+          <button class="btn btn-secondary" style="padding:4px 8px;font-size:12px" onclick="openSaleModal(${s.id})">👁️ Voir</button>
+          <button class="btn btn-secondary" style="padding:4px 8px;font-size:12px" onclick="toggleArchive(${s.id}, event)">${isArch ? 'Désarchiver' : 'Archiver'}</button>
+        </td>
+      </tr>
+    `;
+  }).join("");
+}
+
+async function openSaleModal(saleId){
+  const sale = await api("GET", `/api/sales/${saleId}`);
+  if(!sale) return;
+  currentModalSale = sale;
+
+  document.getElementById("m-sale-title").textContent = `Détail de la Vente #${sale.id}`;
+  document.getElementById("m-sale-date").textContent = new Date(sale.created_at).toLocaleString();
+  document.getElementById("m-sale-seller").textContent = sale.seller_name || "—";
+  document.getElementById("m-sale-pay").textContent = (sale.payment_method || "cash").toUpperCase();
+  document.getElementById("m-sale-total").textContent = fmtDA(sale.total);
+
+  const btnArch = document.getElementById("m-btn-archive");
+  btnArch.textContent = sale.is_archived ? "📂 Désarchiver" : "📁 Archiver cette Vente";
+
+  const tbody = document.getElementById("m-sale-items");
+  tbody.innerHTML = (sale.items || []).map(i => {
+    const profit = i.profit !== undefined ? fmtDA(i.profit) : "—";
+    return `
+      <tr>
+        <td><b>${i.quantity}x</b></td>
+        <td style="font-family:monospace;font-size:12px">${i.code_article || '—'}</td>
+        <td><b>${i.name_fr}</b></td>
+        <td style="text-align:right">${fmtDA(i.unit_price)}</td>
+        <td style="text-align:right;font-weight:700;color:var(--accent)">${fmtDA(i.total)}</td>
+        <td style="text-align:right;color:var(--green);font-weight:700">${profit}</td>
+      </tr>
+    `;
+  }).join("");
+
+  document.getElementById("sale-modal").classList.add("open");
+}
+
+function closeSaleModal(){
+  document.getElementById("sale-modal").classList.remove("open");
+  currentModalSale = null;
+}
+
+async function toggleArchive(saleId, event){
+  if(event) event.stopPropagation();
+  const res = await api("POST", `/api/sales/${saleId}/toggle-archive`);
+  if(res){
+    const s = allSales.find(item => item.id === saleId);
+    if(s) s.is_archived = res.is_archived;
+    updateArchiveCounts();
+    renderSalesTable();
+  }
+}
+
+async function toggleArchiveFromModal(){
+  if(!currentModalSale) return;
+  await toggleArchive(currentModalSale.id);
+  currentModalSale.is_archived = !currentModalSale.is_archived;
+  document.getElementById("m-btn-archive").textContent = currentModalSale.is_archived ? "📂 Désarchiver" : "📁 Archiver cette Vente";
+}
+
+function printReceiptFromModal(){
+  if(!currentModalSale) return;
+  window.print();
+}
+
+async function logout(){
+  await api("POST", "/api/auth/logout");
+  window.location.href = "/";
+}
+
 init();
 </script>
 </body></html>
-
-

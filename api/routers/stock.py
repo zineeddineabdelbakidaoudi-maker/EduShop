@@ -72,44 +72,97 @@ def get_global_stock(db: Session = Depends(get_db), admin: User = Depends(requir
     } for gs in stocks]
 
 @router.get("/by-buyer-summary")
-def get_stock_by_buyer_summary(db: Session = Depends(get_db), admin: User = Depends(require_admin)):
-    """Breakdown of global stock by buyer (Bilel, Houari, Abdrahman)."""
-    stocks = db.query(GlobalStock).options(joinedload(GlobalStock.product)).all()
-    summary = {}
-    for gs in stocks:
+@router.get("/capital-overview")
+def get_stock_capital_overview(db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+    """Complete breakdown of remaining capital across global reserve and sellers."""
+    global_stocks = db.query(GlobalStock).options(joinedload(GlobalStock.product)).all()
+    seller_stocks = db.query(SellerStock).options(joinedload(SellerStock.product), joinedload(SellerStock.seller)).all()
+    
+    def canonical_buyer(buyer_str):
+        b = (buyer_str or "Bilal").strip().lower()
+        if b in ["bilel", "bilal"]:
+            return "Bilel"
+        elif b == "houari":
+            return "Houari"
+        elif "abd" in b or "rahman" in b:
+            return "Abdrahman"
+        return "Autre"
+
+    summary = {
+        "total": {
+            "reserve_capital": 0.0, "seller_capital": 0.0, "total_capital": 0.0,
+            "reserve_units": 0, "seller_units": 0, "total_units": 0,
+            "total_sell_value": 0.0
+        },
+        "Bilel": {
+            "reserve_capital": 0.0, "seller_capital": 0.0, "total_capital": 0.0,
+            "reserve_units": 0, "seller_units": 0, "total_units": 0,
+            "product_count": 0, "total_sell_value": 0.0
+        },
+        "Abdrahman": {
+            "reserve_capital": 0.0, "seller_capital": 0.0, "total_capital": 0.0,
+            "reserve_units": 0, "seller_units": 0, "total_units": 0,
+            "product_count": 0, "total_sell_value": 0.0
+        },
+        "Houari": {
+            "reserve_capital": 0.0, "seller_capital": 0.0, "total_capital": 0.0,
+            "reserve_units": 0, "seller_units": 0, "total_units": 0,
+            "product_count": 0, "total_sell_value": 0.0
+        }
+    }
+
+    # 1. Global Stock
+    for gs in global_stocks:
         p = gs.product
         if not p:
             continue
-        buyer = (p.buyer or "Bilal").strip()
-        b_lower = buyer.lower()
-        if b_lower in ["bilel", "bilal"]:
-            canonical = "Bilel"
-        elif b_lower == "houari":
-            canonical = "Houari"
-        elif b_lower in ["abdrahman", "abderrahmane", "bouderouaz"]:
-            canonical = "Abdrahman"
-        else:
-            canonical = buyer
-
-        if canonical not in summary:
-            summary[canonical] = {
-                "product_count": 0,
-                "products_with_stock": 0,
-                "total_units": 0,
-                "total_capital": 0.0,
-                "total_sell_value": 0.0,
-            }
-        
+        can = canonical_buyer(p.buyer)
+        if can not in summary:
+            summary[can] = {"reserve_capital": 0.0, "seller_capital": 0.0, "total_capital": 0.0, "reserve_units": 0, "seller_units": 0, "total_units": 0, "product_count": 0, "total_sell_value": 0.0}
         qty = gs.quantity or 0
         pa = p.purchase_price or 0.0
         pv = p.sell_price or 0.0
-        
-        summary[canonical]["product_count"] += 1
-        if qty > 0:
-            summary[canonical]["products_with_stock"] += 1
-            summary[canonical]["total_units"] += qty
-            summary[canonical]["total_capital"] += qty * pa
-            summary[canonical]["total_sell_value"] += qty * pv
+        cap = qty * pa
+        sell_val = qty * pv
+
+        summary[can]["product_count"] += 1
+        summary[can]["reserve_units"] += qty
+        summary[can]["total_units"] += qty
+        summary[can]["reserve_capital"] += cap
+        summary[can]["total_capital"] += cap
+        summary[can]["total_sell_value"] += sell_val
+
+        summary["total"]["reserve_units"] += qty
+        summary["total"]["total_units"] += qty
+        summary["total"]["reserve_capital"] += cap
+        summary["total"]["total_capital"] += cap
+        summary["total"]["total_sell_value"] += sell_val
+
+    # 2. Seller Stock
+    for ss in seller_stocks:
+        p = ss.product
+        if not p:
+            continue
+        can = canonical_buyer(p.buyer)
+        if can not in summary:
+            summary[can] = {"reserve_capital": 0.0, "seller_capital": 0.0, "total_capital": 0.0, "reserve_units": 0, "seller_units": 0, "total_units": 0, "product_count": 0, "total_sell_value": 0.0}
+        qty = ss.quantity or 0
+        pa = p.purchase_price or 0.0
+        pv = p.sell_price or 0.0
+        cap = qty * pa
+        sell_val = qty * pv
+
+        summary[can]["seller_units"] += qty
+        summary[can]["total_units"] += qty
+        summary[can]["seller_capital"] += cap
+        summary[can]["total_capital"] += cap
+        summary[can]["total_sell_value"] += sell_val
+
+        summary["total"]["seller_units"] += qty
+        summary["total"]["total_units"] += qty
+        summary["total"]["seller_capital"] += cap
+        summary["total"]["total_capital"] += cap
+        summary["total"]["total_sell_value"] += sell_val
 
     return summary
 

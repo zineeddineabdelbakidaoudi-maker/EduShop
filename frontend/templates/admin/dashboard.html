@@ -89,10 +89,18 @@ async function init(){
       </tr>
     `).join("") || "<tr><td colspan='5' style='text-align:center;color:var(--text2)'>Aucune vente aujourd'hui</td></tr>";
   }
-  const stock = await api("GET", "/api/stock/global");
-  if(stock){
-    const val = stock.reduce((sum, item) => sum + (item.quantity * item.purchase_price), 0);
-    document.getElementById("kpi-stock-val").textContent = fmtDA(val);
+  const capOverview = await api("GET", "/api/stock/capital-overview");
+  if(capOverview && capOverview.total){
+    const t = capOverview.total;
+    document.getElementById("kpi-stock-val").textContent = fmtDA(t.total_capital);
+    const sub = document.querySelector("#kpi-stock-val").parentElement;
+    if(sub && !sub.querySelector(".cap-subtext")){
+      const el = document.createElement("div");
+      el.className = "cap-subtext";
+      el.style = "font-size:11px;color:var(--text2);margin-top:4px";
+      el.textContent = `Réserve: ${fmtDA(t.reserve_capital)} | Caisse: ${fmtDA(t.seller_capital)}`;
+      sub.appendChild(el);
+    }
   }
   loadChart();
   document.getElementById("last-update").textContent = "Mis à jour à " + new Date().toLocaleTimeString();

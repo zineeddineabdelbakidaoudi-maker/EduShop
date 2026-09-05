@@ -30,6 +30,7 @@ def format_sale(sale: Sale, include_purchase_price: bool = False) -> dict:
         item = {
             "product_id": si.product_id,
             "name_fr": si.product.name_fr if si.product else "",
+            "code_article": si.product.code_article if si.product else "",
             "quantity": si.quantity,
             "unit_price": si.unit_price,
             "total": si.quantity * si.unit_price,
@@ -43,6 +44,7 @@ def format_sale(sale: Sale, include_purchase_price: bool = False) -> dict:
         "seller_name": sale.seller.username if sale.seller else "",
         "total": sale.total, "discount": sale.discount,
         "payment_method": sale.payment_method, "is_return": sale.is_return,
+        "is_archived": bool(getattr(sale, "is_archived", False)),
         "notes": sale.notes, "created_at": sale.created_at, "items": items,
     }
 
@@ -211,6 +213,7 @@ def my_sales(
 def list_sales(
     seller_id: Optional[int] = None, date_from: Optional[str] = None,
     date_to: Optional[str] = None, is_return: Optional[bool] = None,
+    is_archived: Optional[bool] = None,
     skip: int = 0, limit: int = 100,
     db: Session = Depends(get_db), admin: User = Depends(require_admin)
 ):
@@ -223,6 +226,8 @@ def list_sales(
         q = q.filter(Sale.created_at <= datetime.fromisoformat(date_to))
     if is_return is not None:
         q = q.filter(Sale.is_return == is_return)
+    if is_archived is not None:
+        q = q.filter(Sale.is_archived == is_archived)
     sales = q.order_by(Sale.created_at.desc()).offset(skip).limit(limit).all()
     return [format_sale(s, include_purchase_price=True) for s in sales]
 
@@ -235,3 +240,12 @@ def get_sale(sale_id: int, db: Session = Depends(get_db), current_user: User = D
         raise HTTPException(403, "Accès refusé")
     include_prices = current_user.role == UserRole.admin
     return format_sale(sale, include_purchase_price=include_prices)
+
+@router.post("/{sale_id}/toggle-archive")
+def toggle_archive_sale(sale_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+    sale = db.query(Sale).filter(Sale.id == sale_id).first()
+    if not sale:
+        raise HTTPException(404, "Vente introuvable")
+    sale.is_archived = not bool(getattr(sale, "is_archived", False))
+    db.commit()
+    return {"id": sale.id, "is_archived": sale.is_archived}
