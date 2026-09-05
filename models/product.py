@@ -9,15 +9,15 @@ class Product(Base):
     id = Column(Integer, primary_key=True, index=True)
     code_article = Column(String, unique=True, index=True, nullable=False)
     barcode = Column(String, nullable=True, index=True)  # Supports up to 5 comma-separated barcodes
-    name_fr = Column(String, nullable=False)
+    name_fr = Column(String, nullable=False, index=True)
     name_ar = Column(String, nullable=True)
-    category = Column(String, nullable=True)
+    category = Column(String, nullable=True, index=True)
     purchase_price = Column(Float, default=0.0)
     sell_price = Column(Float, default=0.0)
     min_quantity = Column(Integer, default=5)
     description = Column(String, nullable=True)
-    buyer = Column(String, default="Bilal", nullable=True)
-    fast_panel = Column(Boolean, default=False, nullable=True)  # Admin toggle for POS fast-access sidebar
+    buyer = Column(String, default="Bilal", nullable=True, index=True)
+    fast_panel = Column(Boolean, default=False, nullable=True, index=True)  # Admin toggle for POS fast-access sidebar
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     @property
