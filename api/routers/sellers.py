@@ -24,6 +24,10 @@ class SellerUpdate(BaseModel):
     pin: Optional[str] = None
     role: Optional[UserRole] = None
 
+class SellerMergeRequest(BaseModel):
+    source_seller_id: int
+    target_seller_id: int
+
 def seller_stats(user: User, db: Session) -> dict:
     try:
         sales = db.query(Sale).filter(Sale.seller_id == user.id, Sale.is_return == False).all()
@@ -262,10 +266,92 @@ def update_seller(seller_id: int, data: SellerUpdate, db: Session = Depends(get_
     db.commit()
     return {"id": user.id, "username": user.username, "role": user.role}
 
+@router.post("/merge")
+def merge_sellers(data: SellerMergeRequest, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+    source_user = db.query(User).filter(User.id == data.source_seller_id).first()
+    target_user = db.query(User).filter(User.id == data.target_seller_id).first()
+    if not source_user:
+        raise HTTPException(404, f"Source user ID {data.source_seller_id} not found")
+    if not target_user:
+        raise HTTPException(404, f"Target user ID {data.target_seller_id} not found")
+    if source_user.id == target_user.id:
+        raise HTTPException(400, "Source and target users cannot be the same")
+
+    # 1. Merge SellerStock
+    source_stocks = db.query(SellerStock).filter(SellerStock.seller_id == source_user.id).all()
+    merged_stock_count = 0
+    moved_stock_count = 0
+    for s_stock in source_stocks:
+        t_stock = db.query(SellerStock).filter(
+            SellerStock.seller_id == target_user.id,
+            SellerStock.product_id == s_stock.product_id
+        ).first()
+        if t_stock:
+            t_stock.quantity += (s_stock.quantity or 0)
+            db.delete(s_stock)
+            merged_stock_count += 1
+        else:
+            s_stock.seller_id = target_user.id
+            moved_stock_count += 1
+    db.flush()
+
+    # 2. Update StockTransfer (transfers received by source_user -> target_user)
+    transfers_received_updated = db.query(StockTransfer).filter(
+        StockTransfer.seller_id == source_user.id
+    ).update(
+        {StockTransfer.seller_id: target_user.id},
+        synchronize_session=False
+    )
+
+    # 3. Update StockTransfer (transfers made by source_user -> admin user ID 1 or target_user)
+    admin_user = db.query(User).filter(User.username == "admin").first()
+    admin_id = admin_user.id if admin_user else 1
+    transfers_made_updated = db.query(StockTransfer).filter(
+        StockTransfer.transferred_by_id == source_user.id
+    ).update(
+        {StockTransfer.transferred_by_id: admin_id},
+        synchronize_session=False
+    )
+
+    # 4. Update Sales (sales made by source_user -> target_user)
+    sales_updated = db.query(Sale).filter(
+        Sale.seller_id == source_user.id
+    ).update(
+        {Sale.seller_id: target_user.id},
+        synchronize_session=False
+    )
+
+    # 5. Delete source user
+    source_username = source_user.username
+    source_id = source_user.id
+    db.delete(source_user)
+    db.commit()
+
+    return {
+        "status": "success",
+        "message": f"Compte '{source_username}' (ID {source_id}) fusionné avec succès dans '{target_user.username}' (ID {target_user.id})",
+        "target_user": {
+            "id": target_user.id,
+            "username": target_user.username,
+            "role": target_user.role
+        },
+        "details": {
+            "merged_stock_items": merged_stock_count,
+            "moved_stock_items": moved_stock_count,
+            "transfers_received_updated": transfers_received_updated,
+            "transfers_made_updated": transfers_made_updated,
+            "sales_updated": sales_updated,
+            "deleted_user": source_username
+        }
+    }
+
 @router.delete("/{seller_id}", status_code=204)
 def delete_seller(seller_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     user = db.query(User).filter(User.id == seller_id).first()
     if not user:
         raise HTTPException(404, "Utilisateur introuvable")
+    db.query(StockTransfer).filter(StockTransfer.seller_id == seller_id).delete(synchronize_session=False)
+    db.query(StockTransfer).filter(StockTransfer.transferred_by_id == seller_id).update({StockTransfer.transferred_by_id: 1}, synchronize_session=False)
+    db.query(Sale).filter(Sale.seller_id == seller_id).delete(synchronize_session=False)
     db.delete(user)
     db.commit()
