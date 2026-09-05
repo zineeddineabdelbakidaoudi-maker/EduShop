@@ -57,7 +57,7 @@
         <div class="kpi-value" id="kpi-fast" style="color:#eab308;font-size:26px;font-weight:800;margin:4px 0;">0</div>
         <div style="font-size:11px;color:var(--text2);">Favoris en 1 clic caissier</div>
       </div>
-      <div class="kpi-card" id="kpi-card-capital" onclick="cycleCapitalFilter()" style="cursor:pointer;border-left:4px solid #38bdf8;background:var(--card);border-radius:10px;padding:14px 18px;border-top:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border);" title="Cliquer pour basculer : Tous ➔ Houari ➔ Bilel">
+      <div class="kpi-card" id="kpi-card-capital" onclick="cycleCapitalFilter()" style="cursor:pointer;border-left:4px solid #38bdf8;background:var(--card);border-radius:10px;padding:14px 18px;border-top:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border);" title="Cliquer pour basculer : Tous ➔ Houari ➔ Bilel ➔ Abdrahman">
         <div class="kpi-label" style="font-size:12px;color:var(--text2);font-weight:700;display:flex;justify-content:space-between;align-items:center;">
           <span>💰 CAPITAL STOCK (ACHAT)</span>
           <span id="capital-buyer-badge" style="font-size:10px;background:rgba(56,189,248,0.2);color:#38bdf8;padding:2px 8px;border-radius:10px;font-weight:bold">TOUS</span>
@@ -84,17 +84,23 @@
           <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-fast" onclick="setBarcodeFilter('fast')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #eab308;color:#eab308">
             ⚡ Panneau Caisse <span id="count-fast" style="background:#eab308;color:#111;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
           </button>
-          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-houari" onclick="setBarcodeFilter('houari')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #8b5cf6;color:#8b5cf6" title="Filtrer et afficher le Capital Stock de Houari">
-            👤 Capital Houari <span id="count-houari" style="background:#8b5cf6;color:#fff;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
+          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-houari" onclick="setBarcodeFilter('houari')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #7c3aed;color:#a855f7" title="Filtrer et afficher le Capital Stock de Houari">
+            🟣 Capital Houari <span id="count-houari" style="background:#7c3aed;color:#fff;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
           </button>
-          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-bilel" onclick="setBarcodeFilter('bilel')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #06b6d4;color:#06b6d4" title="Filtrer et afficher le Capital Stock de Bilel">
-            👤 Capital Bilel <span id="count-bilel" style="background:#06b6d4;color:#fff;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
+          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-bilel" onclick="setBarcodeFilter('bilel')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #dc2626;color:#ef4444" title="Filtrer et afficher le Capital Stock de Bilel">
+            🔴 Capital Bilel <span id="count-bilel" style="background:#dc2626;color:#fff;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
+          </button>
+          <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-abdrahman" onclick="setBarcodeFilter('abdrahman')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #16a34a;color:#10b981" title="Filtrer et afficher le Capital Stock de Abdrahman">
+            🟢 Capital Abdrahman <span id="count-abdrahman" style="background:#16a34a;color:#fff;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
           </button>
           <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-matched" onclick="setBarcodeFilter('matched')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #a855f7;color:#a855f7" title="Afficher les articles correspondants / partagés entre plusieurs bons">
-            🔗 Correspondances Bons (16+) <span id="count-matched" style="background:#a855f7;color:#fff;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
+            🔗 Correspondances Bons <span id="count-matched" style="background:#a855f7;color:#fff;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
           </button>
-          <button type="button" class="btn btn-secondary" onclick="syncDuplicateBarcodes()" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #ec4899;color:#ec4899;background:rgba(236,72,153,0.1)" title="Copier et synchroniser automatiquement les codes-barres vers tous les articles correspondants de Bilel (563+)">
-            ⚡ Synchro Codes-barres Global (563+)
+          <button type="button" class="btn btn-secondary" onclick="syncDuplicateBarcodes('all')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #ec4899;color:#ec4899;background:rgba(236,72,153,0.1)" title="Copier et synchroniser automatiquement les codes-barres vers tous les articles correspondants (Bilel & Abdrahman)">
+            ⚡ Synchro Codes-barres Global
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="syncDuplicateBarcodes('abdrahman')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #16a34a;color:#10b981;background:rgba(22,163,74,0.1)" title="Synchroniser spécifiquement les codes-barres vers Abdrahman">
+            🟢 Synchro Barcodes Abdrahman
           </button>
           <button type="button" class="btn btn-secondary bc-filter-btn" id="btn-filter-cartables" onclick="setBarcodeFilter('cartables')" style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:bold;border:1px solid #38bdf8;color:#38bdf8" title="Afficher les articles des 4 Bons Cartables">
             🎒 Bons Cartables <span id="count-cartables" style="background:#38bdf8;color:#111;padding:2px 7px;border-radius:10px;margin-left:4px;font-size:11px">0</span>
@@ -150,10 +156,11 @@
       <div><label>Code Article Unique *</label><input id="p-code" placeholder="Auto-généré si vide (ex: ART-0001)"></div>
       <div>
         <label>Gérant / Acheteur *</label>
-        <select id="p-buyer" style="background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px;width:100%;font-weight:600">
-          <option value="Houari">👤 Houari</option>
-          <option value="Bilal">👤 Bilal</option>
-          <option value="Autre">Commun / Autre</option>
+        <select id="p-buyer" style="background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px;width:100%;font-weight:700">
+          <option value="Houari">🟣 Houari</option>
+          <option value="Bilel">🔴 Bilel</option>
+          <option value="Abdrahman">🟢 Abdrahman</option>
+          <option value="Autre">⚪ Autre / Commun</option>
         </select>
       </div>
     </div>
@@ -282,7 +289,8 @@ function updateCounts(){
   const cartablesCount = products.filter(p => isCartableProduct(p)).length;
   
   const houariProds = products.filter(p => (p.buyer || '').toLowerCase() === "houari");
-  const bilelProds = products.filter(p => (p.buyer || '').toLowerCase() === "bilel");
+  const bilelProds = products.filter(p => { const b = (p.buyer || '').toLowerCase(); return b === "bilel" || b === "bilal"; });
+  const abdrahmanProds = products.filter(p => { const b = (p.buyer || '').toLowerCase(); return b.includes("abd") || b.includes("rahman"); });
   
   const elAll = document.getElementById("count-all");
   const elWith = document.getElementById("count-with");
@@ -292,11 +300,13 @@ function updateCounts(){
   const elCartables = document.getElementById("count-cartables");
   const elHouari = document.getElementById("count-houari");
   const elBilel = document.getElementById("count-bilel");
+  const elAbdrahman = document.getElementById("count-abdrahman");
 
   if(elMatched) elMatched.textContent = matchedCount;
   if(elCartables) elCartables.textContent = cartablesCount;
   if(elHouari) elHouari.textContent = houariProds.length;
   if(elBilel) elBilel.textContent = bilelProds.length;
+  if(elAbdrahman) elAbdrahman.textContent = abdrahmanProds.length;
 
   if(elAll) elAll.textContent = total;
   if(elWith) elWith.textContent = withBc;
@@ -344,12 +354,16 @@ function updateCapitalKPI(filteredList = null){
   if(elBadge){
     if(barcodeFilter === "houari"){
       elBadge.textContent = "HOUARI";
-      elBadge.style.background = "rgba(139,92,246,0.2)";
-      elBadge.style.color = "#8b5cf6";
+      elBadge.style.background = "rgba(124,58,237,0.25)";
+      elBadge.style.color = "#a855f7";
     } else if(barcodeFilter === "bilel"){
       elBadge.textContent = "BILEL";
-      elBadge.style.background = "rgba(6,182,212,0.2)";
-      elBadge.style.color = "#06b6d4";
+      elBadge.style.background = "rgba(220,38,38,0.25)";
+      elBadge.style.color = "#ef4444";
+    } else if(barcodeFilter === "abdrahman"){
+      elBadge.textContent = "ABDRAHMAN";
+      elBadge.style.background = "rgba(22,163,74,0.25)";
+      elBadge.style.color = "#10b981";
     } else {
       elBadge.textContent = "TOTAL (" + targetList.length + ")";
       elBadge.style.background = "rgba(56,189,248,0.2)";
@@ -363,6 +377,8 @@ function cycleCapitalFilter(){
     setBarcodeFilter("houari");
   } else if(barcodeFilter === "houari"){
     setBarcodeFilter("bilel");
+  } else if(barcodeFilter === "bilel"){
+    setBarcodeFilter("abdrahman");
   } else {
     setBarcodeFilter("all");
   }
@@ -397,10 +413,13 @@ function setBarcodeFilter(mode){
       activeBtn.style.background = "#38bdf8";
       activeBtn.style.color = "#111";
     } else if(mode === "houari"){
-      activeBtn.style.background = "#8b5cf6";
+      activeBtn.style.background = "#7c3aed";
       activeBtn.style.color = "#fff";
     } else if(mode === "bilel"){
-      activeBtn.style.background = "#06b6d4";
+      activeBtn.style.background = "#dc2626";
+      activeBtn.style.color = "#fff";
+    } else if(mode === "abdrahman"){
+      activeBtn.style.background = "#16a34a";
       activeBtn.style.color = "#fff";
     }
   }
@@ -432,10 +451,18 @@ function renderTable(data){
   document.getElementById("products-table").innerHTML = currentFilteredProducts.map(p => {
     const isSelected = (p.id === selectedProductId);
     const margin = p.purchase_price > 0 ? ((p.sell_price - p.purchase_price) / p.purchase_price * 100).toFixed(1) : "—";
-    const buyerVal = p.buyer || "Bilal";
-    const buyerBadge = (buyerVal.toLowerCase() === "houari") ?
-      `<span style="background:#7c3aed;color:#fff;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:bold;display:inline-block">👤 Houari</span>` :
-      `<span style="background:#2563eb;color:#fff;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:bold;display:inline-block">👤 ${buyerVal}</span>`;
+    const bRaw = (p.buyer || "Houari").trim();
+    const bLow = bRaw.toLowerCase();
+    let buyerBadge = "";
+    if (bLow === "houari") {
+      buyerBadge = `<span style="background:rgba(124,58,237,0.18);color:#a855f7;border:1px solid rgba(124,58,237,0.45);padding:4px 10px;border-radius:12px;font-size:11.5px;font-weight:800;display:inline-block">🟣 Houari</span>`;
+    } else if (bLow === "bilel" || bLow === "bilal") {
+      buyerBadge = `<span style="background:rgba(220,38,38,0.18);color:#ef4444;border:1px solid rgba(220,38,38,0.45);padding:4px 10px;border-radius:12px;font-size:11.5px;font-weight:800;display:inline-block">🔴 Bilel</span>`;
+    } else if (bLow.includes("abd") || bLow.includes("rahman")) {
+      buyerBadge = `<span style="background:rgba(22,163,74,0.18);color:#10b981;border:1px solid rgba(22,163,74,0.45);padding:4px 10px;border-radius:12px;font-size:11.5px;font-weight:800;display:inline-block">🟢 Abdrahman</span>`;
+    } else {
+      buyerBadge = `<span style="background:rgba(100,116,139,0.18);color:#94a3b8;border:1px solid rgba(100,116,139,0.45);padding:4px 10px;border-radius:12px;font-size:11.5px;font-weight:800;display:inline-block">👤 ${bRaw}</span>`;
+    }
     
     const isFast = !!p.fast_panel;
     const fastBtn = isFast ?
@@ -558,17 +585,20 @@ function isCartableProduct(p){
 }
 
 
-async function syncDuplicateBarcodes(){
-  if(!confirm("Voulez-vous synchroniser automatiquement les codes-barres existants vers tous les articles correspondants de Bilel ?\n\n(Les codes-barres identiques sont 100% autorisés entre différents gérants sans aucun conflit).")) return;
+async function syncDuplicateBarcodes(target = 'all'){
+  const targetLabel = target === 'abdrahman' ? "vers Abdrahman" : target === 'bilel' ? "vers Bilel" : "vers Bilel & Abdrahman";
+  if(!confirm(`Voulez-vous synchroniser automatiquement les codes-barres existants ${targetLabel} ?\n\n(Les codes-barres identiques sont 100% autorisés entre gérants sans aucun conflit).`)) return;
   
   try {
-    const res = await api("POST", "/api/products/sync-matched-barcodes");
+    const res = await api("POST", `/api/products/sync-matched-barcodes?target=${target}`);
     if(res && res.success){
-      showToast(`🎉 ${res.synced_count} codes-barres synchronisés de Houari vers Bilel !`);
+      showToast(`🎉 ${res.synced_count} codes-barres synchronisés avec succès !`);
       await init();
-      setBarcodeFilter("matched");
+      if (target === 'abdrahman') setBarcodeFilter("abdrahman");
+      else if (target === 'bilel') setBarcodeFilter("bilel");
+      else setBarcodeFilter("matched");
     } else {
-      showToast("Aucun nouveau code-barres à synchroniser ou déjà à jour.");
+      showToast("Aucun nouveau code-barres à synchroniser ou tout est déjà à jour.");
     }
   } catch(e) {
     alert("Erreur lors de la synchronisation : " + e);
@@ -588,7 +618,14 @@ function filterTable(){
     if(barcodeFilter === "matched" && !isMatchedProduct(p)) return false;
     if(barcodeFilter === "cartables" && !isCartableProduct(p)) return false;
     if(barcodeFilter === "houari" && (p.buyer || '').toLowerCase() !== "houari") return false;
-    if(barcodeFilter === "bilel" && (p.buyer || '').toLowerCase() !== "bilel") return false;
+    if(barcodeFilter === "bilel") {
+      const b = (p.buyer || '').toLowerCase();
+      if (b !== "bilel" && b !== "bilal") return false;
+    }
+    if(barcodeFilter === "abdrahman") {
+      const b = (p.buyer || '').toLowerCase();
+      if (!b.includes("abd") && !b.includes("rahman")) return false;
+    }
     
     if(tokens.length === 0) return true;
     
@@ -619,7 +656,26 @@ function openEdit(id, focusTarget = null){
   document.getElementById("p-name-fr").value = p.name_fr; 
   document.getElementById("p-name-ar").value = p.name_ar || ""; 
   document.getElementById("p-code").value = p.code_article; 
-  document.getElementById("p-buyer").value = p.buyer || "Houari"; 
+    const bRaw = (p.buyer || "Houari").trim();
+  const bLow = bRaw.toLowerCase();
+  if (bLow === "bilel" || bLow === "bilal") {
+    document.getElementById("p-buyer").value = "Bilel";
+  } else if (bLow === "houari") {
+    if (barcodeFilter === "bilel") document.getElementById("p-buyer").value = "Bilel";
+  else if (barcodeFilter === "abdrahman") document.getElementById("p-buyer").value = "Abdrahman";
+  else document.getElementById("p-buyer").value = "Houari";
+  } else if (bLow.includes("abd") || bLow.includes("rahman")) {
+    document.getElementById("p-buyer").value = "Abdrahman";
+  } else {
+    let opt = Array.from(document.getElementById("p-buyer").options).find(o => o.value.toLowerCase() === bLow);
+    if (!opt) {
+      const newOpt = document.createElement("option");
+      newOpt.value = bRaw;
+      newOpt.textContent = `👤 ${bRaw}`;
+      document.getElementById("p-buyer").appendChild(newOpt);
+    }
+    document.getElementById("p-buyer").value = bRaw;
+  } 
   document.getElementById("p-fast-panel").checked = !!p.fast_panel;
   document.getElementById("p-category").value = p.category || ""; 
   document.getElementById("p-purchase").value = p.purchase_price; 
@@ -660,7 +716,9 @@ function clearForm(){
   ["p-name-fr","p-name-ar","p-code","p-category"].forEach(id => document.getElementById(id).value = ""); 
   document.getElementById("barcodes-list").innerHTML = "";
   ["p-purchase","p-qty"].forEach(id => document.getElementById(id).value = 0); 
-  document.getElementById("p-buyer").value = "Houari";
+  if (barcodeFilter === "bilel") document.getElementById("p-buyer").value = "Bilel";
+  else if (barcodeFilter === "abdrahman") document.getElementById("p-buyer").value = "Abdrahman";
+  else document.getElementById("p-buyer").value = "Houari";
   document.getElementById("p-fast-panel").checked = false;
   document.getElementById("p-margin").value = 20;
   document.getElementById("p-sell").value = 0; 

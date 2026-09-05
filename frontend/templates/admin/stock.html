@@ -5,9 +5,9 @@
 <style>
 /* Gérant identity colors */
 :root {
-  --bilel-color: #ea580c;
-  --bilel-bg: rgba(234, 88, 12, 0.12);
-  --bilel-border: rgba(234, 88, 12, 0.4);
+  --bilel-color: #dc2626;
+  --bilel-bg: rgba(220, 38, 38, 0.14);
+  --bilel-border: rgba(220, 38, 38, 0.45);
 
   --houari-color: #7c3aed;
   --houari-bg: rgba(124, 58, 237, 0.12);
@@ -87,7 +87,7 @@
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
           <span style="font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase">Filtrer par Gérant :</span>
           <button class="g-pill active" id="stk-f-all" onclick="setStockBuyerFilter('')">👥 Tous (<span id="count-all">0</span>)</button>
-          <button class="g-pill" id="stk-f-bilel" onclick="setStockBuyerFilter('Bilel')">🟠 Bilel (<span id="count-bilel">0</span>)</button>
+          <button class="g-pill" id="stk-f-bilel" onclick="setStockBuyerFilter('Bilel')">🔴 Bilel (<span id="count-bilel">0</span>)</button>
           <button class="g-pill" id="stk-f-houari" onclick="setStockBuyerFilter('Houari')">🟣 Houari (<span id="count-houari">0</span>)</button>
           <button class="g-pill" id="stk-f-abd" onclick="setStockBuyerFilter('Abdrahman')">🟢 Abdrahman (<span id="count-abd">0</span>)</button>
         </div>
@@ -165,7 +165,7 @@
     <div style="display:flex;gap:6px;margin-bottom:12px;align-items:center;flex-wrap:wrap">
       <span style="font-size:11.5px;color:var(--text2);font-weight:700">Filtrer par Gérant :</span>
       <button class="btn btn-secondary btn-sm" id="bm-f-all" onclick="filterBulkByBuyer('')">Tous</button>
-      <button class="btn btn-secondary btn-sm" id="bm-f-bilel" onclick="filterBulkByBuyer('Bilel')">🟠 Bilel</button>
+      <button class="btn btn-secondary btn-sm" id="bm-f-bilel" onclick="filterBulkByBuyer('Bilel')">🔴 Bilel</button>
       <button class="btn btn-secondary btn-sm" id="bm-f-houari" onclick="filterBulkByBuyer('Houari')">🟣 Houari</button>
       <button class="btn btn-secondary btn-sm" id="bm-f-abd" onclick="filterBulkByBuyer('Abdrahman')">🟢 Abdrahman</button>
     </div>
@@ -277,7 +277,7 @@ function renderTable(data){
     let bBadge = (bLow === "houari")
       ? `<span style="background:var(--houari-bg);color:var(--houari-color);border:1px solid var(--houari-border);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700">🟣 Houari</span>`
       : (bLow === "bilel" || bLow === "bilal")
-      ? `<span style="background:var(--bilel-bg);color:var(--bilel-color);border:1px solid var(--bilel-border);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700">🟠 Bilel</span>`
+      ? `<span style="background:var(--bilel-bg);color:var(--bilel-color);border:1px solid var(--bilel-border);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700">🔴 Bilel</span>`
       : `<span style="background:var(--abd-bg);color:var(--abd-color);border:1px solid var(--abd-border);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700">🟢 Abdrahman</span>`;
 
     return `<tr>
@@ -389,7 +389,7 @@ function renderBulkModalTable(){
   document.getElementById("bulk-products-tbody").innerHTML = filtered.map(item => {
     const bRaw = (item.buyer || "Bilal").trim();
     const bLow = bRaw.toLowerCase();
-    let bBadge = (bLow === "houari") ? "🟣 Houari" : (bLow === "bilel" || bLow === "bilal") ? "🟠 Bilel" : "🟢 Abdrahman";
+    let bBadge = (bLow === "houari") ? "🟣 Houari" : (bLow === "bilel" || bLow === "bilal") ? "🔴 Bilel" : "🟢 Abdrahman";
 
     return `<tr style="border-bottom:1px solid var(--border)">
       <td style="padding:7px;text-align:center">

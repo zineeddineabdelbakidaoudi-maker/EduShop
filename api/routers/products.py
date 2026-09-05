@@ -355,16 +355,15 @@ def batch_import_products(items: list[dict], db: Session = Depends(get_db), admi
     }
 
 @router.post("/sync-matched-barcodes")
-def sync_matched_barcodes(db: Session = Depends(get_db), admin: User = Depends(require_admin)):
-    """Automatically copies barcodes from Houari's products to Bilel's matching duplicate products."""
+def sync_matched_barcodes(target: Optional[str] = "all", db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+    """Automatically copies barcodes from existing products to matching unbarcoded products (Bilel, Abdrahman, etc.)."""
     ensure_barcode_not_unique(db)
     
-    # Match against ANY existing catalog product with a barcode (Houari, Bilal, etc.)
+    # Match against ANY existing catalog product with a barcode
     source_prods = db.query(Product).filter(
         Product.barcode.isnot(None), 
         Product.barcode != ""
     ).all()
-    bilel_prods = db.query(Product).filter(Product.buyer == "Bilel").all()
     
     def norm_str(s):
         return re.sub(r'[^A-Z0-9]', '', (s or '').upper())
@@ -376,21 +375,36 @@ def sync_matched_barcodes(db: Session = Depends(get_db), admin: User = Depends(r
             if k and k not in source_map:
                 source_map[k] = sp.barcode.strip()
             
+    # Find all unbarcoded products
+    target_prods = db.query(Product).filter(
+        (Product.barcode.is_(None)) | (Product.barcode == "")
+    ).all()
+    
     synced = []
-    for bp in bilel_prods:
-        bn = norm_str(bp.name_fr)
+    t_filter = (target or "all").lower().strip()
+
+    for tp in target_prods:
+        b_low = (tp.buyer or "Bilal").lower().strip()
+        if t_filter != "all":
+            if t_filter in ["bilel", "bilal"] and b_low not in ["bilel", "bilal"]:
+                continue
+            elif (t_filter.startswith("abd") or t_filter.startswith("abder")) and not ("abd" in b_low or "rahman" in b_low):
+                continue
+
+        tn = norm_str(tp.name_fr)
         matched_bc = None
         for sn, sbc in source_map.items():
-            if bn == sn or (len(bn) >= 8 and len(sn) >= 8 and (bn in sn or sn in bn)):
+            if tn == sn or (len(tn) >= 8 and len(sn) >= 8 and (tn in sn or sn in tn)):
                 matched_bc = sbc
                 break
         
-        if matched_bc and (not bp.barcode or bp.barcode.strip() == ""):
-            bp.barcode = matched_bc
+        if matched_bc:
+            tp.barcode = matched_bc
             synced.append({
-                "id": bp.id,
-                "code_article": bp.code_article,
-                "name_fr": bp.name_fr,
+                "id": tp.id,
+                "code_article": tp.code_article,
+                "name_fr": tp.name_fr,
+                "buyer": tp.buyer,
                 "barcode": matched_bc
             })
             
@@ -407,7 +421,8 @@ def sync_matched_barcodes(db: Session = Depends(get_db), admin: User = Depends(r
         
     return {
         "success": True,
+        "target": target,
         "synced_count": len(synced),
         "synced_items": synced,
-        "message": f"Succès : {len(synced)} codes-barres synchronisés de Houari vers Bilel !"
+        "message": f"Succès : {len(synced)} codes-barres synchronisés vers {target.upper()} !"
     }
