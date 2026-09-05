@@ -127,29 +127,54 @@ def list_products(db: Session = Depends(get_db), admin: User = Depends(require_a
     return [product_to_admin_dict(p) for p in products]
 
 @router.get("/seller")
-def list_seller_products(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    role_str = getattr(current_user.role, "value", str(current_user.role)).lower()
-    products = db.query(Product).options(joinedload(Product.global_stock)).all()
-    if role_str == "admin":
+def list_seller_products(
+    seller_id: Optional[int] = None,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    target_seller_id = seller_id or current_user.id
+    stocks = (
+        db.query(SellerStock)
+        .options(joinedload(SellerStock.product))
+        .filter(SellerStock.seller_id == target_seller_id, SellerStock.quantity > 0)
+        .all()
+    )
+    if stocks:
+        return [product_to_seller_dict(ss.product, ss.quantity) for ss in stocks if ss.product]
+    
+    # If master admin has no transferred stock, allow viewing global catalog
+    if current_user.username == "admin" and not seller_id:
+        products = db.query(Product).options(joinedload(Product.global_stock)).all()
         return [product_to_seller_dict(p, p.global_stock.quantity if p.global_stock else 0) for p in products]
     
-    # For sellers: map their specific seller stocks, fallback to global stock
-    seller_stocks = {ss.product_id: ss.quantity for ss in db.query(SellerStock).filter_by(seller_id=current_user.id).all()}
-    results = []
-    for p in products:
-        qty = seller_stocks.get(p.id)
-        if qty is None:
-            qty = p.global_stock.quantity if p.global_stock else 0
-        results.append(product_to_seller_dict(p, qty))
-    return results
+    return []
 
 @router.get("/search")
 def search_products(
     q: Optional[str] = None, barcode: Optional[str] = None,
     db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
 ):
-    from models.user import UserRole
-    if current_user.role == UserRole.admin:
+    stocks = (
+        db.query(SellerStock)
+        .options(joinedload(SellerStock.product))
+        .filter(SellerStock.seller_id == current_user.id, SellerStock.quantity > 0)
+        .all()
+    )
+    if stocks:
+        results = []
+        for ss in stocks:
+            p = ss.product
+            if not p:
+                continue
+            if barcode:
+                bc_q = barcode.strip()
+                if bc_q in p.barcode_list or (p.barcode and bc_q in p.barcode):
+                    return [product_to_seller_dict(p, ss.quantity)]
+            if q and (q.lower() in p.name_fr.lower() or q in (p.code_article or "") or q in (p.barcode or "")):
+                results.append(product_to_seller_dict(p, ss.quantity))
+        return results[:30]
+
+    if current_user.username == "admin":
         query = db.query(Product)
         if barcode:
             bc_q = barcode.strip()
@@ -162,18 +187,8 @@ def search_products(
                 Product.barcode.ilike(f"%{q}%")
             )
         return [product_to_admin_dict(p) for p in query.limit(30).all()]
-    else:
-        stocks = db.query(SellerStock).filter(SellerStock.seller_id == current_user.id, SellerStock.quantity > 0).all()
-        results = []
-        for ss in stocks:
-            p = ss.product
-            if barcode:
-                bc_q = barcode.strip()
-                if bc_q in p.barcode_list or (p.barcode and bc_q in p.barcode):
-                    return [product_to_seller_dict(p, ss.quantity)]
-            if q and (q.lower() in p.name_fr.lower() or q in (p.code_article or "") or q in (p.barcode or "")):
-                results.append(product_to_seller_dict(p, ss.quantity))
-        return results[:30]
+        
+    return []
 
 @router.get("/{product_id}")
 def get_product(product_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
