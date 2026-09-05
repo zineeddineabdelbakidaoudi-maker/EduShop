@@ -2,7 +2,7 @@ import random, string, re, io
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File
 from sqlalchemy.orm import Session, joinedload
-from sqlalchemy import text
+from sqlalchemy import text, func
 from pydantic import BaseModel
 from db.base import get_db
 from models.product import Product
@@ -594,8 +594,18 @@ def scanner_save_product(data: ScannerSaveRequest, db: Session = Depends(get_db)
                 )
                 db.add(ss)
 
-    db.commit()
-    db.refresh(prod)
+    try:
+        db.commit()
+        db.refresh(prod)
+    except Exception as ex:
+        db.rollback()
+        ensure_barcode_not_unique(db)
+        try:
+            db.commit()
+            db.refresh(prod)
+        except Exception as ex2:
+            db.rollback()
+            raise HTTPException(400, f"Erreur lors de la sauvegarde : {str(ex2)}")
     return {
         "status": "success",
         "message": f"Produit '{prod.name_fr}' mis à jour avec succès !",
