@@ -66,6 +66,15 @@ def normalize_barcodes(barcode_val: Optional[str] = None, barcodes_list: Optiona
             clean.append(c_s)
     return ", ".join(clean[:50]) if clean else None
 
+def clamp_margin_sell_price(purchase_price: Optional[float], sell_price: Optional[float]) -> Optional[float]:
+    """Ensures margin is not negative (< 0%) and not over 100%. If outside [0%, 100%], reset to 60%."""
+    if purchase_price and purchase_price > 0 and sell_price is not None:
+        m = (sell_price - purchase_price) / purchase_price * 100.0
+        if m < 0.0 or m > 100.0:
+            return round(purchase_price * 1.60, 2)
+        return round(sell_price, 2)
+    return round(sell_price, 2) if sell_price is not None else None
+
 class ProductCreate(BaseModel):
     name_fr: str
     name_ar: Optional[str] = None
@@ -328,10 +337,11 @@ async def create_product(data: ProductCreate, db: Session = Depends(get_db), adm
         code = gen_code()
     
     bc_clean = normalize_barcodes(data.barcode, data.barcodes)
+    safe_sell = clamp_margin_sell_price(data.purchase_price, data.sell_price)
     p = Product(
         code_article=code, barcode=bc_clean,
         name_fr=data.name_fr, name_ar=data.name_ar, category=data.category,
-        purchase_price=data.purchase_price, sell_price=data.sell_price,
+        purchase_price=data.purchase_price, sell_price=safe_sell,
         min_quantity=data.min_quantity, description=data.description,
         buyer=data.buyer or "Bilal",
         fast_panel=bool(data.fast_panel)
@@ -374,6 +384,13 @@ async def update_product(product_id: int, data: ProductUpdate, db: Session = Dep
         update_data["barcode"] = normalize_barcodes(update_data.get("barcode"), update_data.get("barcodes"))
         update_data.pop("barcodes", None)
         
+    if "sell_price" in update_data or "purchase_price" in update_data:
+        p_purch = update_data.get("purchase_price", p.purchase_price)
+        p_sell = update_data.get("sell_price", p.sell_price)
+        safe_sell = clamp_margin_sell_price(p_purch, p_sell)
+        if safe_sell is not None:
+            update_data["sell_price"] = safe_sell
+
     for k, v in update_data.items():
         setattr(p, k, v)
     try:
@@ -493,6 +510,7 @@ def batch_import_products(items: list[dict], db: Session = Depends(get_db), admi
         pv = float(it.get("sell_price", 0.0))
         if pv <= 0 and pa > 0:
             pv = round(pa * 1.25, 2)
+        pv = clamp_margin_sell_price(pa, pv) or pv
             
         qty = int(it.get("quantity", it.get("initial_quantity", 0)))
         buyer_val = it.get("buyer") or "Houari"
@@ -749,9 +767,9 @@ async def scanner_save_product(data: ScannerSaveRequest, db: Session = Depends(g
         prod.barcode = normalize_barcodes(data.barcode)
     if data.buyer:
         prod.buyer = data.buyer.strip()
-    prod.sell_price = round(data.sell_price, 2)
     if data.purchase_price is not None:
         prod.purchase_price = round(data.purchase_price, 2)
+    prod.sell_price = clamp_margin_sell_price(prod.purchase_price, data.sell_price)
     if data.category:
         prod.category = data.category.strip()
     if data.fast_panel is not None:

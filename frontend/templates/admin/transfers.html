@@ -259,6 +259,64 @@
     </div>
 
     <!-- ════════════════════════════════════════════════════════════════════════
+         SECTION : TRANSFERT PAR BON SPÉCIFIQUE (NOUVEAUX BONS VERS CAISSE)
+         ════════════════════════════════════════════════════════════════════════ -->
+    <div class="quick-card no-print" style="border-color:var(--accent);background:linear-gradient(135deg, var(--card) 60%, rgba(245,158,11,0.12));margin-bottom:24px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+        <div>
+          <h3 style="margin:0;font-size:17px;display:flex;align-items:center;gap:8px">
+            <span>📑</span> Transférer un Bon Spécifique vers la Caisse
+          </h3>
+          <p style="font-size:12.5px;color:var(--text2);margin-top:2px">
+            Envoyez <b>uniquement les articles d'un bon précis</b> (ex: Bon BL0279 Bilel, Bon NV BON 2 Abdrahman) vers sa caisse.
+          </p>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:14px;align-items:flex-end">
+        <div>
+          <label style="font-size:12px;font-weight:700;color:var(--text2);display:block;margin-bottom:6px">
+            1. Choisir le Bon à envoyer :
+          </label>
+          <select id="bon-select" onchange="onBonSelectChanged()" style="width:100%;padding:10px 12px;font-weight:700;border-radius:8px;background:var(--card2);color:var(--text);border:1px solid var(--border)">
+            <option value="BL0279">🔴 Bon BL0279 — Cahiers Bilel (39 articles · 11,135 unités)</option>
+            <option value="NV_BON_2">🟢 Bon ABDARHMAN NV BON 2 (372 articles · 19,003 unités)</option>
+            <option value="BL0212">🔴 Bon BL0212 — Bilel (148 articles)</option>
+            <option value="BL0211">🔴 Bon BL0211 — Bilel (125 articles)</option>
+            <option value="BL0195">🔴 Bon BL0195 — Bilel (319 articles)</option>
+            <option value="BL0191">🔴 Bon BL0191 — Bilel (147 articles)</option>
+            <option value="BL0199">🔴 Bon BL0199 — Bilel (64 articles)</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size:12px;font-weight:700;color:var(--text2);display:block;margin-bottom:6px">
+            2. Vendeur Destinataire :
+          </label>
+          <select id="bon-seller-select" style="width:100%;padding:10px 12px;font-weight:700;border-radius:8px;background:var(--card2);color:var(--text);border:1px solid var(--border)">
+            <option value="">Chargement des vendeurs...</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;background:var(--card2);padding:10px 12px;border-radius:8px;border:1px solid var(--border)">
+            <input type="checkbox" id="bon-reset-checkbox" checked style="width:18px;height:18px;accent-color:var(--accent);cursor:pointer">
+            <span style="font-size:12px;font-weight:700;color:var(--text)">
+              Remplacer le stock caisse <small style="display:block;font-size:10.5px;color:var(--text2);font-weight:normal">(Afficher uniquement ce bon dans la caisse)</small>
+            </span>
+          </label>
+        </div>
+
+        <div>
+          <button id="btn-exec-bon-transfer" class="btn-transfer-big" onclick="executeBonTransfer()" style="width:100%;justify-content:center;background:linear-gradient(135deg,#f59e0b,#d97706);color:#000;font-weight:900">
+            <span>🚀</span> Envoyer ce Bon vers la Caisse
+          </button>
+        </div>
+      </div>
+      <div id="bon-transfer-status" style="margin-top:12px;font-size:13px;font-weight:700;display:none;padding:10px 14px;border-radius:8px"></div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════════
          SECTION : TRANSFERT RAPIDE DE CAPITAL PAR GÉRANT
          ════════════════════════════════════════════════════════════════════════ -->
     <div class="quick-card no-print" id="quickCard">
@@ -574,6 +632,84 @@ async function loadSellers() {
   // Populate bulk modal seller
   const bSel = document.getElementById("bulk-modal-seller");
   bSel.innerHTML = sellers.map(s => `<option value="${s.id}">👤 ${s.username}</option>`).join("");
+
+  // Populate bon-seller-select
+  const bonSel = document.getElementById("bon-seller-select");
+  if (bonSel) {
+    bonSel.innerHTML = sellers.map(s => `<option value="${s.id}">👤 Vendeur : ${s.username}</option>`).join("");
+    onBonSelectChanged();
+  }
+}
+
+function onBonSelectChanged() {
+  const bon = document.getElementById("bon-select") ? document.getElementById("bon-select").value : "";
+  const sSel = document.getElementById("bon-seller-select");
+  if (!sSel || !sellers.length) return;
+  if (bon.startsWith("BL")) {
+    const match = sellers.find(s => s.username.toLowerCase().includes("bilel") || s.username.toLowerCase().includes("bilal"));
+    if (match) sSel.value = match.id;
+  } else if (bon.includes("NV_BON_2") || bon.includes("ABD")) {
+    const match = sellers.find(s => s.username.toLowerCase().includes("abd") || s.username.toLowerCase().includes("rahman"));
+    if (match) sSel.value = match.id;
+  }
+}
+
+async function executeBonTransfer() {
+  const bonKey = document.getElementById("bon-select").value;
+  const sellerId = parseInt(document.getElementById("bon-seller-select").value, 10);
+  const resetOther = document.getElementById("bon-reset-checkbox").checked;
+  const statusEl = document.getElementById("bon-transfer-status");
+  const btn = document.getElementById("btn-exec-bon-transfer");
+
+  if (!sellerId) {
+    showToast("Veuillez sélectionner un vendeur destinataire.", "warn");
+    return;
+  }
+
+  const bonText = document.getElementById("bon-select").selectedOptions[0]?.text || bonKey;
+  const sName = document.getElementById("bon-seller-select").selectedOptions[0]?.text || sellerId;
+
+  if (!confirm(`Confirmer l'envoi de :\n${bonText}\nvers la caisse de : ${sName}\n\nOption Remplacer Stock: ${resetOther ? "OUI (La caisse affichera UNIQUEMENT ce bon)" : "NON"}`)) {
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "⏳ Transfert du bon en cours...";
+  statusEl.style.display = "none";
+
+  try {
+    const res = await api("POST", "/api/stock/transfer-by-bon", {
+      bon_key: bonKey,
+      seller_id: sellerId,
+      reset_other_stock: resetOther
+    });
+
+    if (res && res.status === "success") {
+      statusEl.style.display = "block";
+      statusEl.style.background = "rgba(16, 185, 129, 0.15)";
+      statusEl.style.color = "var(--green)";
+      statusEl.style.border = "1px solid rgba(16, 185, 129, 0.3)";
+      statusEl.textContent = `✅ Succès : ${res.transferred_products} articles (${(res.total_units || 0).toLocaleString()} unités) envoyés vers la caisse !`;
+      showToast(res.message || "Bon transféré avec succès !");
+      await Promise.all([loadTransfers(), loadStockSummary()]);
+      filterTable();
+    } else {
+      statusEl.style.display = "block";
+      statusEl.style.background = "rgba(239, 68, 68, 0.15)";
+      statusEl.style.color = "var(--red)";
+      statusEl.style.border = "1px solid rgba(239, 68, 68, 0.3)";
+      statusEl.textContent = "❌ " + ((res && res.detail) || "Erreur lors du transfert du bon.");
+    }
+  } catch (e) {
+    statusEl.style.display = "block";
+    statusEl.style.background = "rgba(239, 68, 68, 0.15)";
+    statusEl.style.color = "var(--red)";
+    statusEl.style.border = "1px solid rgba(239, 68, 68, 0.3)";
+    statusEl.textContent = "❌ Erreur : " + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = "<span>🚀</span> Envoyer ce Bon vers la Caisse";
+  }
 }
 
 async function loadStockSummary() {

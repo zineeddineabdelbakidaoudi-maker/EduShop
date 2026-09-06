@@ -1,5 +1,7 @@
 from typing import Optional
+from pathlib import Path
 import datetime
+import json
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import func
@@ -542,4 +544,215 @@ def fix_transferred_buyers(db: Session = Depends(get_db), admin: User = Depends(
 
     db.commit()
     return {"detail": f"{moved_count} stocks de vendeurs réassignés proprement.", "moved_count": moved_count}
+
+
+class AssignExactBonItem(BaseModel):
+    product_id: int
+    quantity: int
+
+class AssignExactBonRequest(BaseModel):
+    seller_id: int
+    items: list[AssignExactBonItem]
+    reset_other_stock: bool = False
+    notes: Optional[str] = None
+
+@router.post("/assign-exact-bon")
+def assign_exact_bon(data: AssignExactBonRequest, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+    seller = db.query(User).filter(User.id == data.seller_id).first()
+    if not seller:
+        raise HTTPException(404, "Vendeur introuvable")
+
+    if data.reset_other_stock:
+        target_pids = {it.product_id for it in data.items}
+        other_stocks = db.query(SellerStock).filter(
+            SellerStock.seller_id == data.seller_id,
+            ~SellerStock.product_id.in_(target_pids)
+        ).all()
+        for ss in other_stocks:
+            ss.quantity = 0
+
+    assigned_count = 0
+    total_units = 0
+    now = datetime.datetime.utcnow()
+    for it in data.items:
+        prod = db.query(Product).filter(Product.id == it.product_id).first()
+        if not prod:
+            continue
+        ss = db.query(SellerStock).filter_by(seller_id=data.seller_id, product_id=it.product_id).first()
+        if ss:
+            ss.quantity = it.quantity
+        else:
+            ss = SellerStock(seller_id=data.seller_id, product_id=it.product_id, quantity=it.quantity)
+            db.add(ss)
+
+        transfer = StockTransfer(
+            product_id=it.product_id,
+            seller_id=data.seller_id,
+            transferred_by_id=admin.id,
+            quantity=it.quantity,
+            created_at=now
+        )
+        db.add(transfer)
+        assigned_count += 1
+        total_units += it.quantity
+
+    db.commit()
+    return {
+        "status": "success",
+        "detail": f"{assigned_count} produits du nouveau bon ({total_units} unités) assignés avec succès à la caisse de {seller.username}.",
+        "assigned_count": assigned_count,
+        "total_units": total_units
+    }
+
+
+class TransferByBonRequest(BaseModel):
+    bon_key: str
+    seller_id: int
+    reset_other_stock: bool = True
+    notes: Optional[str] = None
+
+@router.post("/transfer-by-bon")
+def transfer_stock_by_bon(data: TransferByBonRequest, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+    seller = db.query(User).filter(User.id == data.seller_id).first()
+    if not seller:
+        raise HTTPException(404, "Vendeur introuvable")
+
+    bon = data.bon_key.upper().strip()
+    
+    # Priority 1: Check if exact JSON file exists in data_bons
+    bon_files_map = {
+        "BL0279": "bon_BL0279_cahiers_billel.json",
+        "NV_BON_2": "bon_ABDARHMAN_NV_BON_2_complet.json",
+        "BON_2": "bon_ABDARHMAN_NV_BON_2_complet.json",
+        "BL0212": "bon_BL0212_billel.json",
+        "BL0211": "bon_BL0211_billel.json",
+        "BL0195": "bon_BL0195_billel.json",
+        "BL0191": "bon_BL0191_billel.json",
+        "BL0199": "bon_BL0199_billel.json",
+    }
+    
+    matched_filename = None
+    for k, v in bon_files_map.items():
+        if k in bon:
+            matched_filename = v
+            break
+            
+    items_to_assign = []  # list of (Product, qty)
+    
+    data_dir = Path(__file__).resolve().parent.parent.parent / "data_bons"
+    bon_path = data_dir / matched_filename if matched_filename else None
+    
+    if bon_path and bon_path.exists():
+        try:
+            with open(bon_path, "r", encoding="utf-8") as f:
+                bon_items = json.load(f)
+            for it in bon_items:
+                code = it.get("code_article")
+                name = (it.get("name_fr") or "").strip()
+                prod = None
+                if code:
+                    prod = db.query(Product).filter(Product.code_article == code).first()
+                if not prod and name:
+                    prod = db.query(Product).filter(Product.name_fr == name).first()
+                if prod:
+                    qty = int(it.get("quantity") or 10)
+                    items_to_assign.append((prod, qty))
+        except Exception as err:
+            print(f"[WARN] Error reading bon json file: {err}")
+
+    # Fallback to DB query if not loaded from json
+    if not items_to_assign:
+        query = db.query(Product)
+        if "0279" in bon or "BL0279" in bon:
+            query = query.filter(
+                (Product.description.ilike("%BL0279%")) | (Product.description.ilike("%ELKHAIMA%")),
+                (Product.buyer.ilike("%Bilel%") | Product.buyer.ilike("%Bilal%"))
+            )
+        elif "NV_BON_2" in bon or "BON_2" in bon or "BON 2" in bon:
+            query = query.filter(
+                Product.buyer.ilike("%Abd%"),
+                (
+                    (Product.description.ilike("%BON 2%")) | 
+                    (Product.description.ilike("%NV BON 2%")) | 
+                    (Product.code_article.ilike("ART-ABD-0254%")) | 
+                    (Product.code_article.ilike("ART-ABD-0255%")) | 
+                    (Product.code_article.ilike("ART-ABD-0268%")) | 
+                    (Product.code_article.ilike("ART-ABD-0270%"))
+                )
+            )
+        elif "0212" in bon:
+            query = query.filter((Product.code_article.ilike("%0212%")) | (Product.description.ilike("%0212%")))
+        elif "0211" in bon:
+            query = query.filter((Product.code_article.ilike("%0211%")) | (Product.description.ilike("%0211%")))
+        elif "0195" in bon:
+            query = query.filter((Product.code_article.ilike("%0195%")) | (Product.description.ilike("%0195%")))
+        elif "0191" in bon:
+            query = query.filter((Product.code_article.ilike("%0191%")) | (Product.description.ilike("%0191%")))
+        elif "0199" in bon:
+            query = query.filter((Product.code_article.ilike("%0199%")) | (Product.description.ilike("%0199%")))
+        else:
+            query = query.filter(Product.description.ilike(f"%{data.bon_key}%"))
+
+        for p in query.all():
+            qty = p.global_stock.quantity if p.global_stock and p.global_stock.quantity > 0 else 10
+            items_to_assign.append((p, qty))
+
+    if not items_to_assign:
+        raise HTTPException(404, f"Aucun article trouvé pour le bon '{data.bon_key}'")
+
+    target_pids = {p.id for p, _ in items_to_assign}
+
+    if data.reset_other_stock:
+        other_stocks = db.query(SellerStock).filter(
+            SellerStock.seller_id == data.seller_id,
+            ~SellerStock.product_id.in_(target_pids)
+        ).all()
+        for ss in other_stocks:
+            ss.quantity = 0
+
+    now = datetime.datetime.utcnow()
+    transferred_count = 0
+    total_units = 0
+    for p, qty in items_to_assign:
+        ss = db.query(SellerStock).filter_by(seller_id=data.seller_id, product_id=p.id).first()
+        if ss:
+            ss.quantity = qty
+        else:
+            ss = SellerStock(seller_id=data.seller_id, product_id=p.id, quantity=qty)
+            db.add(ss)
+
+        transfer = StockTransfer(
+            product_id=p.id,
+            seller_id=data.seller_id,
+            transferred_by_id=admin.id,
+            quantity=qty,
+            created_at=now
+        )
+        db.add(transfer)
+        transferred_count += 1
+        total_units += qty
+
+    db.commit()
+
+    try:
+        import asyncio
+        asyncio.create_task(manager.broadcast_seller(data.seller_id, "stock.updated_all", {
+            "seller_id": data.seller_id,
+            "items_count": transferred_count,
+            "units_count": total_units
+        }))
+        asyncio.create_task(manager.broadcast_admin("stock.transfer", {
+            "seller_name": seller.username,
+            "product_name": f"{data.bon_key} ({transferred_count} articles)",
+            "quantity": total_units,
+        }))
+    except Exception:
+        pass
+
+    return {
+        "status": "success",
+        "message": f"{transferred_count} articles du {data.bon_key} ({total_units:,} unités) transférés vers la caisse de {seller.username}.",
+        "transferred_products": transferred_count,
+        "total_units": total_units
+    }
 

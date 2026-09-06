@@ -555,17 +555,30 @@ function removeBarcodeRow(rowId){
 
 function calcSellFromMargin(){
   const purchase = parseFloat(document.getElementById("p-purchase").value) || 0;
-  const margin = parseFloat(document.getElementById("p-margin").value) || 0;
+  let margin = parseFloat(document.getElementById("p-margin").value);
+  if(isNaN(margin) || margin < 0 || margin > 100){
+    margin = 60;
+    document.getElementById("p-margin").value = 60;
+    showToast("⚠️ Marge restreinte entre 0% et 100% (Réinitialisée à 60%)", "warn");
+  }
   const sell = purchase * (1 + margin / 100);
   document.getElementById("p-sell").value = sell.toFixed(2);
 }
 
 function calcMarginFromSell(){
   const purchase = parseFloat(document.getElementById("p-purchase").value) || 0;
-  const sell = parseFloat(document.getElementById("p-sell").value) || 0;
+  let sell = parseFloat(document.getElementById("p-sell").value) || 0;
   if(purchase > 0){
-    const margin = ((sell - purchase) / purchase * 100).toFixed(1);
-    document.getElementById("p-margin").value = margin;
+    let margin = (sell - purchase) / purchase * 100;
+    if(margin < 0 || margin > 100){
+      margin = 60;
+      sell = purchase * 1.60;
+      document.getElementById("p-sell").value = sell.toFixed(2);
+      document.getElementById("p-margin").value = 60;
+      showToast("⚠️ Marge invalide (<0% ou >100%) réinitialisée à 60% (Vente: " + sell.toFixed(2) + " DA)", "warn");
+    } else {
+      document.getElementById("p-margin").value = margin.toFixed(1);
+    }
   }
 }
 
