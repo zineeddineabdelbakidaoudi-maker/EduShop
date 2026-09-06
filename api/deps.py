@@ -1,4 +1,4 @@
-﻿import os
+import os
 from datetime import datetime, timedelta
 from typing import Optional
 from fastapi import Depends, HTTPException, Request, status
@@ -10,7 +10,7 @@ from models.user import User, UserRole
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "edushop-secret-2024-very-long-key-do-not-share")
 ALGORITHM = "HS256"
-TOKEN_EXPIRE_HOURS = 24
+TOKEN_EXPIRE_HOURS = 24 * 365  # 1 an (évite les déconnexions intempestives en caisse)
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login", auto_error=False)
 
