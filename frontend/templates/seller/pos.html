@@ -1293,8 +1293,14 @@
         document.getElementById("user-name-label").textContent = "👤 Vendeur: " + currentUser.username;
       }
       await loadProducts();
-      connectWS();
       setupKeyShortcuts();
+
+      // Auto-actualisation automatique toutes les 10 secondes depuis le site :
+      setInterval(async () => {
+        if (currentUser && (!cart || cart.length === 0)) {
+          await loadProducts();
+        }
+      }, 10000);
     }
 
     function updateLiveClock() {
@@ -1312,6 +1318,16 @@
 
     async function loadProducts() {
       allProducts = await api("GET", "/api/products/seller") || [];
+      if (currentUser && currentUser.username) {
+        const u = currentUser.username.toLowerCase();
+        if (u.startsWith("bil")) {
+          allProducts = allProducts.filter(p => (p.buyer || "").toLowerCase().startsWith("bil"));
+        } else if (u.startsWith("hou")) {
+          allProducts = allProducts.filter(p => (p.buyer || "").toLowerCase().startsWith("hou"));
+        } else if (u.startsWith("abd")) {
+          allProducts = allProducts.filter(p => (p.buyer || "").toLowerCase().startsWith("abd"));
+        }
+      }
       renderCategoryFilterPills(allProducts);
       renderFavoris(allProducts);
       renderCatalog(allProducts);
