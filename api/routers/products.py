@@ -133,19 +133,44 @@ def list_seller_products(
     current_user: User = Depends(get_current_user)
 ):
     target_seller_id = seller_id or current_user.id
+    target_user = db.query(User).filter(User.id == target_seller_id).first()
+    uname = (target_user.username if target_user else "").lower().strip()
+
     stocks = (
         db.query(SellerStock)
         .options(joinedload(SellerStock.product))
         .filter(SellerStock.seller_id == target_seller_id, SellerStock.quantity > 0)
         .all()
     )
+
+    # STRICT BUYER ISOLATION: A seller ONLY ever receives products belonging to their buyer account!
+    if uname.startswith("bil"):
+        stocks = [ss for ss in stocks if ss.product and (ss.product.buyer or "").lower().startswith("bil")]
+    elif uname.startswith("hou"):
+        stocks = [ss for ss in stocks if ss.product and (ss.product.buyer or "").lower().startswith("hou")]
+    elif uname.startswith("abd"):
+        stocks = [ss for ss in stocks if ss.product and (ss.product.buyer or "").lower().startswith("abd")]
+
     if stocks:
         return [product_to_seller_dict(ss.product, ss.quantity) for ss in stocks if ss.product]
     
-    # If master admin has no transferred stock, allow viewing global catalog
-    if current_user.username == "admin" and not seller_id:
-        products = db.query(Product).options(joinedload(Product.global_stock)).all()
+    # Fallback to products belonging to this buyer with global stock:
+    if uname.startswith("bil"):
+        products = db.query(Product).options(joinedload(Product.global_stock)).filter(Product.buyer.ilike("bil%")).all()
         return [product_to_seller_dict(p, p.global_stock.quantity if p.global_stock else 0) for p in products]
+    elif uname.startswith("hou"):
+        products = db.query(Product).options(joinedload(Product.global_stock)).filter(Product.buyer.ilike("hou%")).all()
+        return [product_to_seller_dict(p, p.global_stock.quantity if p.global_stock else 0) for p in products]
+    elif uname.startswith("abd"):
+        products = db.query(Product).options(joinedload(Product.global_stock)).filter(Product.buyer.ilike("abd%")).all()
+        return [product_to_seller_dict(p, p.global_stock.quantity if p.global_stock else 0) for p in products]
+    elif uname == "admin":
+        products = db.query(Product).options(joinedload(Product.global_stock), joinedload(Product.seller_stock)).all()
+        result = []
+        for p in products:
+            tot_qty = (p.global_stock.quantity if p.global_stock else 0) + sum(ss.quantity for ss in p.seller_stock if ss.quantity > 0)
+            result.append(product_to_seller_dict(p, tot_qty))
+        return result
     
     return []
 
@@ -154,12 +179,21 @@ def search_products(
     q: Optional[str] = None, barcode: Optional[str] = None,
     db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
 ):
+    uname = (current_user.username or "").lower().strip()
     stocks = (
         db.query(SellerStock)
         .options(joinedload(SellerStock.product))
         .filter(SellerStock.seller_id == current_user.id, SellerStock.quantity > 0)
         .all()
     )
+
+    if uname.startswith("bil"):
+        stocks = [ss for ss in stocks if ss.product and (ss.product.buyer or "").lower().startswith("bil")]
+    elif uname.startswith("hou"):
+        stocks = [ss for ss in stocks if ss.product and (ss.product.buyer or "").lower().startswith("hou")]
+    elif uname.startswith("abd"):
+        stocks = [ss for ss in stocks if ss.product and (ss.product.buyer or "").lower().startswith("abd")]
+
     if stocks:
         results = []
         for ss in stocks:
@@ -174,21 +208,25 @@ def search_products(
                 results.append(product_to_seller_dict(p, ss.quantity))
         return results[:30]
 
-    if current_user.username == "admin":
-        query = db.query(Product)
-        if barcode:
-            bc_q = barcode.strip()
-            prods = query.filter(Product.barcode.ilike(f"%{bc_q}%")).all()
-            return [product_to_admin_dict(p) for p in prods]
-        if q:
-            query = query.filter(
-                Product.name_fr.ilike(f"%{q}%") | 
-                Product.code_article.ilike(f"%{q}%") |
-                Product.barcode.ilike(f"%{q}%")
-            )
-        return [product_to_admin_dict(p) for p in query.limit(30).all()]
-        
-    return []
+    # Fallback to catalog of this buyer:
+    query = db.query(Product).options(joinedload(Product.global_stock))
+    if uname.startswith("bil"):
+        query = query.filter(Product.buyer.ilike("bil%"))
+    elif uname.startswith("hou"):
+        query = query.filter(Product.buyer.ilike("hou%"))
+    elif uname.startswith("abd"):
+        query = query.filter(Product.buyer.ilike("abd%"))
+    
+    if barcode:
+        bc_q = barcode.strip()
+        query = query.filter(Product.barcode.ilike(f"%{bc_q}%"))
+    if q:
+        query = query.filter(
+            Product.name_fr.ilike(f"%{q}%") | 
+            Product.code_article.ilike(f"%{q}%") |
+            Product.barcode.ilike(f"%{q}%")
+        )
+    return [product_to_seller_dict(p, p.global_stock.quantity if p.global_stock else 0) for p in query.limit(30).all()]
 
 @router.get("/{product_id}")
 def get_product(product_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):

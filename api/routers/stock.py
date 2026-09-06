@@ -507,3 +507,39 @@ def assign_seller_stock(data: AssignSellerStockRequest, db: Session = Depends(ge
     
     db.commit()
     return {"detail": f"{assigned} produits assignés au vendeur {seller.username}", "assigned_count": assigned}
+
+@router.post("/fix-transferred-buyers")
+def fix_transferred_buyers(db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+    """Reassigns any SellerStock rows that belong to a different buyer to the correct seller."""
+    bilel = db.query(User).filter(User.username == "bilel").first()
+    houari = db.query(User).filter(User.username == "houarii").first() or db.query(User).filter(User.username == "houari").first()
+    abdrahman = db.query(User).filter(User.username == "abderahman").first() or db.query(User).filter(User.username == "abdrahman").first()
+
+    moved_count = 0
+    all_seller_stocks = db.query(SellerStock).options(joinedload(SellerStock.product)).all()
+
+    for ss in all_seller_stocks:
+        if not ss.product:
+            continue
+        buyer = (ss.product.buyer or "").lower().strip()
+        
+        target_seller = None
+        if buyer.startswith("bil"):
+            target_seller = bilel
+        elif buyer.startswith("hou"):
+            target_seller = houari
+        elif buyer.startswith("abd"):
+            target_seller = abdrahman
+        
+        if target_seller and ss.seller_id != target_seller.id:
+            existing = db.query(SellerStock).filter_by(seller_id=target_seller.id, product_id=ss.product_id).first()
+            if existing:
+                existing.quantity += ss.quantity
+                db.delete(ss)
+            else:
+                ss.seller_id = target_seller.id
+            moved_count += 1
+
+    db.commit()
+    return {"detail": f"{moved_count} stocks de vendeurs réassignés proprement.", "moved_count": moved_count}
+
