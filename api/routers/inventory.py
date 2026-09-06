@@ -1,4 +1,4 @@
-﻿from typing import List, Optional
+from typing import List, Optional
 import datetime
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -8,6 +8,7 @@ from models.product import Product
 from models.stock import GlobalStock, SellerStock
 from models.user import User
 from api.deps import require_admin
+from api.websocket import manager
 
 router = APIRouter(prefix="/api/inventory", tags=["inventory"])
 
@@ -29,7 +30,9 @@ def get_inventory_sheet(db: Session = Depends(get_db), admin: User = Depends(req
     total_units = 0
 
     for p in products:
-        qty = p.global_stock.quantity if p.global_stock else 0
+        qty = (p.global_stock.quantity if p.global_stock else 0)
+        if hasattr(p, 'seller_stock') and p.seller_stock:
+            qty += sum(ss.quantity for ss in p.seller_stock if ss.quantity > 0)
         val_p = qty * (p.purchase_price or 0.0)
         val_s = qty * (p.sell_price or 0.0)
         total_val_purchase += val_p
@@ -61,19 +64,21 @@ def get_inventory_sheet(db: Session = Depends(get_db), admin: User = Depends(req
     }
 
 @router.post("/adjust")
-def apply_inventory_adjustment(data: InventoryAdjustmentRequest, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+async def adjust_inventory(req: InventoryAdjustmentRequest, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     adjusted_count = 0
     total_diff_units = 0
     total_diff_value = 0.0
 
-    for it in data.items:
-        p = db.query(Product).filter(Product.id == it.product_id).first()
+    for it in req.items:
+        p = db.query(Product).options(joinedload(Product.global_stock)).filter(Product.id == it.product_id).first()
         if not p:
             continue
-        gs = db.query(GlobalStock).with_for_update().filter_by(product_id=it.product_id).first()
+        
+        gs = p.global_stock
         if not gs:
-            gs = GlobalStock(product_id=it.product_id, quantity=0)
+            gs = GlobalStock(product_id=p.id, quantity=0)
             db.add(gs)
+            db.flush()
 
         old_qty = gs.quantity
         new_qty = max(0, it.counted_quantity)
@@ -85,6 +90,10 @@ def apply_inventory_adjustment(data: InventoryAdjustmentRequest, db: Session = D
         total_diff_value += diff * (p.purchase_price or 0.0)
 
     db.commit()
+    try:
+        await manager.broadcast_all("stock.updated_all", {})
+    except Exception:
+        pass
     return {
         "status": "success",
         "adjusted_products": adjusted_count,

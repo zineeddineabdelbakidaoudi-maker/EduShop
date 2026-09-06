@@ -95,7 +95,12 @@ class ProductUpdate(BaseModel):
     buyer: Optional[str] = None
     fast_panel: Optional[bool] = None
 
+from api.websocket import manager
+
 def product_to_admin_dict(p: Product) -> dict:
+    tot_stock = (p.global_stock.quantity if p.global_stock else 0)
+    if hasattr(p, 'seller_stock') and p.seller_stock:
+        tot_stock += sum(ss.quantity for ss in p.seller_stock if ss.quantity > 0)
     return {
         "id": p.id, "code_article": p.code_article,
         "barcode": p.barcode,
@@ -106,7 +111,10 @@ def product_to_admin_dict(p: Product) -> dict:
         "buyer": p.buyer or "Bilal",
         "fast_panel": bool(p.fast_panel),
         "created_at": p.created_at,
-        "global_stock_quantity": p.global_stock.quantity if p.global_stock else 0,
+        "global_stock_quantity": tot_stock,
+        "seller_stock_quantity": tot_stock,
+        "stock_qty": tot_stock,
+        "quantity": tot_stock,
     }
 
 def product_to_seller_dict(p: Product, seller_qty: int) -> dict:
@@ -119,11 +127,14 @@ def product_to_seller_dict(p: Product, seller_qty: int) -> dict:
         "sell_price": p.sell_price, "min_quantity": p.min_quantity,
         "fast_panel": bool(p.fast_panel),
         "seller_stock_quantity": seller_qty,
+        "stock_qty": seller_qty,
+        "quantity": seller_qty,
+        "global_stock_quantity": seller_qty,
     }
 
 @router.get("")
 def list_products(db: Session = Depends(get_db), admin: User = Depends(require_admin)):
-    products = db.query(Product).options(joinedload(Product.global_stock)).all()
+    products = db.query(Product).options(joinedload(Product.global_stock), joinedload(Product.seller_stock)).all()
     return [product_to_admin_dict(p) for p in products]
 
 @router.get("/seller")
@@ -206,7 +217,8 @@ def search_products(
                     return [product_to_seller_dict(p, ss.quantity)]
             if q and (q.lower() in p.name_fr.lower() or q in (p.code_article or "") or q in (p.barcode or "")):
                 results.append(product_to_seller_dict(p, ss.quantity))
-        return results[:30]
+        if results:
+            return results[:30]
 
     # Fallback to catalog of this buyer:
     query = db.query(Product).options(joinedload(Product.global_stock))
@@ -216,6 +228,8 @@ def search_products(
         query = query.filter(Product.buyer.ilike("hou%"))
     elif uname.startswith("abd"):
         query = query.filter(Product.buyer.ilike("abd%"))
+    elif uname != "admin":
+        return []
     
     if barcode:
         bc_q = barcode.strip()
@@ -226,7 +240,13 @@ def search_products(
             Product.code_article.ilike(f"%{q}%") |
             Product.barcode.ilike(f"%{q}%")
         )
-    return [product_to_seller_dict(p, p.global_stock.quantity if p.global_stock else 0) for p in query.limit(30).all()]
+    fallback_prods = query.limit(30).all()
+    res_list = []
+    for p in fallback_prods:
+        s_stock = db.query(SellerStock).filter(SellerStock.seller_id == current_user.id, SellerStock.product_id == p.id).first()
+        qty = s_stock.quantity if s_stock and s_stock.quantity > 0 else (p.global_stock.quantity if p.global_stock else 0)
+        res_list.append(product_to_seller_dict(p, qty))
+    return res_list
 
 @router.get("/{product_id}")
 def get_product(product_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
@@ -236,17 +256,21 @@ def get_product(product_id: int, db: Session = Depends(get_db), admin: User = De
     return product_to_admin_dict(p)
 
 @router.post("/{product_id}/toggle-fast-panel")
-def toggle_fast_panel(product_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+async def toggle_fast_panel(product_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     p = db.query(Product).filter(Product.id == product_id).first()
     if not p:
         raise HTTPException(404, "Produit introuvable")
     p.fast_panel = not bool(p.fast_panel)
     db.commit()
     db.refresh(p)
+    try:
+        await manager.broadcast_all("product.updated", {"id": p.id, "fast_panel": p.fast_panel, "buyer": p.buyer})
+    except Exception:
+        pass
     return {"id": p.id, "fast_panel": p.fast_panel, "name_fr": p.name_fr}
 
 @router.post("", status_code=201)
-def create_product(data: ProductCreate, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+async def create_product(data: ProductCreate, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     code = data.code_article or gen_code()
     while db.query(Product).filter(Product.code_article == code).first():
         code = gen_code()
@@ -280,10 +304,14 @@ def create_product(data: ProductCreate, db: Session = Depends(get_db), admin: Us
         except Exception as e2:
             db.rollback()
             raise HTTPException(400, f"Erreur création produit : {str(e2)}")
+    try:
+        await manager.broadcast_all("product.updated", {"id": p.id, "buyer": p.buyer})
+    except Exception:
+        pass
     return product_to_admin_dict(p)
 
 @router.put("/{product_id}")
-def update_product(product_id: int, data: ProductUpdate, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+async def update_product(product_id: int, data: ProductUpdate, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     p = db.query(Product).filter(Product.id == product_id).first()
     if not p:
         raise HTTPException(404, "Produit introuvable")
@@ -310,15 +338,23 @@ def update_product(product_id: int, data: ProductUpdate, db: Session = Depends(g
         except Exception as e2:
             db.rollback()
             raise HTTPException(400, f"Erreur enregistrement produit : {str(e2)}")
+    try:
+        await manager.broadcast_all("product.updated", {"id": p.id, "buyer": p.buyer})
+    except Exception:
+        pass
     return product_to_admin_dict(p)
 
 @router.delete("/{product_id}", status_code=204)
-def delete_product(product_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+async def delete_product(product_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     p = db.query(Product).filter(Product.id == product_id).first()
     if not p:
         raise HTTPException(404, "Produit introuvable")
     db.delete(p)
     db.commit()
+    try:
+        await manager.broadcast_all("product.deleted", {"id": product_id})
+    except Exception:
+        pass
 
 @router.post("/batch-import")
 def batch_import_products(items: list[dict], db: Session = Depends(get_db), admin: User = Depends(require_admin)):
@@ -581,7 +617,7 @@ def scanner_lookup(q: str, db: Session = Depends(get_db), admin: User = Depends(
     }
 
 @router.post("/scanner/save")
-def scanner_save_product(data: ScannerSaveRequest, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
+async def scanner_save_product(data: ScannerSaveRequest, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     prod = db.query(Product).options(joinedload(Product.global_stock)).filter(Product.id == data.product_id).first()
     if not prod:
         raise HTTPException(404, "Produit introuvable")
@@ -644,6 +680,10 @@ def scanner_save_product(data: ScannerSaveRequest, db: Session = Depends(get_db)
         except Exception as ex2:
             db.rollback()
             raise HTTPException(400, f"Erreur lors de la sauvegarde : {str(ex2)}")
+    try:
+        await manager.broadcast_all("product.updated", {"id": prod.id, "buyer": prod.buyer})
+    except Exception:
+        pass
     return {
         "status": "success",
         "message": f"Produit '{prod.name_fr}' mis à jour avec succès !",

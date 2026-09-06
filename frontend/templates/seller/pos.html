@@ -1291,16 +1291,40 @@
       currentUser = await api("GET", "/api/auth/me");
       if (currentUser) {
         document.getElementById("user-name-label").textContent = "👤 Vendeur: " + currentUser.username;
+        setupWebSocket();
       }
       await loadProducts();
       setupKeyShortcuts();
 
-      // Auto-actualisation automatique toutes les 10 secondes depuis le site :
+      // Auto-actualisation automatique toutes les 5 secondes depuis le site :
       setInterval(async () => {
         if (currentUser && (!cart || cart.length === 0)) {
           await loadProducts();
         }
-      }, 10000);
+      }, 5000);
+    }
+
+    let wsPos = null;
+    function setupWebSocket() {
+      if (!currentUser) return;
+      try {
+        if (wsPos) { try { wsPos.close(); } catch(e){} wsPos = null; }
+        const loc = window.location;
+        const proto = loc.protocol === 'https:' ? 'wss:' : 'ws:';
+        const role = currentUser.role === 'admin' ? 'admin' : 'seller';
+        const uid = currentUser.id || 3;
+        const wsUrl = `${proto}//${loc.host}/ws/${role}/${uid}`;
+        wsPos = new WebSocket(wsUrl);
+        wsPos.onmessage = (ev) => {
+          try {
+            const data = JSON.parse(ev.data);
+            if (data.event && (data.event.startsWith('product.') || data.event.startsWith('stock.'))) {
+              loadProducts();
+            }
+          } catch(e){}
+        };
+        wsPos.onclose = () => { setTimeout(setupWebSocket, 4000); };
+      } catch(e){}
     }
 
     function updateLiveClock() {
@@ -1328,6 +1352,9 @@
           allProducts = allProducts.filter(p => (p.buyer || "").toLowerCase().startsWith("abd"));
         }
       }
+      allProducts.forEach(p => {
+        p.effective_stock = Number(p.seller_stock_quantity ?? p.stock_qty ?? p.quantity ?? p.global_stock_quantity ?? 0);
+      });
       renderCategoryFilterPills(allProducts);
       renderFavoris(allProducts);
       renderCatalog(allProducts);
@@ -1363,7 +1390,7 @@
       if (selectedCategory !== 'all') {
         list = prods.filter(p => (p.category || '').toLowerCase() === selectedCategory.toLowerCase());
       } else {
-        list = prods.filter(p => p.fast_panel == 1 || p.seller_stock_quantity > 0);
+        list = prods.filter(p => p.fast_panel == 1 || (p.effective_stock || 0) > 0);
       }
 
       list = list.slice(0, 15);
@@ -1386,6 +1413,7 @@
           if (nameLower.includes(k)) { icon = ic; break; }
         }
 
+        const dispStock = p.effective_stock ?? p.seller_stock_quantity ?? 0;
         return `
           <div class="favori-item-card" onclick="addToCartById(${p.id})">
             <div class="favori-thumb">
@@ -1396,7 +1424,7 @@
               <div class="favori-code">${p.code_article || ''}</div>
               <div class="favori-bottom-row">
                 <span class="favori-price">${fmtPrice(p.sell_price)}</span>
-                <span class="favori-stock-pill">Stock: ${p.seller_stock_quantity}</span>
+                <span class="favori-stock-pill">Stock: ${dispStock}</span>
               </div>
             </div>
           </div>
@@ -1416,9 +1444,10 @@
       document.getElementById("pagination-info").textContent = `Affichage 1 à ${Math.min(10, prods.length)} sur ${prods.length} articles`;
 
       tbody.innerHTML = prods.slice(0, 50).map(p => {
+        const dispStock = p.effective_stock ?? p.seller_stock_quantity ?? 0;
         let badgeCls = "badge-high";
-        if (p.seller_stock_quantity <= 0) badgeCls = "badge-out";
-        else if (p.seller_stock_quantity <= 15) badgeCls = "badge-mid";
+        if (dispStock <= 0) badgeCls = "badge-out";
+        else if (dispStock <= 15) badgeCls = "badge-mid";
 
         return `
           <tr onclick="addToCartById(${p.id})">
@@ -1427,7 +1456,7 @@
             <td class="td-barcode">${p.barcode || '—'}</td>
             <td class="td-price" style="text-align:right;">${fmtPrice(p.sell_price).replace(' DA', '')}</td>
             <td style="text-align:center;">
-              <span class="stock-badge-tag ${badgeCls}">${p.seller_stock_quantity}</span>
+              <span class="stock-badge-tag ${badgeCls}">${dispStock}</span>
             </td>
             <td style="text-align:center;">
               <button class="btn-add-action">+</button>
@@ -1477,15 +1506,16 @@
       const prod = allProducts.find(p => p.id === productId);
       if (!prod) return;
 
+      const curStock = Number(prod.effective_stock ?? prod.seller_stock_quantity ?? prod.stock_qty ?? 0);
       const existing = cart.find(it => it.id === productId);
       if (existing) {
-        if (!isReturnMode && existing.qty + 1 > prod.seller_stock_quantity) {
-          alert(`Stock insuffisant ! Disponible: ${prod.seller_stock_quantity}`);
+        if (!isReturnMode && existing.qty + 1 > curStock && curStock > 0) {
+          alert(`Stock insuffisant ! Disponible: ${curStock}`);
           return;
         }
         existing.qty += 1;
       } else {
-        if (!isReturnMode && prod.seller_stock_quantity <= 0) {
+        if (!isReturnMode && curStock <= 0) {
           alert("Article en rupture de stock !");
           return;
         }
@@ -1494,7 +1524,7 @@
           name: prod.name_fr,
           price: prod.sell_price,
           qty: 1,
-          max_stock: prod.seller_stock_quantity
+          max_stock: curStock
         });
       }
       renderCart();
