@@ -93,6 +93,7 @@ class ProductUpdate(BaseModel):
     min_quantity: Optional[int] = None
     description: Optional[str] = None
     buyer: Optional[str] = None
+    buyers: Optional[List[str]] = None
     fast_panel: Optional[bool] = None
 
 from api.websocket import manager
@@ -248,6 +249,57 @@ def search_products(
         res_list.append(product_to_seller_dict(p, qty))
     return res_list
 
+def ensure_divers_product(db: Session, buyer: str = "Bilel") -> Product:
+    b_clean = (buyer or "Bilel").strip()
+    b_prefix = b_clean[:3].upper()
+    code = f"ART-DIVERS-{b_prefix}"
+    p = db.query(Product).filter(
+        (Product.code_article == code) | 
+        ((Product.category == "Divers") & (Product.buyer.ilike(f"{b_prefix}%")))
+    ).first()
+    if not p:
+        p = Product(
+            code_article=code,
+            barcode=f"DIVERS_{b_prefix}",
+            name_fr=f"Article Divers ({b_clean})",
+            category="Divers",
+            purchase_price=0.0,
+            sell_price=0.0,
+            buyer=b_clean,
+            fast_panel=False,
+            min_quantity=0,
+            description="Article divers à prix libre (Raccourci +)"
+        )
+        db.add(p)
+        db.flush()
+        gs = GlobalStock(product_id=p.id, quantity=999999)
+        db.add(gs)
+        try:
+            db.commit()
+            db.refresh(p)
+        except Exception:
+            db.rollback()
+            p = db.query(Product).filter(Product.code_article == code).first()
+    return p
+
+@router.get("/divers-item")
+def get_or_create_divers(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    uname = (current_user.username or "").lower().strip()
+    buyer = "Bilel"
+    if uname.startswith("hou"):
+        buyer = "Houari"
+    elif uname.startswith("abd"):
+        buyer = "Abdrahman"
+    p = ensure_divers_product(db, buyer)
+    return {
+        "id": p.id,
+        "code_article": p.code_article,
+        "name_fr": p.name_fr,
+        "sell_price": p.sell_price,
+        "category": "Divers",
+        "buyer": p.buyer
+    }
+
 @router.get("/{product_id}")
 def get_product(product_id: int, db: Session = Depends(get_db), admin: User = Depends(require_admin)):
     p = db.query(Product).filter(Product.id == product_id).first()
@@ -317,6 +369,7 @@ async def update_product(product_id: int, data: ProductUpdate, db: Session = Dep
         raise HTTPException(404, "Produit introuvable")
     
     update_data = data.dict(exclude_unset=True)
+    buyers = update_data.pop("buyers", None)
     if "barcode" in update_data or "barcodes" in update_data:
         update_data["barcode"] = normalize_barcodes(update_data.get("barcode"), update_data.get("barcodes"))
         update_data.pop("barcodes", None)
@@ -338,6 +391,70 @@ async def update_product(product_id: int, data: ProductUpdate, db: Session = Dep
         except Exception as e2:
             db.rollback()
             raise HTTPException(400, f"Erreur enregistrement produit : {str(e2)}")
+
+    # Propagate price & details to other selected buyers if specified
+    if buyers and isinstance(buyers, list):
+        for b in buyers:
+            b_clean = str(b).strip()
+            if not b_clean or (p.buyer and b_clean.lower() == p.buyer.lower()):
+                continue
+            
+            b_prefix = b_clean[:3]
+            target_prod = None
+            if p.barcode:
+                target_prod = db.query(Product).filter(
+                    Product.buyer.ilike(f"{b_prefix}%"),
+                    Product.barcode == p.barcode
+                ).first()
+            if not target_prod and p.name_fr:
+                target_prod = db.query(Product).filter(
+                    Product.buyer.ilike(f"{b_prefix}%"),
+                    func.lower(Product.name_fr) == p.name_fr.lower()
+                ).first()
+            
+            if target_prod:
+                if "sell_price" in update_data and update_data["sell_price"] is not None:
+                    target_prod.sell_price = update_data["sell_price"]
+                if "purchase_price" in update_data and update_data["purchase_price"] is not None:
+                    target_prod.purchase_price = update_data["purchase_price"]
+                if "category" in update_data and update_data["category"] is not None:
+                    target_prod.category = update_data["category"]
+                if "barcode" in update_data and update_data["barcode"] is not None:
+                    target_prod.barcode = update_data["barcode"]
+                db.commit()
+                try:
+                    await manager.broadcast_all("product.updated", {"id": target_prod.id, "buyer": target_prod.buyer})
+                except Exception:
+                    pass
+            else:
+                new_code = gen_code()
+                while db.query(Product).filter(Product.code_article == new_code).first():
+                    new_code = gen_code()
+                new_p = Product(
+                    code_article=new_code,
+                    barcode=p.barcode,
+                    name_fr=p.name_fr,
+                    name_ar=p.name_ar,
+                    category=p.category,
+                    purchase_price=p.purchase_price,
+                    sell_price=p.sell_price,
+                    min_quantity=p.min_quantity,
+                    description=p.description,
+                    buyer=b_clean,
+                    fast_panel=p.fast_panel
+                )
+                db.add(new_p)
+                db.flush()
+                db.add(GlobalStock(product_id=new_p.id, quantity=0))
+                try:
+                    db.commit()
+                    try:
+                        await manager.broadcast_all("product.updated", {"id": new_p.id, "buyer": new_p.buyer})
+                    except Exception:
+                        pass
+                except Exception:
+                    db.rollback()
+
     try:
         await manager.broadcast_all("product.updated", {"id": p.id, "buyer": p.buyer})
     except Exception:
@@ -538,6 +655,7 @@ class ScannerSaveRequest(BaseModel):
     code_article: Optional[str] = None
     barcode: Optional[str] = None
     buyer: str
+    buyers: Optional[List[str]] = None
     sell_price: float
     purchase_price: Optional[float] = None
     category: Optional[str] = None
@@ -680,6 +798,68 @@ async def scanner_save_product(data: ScannerSaveRequest, db: Session = Depends(g
         except Exception as ex2:
             db.rollback()
             raise HTTPException(400, f"Erreur lors de la sauvegarde : {str(ex2)}")
+    # Propagate to other buyers if specified
+    if data.buyers and isinstance(data.buyers, list):
+        for b in data.buyers:
+            b_clean = str(b).strip()
+            if not b_clean or (prod.buyer and b_clean.lower() == prod.buyer.lower()):
+                continue
+            
+            b_prefix = b_clean[:3]
+            target_prod = None
+            if prod.barcode:
+                target_prod = db.query(Product).filter(
+                    Product.buyer.ilike(f"{b_prefix}%"),
+                    Product.barcode == prod.barcode
+                ).first()
+            if not target_prod and prod.name_fr:
+                target_prod = db.query(Product).filter(
+                    Product.buyer.ilike(f"{b_prefix}%"),
+                    func.lower(Product.name_fr) == prod.name_fr.lower()
+                ).first()
+            
+            if target_prod:
+                target_prod.sell_price = prod.sell_price
+                if prod.purchase_price is not None:
+                    target_prod.purchase_price = prod.purchase_price
+                if prod.category:
+                    target_prod.category = prod.category
+                if prod.barcode:
+                    target_prod.barcode = prod.barcode
+                db.commit()
+                try:
+                    await manager.broadcast_all("product.updated", {"id": target_prod.id, "buyer": target_prod.buyer})
+                except Exception:
+                    pass
+            else:
+                new_code = gen_code()
+                while db.query(Product).filter(Product.code_article == new_code).first():
+                    new_code = gen_code()
+                new_p = Product(
+                    code_article=new_code,
+                    barcode=prod.barcode,
+                    name_fr=prod.name_fr,
+                    name_ar=prod.name_ar,
+                    category=prod.category,
+                    purchase_price=prod.purchase_price,
+                    sell_price=prod.sell_price,
+                    min_quantity=prod.min_quantity,
+                    description=prod.description,
+                    buyer=b_clean,
+                    fast_panel=prod.fast_panel
+                )
+                db.add(new_p)
+                db.flush()
+                db.add(GlobalStock(product_id=new_p.id, quantity=0))
+                try:
+                    db.commit()
+                    try:
+                        await manager.broadcast_all("product.updated", {"id": new_p.id, "buyer": new_p.buyer})
+                    except Exception:
+                        pass
+                except Exception:
+                    db.rollback()
+
     try:
         await manager.broadcast_all("product.updated", {"id": prod.id, "buyer": prod.buyer})
     except Exception:

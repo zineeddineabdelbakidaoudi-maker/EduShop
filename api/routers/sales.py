@@ -17,6 +17,8 @@ router = APIRouter(prefix="/api/sales", tags=["sales"])
 class SaleItemCreate(BaseModel):
     product_id: int
     quantity: int
+    unit_price: Optional[float] = None
+    custom_name: Optional[str] = None
 
 class SaleCreate(BaseModel):
     items: List[SaleItemCreate]
@@ -26,15 +28,28 @@ class SaleCreate(BaseModel):
 
 def format_sale(sale: Sale, include_purchase_price: bool = False) -> dict:
     items = []
+    divers_total = 0.0
+    has_divers = False
     for si in (sale.items or []):
         p = si.product
+        is_diver = False
+        if p and (("DIVERS" in (p.code_article or "").upper()) or (p.category and p.category.lower() == "divers")):
+            is_diver = True
+        
+        name_display = p.name_fr if p else "Article"
+        item_total = float((si.quantity or 0) * (si.unit_price or 0.0))
+        if is_diver:
+            has_divers = True
+            divers_total += item_total
+
         item = {
             "product_id": si.product_id,
-            "name_fr": p.name_fr if p else "Article",
+            "name_fr": name_display,
             "code_article": p.code_article if p else "",
             "quantity": si.quantity,
             "unit_price": float(si.unit_price or 0.0),
-            "total": float((si.quantity or 0) * (si.unit_price or 0.0)),
+            "total": item_total,
+            "is_diver": is_diver,
         }
         if include_purchase_price:
             pa = float(si.purchase_price or 0.0)
@@ -61,6 +76,8 @@ def format_sale(sale: Sale, include_purchase_price: bool = False) -> dict:
         "is_archived": bool(getattr(sale, "is_archived", False)),
         "notes": sale.notes or "",
         "created_at": dt_str,
+        "has_divers": has_divers,
+        "divers_total": divers_total,
         "items": items,
     }
 
@@ -76,28 +93,39 @@ async def create_sale(data: SaleCreate, db: Session = Depends(get_db), current_u
             if not product:
                 raise HTTPException(400, f"Produit ID {item.product_id} introuvable")
 
+            is_diver = (product.code_article and "DIVERS" in product.code_article.upper()) or (product.category and product.category.lower() == "divers")
+            
+            # Unit price can be customized (e.g. Article Divers shortcut '+')
+            if item.unit_price is not None and float(item.unit_price) >= 0:
+                item_price = float(item.unit_price)
+            else:
+                item_price = float(product.sell_price or 0.0)
+
             stock_target = None
             stock_type = None
 
-            # 1. Try seller stock first
-            ss = db.query(SellerStock).with_for_update().filter_by(
-                seller_id=current_user.id, product_id=item.product_id
-            ).first()
-            if ss and ss.quantity >= item.quantity:
-                stock_target = ss
-                stock_type = 'seller'
+            if not is_diver:
+                # 1. Try seller stock first
+                ss = db.query(SellerStock).with_for_update().filter_by(
+                    seller_id=current_user.id, product_id=item.product_id
+                ).first()
+                if ss and ss.quantity >= item.quantity:
+                    stock_target = ss
+                    stock_type = 'seller'
+                else:
+                    # 2. Fallback to GlobalStock so sale at cash register never blocks
+                    gs = db.query(GlobalStock).with_for_update().filter_by(product_id=item.product_id).first()
+                    if not gs:
+                        gs = GlobalStock(product_id=item.product_id, quantity=0)
+                        db.add(gs)
+                        db.flush()
+                    stock_target = gs
+                    stock_type = 'global'
             else:
-                # 2. Fallback to GlobalStock so sale at cash register never blocks
-                gs = db.query(GlobalStock).with_for_update().filter_by(product_id=item.product_id).first()
-                if not gs:
-                    gs = GlobalStock(product_id=item.product_id, quantity=0)
-                    db.add(gs)
-                    db.flush()
-                stock_target = gs
-                stock_type = 'global'
+                stock_type = 'diver'
 
-            total += item.quantity * product.sell_price
-            locked_stocks.append((stock_type, stock_target, product, item.quantity))
+            total += item.quantity * item_price
+            locked_stocks.append((stock_type, stock_target, product, item.quantity, item_price))
 
         total = max(0.0, total - (data.discount or 0.0))
 
@@ -114,11 +142,13 @@ async def create_sale(data: SaleCreate, db: Session = Depends(get_db), current_u
         db.add(sale)
         db.flush()
 
-        for stock_type, stock_target, product, qty in locked_stocks:
-            stock_target.quantity -= qty
+        for stock_type, stock_target, product, qty, item_price in locked_stocks:
+            if stock_target:
+                stock_target.quantity -= qty
+            p_achat = 0.0 if stock_type == 'diver' else float(product.purchase_price or 0.0)
             si = SaleItem(
                 sale_id=sale.id, product_id=product.id, quantity=qty,
-                unit_price=product.sell_price, purchase_price=product.purchase_price
+                unit_price=item_price, purchase_price=p_achat
             )
             db.add(si)
 
@@ -195,15 +225,31 @@ def sales_report(
     total_returns = sum(1 for s in sales if s.is_return)
     total_transactions = sum(1 for s in sales if not s.is_return)
 
+    total_divers_revenue = 0.0
+    total_divers_count = 0
+
+    for s in sales:
+        if not s.is_return:
+            for si in (s.items or []):
+                p = si.product
+                if p and (("DIVERS" in (p.code_article or "").upper()) or (p.category and p.category.lower() == "divers")):
+                    total_divers_revenue += float((si.quantity or 0) * (si.unit_price or 0))
+                    total_divers_count += int(si.quantity or 0)
+
     per_seller = {}
     for s in sales:
         sid = s.seller_id
         if sid not in per_seller:
-            per_seller[sid] = {"seller_id": sid, "name": s.seller.username if s.seller else "", "revenue": 0, "profit": 0, "count": 0, "returns": 0}
+            per_seller[sid] = {"seller_id": sid, "name": s.seller.username if s.seller else "", "revenue": 0, "profit": 0, "count": 0, "returns": 0, "divers_revenue": 0, "divers_count": 0}
         if not s.is_return:
             per_seller[sid]["revenue"] += s.total
             per_seller[sid]["profit"] += sum((si.unit_price - si.purchase_price) * si.quantity for si in s.items)
             per_seller[sid]["count"] += 1
+            for si in (s.items or []):
+                p = si.product
+                if p and (("DIVERS" in (p.code_article or "").upper()) or (p.category and p.category.lower() == "divers")):
+                    per_seller[sid]["divers_revenue"] += float((si.quantity or 0) * (si.unit_price or 0))
+                    per_seller[sid]["divers_count"] += int(si.quantity or 0)
         else:
             per_seller[sid]["returns"] += 1
 
@@ -211,13 +257,18 @@ def sales_report(
     for s in sales:
         if not s.is_return:
             d = s.created_at.date().isoformat()
-            daily.setdefault(d, {"date": d, "revenue": 0, "profit": 0})
+            daily.setdefault(d, {"date": d, "revenue": 0, "profit": 0, "divers_revenue": 0})
             daily[d]["revenue"] += s.total
             daily[d]["profit"] += sum((si.unit_price - si.purchase_price) * si.quantity for si in s.items)
+            for si in (s.items or []):
+                p = si.product
+                if p and (("DIVERS" in (p.code_article or "").upper()) or (p.category and p.category.lower() == "divers")):
+                    daily[d]["divers_revenue"] += float((si.quantity or 0) * (si.unit_price or 0))
 
     return {
         "total_revenue": total_revenue, "total_profit": total_profit,
         "total_transactions": total_transactions, "total_returns": total_returns,
+        "total_divers_revenue": total_divers_revenue, "total_divers_count": total_divers_count,
         "per_seller": list(per_seller.values()),
         "daily": sorted(daily.values(), key=lambda x: x["date"]),
     }

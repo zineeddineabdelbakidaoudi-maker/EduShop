@@ -992,6 +992,11 @@
       <button class="btn-archive" onclick="openArchiveModal()">
         📜 HISTORIQUE VENTES [F10]
       </button>
+
+      <!-- Bouton Article Divers [+] -->
+      <button class="btn-archive" onclick="openDiversModal()" style="border-color:#a855f7;color:#c084fc;background:rgba(168,85,247,0.12);font-weight:bold;" title="Ajouter un article divers à prix libre (Raccourci Clavier +)">
+        ⚡ + DIVERS [+]
+      </button>
     </div>
 
     <div class="nav-right">
@@ -1200,6 +1205,39 @@
         <button class="btn-archive" onclick="closePaymentModal()">Annuler [Échap]</button>
         <button class="btn-mode-standard" style="padding:10px 20px;" onclick="confirmCheckoutSale()">✅ Valider & Imprimer Ticket [Entrée]</button>
       </div>
+    </div>
+  </div>
+
+  <!-- ── Modal Article Divers [+] ── -->
+  <div class="modal-overlay" id="divers-modal" style="display:none;">
+    <div class="pos-popup-modal" style="max-width:440px;width:90%;">
+      <div class="modal-head" style="background:linear-gradient(135deg, #7c3aed, #4f46e5);color:#fff;">
+        <span style="font-weight:800;font-size:15px;">⚡ Article Divers — Saisie Rapide [+]</span>
+        <button onclick="closeDiversModal()" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;">✕</button>
+      </div>
+      <form id="form-divers-item" onsubmit="submitDiversItem(event)">
+        <div class="modal-body" style="padding:18px;">
+          <div style="margin-bottom:14px;">
+            <label style="font-size:13px;font-weight:800;color:#38bdf8;display:block;margin-bottom:6px;">PRIX DE VENTE (DA) *</label>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <input type="number" step="1" min="1" id="input-divers-price" required placeholder="0.00" autofocus style="flex:1;padding:12px 14px;font-size:24px;font-weight:900;color:#10b981;background:var(--bg-app);border:2px solid #10b981;border-radius:8px;">
+              <span style="font-size:18px;font-weight:bold;color:var(--text-muted);">DA</span>
+            </div>
+          </div>
+          <div style="margin-bottom:14px;">
+            <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:4px;">Désignation (Optionnelle)</label>
+            <input type="text" id="input-divers-name" value="Article Divers" placeholder="Ex: Photocopie, Divers..." style="width:100%;padding:9px 12px;background:var(--bg-app);color:var(--text-white);border:1px solid var(--border-color);border-radius:6px;font-size:13px;">
+          </div>
+          <div style="margin-bottom:10px;">
+            <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:4px;">Quantité</label>
+            <input type="number" id="input-divers-qty" value="1" min="1" style="width:100px;padding:8px 12px;background:var(--bg-app);color:var(--text-white);border:1px solid var(--border-color);border-radius:6px;font-size:14px;font-weight:700;">
+          </div>
+        </div>
+        <div class="modal-foot" style="display:flex;justify-content:space-between;padding:12px 18px;">
+          <button type="button" class="btn-archive" onclick="closeDiversModal()">Annuler [Échap]</button>
+          <button type="submit" class="btn-mode-standard" style="padding:10px 22px;background:#10b981;font-size:14px;">⚡ Valider & Ajouter [Entrée]</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -1684,7 +1722,12 @@
       const mode = document.getElementById("modal-pay-mode").value || "cash";
 
       const payload = {
-        items: cart.map(it => ({ product_id: it.id, quantity: it.qty })),
+        items: cart.map(it => ({
+          product_id: it.id,
+          quantity: it.qty,
+          unit_price: it.price,
+          custom_name: it.name
+        })),
         payment_method: mode,
         discount: discount,
         notes: isReturnMode ? "Retour client" : ""
@@ -1796,9 +1839,72 @@
       document.getElementById("input-bon-num").value = "";
     }
 
-    // ── Keyboard Shortcuts (F1, F2, F3, F4, F5, F10, Enter, Escape) ──
+    // ── Article Divers Functions [+] ──
+    function openDiversModal() {
+      document.getElementById("divers-modal").style.display = "flex";
+      document.getElementById("input-divers-price").value = "";
+      document.getElementById("input-divers-name").value = "Article Divers";
+      document.getElementById("input-divers-qty").value = "1";
+      setTimeout(() => {
+        const inp = document.getElementById("input-divers-price");
+        if (inp) { inp.focus(); inp.select(); }
+      }, 100);
+    }
+
+    function closeDiversModal() {
+      document.getElementById("divers-modal").style.display = "none";
+    }
+
+    async function submitDiversItem(e) {
+      if (e) e.preventDefault();
+      const price = parseFloat(document.getElementById("input-divers-price").value);
+      if (isNaN(price) || price <= 0) {
+        alert("Veuillez saisir un prix valide supérieur à 0 DA.");
+        return;
+      }
+      const name = document.getElementById("input-divers-name").value.trim() || "Article Divers";
+      const qty = parseInt(document.getElementById("input-divers-qty").value) || 1;
+
+      let diversProd = allProducts.find(p => (p.category && p.category.toLowerCase() === 'divers') || (p.code_article && p.code_article.includes('DIVERS')));
+      let prodId = diversProd ? diversProd.id : null;
+      if (!prodId) {
+        try {
+          const res = await api("GET", "/api/products/divers-item");
+          if (res && res.id) {
+            prodId = res.id;
+          }
+        } catch(err) {}
+      }
+      if (!prodId) prodId = 999999;
+
+      cart.push({
+        id: prodId,
+        name: name,
+        price: price,
+        qty: qty,
+        max_stock: 999999,
+        is_diver: true
+      });
+
+      renderCart();
+      closeDiversModal();
+      document.getElementById("pos-search-input")?.focus();
+    }
+
+    // ── Keyboard Shortcuts (F1, F2, F3, F4, F5, F10, Enter, Escape, +) ──
     function setupKeyShortcuts() {
       window.addEventListener("keydown", (e) => {
+        // Shortcut '+' for Article Divers
+        if (e.key === "+" || e.code === "NumpadAdd") {
+          const act = document.activeElement;
+          const isWritingInPrice = act && (act.id === "input-divers-price" || act.id === "input-divers-name" || act.id === "input-divers-qty");
+          if (!isWritingInPrice) {
+            e.preventDefault();
+            openDiversModal();
+            return;
+          }
+        }
+
         if (e.key === "F1") {
           e.preventDefault();
           setMode(!isReturnMode);
@@ -1818,6 +1924,7 @@
         } else if (e.key === "Escape") {
           closePaymentModal();
           closeArchiveModal();
+          closeDiversModal();
         }
       });
     }

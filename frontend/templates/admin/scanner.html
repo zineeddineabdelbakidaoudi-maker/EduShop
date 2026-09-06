@@ -459,17 +459,20 @@
             <input type="text" id="edit-code-art" class="field-input" placeholder="Ex: 1027 ou ART-001">
           </div>
 
-          <!-- Propriétaire / Gérant (Pour qui) -->
+          <!-- Propriétaire / Gérant (Pour qui) — Multi-Sélection -->
           <div class="form-group-full">
-            <label class="field-label">Gérant / Propriétaire ("Pour qui ?") *</label>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <label class="field-label" style="margin:0">Gérant(s) / Multi-Sélection Prix :</label>
+              <small style="color:var(--text2);font-size:12px">Cliquez pour cocher/décocher (synchronisation instantanée multi-gérants)</small>
+            </div>
             <div class="owner-pills-row">
-              <button type="button" class="owner-pill bilel" onclick="selectOwner('Bilel')">
+              <button type="button" class="owner-pill bilel" onclick="toggleOwnerPill('Bilel')">
                 🔴 Gérant Bilel
               </button>
-              <button type="button" class="owner-pill houari" onclick="selectOwner('Houari')">
+              <button type="button" class="owner-pill houari" onclick="toggleOwnerPill('Houari')">
                 🟣 Gérant Houari
               </button>
-              <button type="button" class="owner-pill abdrahman" onclick="selectOwner('Abdrahman')">
+              <button type="button" class="owner-pill abdrahman" onclick="toggleOwnerPill('Abdrahman')">
                 🟢 Gérant Abdrahman
               </button>
             </div>
@@ -730,33 +733,47 @@ function populateEditForm(p) {
   }, 150);
 }
 
-// Owner Selection
+// Multi-Owner Selection
+let selectedOwners = ["Bilel"];
+
 function selectOwner(buyer) {
   const norm = (buyer || "").toLowerCase();
-  let selected = "Bilel";
-  if (norm.includes("houari")) selected = "Houari";
-  else if (norm.includes("abd")) selected = "Abdrahman";
+  let primary = "Bilel";
+  if (norm.includes("houari")) primary = "Houari";
+  else if (norm.includes("abd")) primary = "Abdrahman";
 
-  document.getElementById("edit-buyer").value = selected;
+  selectedOwners = [primary];
+  syncOwnerPillsUI();
+}
 
-  document.querySelectorAll(".owner-pill").forEach(p => p.classList.remove("active"));
-  const pillKey = selected.toLowerCase();
-  const pill = document.querySelector(`.owner-pill.${pillKey}`);
-  if (pill) pill.classList.add("active");
+function toggleOwnerPill(buyer) {
+  const idx = selectedOwners.indexOf(buyer);
+  if (idx >= 0) {
+    if (selectedOwners.length > 1) {
+      selectedOwners.splice(idx, 1);
+    } else {
+      showToast("Au moins un gérant doit rester sélectionné.", "warning");
+      return;
+    }
+  } else {
+    selectedOwners.push(buyer);
+  }
+  syncOwnerPillsUI();
+}
+
+function syncOwnerPillsUI() {
+  document.getElementById("edit-buyer").value = selectedOwners[0] || "Bilel";
+  ["bilel", "houari", "abdrahman"].forEach(k => {
+    const pill = document.querySelector(`.owner-pill.${k}`);
+    const isSelected = selectedOwners.some(o => o.toLowerCase().startsWith(k.slice(0, 3)));
+    if (pill) pill.classList.toggle("active", isSelected);
+  });
 
   const badgeOwner = document.getElementById("badge-owner");
-  if (selected === "Houari") {
-    badgeOwner.textContent = "Gérant : 🟣 Houari";
-    badgeOwner.style.color = "#c4b5fd";
-    badgeOwner.style.background = "rgba(139,92,246,0.15)";
-  } else if (selected === "Abdrahman") {
-    badgeOwner.textContent = "Gérant : 🟢 Abdrahman";
-    badgeOwner.style.color = "#86efac";
-    badgeOwner.style.background = "rgba(16,185,129,0.15)";
-  } else {
-    badgeOwner.textContent = "Gérant : 🔴 Bilel";
-    badgeOwner.style.color = "#fca5a5";
-    badgeOwner.style.background = "rgba(239,68,68,0.15)";
+  if (badgeOwner) {
+    badgeOwner.textContent = `Gérant(s) : ${selectedOwners.join(", ")}`;
+    badgeOwner.style.color = selectedOwners.length > 1 ? "#38bdf8" : (selectedOwners[0] === "Houari" ? "#c4b5fd" : (selectedOwners[0] === "Abdrahman" ? "#86efac" : "#fca5a5"));
+    badgeOwner.style.background = "rgba(255,255,255,0.08)";
   }
 }
 
@@ -805,6 +822,7 @@ async function handleSaveProduct(e) {
     barcode: document.getElementById("edit-barcode").value.trim(),
     code_article: document.getElementById("edit-code-art").value.trim(),
     buyer: document.getElementById("edit-buyer").value,
+    buyers: selectedOwners,
     sell_price: parseFloat(document.getElementById("edit-sell-price").value) || 0,
     purchase_price: parseFloat(document.getElementById("edit-purchase-price").value) || 0,
     seller_stock_quantity: parseInt(document.getElementById("edit-seller-qty").value) || 0,
