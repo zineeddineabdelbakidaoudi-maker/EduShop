@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Restant & Capital — EduShop Admin</title>
+  <link rel="stylesheet" href="/static/css/app.css">
+  <style>
+    :root {
+      --bilel-color: #dc2626;
+      --abdrahman-color: #16a34a;
+      --houari-color: #8b5cf6;
+      --gold-color: #f59e0b;
+    }
+    .kpi-row-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .kpi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+    .kpi-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .kpi-value {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+    .kpi-sub {
+      font-size: 12px;
+      color: var(--text2);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Sellers Overview Cards */
+    .sellers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .seller-profile-card {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      transition: all .2s ease;
+    }
+    .seller-profile-card.bilel { border-color: rgba(220, 38, 38, 0.4); }
+    .seller-profile-card.abdrahman { border-color: rgba(22, 163, 74, 0.4); }
+    .seller-profile-card.houari { border-color: rgba(139, 92, 246, 0.4); }
+
+    .seller-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+    .seller-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .seller-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 800;
+      color: white;
+    }
+    .seller-avatar.bilel { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+    .seller-avatar.abdrahman { background: linear-gradient(135deg, #22c55e, #15803d); }
+    .seller-avatar.houari { background: linear-gradient(135deg, #a855f7, #6d28d9); }
+
+    .seller-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .seller-role-badge {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text2);
+      text-transform: uppercase;
+    }
+    .sync-time-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.12);
+      color: #0284c7;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .metrics-2x2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .m-item {
+      background: rgba(0,0,0,0.02);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .m-lbl { font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; }
+    .m-val { font-size: 16px; font-weight: 800; color: var(--text); }
+
+    /* Filter & Action Toolbar */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+    }
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .pill-btn {
+      padding: 7px 14px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text2);
+      cursor: pointer;
+      transition: all .15s ease;
+    }
+    .pill-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .pill-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+    }
+    .pill-btn.active.bilel { background: var(--bilel-color); border-color: var(--bilel-color); box-shadow: 0 2px 8px rgba(220,38,38,0.3); }
+    .pill-btn.active.abdrahman { background: var(--abdrahman-color); border-color: var(--abdrahman-color); box-shadow: 0 2px 8px rgba(22,163,74,0.3); }
+    .pill-btn.active.houari { background: var(--houari-color); border-color: var(--houari-color); box-shadow: 0 2px 8px rgba(139,92,246,0.3); }
+
+    .search-input {
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: var(--card);
+      font-size: 13px;
+      width: 260px;
+      color: var(--text);
+    }
+
+    /* Badges */
+    .id-rapid-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+      letter-spacing: 1px;
+    }
+    .stock-badge {
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-block;
+    }
+    .stock-badge.ok { background: #dcfce7; color: #166534; }
+    .stock-badge.low { background: #fef9c3; color: #854d0e; }
+    .stock-badge.out { background: #fee2e2; color: #991b1b; }
+
+    .buyer-tag {
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .buyer-tag.Bilel { background: #fee2e2; color: #b91c1c; }
+    .buyer-tag.Abdrahman { background: #dcfce7; color: #15803d; }
+    .buyer-tag.Houari { background: #f3e8ff; color: #7e22ce; }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">🛒 EduShop</div>
+    <nav class="sidebar-nav">
+      <a href="/admin">📊 Tableau de bord</a>
+      <a href="/admin/scanner">⚡ Scan & Édition Rapide</a>
+      <a href="/admin/products">📦 Produits</a>
+      <a href="/admin/stock">🏪 Stock</a>
+      <a href="/admin/stock-capital" class="active" style="color:#38bdf8;font-weight:700">📦 Stock & Capital (6h)</a>
+      <a href="/admin/inventory">📝 Inventaire & Audit</a>
+      <a href="/admin/transfers">📋 Transferts Vendeurs</a>
+      <a href="/admin/sellers">👥 Vendeurs</a>
+      <a href="/admin/sales">💰 Ventes</a>
+      <a href="/admin/vendeurs-progress">📈 Progression Vendeurs</a>
+      <a href="/downloads" style="color:#10b981;font-weight:700;background:rgba(16,185,129,0.1);border-radius:6px;margin-top:6px;">📥 Téléchargements Apps</a>
+    </nav>
+    <div class="sidebar-footer">
+      <span class="ws-status ws-disconnected" id="ws-badge">⚡ Hors ligne</span><br><br>
+      <a href="#" onclick="logout()">🚪 Déconnexion</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header" style="margin-bottom:20px;">
+      <div>
+        <span class="page-title">📦 Stock Restant & Suivi du Capital</span>
+        <div style="font-size:13px;color:var(--text2);margin-top:4px;">
+          Suivi précis du stock restant, valeur d'achat et unités en temps réel avec synchronisation automatique 6h des caisses.
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <button class="btn btn-secondary" onclick="exportToCSV()">📥 Exporter CSV</button>
+        <button class="btn btn-primary" onclick="loadData()">🔄 Actualiser</button>
+      </div>
+    </div>
+
+    <!-- 4 KPIs Grid -->
+    <div class="kpi-row-4">
+      <div class="kpi-card">
+        <div class="kpi-title">🏪 Capital Restant Total (Achat)</div>
+        <div class="kpi-value" id="kpi-total-capital" style="color:#0284c7">—</div>
+        <div class="kpi-sub">Valeur nette en stock disponible</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">📦 Unités Physiques en Rayon</div>
+        <div class="kpi-value" id="kpi-total-units" style="color:var(--green)">—</div>
+        <div class="kpi-sub" id="kpi-products-count">— articles au total</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">🏷️ Valeur de Vente Potentielle</div>
+        <div class="kpi-value" id="kpi-total-sell-val" style="color:#8b5cf6">—</div>
+        <div class="kpi-sub">Si 100% des stocks restants sont vendus</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">💰 CA Total Encaissé</div>
+        <div class="kpi-value" id="kpi-total-revenue" style="color:#f59e0b">—</div>
+        <div class="kpi-sub" id="kpi-total-profit">Bénéfice : —</div>
+      </div>
+    </div>
+
+    <!-- Per-Seller Cards -->
+    <div class="sellers-grid" id="sellers-cards-container">
+      <!-- Generated via JS -->
+    </div>
+
+    <!-- Filter & Search Toolbar -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <span style="font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;">Gérant :</span>
+        <button class="pill-btn active" onclick="filterSeller('all', this)">Tous</button>
+        <button class="pill-btn" onclick="filterSeller('Houari', this)">Houari</button>
+        <button class="pill-btn" onclick="filterSeller('Bilel', this)">Bilel</button>
+        <button class="pill-btn" onclick="filterSeller('Abdrahman', this)">Abdrahman</button>
+      </div>
+
+      <div class="filter-group">
+        <span style="font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;">État :</span>
+        <button class="pill-btn active" onclick="filterStatus('all', this)">Tous</button>
+        <button class="pill-btn" onclick="filterStatus('in_stock', this)">En Stock (>5)</button>
+        <button class="pill-btn" onclick="filterStatus('low_stock', this)">Stock Faible (1-5)</button>
+        <button class="pill-btn" onclick="filterStatus('out_of_stock', this)">Rupture (0)</button>
+      </div>
+
+      <div>
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Rechercher nom, réf, code-barres, ID..." oninput="applyFilters()">
+      </div>
+    </div>
+
+    <!-- Detailed Products Table -->
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:110px">Code Art.</th>
+              <th style="width:90px">ID Rapide</th>
+              <th>Désignation FR</th>
+              <th>Catégorie</th>
+              <th>Gérant</th>
+              <th>Prix Achat</th>
+              <th>Prix Vente</th>
+              <th>Marge %</th>
+              <th style="text-align:right">Qté Restante</th>
+              <th style="text-align:right">Capital Restant</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody id="itemsTableBody">
+            <tr><td colspan="11" style="text-align:center;padding:30px;color:var(--text2)">Chargement des données...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-top:1px solid var(--border);font-size:13px;color:var(--text2)">
+        <span id="showingCount">Affichage : 0 article(s)</span>
+        <span id="subTotalCapital">Capital sélectionné : 0,00 DA</span>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="/static/js/app.js"></script>
+<script>
+let fullData = null;
+let currentSeller = 'all';
+let currentStatus = 'all';
+
+function fmtDA(val) {
+  if (!val && val !== 0) return '0,00 DA';
+  return Number(val).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' DA';
+}
+
+async function loadData() {
+  try {
+    const res = await api('GET', '/api/sync/stock-capital-summary');
+    if (!res) return;
+    fullData = res;
+    renderKPIs();
+    renderSellerCards();
+    applyFilters();
+  } catch (err) {
+    console.error('Erreur chargement stock capital:', err);
+    showToast('Erreur lors du chargement des données', 'error');
+  }
+}
+
+function renderKPIs() {
+  const sum = fullData.summary;
+  document.getElementById('kpi-total-capital').textContent = fmtDA(sum.total_capital_remaining);
+  document.getElementById('kpi-total-units').textContent = sum.total_units_remaining.toLocaleString('fr-FR') + ' unités';
+  document.getElementById('kpi-products-count').textContent = `${sum.total_products_count} articles répertoriés`;
+  document.getElementById('kpi-total-sell-val').textContent = fmtDA(sum.total_sell_value_remaining);
+  document.getElementById('kpi-total-revenue').textContent = fmtDA(sum.total_revenue);
+  document.getElementById('kpi-total-profit').textContent = `Bénéfice : ${fmtDA(sum.total_profit)}`;
+}
+
+function renderSellerCards() {
+  const container = document.getElementById('sellers-cards-container');
+  container.innerHTML = '';
+
+  fullData.sellers.forEach(s => {
+    const sKey = s.name.toLowerCase();
+    const card = document.createElement('div');
+    card.className = `seller-profile-card ${sKey}`;
+    
+    let lastSyncStr = 'Synchronisé en direct';
+    if (s.last_synced_at) {
+      const dt = new Date(s.last_synced_at);
+      lastSyncStr = 'Dernier rapport : ' + dt.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    card.innerHTML = `
+      <div class="seller-header">
+        <div class="seller-title-group">
+          <div class="seller-avatar ${sKey}">${s.name.charAt(0)}</div>
+          <div>
+            <div class="seller-name">${s.name}</div>
+            <div class="seller-role-badge">${s.items_count} articles affectés</div>
+          </div>
+        </div>
+        <span class="sync-time-badge">☁️ ${lastSyncStr}</span>
+      </div>
+
+      <div class="metrics-2x2">
+        <div class="m-item">
+          <span class="m-lbl">🏪 Capital Restant</span>
+          <span class="m-val" style="color:#0284c7">${fmtDA(s.capital_remaining)}</span>
+        </div>
+        <div class="m-item">
+          <span class="m-lbl">📦 Unités en Stock</span>
+          <span class="m-val" style="color:var(--green)">${s.units_remaining.toLocaleString('fr-FR')}</span>
+        </div>
+        <div class="m-item">
+          <span class="m-lbl">💰 CA Encaissé</span>
+          <span class="m-val" style="color:#f59e0b">${fmtDA(s.revenue)}</span>
+        </div>
+        <div class="m-item">
+          <span class="m-lbl">🏷️ Valeur Vente</span>
+          <span class="m-val" style="color:#8b5cf6">${fmtDA(s.sell_value_remaining)}</span>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;margin-top:4px;">
+        <button class="btn btn-secondary" style="font-size:12px;padding:6px 12px;" onclick="filterSellerDirect('${s.name}')">
+          🔍 Filtrer ce stock (${s.items_count})
+        </button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function filterSeller(seller, btn) {
+  currentSeller = seller;
+  document.querySelectorAll('.filter-group:first-child .pill-btn').forEach(b => b.classList.remove('active', 'bilel', 'abdrahman', 'houari'));
+  btn.classList.add('active');
+  if (seller === 'Bilel') btn.classList.add('bilel');
+  if (seller === 'Abdrahman') btn.classList.add('abdrahman');
+  if (seller === 'Houari') btn.classList.add('houari');
+  applyFilters();
+}
+
+function filterSellerDirect(seller) {
+  const btns = document.querySelectorAll('.filter-group:first-child .pill-btn');
+  btns.forEach(b => {
+    if (b.textContent.trim().toLowerCase() === seller.toLowerCase()) {
+      filterSeller(seller, b);
+    }
+  });
+}
+
+function filterStatus(status, btn) {
+  currentStatus = status;
+  document.querySelectorAll('.filter-group:nth-child(2) .pill-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function applyFilters() {
+  if (!fullData || !fullData.items) return;
+
+  const q = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+  const filtered = fullData.items.filter(item => {
+    // Seller filter
+    if (currentSeller !== 'all' && item.buyer.toLowerCase() !== currentSeller.toLowerCase()) return false;
+    // Status filter
+    if (currentStatus !== 'all' && item.status !== currentStatus) return false;
+    // Search query
+    if (q) {
+      const matchName = (item.name_fr || '').toLowerCase().includes(q);
+      const matchCode = (item.code_article || '').toLowerCase().includes(q);
+      const matchBar = (item.barcode || '').toLowerCase().includes(q);
+      const matchRapid = (item.id_rapid || '').toLowerCase().includes(q);
+      if (!matchName && !matchCode && !matchBar && !matchRapid) return false;
+    }
+    return true;
+  });
+
+  renderTable(filtered);
+}
+
+function renderTable(items) {
+  const tbody = document.getElementById('itemsTableBody');
+  if (!items || items.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:30px;color:var(--text2)">Aucun article correspondant aux filtres.</td></tr>';
+    document.getElementById('showingCount').textContent = 'Affichage : 0 article';
+    document.getElementById('subTotalCapital').textContent = 'Capital sélectionné : 0,00 DA';
+    return;
+  }
+
+  let subCapital = 0;
+  tbody.innerHTML = items.map(p => {
+    subCapital += p.capital_remaining;
+    const sKey = p.buyer;
+    let statusBadge = '<span class="stock-badge ok">En Stock</span>';
+    if (p.status === 'out_of_stock') {
+      statusBadge = '<span class="stock-badge out">Rupture</span>';
+    } else if (p.status === 'low_stock') {
+      statusBadge = '<span class="stock-badge low">Stock Faible</span>';
+    }
+
+    const rapidHtml = p.id_rapid ? `<span class="id-rapid-badge">${p.id_rapid}</span>` : '<span style="color:#94a3b8">—</span>';
+
+    return `
+      <tr>
+        <td style="font-family:monospace;font-weight:600">${escapeHtml(p.code_article)}</td>
+        <td>${rapidHtml}</td>
+        <td style="font-weight:600">${escapeHtml(p.name_fr)}</td>
+        <td style="color:var(--text2)">${escapeHtml(p.category)}</td>
+        <td><span class="buyer-tag ${sKey}">${p.buyer}</span></td>
+        <td>${fmtDA(p.purchase_price)}</td>
+        <td style="font-weight:700;color:var(--accent)">${fmtDA(p.sell_price)}</td>
+        <td style="color:#10b981;font-weight:600">${p.margin_pct}%</td>
+        <td style="text-align:right;font-weight:800;font-size:14px">${p.quantity_remaining.toLocaleString('fr-FR')}</td>
+        <td style="text-align:right;font-weight:700;color:#0284c7">${fmtDA(p.capital_remaining)}</td>
+        <td>${statusBadge}</td>
+      </tr>
+    `;
+  }).join('');
+
+  document.getElementById('showingCount').textContent = `Affichage : ${items.length.toLocaleString('fr-FR')} article(s)`;
+  document.getElementById('subTotalCapital').textContent = `Capital sélectionné : ${fmtDA(subCapital)}`;
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function exportToCSV() {
+  if (!fullData || !fullData.items) return;
+  let csv = 'Code Article;ID Rapide;Designation;Categorie;Gerant;Prix Achat (DA);Prix Vente (DA);Marge %;Qte Restante;Capital Restant (DA);Statut\n';
+  fullData.items.forEach(p => {
+    csv += `"${p.code_article}";"${p.id_rapid || ''}";"${(p.name_fr || '').replace(/"/g, '""')}";"${p.category}";"${p.buyer}";${p.purchase_price};${p.sell_price};${p.margin_pct};${p.quantity_remaining};${p.capital_remaining};"${p.status}"\n`;
+  });
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `EduShop_Stock_Capital_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
+
+// Auto-refresh every 60 seconds
+setInterval(loadData, 60000);
+document.addEventListener('DOMContentLoaded', loadData);
+</script>
+</body>
+</html>
