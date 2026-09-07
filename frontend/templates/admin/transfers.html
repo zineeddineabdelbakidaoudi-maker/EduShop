@@ -279,13 +279,27 @@
             1. Choisir le Bon à envoyer :
           </label>
           <select id="bon-select" onchange="onBonSelectChanged()" style="width:100%;padding:10px 12px;font-weight:700;border-radius:8px;background:var(--card2);color:var(--text);border:1px solid var(--border)">
-            <option value="BL0279">🔴 Bon BL0279 — Cahiers Bilel (39 articles · 11,135 unités)</option>
-            <option value="NV_BON_2">🟢 Bon ABDARHMAN NV BON 2 (372 articles · 19,003 unités)</option>
-            <option value="BL0212">🔴 Bon BL0212 — Bilel (148 articles)</option>
-            <option value="BL0211">🔴 Bon BL0211 — Bilel (125 articles)</option>
-            <option value="BL0195">🔴 Bon BL0195 — Bilel (319 articles)</option>
-            <option value="BL0191">🔴 Bon BL0191 — Bilel (147 articles)</option>
-            <option value="BL0199">🔴 Bon BL0199 — Bilel (64 articles)</option>
+            <optgroup label="🔴 BONS DE BILEL">
+              <option value="BL0279">🔴 Bon BL0279 — Cahiers Bilel (39 articles · 11,135 unités) [Déjà Transféré ✅]</option>
+              <option value="BL0239">🔴 Bon BL0239 — Cartables Bilel (71 articles · 218 unités) [Restant ⏳]</option>
+              <option value="BL0240">🔴 Bon BL0240 — Cartables Bilel (56 articles · 314 unités) [Restant ⏳]</option>
+              <option value="CARTABLES">🔴 Tous les Cartables Bilel (127 articles · 532 unités) [Restant ⏳]</option>
+              <option value="BL0212">🔴 Bon BL0212 — Bilel (148 articles · 3,255 unités) [Restant ⏳]</option>
+              <option value="BL0211">🔴 Bon BL0211 — Bilel (125 articles · 10,699 unités) [Restant ⏳]</option>
+              <option value="BL0195">🔴 Bon BL0195 — Bilel (319 articles · 15,031 unités) [Restant ⏳]</option>
+              <option value="BL0191">🔴 Bon BL0191 — Bilel (147 articles · 11,711 unités) [Restant ⏳]</option>
+              <option value="BL0199">🔴 Bon BL0199 — Bilel (64 articles · 2,011 unités) [Restant ⏳]</option>
+              <option value="ALL_BILEL">⚡ TOUS les Bons Restants de Bilel combinés (1 030 articles · 43 239 unités)</option>
+            </optgroup>
+            <optgroup label="🟢 BONS D'ABDRAHMAN">
+              <option value="NV_BON_2">🟢 Bon ABDARHMAN NV BON 2 (372 articles · 19,003 unités) [Déjà Transféré ✅]</option>
+              <option value="BL0254">🟢 Bon BL0254 — Abdrahman (134 articles · 3,707 unités) [Restant ⏳]</option>
+              <option value="BL0255">🟢 Bon BL0255 — Abdrahman (110 articles · 8,510 unités) [Restant ⏳]</option>
+              <option value="BL0268_1">🟢 Bon BL0268 Part 1 — Abdrahman (114 articles · 3,808 unités) [Restant ⏳]</option>
+              <option value="BL0268_2">🟢 Bon BL0268 Part 2 — Abdrahman (130 articles · 2,999 unités) [Restant ⏳]</option>
+              <option value="BL0270">🟢 Bon BL0270 & BL0269 — Abdrahman (33 articles · 7,691 unités) [Restant ⏳]</option>
+              <option value="ABD_COMPLET">⚡ TOUS les Anciens Bons Abdrahman combinés (521 articles · 26,715 unités)</option>
+            </optgroup>
           </select>
         </div>
 
@@ -645,10 +659,12 @@ function onBonSelectChanged() {
   const bon = document.getElementById("bon-select") ? document.getElementById("bon-select").value : "";
   const sSel = document.getElementById("bon-seller-select");
   if (!sSel || !sellers.length) return;
-  if (bon.startsWith("BL")) {
+  const isBilel = bon.includes("BL019") || bon.includes("BL021") || bon.includes("BL0279") || bon.includes("BL0239") || bon.includes("BL0240") || bon.includes("BILEL") || bon.includes("CARTABLES");
+  const isAbd = bon.includes("NV_BON_2") || bon.includes("ABD") || bon.includes("BL025") || bon.includes("BL026") || bon.includes("BL0270");
+  if (isBilel) {
     const match = sellers.find(s => s.username.toLowerCase().includes("bilel") || s.username.toLowerCase().includes("bilal"));
     if (match) sSel.value = match.id;
-  } else if (bon.includes("NV_BON_2") || bon.includes("ABD")) {
+  } else if (isAbd) {
     const match = sellers.find(s => s.username.toLowerCase().includes("abd") || s.username.toLowerCase().includes("rahman"));
     if (match) sSel.value = match.id;
   }
@@ -1007,20 +1023,26 @@ function renderTable(data) {
 }
 
 function updateKPIs(data) {
-  document.getElementById("kpi-total").textContent = data.length;
-  document.getElementById("kpi-units").textContent = data.reduce((s,t) => s + t.quantity, 0).toLocaleString();
-  document.getElementById("kpi-value").textContent = fmtDA(data.reduce((s,t) => s + t.quantity * (t.sell_price || 0), 0));
+  // Exclude virtual "Article Divers" products from KPI counters so they reflect real physical merchandise
+  const physicalData = data.filter(t => {
+    const n = (t.product_name || "").toLowerCase();
+    return !n.includes("article divers") && !n.includes("divers");
+  });
 
-  const bilalUnits = data.filter(t => {
+  document.getElementById("kpi-total").textContent = physicalData.length;
+  document.getElementById("kpi-units").textContent = physicalData.reduce((s,t) => s + (t.quantity || 0), 0).toLocaleString();
+  document.getElementById("kpi-value").textContent = fmtDA(physicalData.reduce((s,t) => s + (t.quantity || 0) * (t.sell_price || 0), 0));
+
+  const bilalUnits = physicalData.filter(t => {
     const b = (t.buyer || "bilal").toLowerCase();
     return b === "bilal" || b === "bilel";
-  }).reduce((s,t) => s + t.quantity, 0);
+  }).reduce((s,t) => s + (t.quantity || 0), 0);
 
-  const houariUnits = data.filter(t => (t.buyer || "").toLowerCase() === "houari").reduce((s,t) => s + t.quantity, 0);
-  const abdUnits = data.filter(t => {
+  const houariUnits = physicalData.filter(t => (t.buyer || "").toLowerCase() === "houari").reduce((s,t) => s + (t.quantity || 0), 0);
+  const abdUnits = physicalData.filter(t => {
     const b = (t.buyer || "").toLowerCase();
     return b.includes("abd") || b.includes("rahman");
-  }).reduce((s,t) => s + t.quantity, 0);
+  }).reduce((s,t) => s + (t.quantity || 0), 0);
 
   document.getElementById("kpi-buyers").innerHTML = `🔴 <b>${bilalUnits.toLocaleString()}</b> u. | 🟣 <b>${houariUnits.toLocaleString()}</b> u. | 🟢 <b>${abdUnits.toLocaleString()}</b> u.`;
 }

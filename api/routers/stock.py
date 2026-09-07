@@ -621,43 +621,64 @@ def transfer_stock_by_bon(data: TransferByBonRequest, db: Session = Depends(get_
     
     # Priority 1: Check if exact JSON file exists in data_bons
     bon_files_map = {
-        "BL0279": "bon_BL0279_cahiers_billel.json",
-        "NV_BON_2": "bon_ABDARHMAN_NV_BON_2_complet.json",
-        "BON_2": "bon_ABDARHMAN_NV_BON_2_complet.json",
-        "BL0212": "bon_BL0212_billel.json",
-        "BL0211": "bon_BL0211_billel.json",
-        "BL0195": "bon_BL0195_billel.json",
-        "BL0191": "bon_BL0191_billel.json",
-        "BL0199": "bon_BL0199_billel.json",
+        "BL0279": ["bon_BL0279_cahiers_billel.json"],
+        "BL0239": ["bon_cartable_BL0239_billel.json"],
+        "BL0240": ["bon_cartable_BL0240_billel.json"],
+        "CARTABLES": ["bons_cartables_billel_complet.json"],
+        "BL0212": ["bon_BL0212_billel.json"],
+        "BL0211": ["bon_BL0211_billel.json"],
+        "BL0195": ["bon_BL0195_billel.json"],
+        "BL0191": ["bon_BL0191_billel.json"],
+        "BL0199": ["bon_BL0199_billel.json"],
+        "ALL_BILEL": [
+            "bon_cartable_BL0239_billel.json",
+            "bon_cartable_BL0240_billel.json",
+            "bon_BL0212_billel.json",
+            "bon_BL0211_billel.json",
+            "bon_BL0199_billel.json",
+            "bon_BL0195_billel.json",
+            "bon_BL0191_billel.json",
+        ],
+        "NV_BON_2": ["bon_ABDARHMAN_NV_BON_2_complet.json"],
+        "BON_2": ["bon_ABDARHMAN_NV_BON_2_complet.json"],
+        "BL0254": ["bon_BL0254_abdrahman.json"],
+        "BL0255": ["bon_BL0255_abdrahman.json"],
+        "BL0268_1": ["bon_BL0268_part1_abdrahman.json"],
+        "BL0268_2": ["bon_BL0268_part2_abdrahman.json"],
+        "BL0270": ["bon_BL0270_BL0269_abdrahman.json"],
+        "BL0269": ["bon_BL0270_BL0269_abdrahman.json"],
+        "ABD_COMPLET": ["bon_complet_abdrahman.json"],
+        "ALL_ABD": ["bon_complet_abdrahman.json"],
     }
     
-    matched_filename = None
+    matched_filenames = []
     for k, v in bon_files_map.items():
         if k in bon:
-            matched_filename = v
+            matched_filenames = v
             break
             
     items_to_assign = []  # list of (Product, qty)
     
     data_dir = Path(__file__).resolve().parent.parent.parent / "data_bons"
-    bon_path = data_dir / matched_filename if matched_filename else None
-    
-    if bon_path and bon_path.exists():
-        try:
-            with open(bon_path, "r", encoding="utf-8") as f:
-                bon_items = json.load(f)
-            for it in bon_items:
-                code = it.get("code_article")
-                name = (it.get("name_fr") or "").strip()
-                prod = None
-                if code:
-                    prod = db.query(Product).filter(Product.code_article == code).first()
-                if not prod and name:
-                    prod = db.query(Product).filter(Product.name_fr == name).first()
-                if prod:
-                    qty = int(it.get("quantity") or 10)
-                    items_to_assign.append((prod, qty))
-        except Exception as err:
+    for mfname in matched_filenames:
+        bon_path = data_dir / mfname
+        if bon_path.exists():
+            try:
+                with open(bon_path, "r", encoding="utf-8") as f:
+                    bon_items = json.load(f)
+                for it in bon_items:
+                    code = it.get("code_article")
+                    name = (it.get("name_fr") or "").strip()
+                    prod = None
+                    if code:
+                        prod = db.query(Product).filter(Product.code_article == code).first()
+                    if not prod and name:
+                        prod = db.query(Product).filter(Product.name_fr == name).first()
+                    if prod:
+                        qty = int(it.get("quantity") or 10)
+                        items_to_assign.append((prod, qty))
+            except Exception as err:
+                pass
             print(f"[WARN] Error reading bon json file: {err}")
 
     # Fallback to DB query if not loaded from json

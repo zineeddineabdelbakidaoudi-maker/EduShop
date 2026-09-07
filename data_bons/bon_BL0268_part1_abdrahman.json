@@ -1,0 +1,1917 @@
+[
+  {
+    "item_no": 1,
+    "item_number": 1,
+    "code_article": "ART-ABD-0268-001",
+    "barcode": "6134283002797",
+    "barcodes": [
+      "6134283002797"
+    ],
+    "designation": "AGRAFES 6/24 AL RODESS RB56.105",
+    "name_fr": "AGRAFES 6/24 AL RODESS RB56.105",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 38.0,
+    "sell_price": 47.5,
+    "quantity": 20,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 2,
+    "item_number": 2,
+    "code_article": "ART-ABD-0268-002",
+    "barcode": "6920790302297",
+    "barcodes": [
+      "6920790302297"
+    ],
+    "designation": "AGRAFES 24/6 GIANT G0229",
+    "name_fr": "AGRAFES 24/6 GIANT G0229",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 43.0,
+    "sell_price": 53.75,
+    "quantity": 20,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 3,
+    "item_number": 3,
+    "code_article": "ART-ABD-0268-003",
+    "barcode": "6975279875052",
+    "barcodes": [
+      "6975279875052"
+    ],
+    "designation": "AGRAFES 24/6 VERTEX",
+    "name_fr": "AGRAFES 24/6 VERTEX",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 60.0,
+    "sell_price": 75.0,
+    "quantity": 20,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 4,
+    "item_number": 4,
+    "code_article": "ART-ABD-0268-004",
+    "barcode": "6975273931808",
+    "barcodes": [
+      "6975273931808"
+    ],
+    "designation": "INTERCALAIRE PM EV1124",
+    "name_fr": "INTERCALAIRE PM EV1124",
+    "category": "Classement & Protèges",
+    "buyer": "Abdrahman",
+    "purchase_price": 115.0,
+    "sell_price": 143.75,
+    "quantity": 36,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 5,
+    "item_number": 5,
+    "code_article": "ART-ABD-0268-005",
+    "barcode": "6975279873751",
+    "barcodes": [
+      "6975279873751"
+    ],
+    "designation": "NOTE STICK NEON100 VERTEX VP3335",
+    "name_fr": "NOTE STICK NEON100 VERTEX VP3335",
+    "category": "Cahiers & Papier",
+    "buyer": "Abdrahman",
+    "purchase_price": 82.5,
+    "sell_price": 103.12,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 6,
+    "item_number": 6,
+    "code_article": "ART-ABD-0268-006",
+    "barcode": "6975273934359",
+    "barcodes": [
+      "6975273934359"
+    ],
+    "designation": "POSTIT MULT COL EVEREST EV1122",
+    "name_fr": "POSTIT MULT COL EVEREST EV1122",
+    "category": "Cahiers & Papier",
+    "buyer": "Abdrahman",
+    "purchase_price": 82.5,
+    "sell_price": 103.12,
+    "quantity": 12,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 7,
+    "item_number": 7,
+    "code_article": "ART-ABD-0268-007",
+    "barcode": "6975273931815",
+    "barcodes": [
+      "6975273931815"
+    ],
+    "designation": "POSTIT MULT COL EVEREST EV1121",
+    "name_fr": "POSTIT MULT COL EVEREST EV1121",
+    "category": "Cahiers & Papier",
+    "buyer": "Abdrahman",
+    "purchase_price": 82.5,
+    "sell_price": 103.12,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 8,
+    "item_number": 8,
+    "code_article": "ART-ABD-0268-008",
+    "barcode": "6130753900181",
+    "barcodes": [
+      "6130753900181"
+    ],
+    "designation": "POST-IT NEON 75*75 FARAS 90018",
+    "name_fr": "POST-IT NEON 75*75 FARAS 90018",
+    "category": "Cahiers & Papier",
+    "buyer": "Abdrahman",
+    "purchase_price": 82.5,
+    "sell_price": 103.12,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 9,
+    "item_number": 9,
+    "code_article": "ART-ABD-0268-009",
+    "barcode": "6935023178259, 6935023178303, 6935023178273, 6935023178280, 6935023178297",
+    "barcodes": [
+      "6935023178259",
+      "6935023178303",
+      "6935023178273",
+      "6935023178280",
+      "6935023178297"
+    ],
+    "designation": "SURIGNEUR SHO 24PCS TECHNO 7801",
+    "name_fr": "SURIGNEUR SHO 24PCS TECHNO 7801",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 75.0,
+    "sell_price": 93.75,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 10,
+    "item_number": 10,
+    "code_article": "ART-ABD-0268-010",
+    "barcode": "6976892456970",
+    "barcodes": [
+      "6976892456970"
+    ],
+    "designation": "SURLIGN POCH 04 EVEREST EV4008",
+    "name_fr": "SURLIGN POCH 04 EVEREST EV4008",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 185.0,
+    "sell_price": 231.25,
+    "quantity": 10,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 11,
+    "item_number": 11,
+    "code_article": "ART-ABD-0268-011",
+    "barcode": "6975279883200",
+    "barcodes": [
+      "6975279883200"
+    ],
+    "designation": "SURLIGNEUR JAUNE VERTEX V301002J",
+    "name_fr": "SURLIGNEUR JAUNE VERTEX V301002J",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 85.0,
+    "sell_price": 106.25,
+    "quantity": 20,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 12,
+    "item_number": 12,
+    "code_article": "ART-ABD-0268-012",
+    "barcode": "6975279884443",
+    "barcodes": [
+      "6975279884443"
+    ],
+    "designation": "SURLIGNEUR BOITE DE 10 VERTEX V301036",
+    "name_fr": "SURLIGNEUR BOITE DE 10 VERTEX V301036",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 95.0,
+    "sell_price": 118.75,
+    "quantity": 20,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 13,
+    "item_number": 13,
+    "code_article": "ART-ABD-0268-013",
+    "barcode": "6935023156462",
+    "barcodes": [
+      "6935023156462"
+    ],
+    "designation": "SURLIGNEUR MINI SHOW TECHNO 5646",
+    "name_fr": "SURLIGNEUR MINI SHOW TECHNO 5646",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 72.5,
+    "sell_price": 90.62,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 14,
+    "item_number": 14,
+    "code_article": "ART-ABD-0268-014",
+    "barcode": "6942281407519",
+    "barcodes": [
+      "6942281407519"
+    ],
+    "designation": "MARQUEUR FLOUR-NOIR EVEREST EV4023",
+    "name_fr": "MARQUEUR FLOUR-NOIR EVEREST EV4023",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 45.0,
+    "sell_price": 56.25,
+    "quantity": 36,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 15,
+    "item_number": 15,
+    "code_article": "ART-ABD-0268-015",
+    "barcode": "6975279880605",
+    "barcodes": [
+      "6975279880605"
+    ],
+    "designation": "SURLIGNEUR PRES 36 VERTEX V301029",
+    "name_fr": "SURLIGNEUR PRES 36 VERTEX V301029",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 55.0,
+    "sell_price": 68.75,
+    "quantity": 36,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 16,
+    "item_number": 16,
+    "code_article": "ART-ABD-0268-016",
+    "barcode": "6935023156400, 6935023156431, 6935023156424, 6935023156417, 6935023156448",
+    "barcodes": [
+      "6935023156400",
+      "6935023156431",
+      "6935023156424",
+      "6935023156417",
+      "6935023156448"
+    ],
+    "designation": "SURLIGNEUR FLUOR TECHNO 5645",
+    "name_fr": "SURLIGNEUR FLUOR TECHNO 5645",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 78.0,
+    "sell_price": 97.5,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 17,
+    "item_number": 17,
+    "code_article": "ART-ABD-0268-017",
+    "barcode": "6942280401167",
+    "barcodes": [
+      "6942280401167"
+    ],
+    "designation": "SURLIGNEUR EVEREST EV4013",
+    "name_fr": "SURLIGNEUR EVEREST EV4013",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 45.0,
+    "sell_price": 56.25,
+    "quantity": 36,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 18,
+    "item_number": 18,
+    "code_article": "ART-ABD-0268-018",
+    "barcode": "6976892456963",
+    "barcodes": [
+      "6976892456963"
+    ],
+    "designation": "SURLIGNEUR PRE36 EVEREST EV4056",
+    "name_fr": "SURLIGNEUR PRE36 EVEREST EV4056",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 45.0,
+    "sell_price": 56.25,
+    "quantity": 36,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 19,
+    "item_number": 19,
+    "code_article": "ART-ABD-0268-019",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "MARQUEUR ARDOISE BLEU EVEREST EV4028",
+    "name_fr": "MARQUEUR ARDOISE BLEU EVEREST EV4028",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 13.5,
+    "sell_price": 16.88,
+    "quantity": 50,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 20,
+    "item_number": 20,
+    "code_article": "ART-ABD-0268-020",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "MARQUEUR ARDOISE NOIR EVEREST EV4029",
+    "name_fr": "MARQUEUR ARDOISE NOIR EVEREST EV4029",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 13.5,
+    "sell_price": 16.88,
+    "quantity": 50,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 21,
+    "item_number": 21,
+    "code_article": "ART-ABD-0268-021",
+    "barcode": "6134757909997",
+    "barcodes": [
+      "6134757909997"
+    ],
+    "designation": "MARQUEUR ARDOISE BLEU IS10300",
+    "name_fr": "MARQUEUR ARDOISE BLEU IS10300",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 26.8,
+    "sell_price": 33.5,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 22,
+    "item_number": 22,
+    "code_article": "ART-ABD-0268-022",
+    "barcode": "6134757910016",
+    "barcodes": [
+      "6134757910016"
+    ],
+    "designation": "MARQUEUR ARDOISE BLEU IS10301",
+    "name_fr": "MARQUEUR ARDOISE BLEU IS10301",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 26.8,
+    "sell_price": 33.5,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 23,
+    "item_number": 23,
+    "code_article": "ART-ABD-0268-023",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "AIMANT ALPHAPET AR EXINE IS35001",
+    "name_fr": "AIMANT ALPHAPET AR EXINE IS35001",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 145.0,
+    "sell_price": 181.25,
+    "quantity": 10,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 24,
+    "item_number": 24,
+    "code_article": "ART-ABD-0268-024",
+    "barcode": "6134757501320",
+    "barcodes": [
+      "6134757501320"
+    ],
+    "designation": "AIMANT ALPHAPET ANGLAI EXINE IS35002",
+    "name_fr": "AIMANT ALPHAPET ANGLAI EXINE IS35002",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 145.0,
+    "sell_price": 181.25,
+    "quantity": 5,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 25,
+    "item_number": 25,
+    "code_article": "ART-ABD-0268-025",
+    "barcode": "6134757009710, 6134757009673",
+    "barcodes": [
+      "6134757009710",
+      "6134757009673"
+    ],
+    "designation": "SURLIGNEUR MINI BOS EXINE IS1400..",
+    "name_fr": "SURLIGNEUR MINI BOS EXINE IS1400..",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 65.01,
+    "sell_price": 81.26,
+    "quantity": 36,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 26,
+    "item_number": 26,
+    "code_article": "ART-ABD-0268-026",
+    "barcode": "6935023185073, 6935023185066, 6935023185028, 6935023185035, 6935023185042, 6935023185011",
+    "barcodes": [
+      "6935023185073",
+      "6935023185066",
+      "6935023185028",
+      "6935023185035",
+      "6935023185042",
+      "6935023185011"
+    ],
+    "designation": "MARQUEUR T/B RECHA THINKY TECHNO 85..",
+    "name_fr": "MARQUEUR T/B RECHA THINKY TECHNO 85..",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 72.0,
+    "sell_price": 90.0,
+    "quantity": 96,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 27,
+    "item_number": 27,
+    "code_article": "ART-ABD-0268-027",
+    "barcode": "6134757000342, 6134757000335, 6134757000359, 6134757000366",
+    "barcodes": [
+      "6134757000342",
+      "6134757000335",
+      "6134757000359",
+      "6134757000366"
+    ],
+    "designation": "MARQUEURE T/B RECHARG B.N.R.V IB5000",
+    "name_fr": "MARQUEURE T/B RECHARG B.N.R.V IB5000",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 55.0,
+    "sell_price": 68.75,
+    "quantity": 96,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 28,
+    "item_number": 28,
+    "code_article": "ART-ABD-0268-028",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "MARQUEURE T/B RECHARGE NAS EB551..",
+    "name_fr": "MARQUEURE T/B RECHARGE NAS EB551..",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 32.5,
+    "sell_price": 40.62,
+    "quantity": 108,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 29,
+    "item_number": 29,
+    "code_article": "ART-ABD-0268-029",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "RECHARGE MARQUEUR T/B GIANT G177..",
+    "name_fr": "RECHARGE MARQUEUR T/B GIANT G177..",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 12.5,
+    "sell_price": 15.62,
+    "quantity": 108,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 30,
+    "item_number": 30,
+    "code_article": "ART-ABD-0268-030",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "RECHARGE MARQUEUR NAS RB55..",
+    "name_fr": "RECHARGE MARQUEUR NAS RB55..",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 10.5,
+    "sell_price": 13.12,
+    "quantity": 120,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 31,
+    "item_number": 31,
+    "code_article": "ART-ABD-0268-031",
+    "barcode": "6975279874062, 6975279874079, 6975279874055, 6975279874086",
+    "barcodes": [
+      "6975279874062",
+      "6975279874079",
+      "6975279874055",
+      "6975279874086"
+    ],
+    "designation": "RECHARGE MARQEURE VERTEX V617R",
+    "name_fr": "RECHARGE MARQEURE VERTEX V617R",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 18.5,
+    "sell_price": 23.12,
+    "quantity": 252,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 32,
+    "item_number": 32,
+    "code_article": "ART-ABD-0268-032",
+    "barcode": "6135509001082, 6135509001075, 6135509001105, 6135509001099",
+    "barcodes": [
+      "6135509001082",
+      "6135509001075",
+      "6135509001105",
+      "6135509001099"
+    ],
+    "designation": "MARQUEUR RECHARGEABL WB VERTEX V617",
+    "name_fr": "MARQUEUR RECHARGEABL WB VERTEX V617",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 65.0,
+    "sell_price": 81.25,
+    "quantity": 384,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 33,
+    "item_number": 33,
+    "code_article": "ART-ABD-0268-033",
+    "barcode": "6970928001615",
+    "barcodes": [
+      "6970928001615"
+    ],
+    "designation": "KIT MINI AGRAFEUSE EVEREST EV1614",
+    "name_fr": "KIT MINI AGRAFEUSE EVEREST EV1614",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 165.0,
+    "sell_price": 206.25,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 34,
+    "item_number": 34,
+    "code_article": "ART-ABD-0268-034",
+    "barcode": "6935023178952",
+    "barcodes": [
+      "6935023178952"
+    ],
+    "designation": "AGRAFEUSE MINI 24/6 TECHNO 7895",
+    "name_fr": "AGRAFEUSE MINI 24/6 TECHNO 7895",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 185.0,
+    "sell_price": 231.25,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 35,
+    "item_number": 35,
+    "code_article": "ART-ABD-0268-035",
+    "barcode": "6942280404069",
+    "barcodes": [
+      "6942280404069"
+    ],
+    "designation": "AGRAFEUSE MINI EVEREST EV1610",
+    "name_fr": "AGRAFEUSE MINI EVEREST EV1610",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 165.0,
+    "sell_price": 206.25,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 36,
+    "item_number": 36,
+    "code_article": "ART-ABD-0268-036",
+    "barcode": "6977826762617",
+    "barcodes": [
+      "6977826762617"
+    ],
+    "designation": "MINI AGRAFEUSE EVEREST EV1650",
+    "name_fr": "MINI AGRAFEUSE EVEREST EV1650",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 165.0,
+    "sell_price": 206.25,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 37,
+    "item_number": 37,
+    "code_article": "ART-ABD-0268-037",
+    "barcode": "6132369006295",
+    "barcodes": [
+      "6132369006295"
+    ],
+    "designation": "BROSSE ECOLIER PM VERTEX VS5521",
+    "name_fr": "BROSSE ECOLIER PM VERTEX VS5521",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 24.5,
+    "sell_price": 30.62,
+    "quantity": 72,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 38,
+    "item_number": 38,
+    "code_article": "ART-ABD-0268-038",
+    "barcode": "6132525850038",
+    "barcodes": [
+      "6132525850038"
+    ],
+    "designation": "BROSSE PORTE CRAIE XZML 2000XZ",
+    "name_fr": "BROSSE PORTE CRAIE XZML 2000XZ",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 35.0,
+    "sell_price": 43.75,
+    "quantity": 48,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 39,
+    "item_number": 39,
+    "code_article": "ART-ABD-0268-039",
+    "barcode": "6132004795003",
+    "barcodes": [
+      "6132004795003"
+    ],
+    "designation": "BROSSE ECOL PORT CRAIE TECHNO 9500",
+    "name_fr": "BROSSE ECOL PORT CRAIE TECHNO 9500",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 55.0,
+    "sell_price": 68.75,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 40,
+    "item_number": 40,
+    "code_article": "ART-ABD-0268-040",
+    "barcode": "6132369006271",
+    "barcodes": [
+      "6132369006271"
+    ],
+    "designation": "BROSSE T-PORT MARQU VERTEX VS5520",
+    "name_fr": "BROSSE T-PORT MARQU VERTEX VS5520",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 75.0,
+    "sell_price": 93.75,
+    "quantity": 12,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 41,
+    "item_number": 41,
+    "code_article": "ART-ABD-0268-041",
+    "barcode": "6132188000764",
+    "barcodes": [
+      "6132188000764"
+    ],
+    "designation": "BROSSE PORTE CRAIE EVEREST EV2508",
+    "name_fr": "BROSSE PORTE CRAIE EVEREST EV2508",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 37.5,
+    "sell_price": 46.88,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 42,
+    "item_number": 42,
+    "code_article": "ART-ABD-0268-042",
+    "barcode": "6912092520172",
+    "barcodes": [
+      "6912092520172"
+    ],
+    "designation": "BROSSE TABLEAU MULTICOUCH NY 2017NY",
+    "name_fr": "BROSSE TABLEAU MULTICOUCH NY 2017NY",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 105.0,
+    "sell_price": 131.25,
+    "quantity": 12,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 43,
+    "item_number": 43,
+    "code_article": "ART-ABD-0268-043",
+    "barcode": "6132517615355",
+    "barcodes": [
+      "6132517615355"
+    ],
+    "designation": "GOMME COULEUR GIANT G1535",
+    "name_fr": "GOMME COULEUR GIANT G1535",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 19.5,
+    "sell_price": 24.38,
+    "quantity": 60,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 44,
+    "item_number": 44,
+    "code_article": "ART-ABD-0268-044",
+    "barcode": "6134757005736",
+    "barcodes": [
+      "6134757005736"
+    ],
+    "designation": "GOMME BLANCHE MM B20 EXINE IS05019",
+    "name_fr": "GOMME BLANCHE MM B20 EXINE IS05019",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 18.5,
+    "sell_price": 23.12,
+    "quantity": 30,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 45,
+    "item_number": 45,
+    "code_article": "ART-ABD-0268-045",
+    "barcode": "6134283006474",
+    "barcodes": [
+      "6134283006474"
+    ],
+    "designation": "GOMME AL30 RODESS ROD201",
+    "name_fr": "GOMME AL30 RODESS ROD201",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 9.5,
+    "sell_price": 11.88,
+    "quantity": 30,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 46,
+    "item_number": 46,
+    "code_article": "ART-ABD-0268-046",
+    "barcode": "6134283000465",
+    "barcodes": [
+      "6134283000465"
+    ],
+    "designation": "GOMME B20 RS 04.100",
+    "name_fr": "GOMME B20 RS 04.100",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 16.5,
+    "sell_price": 20.62,
+    "quantity": 40,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 47,
+    "item_number": 47,
+    "code_article": "ART-ABD-0268-047",
+    "barcode": "6921734941978",
+    "barcodes": [
+      "6921734941978"
+    ],
+    "designation": "GOMME BLANCH PM DELI EH00110",
+    "name_fr": "GOMME BLANCH PM DELI EH00110",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 16.8,
+    "sell_price": 21.0,
+    "quantity": 30,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 48,
+    "item_number": 48,
+    "code_article": "ART-ABD-0268-048",
+    "barcode": "6134757905777",
+    "barcodes": [
+      "6134757905777"
+    ],
+    "designation": "GOMME SCOL EXINE IS05103",
+    "name_fr": "GOMME SCOL EXINE IS05103",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 29.5,
+    "sell_price": 36.88,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 49,
+    "item_number": 49,
+    "code_article": "ART-ABD-0268-049",
+    "barcode": "6975279871252",
+    "barcodes": [
+      "6975279871252"
+    ],
+    "designation": "GOMME SCOLAIRE PM 45P VERTEX",
+    "name_fr": "GOMME SCOLAIRE PM 45P VERTEX",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 15.5,
+    "sell_price": 19.38,
+    "quantity": 90,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 50,
+    "item_number": 50,
+    "code_article": "ART-ABD-0268-050",
+    "barcode": "6975279871290",
+    "barcodes": [
+      "6975279871290"
+    ],
+    "designation": "GOMME BLANCHE GM VERTEX V1503",
+    "name_fr": "GOMME BLANCHE GM VERTEX V1503",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 25.5,
+    "sell_price": 31.88,
+    "quantity": 40,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 51,
+    "item_number": 51,
+    "code_article": "ART-ABD-0268-051",
+    "barcode": "6975279871276",
+    "barcodes": [
+      "6975279871276"
+    ],
+    "designation": "GOMME BLAN PM 30P VERTEX V1502",
+    "name_fr": "GOMME BLAN PM 30P VERTEX V1502",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 20.5,
+    "sell_price": 25.62,
+    "quantity": 60,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 52,
+    "item_number": 52,
+    "code_article": "ART-ABD-0268-052",
+    "barcode": "6912092506206",
+    "barcodes": [
+      "6912092506206"
+    ],
+    "designation": "GOMME B20 NY",
+    "name_fr": "GOMME B20 NY",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 16.5,
+    "sell_price": 20.62,
+    "quantity": 40,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 53,
+    "item_number": 53,
+    "code_article": "ART-ABD-0268-053",
+    "barcode": "6921734942395",
+    "barcodes": [
+      "6921734942395"
+    ],
+    "designation": "GOMME BLANCH MM DELI H00210",
+    "name_fr": "GOMME BLANCH MM DELI H00210",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 23.8,
+    "sell_price": 29.75,
+    "quantity": 20,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 54,
+    "item_number": 54,
+    "code_article": "ART-ABD-0268-054",
+    "barcode": "6975273931266",
+    "barcodes": [
+      "6975273931266"
+    ],
+    "designation": "GOMME BLANCHE 30 EVEREST EV2541",
+    "name_fr": "GOMME BLANCHE 30 EVEREST EV2541",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 10.5,
+    "sell_price": 13.12,
+    "quantity": 30,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 55,
+    "item_number": 55,
+    "code_article": "ART-ABD-0268-055",
+    "barcode": "6132517615331",
+    "barcodes": [
+      "6132517615331"
+    ],
+    "designation": "GOMME BLANCHE GIANT G1533",
+    "name_fr": "GOMME BLANCHE GIANT G1533",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 18.5,
+    "sell_price": 23.12,
+    "quantity": 30,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 56,
+    "item_number": 56,
+    "code_article": "ART-ABD-0268-056",
+    "barcode": "6975279883941",
+    "barcodes": [
+      "6975279883941"
+    ],
+    "designation": "TAILLE CRAYON 2 US VERTEX VS5264",
+    "name_fr": "TAILLE CRAYON 2 US VERTEX VS5264",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 135.0,
+    "sell_price": 168.75,
+    "quantity": 12,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 57,
+    "item_number": 57,
+    "code_article": "ART-ABD-0268-057",
+    "barcode": "6935023175296",
+    "barcodes": [
+      "6935023175296"
+    ],
+    "designation": "TAILLE CRAYON TRICUL 1TR TECHNO 7529",
+    "name_fr": "TAILLE CRAYON TRICUL 1TR TECHNO 7529",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 85.0,
+    "sell_price": 106.25,
+    "quantity": 12,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 58,
+    "item_number": 58,
+    "code_article": "ART-ABD-0268-058",
+    "barcode": "6935205336880",
+    "barcodes": [
+      "6935205336880"
+    ],
+    "designation": "TAILLE CRAYON 2 USAG DELI 0576",
+    "name_fr": "TAILLE CRAYON 2 USAG DELI 0576",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 78.0,
+    "sell_price": 97.5,
+    "quantity": 48,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 59,
+    "item_number": 59,
+    "code_article": "ART-ABD-0268-059",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "TAILE CRAYON EVEREST EV1374",
+    "name_fr": "TAILE CRAYON EVEREST EV1374",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 115.0,
+    "sell_price": 143.75,
+    "quantity": 12,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 60,
+    "item_number": 60,
+    "code_article": "ART-ABD-0268-060",
+    "barcode": "6935205336873",
+    "barcodes": [
+      "6935205336873"
+    ],
+    "designation": "TAILLE CRAYON 2 USAG DELI 39768",
+    "name_fr": "TAILLE CRAYON 2 USAG DELI 39768",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 75.0,
+    "sell_price": 93.75,
+    "quantity": 12,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 61,
+    "item_number": 61,
+    "code_article": "ART-ABD-0268-061",
+    "barcode": "6975279884108",
+    "barcodes": [
+      "6975279884108"
+    ],
+    "designation": "TAILLE CRAYON 2US BOIT24 VERTEX VS5272",
+    "name_fr": "TAILLE CRAYON 2US BOIT24 VERTEX VS5272",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 125.0,
+    "sell_price": 156.25,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 62,
+    "item_number": 62,
+    "code_article": "ART-ABD-0268-062",
+    "barcode": "6134757527733",
+    "barcodes": [
+      "6134757527733"
+    ],
+    "designation": "TAILLE CRAYON 1TR SMAILE TECHNO 7519",
+    "name_fr": "TAILLE CRAYON 1TR SMAILE TECHNO 7519",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 55.0,
+    "sell_price": 68.75,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 63,
+    "item_number": 63,
+    "code_article": "ART-ABD-0268-063",
+    "barcode": "6935023175265",
+    "barcodes": [
+      "6935023175265"
+    ],
+    "designation": "TAILLE CRAYON 1TR FOCUL TECHNO 7526",
+    "name_fr": "TAILLE CRAYON 1TR FOCUL TECHNO 7526",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 47.5,
+    "sell_price": 59.38,
+    "quantity": 22,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 64,
+    "item_number": 64,
+    "code_article": "ART-ABD-0268-064",
+    "barcode": "6935023175371",
+    "barcodes": [
+      "6935023175371"
+    ],
+    "designation": "TAILLE CRAYON 1TR ROCKET TECHNO 7537",
+    "name_fr": "TAILLE CRAYON 1TR ROCKET TECHNO 7537",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 75.0,
+    "sell_price": 93.75,
+    "quantity": 18,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 65,
+    "item_number": 65,
+    "code_article": "ART-ABD-0268-065",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "TAILLE CRAYON ECOL PLUMA PL7927",
+    "name_fr": "TAILLE CRAYON ECOL PLUMA PL7927",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 36.5,
+    "sell_price": 45.62,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 66,
+    "item_number": 66,
+    "code_article": "ART-ABD-0268-066",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "TAILLE CRAYON 1TR EVEREST EV1314",
+    "name_fr": "TAILLE CRAYON 1TR EVEREST EV1314",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 7.5,
+    "sell_price": 9.38,
+    "quantity": 72,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 67,
+    "item_number": 67,
+    "code_article": "ART-ABD-0268-067",
+    "barcode": "6903244213240",
+    "barcodes": [
+      "6903244213240"
+    ],
+    "designation": "GOMME+TAILLE CRAYON EVEREST EV1324",
+    "name_fr": "GOMME+TAILLE CRAYON EVEREST EV1324",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 115.0,
+    "sell_price": 143.75,
+    "quantity": 12,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 68,
+    "item_number": 68,
+    "code_article": "ART-ABD-0268-068",
+    "barcode": "6975279884306",
+    "barcodes": [
+      "6975279884306"
+    ],
+    "designation": "GOMME+T-CRAYON BOIT20 VERTEX VS5282",
+    "name_fr": "GOMME+T-CRAYON BOIT20 VERTEX VS5282",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 155.0,
+    "sell_price": 193.75,
+    "quantity": 20,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 69,
+    "item_number": 69,
+    "code_article": "ART-ABD-0268-069",
+    "barcode": "6903244213264",
+    "barcodes": [
+      "6903244213264"
+    ],
+    "designation": "GOMME+TAILLE CRAYON EVEREST EV1326",
+    "name_fr": "GOMME+TAILLE CRAYON EVEREST EV1326",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 135.0,
+    "sell_price": 168.75,
+    "quantity": 20,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 70,
+    "item_number": 70,
+    "code_article": "ART-ABD-0268-070",
+    "barcode": "6135509006544",
+    "barcodes": [
+      "6135509006544"
+    ],
+    "designation": "PATE A MODLER VERTEX VS4081",
+    "name_fr": "PATE A MODLER VERTEX VS4081",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 225.0,
+    "sell_price": 281.25,
+    "quantity": 12,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 71,
+    "item_number": 71,
+    "code_article": "ART-ABD-0268-071",
+    "barcode": "6135509004601",
+    "barcodes": [
+      "6135509004601"
+    ],
+    "designation": "PATE A MODLER BATA VERTEX VS1338",
+    "name_fr": "PATE A MODLER BATA VERTEX VS1338",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 85.0,
+    "sell_price": 106.25,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 72,
+    "item_number": 72,
+    "code_article": "ART-ABD-0268-072",
+    "barcode": "6135509006520",
+    "barcodes": [
+      "6135509006520"
+    ],
+    "designation": "PATE A MODLER VERTEX VS4079",
+    "name_fr": "PATE A MODLER VERTEX VS4079",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 265.0,
+    "sell_price": 331.25,
+    "quantity": 12,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 73,
+    "item_number": 73,
+    "code_article": "ART-ABD-0268-073",
+    "barcode": "6135509004595",
+    "barcodes": [
+      "6135509004595"
+    ],
+    "designation": "PATE A MODLER VERTEX VS1337",
+    "name_fr": "PATE A MODLER VERTEX VS1337",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 105.0,
+    "sell_price": 131.25,
+    "quantity": 12,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 74,
+    "item_number": 74,
+    "code_article": "ART-ABD-0268-074",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "CARTOUCHE THINKY TECHNO 85..",
+    "name_fr": "CARTOUCHE THINKY TECHNO 85..",
+    "category": "Stylos & Écriture",
+    "buyer": "Abdrahman",
+    "purchase_price": 22.5,
+    "sell_price": 28.12,
+    "quantity": 48,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 75,
+    "item_number": 75,
+    "code_article": "ART-ABD-0268-075",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "RECHARGE MARQ T/B FLUORESCENT RBB55.2..",
+    "name_fr": "RECHARGE MARQ T/B FLUORESCENT RBB55.2..",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 18.5,
+    "sell_price": 23.12,
+    "quantity": 80,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 76,
+    "item_number": 76,
+    "code_article": "ART-ABD-0268-076",
+    "barcode": "6135509005158",
+    "barcodes": [
+      "6135509005158"
+    ],
+    "designation": "PATE A MODLER VERTEX VS4031",
+    "name_fr": "PATE A MODLER VERTEX VS4031",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 45.0,
+    "sell_price": 56.25,
+    "quantity": 40,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 77,
+    "item_number": 77,
+    "code_article": "ART-ABD-0268-077",
+    "barcode": "6135509005196",
+    "barcodes": [
+      "6135509005196"
+    ],
+    "designation": "PATE A MODLER VERTEX VS4033",
+    "name_fr": "PATE A MODLER VERTEX VS4033",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 65.0,
+    "sell_price": 81.25,
+    "quantity": 40,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 78,
+    "item_number": 78,
+    "code_article": "ART-ABD-0268-078",
+    "barcode": "6134757519486",
+    "barcodes": [
+      "6134757519486"
+    ],
+    "designation": "PATE A MODLER PLISTER EXINE IS04182",
+    "name_fr": "PATE A MODLER PLISTER EXINE IS04182",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 65.0,
+    "sell_price": 81.25,
+    "quantity": 36,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 79,
+    "item_number": 79,
+    "code_article": "ART-ABD-0268-079",
+    "barcode": "6942281409070",
+    "barcodes": [
+      "6942281409070"
+    ],
+    "designation": "PATE A MODLER PLISTER EVREST EV1458",
+    "name_fr": "PATE A MODLER PLISTER EVREST EV1458",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 105.0,
+    "sell_price": 131.25,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 80,
+    "item_number": 80,
+    "code_article": "ART-ABD-0268-080",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "PROTEGE DOCUMENT FANTAISIE 40V CR0502",
+    "name_fr": "PROTEGE DOCUMENT FANTAISIE 40V CR0502",
+    "category": "Classement & Protèges",
+    "buyer": "Abdrahman",
+    "purchase_price": 295.0,
+    "sell_price": 368.75,
+    "quantity": 3,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 81,
+    "item_number": 81,
+    "code_article": "ART-ABD-0268-081",
+    "barcode": "6932717180208",
+    "barcodes": [
+      "6932717180208"
+    ],
+    "designation": "PROTEGE DOCUMENT FANTAISIE 60V CR0503",
+    "name_fr": "PROTEGE DOCUMENT FANTAISIE 60V CR0503",
+    "category": "Classement & Protèges",
+    "buyer": "Abdrahman",
+    "purchase_price": 345.0,
+    "sell_price": 431.25,
+    "quantity": 3,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 82,
+    "item_number": 82,
+    "code_article": "ART-ABD-0268-082",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "PROTEGE DOCUMENT FANTAISIE 80V CR0504",
+    "name_fr": "PROTEGE DOCUMENT FANTAISIE 80V CR0504",
+    "category": "Classement & Protèges",
+    "buyer": "Abdrahman",
+    "purchase_price": 395.0,
+    "sell_price": 493.75,
+    "quantity": 3,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 83,
+    "item_number": 83,
+    "code_article": "ART-ABD-0268-083",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "PROTEGE DOCUMENT FANTAISIE 200V CR0510",
+    "name_fr": "PROTEGE DOCUMENT FANTAISIE 200V CR0510",
+    "category": "Classement & Protèges",
+    "buyer": "Abdrahman",
+    "purchase_price": 785.0,
+    "sell_price": 981.25,
+    "quantity": 3,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 84,
+    "item_number": 84,
+    "code_article": "ART-ABD-0268-084",
+    "barcode": "6932717180239",
+    "barcodes": [
+      "6932717180239"
+    ],
+    "designation": "PROTEGE DOCUMENT FANTAISIE 160V CR0508",
+    "name_fr": "PROTEGE DOCUMENT FANTAISIE 160V CR0508",
+    "category": "Classement & Protèges",
+    "buyer": "Abdrahman",
+    "purchase_price": 675.0,
+    "sell_price": 843.75,
+    "quantity": 3,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 85,
+    "item_number": 85,
+    "code_article": "ART-ABD-0268-085",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "TROUSSE +CALCULATOR EVEREST GM EV91025",
+    "name_fr": "TROUSSE +CALCULATOR EVEREST GM EV91025",
+    "category": "Trousses",
+    "buyer": "Abdrahman",
+    "purchase_price": 315.0,
+    "sell_price": 393.75,
+    "quantity": 3,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 86,
+    "item_number": 86,
+    "code_article": "ART-ABD-0268-086",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "TROUSSE EVEREST EV91014",
+    "name_fr": "TROUSSE EVEREST EV91014",
+    "category": "Trousses",
+    "buyer": "Abdrahman",
+    "purchase_price": 395.0,
+    "sell_price": 493.75,
+    "quantity": 3,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 87,
+    "item_number": 87,
+    "code_article": "ART-ABD-0268-087",
+    "barcode": "6975308420178",
+    "barcodes": [
+      "6975308420178"
+    ],
+    "designation": "TROUSSE CRISTAL COLEC 2026 CR1950",
+    "name_fr": "TROUSSE CRISTAL COLEC 2026 CR1950",
+    "category": "Trousses",
+    "buyer": "Abdrahman",
+    "purchase_price": 725.0,
+    "sell_price": 906.25,
+    "quantity": 3,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 88,
+    "item_number": 88,
+    "code_article": "ART-ABD-0268-088",
+    "barcode": "6975308420185",
+    "barcodes": [
+      "6975308420185"
+    ],
+    "designation": "TROUSSE CRISTAL COLEC 2026 CR1951",
+    "name_fr": "TROUSSE CRISTAL COLEC 2026 CR1951",
+    "category": "Trousses",
+    "buyer": "Abdrahman",
+    "purchase_price": 725.0,
+    "sell_price": 906.25,
+    "quantity": 3,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 89,
+    "item_number": 89,
+    "code_article": "ART-ABD-0268-089",
+    "barcode": "6975279885969",
+    "barcodes": [
+      "6975279885969"
+    ],
+    "designation": "TROUSSE ECOLIER 3COL VERTEX VS3703",
+    "name_fr": "TROUSSE ECOLIER 3COL VERTEX VS3703",
+    "category": "Trousses",
+    "buyer": "Abdrahman",
+    "purchase_price": 840.0,
+    "sell_price": 1050.0,
+    "quantity": 3,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 90,
+    "item_number": 90,
+    "code_article": "ART-ABD-0268-090",
+    "barcode": "6925707237754",
+    "barcodes": [
+      "6925707237754"
+    ],
+    "designation": "TROUSSE CRISTAL CR11034",
+    "name_fr": "TROUSSE CRISTAL CR11034",
+    "category": "Trousses",
+    "buyer": "Abdrahman",
+    "purchase_price": 625.0,
+    "sell_price": 781.25,
+    "quantity": 4,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 91,
+    "item_number": 91,
+    "code_article": "ART-ABD-0268-091",
+    "barcode": "6925707231394",
+    "barcodes": [
+      "6925707231394"
+    ],
+    "designation": "TROUSSE CRISTAL CR11018",
+    "name_fr": "TROUSSE CRISTAL CR11018",
+    "category": "Trousses",
+    "buyer": "Abdrahman",
+    "purchase_price": 495.0,
+    "sell_price": 618.75,
+    "quantity": 2,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 92,
+    "item_number": 92,
+    "code_article": "ART-ABD-0268-092",
+    "barcode": "6973071281880",
+    "barcodes": [
+      "6973071281880"
+    ],
+    "designation": "TROUSSE WD PVC ROND CRISTAL CR1367",
+    "name_fr": "TROUSSE WD PVC ROND CRISTAL CR1367",
+    "category": "Trousses",
+    "buyer": "Abdrahman",
+    "purchase_price": 535.0,
+    "sell_price": 668.75,
+    "quantity": 5,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 93,
+    "item_number": 93,
+    "code_article": "ART-ABD-0268-093",
+    "barcode": "6925707220121",
+    "barcodes": [
+      "6925707220121"
+    ],
+    "designation": "TROUSSE EN BOITE CRISTAL CR12012",
+    "name_fr": "TROUSSE EN BOITE CRISTAL CR12012",
+    "category": "Trousses",
+    "buyer": "Abdrahman",
+    "purchase_price": 715.0,
+    "sell_price": 893.75,
+    "quantity": 3,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 94,
+    "item_number": 94,
+    "code_article": "ART-ABD-0268-094",
+    "barcode": "6925707237723",
+    "barcodes": [
+      "6925707237723"
+    ],
+    "designation": "TROUSSE CRISTAL CR11031",
+    "name_fr": "TROUSSE CRISTAL CR11031",
+    "category": "Trousses",
+    "buyer": "Abdrahman",
+    "purchase_price": 895.0,
+    "sell_price": 1118.75,
+    "quantity": 3,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 95,
+    "item_number": 95,
+    "code_article": "ART-ABD-0268-095",
+    "barcode": "6925707237730",
+    "barcodes": [
+      "6925707237730"
+    ],
+    "designation": "TROUSSE CRISTAL CR11032",
+    "name_fr": "TROUSSE CRISTAL CR11032",
+    "category": "Trousses",
+    "buyer": "Abdrahman",
+    "purchase_price": 985.0,
+    "sell_price": 1231.25,
+    "quantity": 2,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 96,
+    "item_number": 96,
+    "code_article": "ART-ABD-0268-096",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "TROUSSE CRISTAL CR11015",
+    "name_fr": "TROUSSE CRISTAL CR11015",
+    "category": "Trousses",
+    "buyer": "Abdrahman",
+    "purchase_price": 875.0,
+    "sell_price": 1093.75,
+    "quantity": 3,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 97,
+    "item_number": 97,
+    "code_article": "ART-ABD-0268-097",
+    "barcode": "6952251910192",
+    "barcodes": [
+      "6952251910192"
+    ],
+    "designation": "TROUSSE 3D PM EVEREST EV91019",
+    "name_fr": "TROUSSE 3D PM EVEREST EV91019",
+    "category": "Trousses",
+    "buyer": "Abdrahman",
+    "purchase_price": 325.0,
+    "sell_price": 406.25,
+    "quantity": 6,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 98,
+    "item_number": 98,
+    "code_article": "ART-ABD-0268-098",
+    "barcode": "6952251910307",
+    "barcodes": [
+      "6952251910307"
+    ],
+    "designation": "TROUSSE 3D+CALCULATRICE EVEREST EV91030",
+    "name_fr": "TROUSSE 3D+CALCULATRICE EVEREST EV91030",
+    "category": "Trousses",
+    "buyer": "Abdrahman",
+    "purchase_price": 780.0,
+    "sell_price": 975.0,
+    "quantity": 3,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 99,
+    "item_number": 99,
+    "code_article": "ART-ABD-0268-099",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "TROUSSE 3D GM SKY BHM 844-6",
+    "name_fr": "TROUSSE 3D GM SKY BHM 844-6",
+    "category": "Trousses",
+    "buyer": "Abdrahman",
+    "purchase_price": 425.0,
+    "sell_price": 531.25,
+    "quantity": 5,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 100,
+    "item_number": 100,
+    "code_article": "ART-ABD-0268-100",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "TROUSSE DJAM LOC IMPREMIE T-DJ2026",
+    "name_fr": "TROUSSE DJAM LOC IMPREMIE T-DJ2026",
+    "category": "Trousses",
+    "buyer": "Abdrahman",
+    "purchase_price": 185.0,
+    "sell_price": 231.25,
+    "quantity": 57,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 101,
+    "item_number": 101,
+    "code_article": "ART-ABD-0268-101",
+    "barcode": "6134757000717",
+    "barcodes": [
+      "6134757000717"
+    ],
+    "designation": "PROTEGE LIVRE ADHESIVE TRAS EXINE IS02005",
+    "name_fr": "PROTEGE LIVRE ADHESIVE TRAS EXINE IS02005",
+    "category": "Classement & Protèges",
+    "buyer": "Abdrahman",
+    "purchase_price": 230.0,
+    "sell_price": 287.5,
+    "quantity": 50,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 102,
+    "item_number": 102,
+    "code_article": "ART-ABD-0268-102",
+    "barcode": "6130610680522",
+    "barcodes": [
+      "6130610680522"
+    ],
+    "designation": "VALISE PLASTIQUE FABS 631...",
+    "name_fr": "VALISE PLASTIQUE FABS 631...",
+    "category": "Classement & Protèges",
+    "buyer": "Abdrahman",
+    "purchase_price": 328.0,
+    "sell_price": 410.0,
+    "quantity": 3,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 103,
+    "item_number": 103,
+    "code_article": "ART-ABD-0268-103",
+    "barcode": "6135509005066",
+    "barcodes": [
+      "6135509005066"
+    ],
+    "designation": "PATE A MODLER VERTEX VS1345",
+    "name_fr": "PATE A MODLER VERTEX VS1345",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 105.0,
+    "sell_price": 131.25,
+    "quantity": 30,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 104,
+    "item_number": 104,
+    "code_article": "ART-ABD-0268-104",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "PATE A MODLER POT EVEREST EV1452",
+    "name_fr": "PATE A MODLER POT EVEREST EV1452",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 235.0,
+    "sell_price": 293.75,
+    "quantity": 12,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 105,
+    "item_number": 105,
+    "code_article": "ART-ABD-0268-105",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "PATE A MODLER VERTEX VS1343",
+    "name_fr": "PATE A MODLER VERTEX VS1343",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 105.0,
+    "sell_price": 131.25,
+    "quantity": 24,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 106,
+    "item_number": 106,
+    "code_article": "ART-ABD-0268-106",
+    "barcode": "6135509006223",
+    "barcodes": [
+      "6135509006223"
+    ],
+    "designation": "PATE A MODLER VERTEX VS4043",
+    "name_fr": "PATE A MODLER VERTEX VS4043",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 115.0,
+    "sell_price": 143.75,
+    "quantity": 12,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 107,
+    "item_number": 107,
+    "code_article": "ART-ABD-0268-107",
+    "barcode": "6135509005134",
+    "barcodes": [
+      "6135509005134"
+    ],
+    "designation": "PATE A MODLER VERTEX VS1312",
+    "name_fr": "PATE A MODLER VERTEX VS1312",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 205.0,
+    "sell_price": 256.25,
+    "quantity": 10,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 108,
+    "item_number": 108,
+    "code_article": "ART-ABD-0268-108",
+    "barcode": "6132517616277",
+    "barcodes": [
+      "6132517616277"
+    ],
+    "designation": "PATE A MODLER GAINT G1627",
+    "name_fr": "PATE A MODLER GAINT G1627",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 115.0,
+    "sell_price": 143.75,
+    "quantity": 10,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 109,
+    "item_number": 109,
+    "code_article": "ART-ABD-0268-109",
+    "barcode": "6135509005127",
+    "barcodes": [
+      "6135509005127"
+    ],
+    "designation": "PATE A MODLER VERTEX VS1311",
+    "name_fr": "PATE A MODLER VERTEX VS1311",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 225.0,
+    "sell_price": 281.25,
+    "quantity": 5,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 110,
+    "item_number": 110,
+    "code_article": "ART-ABD-0268-110",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "PATE A MODLER VERTEX VS1372",
+    "name_fr": "PATE A MODLER VERTEX VS1372",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 85.0,
+    "sell_price": 106.25,
+    "quantity": 10,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 111,
+    "item_number": 111,
+    "code_article": "ART-ABD-0268-111",
+    "barcode": "6132517616260",
+    "barcodes": [
+      "6132517616260"
+    ],
+    "designation": "PATE A MODLER GAINT G1626",
+    "name_fr": "PATE A MODLER GAINT G1626",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 95.0,
+    "sell_price": 118.75,
+    "quantity": 10,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 112,
+    "item_number": 112,
+    "code_article": "ART-ABD-0268-112",
+    "barcode": "",
+    "barcodes": [],
+    "designation": "EQUERRE FLIXI VERTEX VS0157",
+    "name_fr": "EQUERRE FLIXI VERTEX VS0157",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 52.5,
+    "sell_price": 65.62,
+    "quantity": 36,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 113,
+    "item_number": 113,
+    "code_article": "ART-ABD-0268-113",
+    "barcode": "6942280402317",
+    "barcodes": [
+      "6942280402317"
+    ],
+    "designation": "EQUERRE FLEX EVEREST EV8013",
+    "name_fr": "EQUERRE FLEX EVEREST EV8013",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 35.0,
+    "sell_price": 43.75,
+    "quantity": 96,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  },
+  {
+    "item_no": 114,
+    "item_number": 114,
+    "code_article": "ART-ABD-0268-114",
+    "barcode": "6942280402331",
+    "barcodes": [
+      "6942280402331"
+    ],
+    "designation": "RAPPORTEUR FLEX EVEREST EV8014",
+    "name_fr": "RAPPORTEUR FLEX EVEREST EV8014",
+    "category": "Fournitures Scolaires",
+    "buyer": "Abdrahman",
+    "purchase_price": 35.0,
+    "sell_price": 43.75,
+    "quantity": 96,
+    "description": "Bon BL0268 - AL RIADH PAP (04/09/2026)"
+  }
+]

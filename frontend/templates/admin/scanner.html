@@ -720,7 +720,18 @@ function populateEditForm(p) {
   document.getElementById("edit-fast-panel").checked = Boolean(p.fast_panel);
   document.getElementById("edit-category").value = p.category || "Général";
 
-  selectOwner(p.buyer || "Bilel");
+  // Auto-select both Bilel and Abdrahman (or other owners) if product exists in both
+  if (p.auto_selected_buyers && p.auto_selected_buyers.length > 0) {
+    selectedOwners = [...p.auto_selected_buyers];
+    syncOwnerPillsUI();
+  } else {
+    selectOwner(p.buyer || "Bilel");
+  }
+
+  if (p.exists_in_both_bilel_and_abdrahman || (selectedOwners.includes("Bilel") && selectedOwners.includes("Abdrahman"))) {
+    showToast("🔗 Produit présent chez Bilel & Abdrahman : sélection automatique des deux gérants activée !", "info");
+  }
+
   calcMarginLive();
 
   // Scroll to edit form smoothly and focus price field

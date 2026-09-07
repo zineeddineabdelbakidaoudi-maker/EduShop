@@ -733,6 +733,63 @@ def scanner_lookup(q: str, db: Session = Depends(get_db), admin: User = Depends(
             default_sqty = ss["quantity"]
             break
 
+    # Detect all buyers who hold this product (by stock or matching product in DB)
+    matching_buyers = set()
+    b_curr = (prod.buyer or "Bilel").strip()
+    b_curr_low = b_curr.lower()
+    if "bil" in b_curr_low:
+        matching_buyers.add("Bilel")
+    elif "abd" in b_curr_low or "rahman" in b_curr_low:
+        matching_buyers.add("Abdrahman")
+    elif "houari" in b_curr_low:
+        matching_buyers.add("Houari")
+    else:
+        matching_buyers.add(b_curr)
+
+    # Check seller stocks with quantity > 0
+    for ss in sellers_info:
+        uname = ss["username"].lower()
+        if ss["quantity"] > 0:
+            if "bil" in uname:
+                matching_buyers.add("Bilel")
+            elif "abd" in uname or "rahman" in uname:
+                matching_buyers.add("Abdrahman")
+            elif "hou" in uname:
+                matching_buyers.add("Houari")
+
+    # Also search DB for products with same barcode under other buyers
+    clean_bc = (prod.barcode or "").strip()
+    if clean_bc:
+        other_bcs = db.query(Product).filter(
+            (Product.barcode == clean_bc) | (Product.barcode.like(f"%{clean_bc}%")),
+            Product.id != prod.id
+        ).all()
+        for op in other_bcs:
+            op_b = (op.buyer or "").lower()
+            if "bil" in op_b:
+                matching_buyers.add("Bilel")
+            elif "abd" in op_b or "rahman" in op_b:
+                matching_buyers.add("Abdrahman")
+            elif "houari" in op_b:
+                matching_buyers.add("Houari")
+
+    # Also check if same product name exists under other buyers
+    if prod.name_fr:
+        same_name_prods = db.query(Product).filter(
+            func.lower(Product.name_fr) == prod.name_fr.lower(),
+            Product.id != prod.id
+        ).all()
+        for op in same_name_prods:
+            op_b = (op.buyer or "").lower()
+            if "bil" in op_b:
+                matching_buyers.add("Bilel")
+            elif "abd" in op_b or "rahman" in op_b:
+                matching_buyers.add("Abdrahman")
+            elif "houari" in op_b:
+                matching_buyers.add("Houari")
+
+    exists_both = ("Bilel" in matching_buyers and "Abdrahman" in matching_buyers)
+
     return {
         "id": prod.id,
         "name_fr": prod.name_fr,
@@ -749,7 +806,9 @@ def scanner_lookup(q: str, db: Session = Depends(get_db), admin: User = Depends(
         "seller_stock_quantity": default_sqty,
         "default_seller_username": default_seller_name,
         "seller_stocks": sellers_info,
-        "total_stock": (prod.global_stock.quantity if prod.global_stock else 0) + sum(s["quantity"] for s in sellers_info)
+        "total_stock": (prod.global_stock.quantity if prod.global_stock else 0) + sum(s["quantity"] for s in sellers_info),
+        "auto_selected_buyers": list(matching_buyers),
+        "exists_in_both_bilel_and_abdrahman": exists_both,
     }
 
 @router.post("/scanner/save")
@@ -828,7 +887,7 @@ async def scanner_save_product(data: ScannerSaveRequest, db: Session = Depends(g
             if prod.barcode:
                 target_prod = db.query(Product).filter(
                     Product.buyer.ilike(f"{b_prefix}%"),
-                    Product.barcode == prod.barcode
+                    (Product.barcode == prod.barcode) | (Product.barcode.like(f"%{prod.barcode}%"))
                 ).first()
             if not target_prod and prod.name_fr:
                 target_prod = db.query(Product).filter(
@@ -844,6 +903,8 @@ async def scanner_save_product(data: ScannerSaveRequest, db: Session = Depends(g
                     target_prod.category = prod.category
                 if prod.barcode:
                     target_prod.barcode = prod.barcode
+                if prod.fast_panel is not None:
+                    target_prod.fast_panel = prod.fast_panel
                 db.commit()
                 try:
                     await manager.broadcast_all("product.updated", {"id": target_prod.id, "buyer": target_prod.buyer})
