@@ -1,0 +1,1722 @@
+[
+  {
+    "id": 189,
+    "code": "COLLESTICK36GEVERESTEV9036",
+    "name": "COLLESTICK36GEVERESTEV9036",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 48,
+    "expected_qty": 24,
+    "extra_qty_added": 24
+  },
+  {
+    "id": 822,
+    "code": "ART-H-0078",
+    "name": "TROUSSE 3 DPMEVERESTEV 91019",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 20,
+    "expected_qty": 10,
+    "extra_qty_added": 10
+  },
+  {
+    "id": 540,
+    "code": "TAILLECRAYONEXINEIS0064",
+    "name": "TAILLECRAYONEXINEIS0064",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 60,
+    "expected_qty": 30,
+    "extra_qty_added": 30
+  },
+  {
+    "id": 333,
+    "code": "COMPASMETALVERTEXVS0503",
+    "name": "COMPASMETALVERTEXVS0503",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 24,
+    "expected_qty": 12,
+    "extra_qty_added": 12
+  },
+  {
+    "id": 353,
+    "code": "COMPASBOITEEVRESTEV1542",
+    "name": "COMPASBOITEEVRESTEV1542",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 24,
+    "expected_qty": 12,
+    "extra_qty_added": 12
+  },
+  {
+    "id": 671,
+    "code": "NOTEADHESI400FTECHNO5150",
+    "name": "NOTEADHESI400FTECHNO5150",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 12,
+    "expected_qty": 6,
+    "extra_qty_added": 6
+  },
+  {
+    "id": 2309,
+    "code": "1068",
+    "name": "SAC A DOS FILLETE VERSAL VR-25793",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 14,
+    "expected_qty": 10,
+    "extra_qty_added": 4
+  },
+  {
+    "id": 2341,
+    "code": "ART-HOU-0265-008",
+    "name": "SAC A DOS LUX VERTEX VS3002",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 11,
+    "expected_qty": 7,
+    "extra_qty_added": 4
+  },
+  {
+    "id": 2392,
+    "code": "ART-ABD-0255-050",
+    "name": "STYLO KRISH X7",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 900,
+    "expected_qty": 300,
+    "extra_qty_added": 600
+  },
+  {
+    "id": 668,
+    "code": "MINIBOOK140P70GELHILLAL3099",
+    "name": "MINIBOOK140P70GELHILLAL3099",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 30,
+    "expected_qty": 15,
+    "extra_qty_added": 15
+  },
+  {
+    "id": 607,
+    "code": "7MMBLEUVERTEXVS5864",
+    "name": "STYLOEFFACABLE0.7MMBLEUVERTEXVS5864",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 72,
+    "expected_qty": 36,
+    "extra_qty_added": 36
+  },
+  {
+    "id": 1139,
+    "code": "ART-BIL-0211-027",
+    "name": "STYLO EFFACABLE 0.7 VERTEX VS1676",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 68,
+    "expected_qty": 34,
+    "extra_qty_added": 34
+  },
+  {
+    "id": 665,
+    "code": "MINIREGISTRLUXEXCELLESEP-0205",
+    "name": "MINIREGISTRLUXEXCELLESEP-0205",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 20,
+    "expected_qty": 10,
+    "extra_qty_added": 10
+  },
+  {
+    "id": 664,
+    "code": "NOTEPADA6200PALRAYANERNOTA60575",
+    "name": "NOTEPADA6200PALRAYANERNOTA60575",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 40,
+    "expected_qty": 20,
+    "extra_qty_added": 20
+  },
+  {
+    "id": 810,
+    "code": "ART-H-0066",
+    "name": "NOTEBOOKHELLOHL 003",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 10,
+    "expected_qty": 5,
+    "extra_qty_added": 5
+  },
+  {
+    "id": 680,
+    "code": "ART-0599",
+    "name": "KITJUTONBUCHETTEROD07.123",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 24,
+    "expected_qty": 12,
+    "extra_qty_added": 12
+  },
+  {
+    "id": 350,
+    "code": "COMPASSCOLVERTEXB12VS2115",
+    "name": "COMPASSCOLVERTEXB12VS2115",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 24,
+    "expected_qty": 12,
+    "extra_qty_added": 12
+  },
+  {
+    "id": 541,
+    "code": "TAIILECRAYONEVERESTEV1355",
+    "name": "TAIILECRAYONEVERESTEV1355",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 40,
+    "expected_qty": 20,
+    "extra_qty_added": 20
+  },
+  {
+    "id": 806,
+    "code": "ART-H-0062",
+    "name": "BLOCNOTEYAPAPYA 0134",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 10,
+    "expected_qty": 5,
+    "extra_qty_added": 5
+  },
+  {
+    "id": 803,
+    "code": "ART-H-0059",
+    "name": "COFFERETBLOCNOTEEVRESTEV 9204",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 16,
+    "expected_qty": 8,
+    "extra_qty_added": 8
+  },
+  {
+    "id": 1879,
+    "code": "ART-BIL-0199-029",
+    "name": "TAILLE CRAYON 2 US VERTEX VS5264",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 24,
+    "expected_qty": 24,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 1241,
+    "code": "ART-BIL-0191-004",
+    "name": "STYLO A BILLE B CARBONIX HAUSR TECHNO 77:",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 100,
+    "expected_qty": 50,
+    "extra_qty_added": 50
+  },
+  {
+    "id": 1244,
+    "code": "ART-BIL-0191-007",
+    "name": "STYLO A GEL PEARLZ HAUZR TECHNO 8284",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 100,
+    "expected_qty": 50,
+    "extra_qty_added": 50
+  },
+  {
+    "id": 1249,
+    "code": "ART-BIL-0191-012",
+    "name": "STYLO LUX CHROMA 24PCS VERSAL VR-923",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 48,
+    "expected_qty": 24,
+    "extra_qty_added": 24
+  },
+  {
+    "id": 1314,
+    "code": "ART-BIL-0191-076",
+    "name": "STYLO BLAK 1.0 TECHNO 70165",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 450,
+    "expected_qty": 300,
+    "extra_qty_added": 150
+  },
+  {
+    "id": 1354,
+    "code": "ART-BIL-0191-116",
+    "name": "STYLO A BILLE GLOW 1.0MM 4CL TECKNO 8618",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 100,
+    "expected_qty": 50,
+    "extra_qty_added": 50
+  },
+  {
+    "id": 1357,
+    "code": "ART-BIL-0191-119",
+    "name": "STYLO KRISH X7",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 2094,
+    "expected_qty": 1394,
+    "extra_qty_added": 700
+  },
+  {
+    "id": 1359,
+    "code": "ART-BIL-0191-121",
+    "name": "STYLO KRISH XDH",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 200,
+    "expected_qty": 100,
+    "extra_qty_added": 100
+  },
+  {
+    "id": 1381,
+    "code": "ART-BIL-0191-144",
+    "name": "STYLO A GEL XO 6COL HAUZR TECHNO 7715",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 100,
+    "expected_qty": 50,
+    "extra_qty_added": 50
+  },
+  {
+    "id": 1384,
+    "code": "ART-BIL-0191-147",
+    "name": "STYLO A BILLE WOODY HAUSR TECHNO 7800",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 100,
+    "expected_qty": 50,
+    "extra_qty_added": 50
+  },
+  {
+    "id": 339,
+    "code": "COMPASBOITEEVRESTEVI533",
+    "name": "COMPASBOITEEVRESTEVI533",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 48,
+    "expected_qty": 24,
+    "extra_qty_added": 24
+  },
+  {
+    "id": 220,
+    "code": "2IGVERTEXVS0350",
+    "name": "COLLESTICK 2IGVERTEXVS0350",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 48,
+    "expected_qty": 24,
+    "extra_qty_added": 24
+  },
+  {
+    "id": 178,
+    "code": "COLLESTICK21GTECHNO5875",
+    "name": "COLLESTICK21GTECHNO5875",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 96,
+    "expected_qty": 48,
+    "extra_qty_added": 48
+  },
+  {
+    "id": 146,
+    "code": "CORRECTEUR7MLEVERESTEV1004",
+    "name": "CORRECTEUR7MLEVERESTEV1004",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 96,
+    "expected_qty": 48,
+    "extra_qty_added": 48
+  },
+  {
+    "id": 195,
+    "code": "ART-0114",
+    "name": "COLLESTICK9GRNAS02.001",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 144,
+    "expected_qty": 48,
+    "extra_qty_added": 96
+  },
+  {
+    "id": 399,
+    "code": "MINIAGRAFEUSEEVERESTEV1650",
+    "name": "MINIAGRAFEUSEEVERESTEV1650",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 48,
+    "expected_qty": 24,
+    "extra_qty_added": 24
+  },
+  {
+    "id": 418,
+    "code": "AGRAFEUSEMETALEVERESTEV1640",
+    "name": "AGRAFEUSEMETALEVERESTEV1640",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 10,
+    "expected_qty": 5,
+    "extra_qty_added": 5
+  },
+  {
+    "id": 604,
+    "code": "CARNETSPIRAL70PEXCELLEEP-0142",
+    "name": "CARNETSPIRAL70PEXCELLEEP-0142",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 120,
+    "expected_qty": 60,
+    "extra_qty_added": 60
+  },
+  {
+    "id": 809,
+    "code": "ART-H-0065",
+    "name": "NOTEBOOKHELLOHL 014",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 20,
+    "expected_qty": 10,
+    "extra_qty_added": 10
+  },
+  {
+    "id": 666,
+    "code": "MINIREGISTRLUXEXCELLESEP-0206",
+    "name": "MINIREGISTRLUXEXCELLESEP-0206",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 20,
+    "expected_qty": 10,
+    "extra_qty_added": 10
+  },
+  {
+    "id": 1027,
+    "code": "1077",
+    "name": "SAC A DOS EVEREST EV2059",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 16,
+    "expected_qty": 12,
+    "extra_qty_added": 4
+  },
+  {
+    "id": 1036,
+    "code": "1075",
+    "name": "SAC A DOS EXINE IS03576",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 13,
+    "expected_qty": 14,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 1115,
+    "code": "ART-BIL-0211-003",
+    "name": "STYLO ROLLER ANGELIKO0.5MM VERTEX V164P",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 72,
+    "expected_qty": 36,
+    "extra_qty_added": 36
+  },
+  {
+    "id": 1127,
+    "code": "ART-BIL-0211-015",
+    "name": "STYLO A BILLE 4 CLR PASTELS VERTEX V166",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 72,
+    "expected_qty": 36,
+    "extra_qty_added": 36
+  },
+  {
+    "id": 1158,
+    "code": "ART-BIL-0211-046",
+    "name": "CRAYON NOIR BOIT DE 12 VERTEX V1170",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 144,
+    "expected_qty": 72,
+    "extra_qty_added": 72
+  },
+  {
+    "id": 684,
+    "code": "BUCHETTESPOTGIANTG1767",
+    "name": "BUCHETTESPOTGIANTG1767",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 80,
+    "expected_qty": 40,
+    "extra_qty_added": 40
+  },
+  {
+    "id": 408,
+    "code": "AGRAFEUSEMINI24/6TECHNO7894",
+    "name": "AGRAFEUSEMINI24/6TECHNO7894",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 48,
+    "expected_qty": 24,
+    "extra_qty_added": 24
+  },
+  {
+    "id": 160,
+    "code": "CORRECTEURTETEMET7MLTECKNO8448",
+    "name": "CORRECTEURTETEMET7MLTECKNO8448",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 96,
+    "expected_qty": 48,
+    "extra_qty_added": 48
+  },
+  {
+    "id": 168,
+    "code": "CORRECTEUR7MLVERTEXV1203",
+    "name": "CORRECTEUR7MLVERTEXV1203",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 96,
+    "expected_qty": 48,
+    "extra_qty_added": 48
+  },
+  {
+    "id": 413,
+    "code": "AGRAFES24/6VERTEX",
+    "name": "AGRAFES24/6VERTEX",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 90,
+    "expected_qty": 30,
+    "extra_qty_added": 60
+  },
+  {
+    "id": 669,
+    "code": "MINIBOOK140PPVCELASTIQUE70CRAYAN",
+    "name": "MINIBOOK140PPVCELASTIQUE70CRAYAN",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 40,
+    "expected_qty": 20,
+    "extra_qty_added": 20
+  },
+  {
+    "id": 289,
+    "code": "AQUARELLENOIRDE16EXINEIS0016",
+    "name": "AQUARELLENOIRDE16EXINEIS0016",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 24,
+    "expected_qty": 12,
+    "extra_qty_added": 12
+  },
+  {
+    "id": 1412,
+    "code": "ART-BIL-0212-028",
+    "name": "CARNET SP 192P 17/11CM EXCEL EP-0396",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 10,
+    "expected_qty": 5,
+    "extra_qty_added": 5
+  },
+  {
+    "id": 1417,
+    "code": "ART-BIL-0212-033",
+    "name": "NOTE PAD A6 200P ALRAYANE RNOTA6 0575",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 30,
+    "expected_qty": 15,
+    "extra_qty_added": 15
+  },
+  {
+    "id": 1434,
+    "code": "ART-BIL-0212-050",
+    "name": "PATE A MODLER POT EVEREST EV1446",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 34,
+    "expected_qty": 22,
+    "extra_qty_added": 12
+  },
+  {
+    "id": 1531,
+    "code": "ART-BIL-0212-147",
+    "name": "CAHIER ELHISSABE ATIAF H0509",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 50,
+    "expected_qty": 25,
+    "extra_qty_added": 25
+  },
+  {
+    "id": 192,
+    "code": "COLLESTICK36GREXINEIS13208",
+    "name": "COLLESTICK36GREXINEIS13208",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 24,
+    "expected_qty": 12,
+    "extra_qty_added": 12
+  },
+  {
+    "id": 180,
+    "code": "COLLESTICK09GEXINEIS13206",
+    "name": "6132525850601",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 96,
+    "expected_qty": 48,
+    "extra_qty_added": 48
+  },
+  {
+    "id": 414,
+    "code": "AGRAFEUSEVERTEXV1886",
+    "name": "AGRAFEUSEVERTEXV1886",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 8,
+    "expected_qty": 4,
+    "extra_qty_added": 4
+  },
+  {
+    "id": 407,
+    "code": "AGRAFEUSEMINI24/6TECHNO7893",
+    "name": "AGRAFEUSEMINI24/6TECHNO7893",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 48,
+    "expected_qty": 24,
+    "extra_qty_added": 24
+  },
+  {
+    "id": 764,
+    "code": "ART-H-0020",
+    "name": "POCHTDESSINA 4 BLA 120 GEXCELLESE\"P-0632",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 100,
+    "expected_qty": 50,
+    "extra_qty_added": 50
+  },
+  {
+    "id": 417,
+    "code": "ART-0336",
+    "name": "AGRAFEUSEMAGISKARB63.3",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 10,
+    "expected_qty": 5,
+    "extra_qty_added": 5
+  },
+  {
+    "id": 165,
+    "code": "CORRECTOUR7MLVERTEXVS1260",
+    "name": "CORRECTOUR7MLVERTEXVS1260",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 24,
+    "expected_qty": 12,
+    "extra_qty_added": 12
+  },
+  {
+    "id": 169,
+    "code": "CORRECTOUR7MLVERTEXVS1254",
+    "name": "CORRECTOUR7MLVERTEXVS1254",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 96,
+    "expected_qty": 48,
+    "extra_qty_added": 48
+  },
+  {
+    "id": 1808,
+    "code": "ART-BIL-0195-276",
+    "name": "TRACE LETTRE EXINE IS12008",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 48,
+    "expected_qty": 48,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 885,
+    "code": "ART-H-0141",
+    "name": "PROTEGECAHIEREVAVERTEXVS 0228",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 245,
+    "expected_qty": 250,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 161,
+    "code": "CORRECTEUR7MLVERTEXVS1212",
+    "name": "CORRECTEUR7MLVERTEXVS1212",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 92,
+    "expected_qty": 46,
+    "extra_qty_added": 46
+  },
+  {
+    "id": 210,
+    "code": "CRAYONCOUL12TRINOTECHNO5295",
+    "name": "CRAYONCOUL12TRINOTECHNO5295",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 35,
+    "expected_qty": 35,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 645,
+    "code": "BROSSEECOLPORTCRAIETECHNO9500",
+    "name": "BROSSEECOLPORTCRAIETECHNO9500",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 94,
+    "expected_qty": 47,
+    "extra_qty_added": 47
+  },
+  {
+    "id": 757,
+    "code": "ART-H-0013",
+    "name": "ARDOISEALUMD/FBL/VROD 03.011",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 49,
+    "expected_qty": 50,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 777,
+    "code": "ART-H-0033",
+    "name": "POCHETTEMILLIMETREVERTEXVP 064",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 59,
+    "expected_qty": 60,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 854,
+    "code": "ART-H-0110",
+    "name": "POCHETTEPPSCOLAIREXINEIB 0035",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 35,
+    "expected_qty": 36,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 855,
+    "code": "ART-H-0111",
+    "name": "POCHETTEZIPFANTAISEVERESTEV 1292",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 35,
+    "expected_qty": 36,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 890,
+    "code": "ART-H-0146",
+    "name": "PROTEGECAHIERTPTRANSP---VERTEXVS 0205",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 797,
+    "expected_qty": 800,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 941,
+    "code": "ART-H-0197",
+    "name": "CAHIER TP 80P S GM ELHILLAL 60C",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 299,
+    "expected_qty": 180,
+    "extra_qty_added": 119
+  },
+  {
+    "id": 194,
+    "code": "COLLESTICK2IGREXINEIS13209",
+    "name": "COLLESTICK2IGREXINEIS13209",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 48,
+    "expected_qty": 24,
+    "extra_qty_added": 24
+  },
+  {
+    "id": 193,
+    "code": "COLLESTICK15GREXINEIS13207",
+    "name": "COLLESTICK15GREXINEIS13207",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 48,
+    "expected_qty": 24,
+    "extra_qty_added": 24
+  },
+  {
+    "id": 403,
+    "code": "AGRAFEUSEBASTEL6/24NY1079",
+    "name": "AGRAFEUSEBASTEL6/24NY1079",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 20,
+    "expected_qty": 10,
+    "extra_qty_added": 10
+  },
+  {
+    "id": 144,
+    "code": "CORRECTEUR7MLEXINEIB55009",
+    "name": "CORRECTEUR7MLEXINEIB55009",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 96,
+    "expected_qty": 48,
+    "extra_qty_added": 48
+  },
+  {
+    "id": 937,
+    "code": "ART-H-0193",
+    "name": "CAHIER TP 64PF PIQ ELHILLAL 70G 140C",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 414,
+    "expected_qty": 280,
+    "extra_qty_added": 134
+  },
+  {
+    "id": 917,
+    "code": "ART-H-0173",
+    "name": "CAHIER 64P ALRAYANE 160",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 1594,
+    "expected_qty": 1600,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 918,
+    "code": "ART-H-0174",
+    "name": "CAHIER 96P ALRAYANE 120",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 1194,
+    "expected_qty": 1200,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 934,
+    "code": "ART-H-0190",
+    "name": "CAHIER 120 P P.F ELHILLAL 70G 90C",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 270,
+    "expected_qty": 450,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 924,
+    "code": "ART-H-0180",
+    "name": "CAHIER 192 P SP COV-CART 56C RAYAN",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 280,
+    "expected_qty": 448,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 955,
+    "code": "ART-H-0211",
+    "name": "CAHIER 96P P.F PRO ELHILLAL 60G 110C",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 330,
+    "expected_qty": 550,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 525,
+    "code": "TAILLECRAYON2USAGDELI39768",
+    "name": "TAILLECRAYON2USAGDELI39768",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 24,
+    "expected_qty": 48,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 522,
+    "code": "TAILLECRAYONRESERV2USAGEDELIH558",
+    "name": "TAILLECRAYONRESERV2USAGEDELIH558",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 12,
+    "expected_qty": 24,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 421,
+    "code": "GOMMEBLANCHMMDELIH00210",
+    "name": "GOMMEBLANCHMMDELIH00210",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 40,
+    "expected_qty": 80,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 1533,
+    "code": "ART-BIL-0195-001",
+    "name": "COLOR MAX 12GM PRO METAL VERTEX VS0486",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 24,
+    "expected_qty": 12,
+    "extra_qty_added": 12
+  },
+  {
+    "id": 1557,
+    "code": "ART-BIL-0195-025",
+    "name": "CRAYON COUL 06PM EXINE IS01019",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 216,
+    "expected_qty": 144,
+    "extra_qty_added": 72
+  },
+  {
+    "id": 1628,
+    "code": "ART-BIL-0195-096",
+    "name": "COMPAS ECOLIER G0684",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 96,
+    "expected_qty": 48,
+    "extra_qty_added": 48
+  },
+  {
+    "id": 1664,
+    "code": "ART-BIL-0195-132",
+    "name": "FEUTRE POCHE DE 06 COL CLEO CL102301-06",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 54,
+    "expected_qty": 27,
+    "extra_qty_added": 27
+  },
+  {
+    "id": 155,
+    "code": "CORRETEURSTYLO12MLDELIH10490",
+    "name": "CORRETEURSTYLO12MLDELIH10490",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 48,
+    "expected_qty": 24,
+    "extra_qty_added": 24
+  },
+  {
+    "id": 158,
+    "code": "CORRECTOUR7MLVERTEXVS1262",
+    "name": "CORRECTOUR7MLVERTEXVS1262",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 48,
+    "expected_qty": 24,
+    "extra_qty_added": 24
+  },
+  {
+    "id": 401,
+    "code": "KITMINIAGRAFEUSEEVERESTEV1614",
+    "name": "KITMINIAGRAFEUSEEVERESTEV1614",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 20,
+    "expected_qty": 10,
+    "extra_qty_added": 10
+  },
+  {
+    "id": 152,
+    "code": "CORECTEURETETEMETTECHNO3630",
+    "name": "CORECTEURETETEMETTECHNO3630",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 48,
+    "expected_qty": 24,
+    "extra_qty_added": 24
+  },
+  {
+    "id": 886,
+    "code": "ART-H-0142",
+    "name": "PROTEGECAHIERPAT-PVCVERTEXVS 0227",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 796,
+    "expected_qty": 400,
+    "extra_qty_added": 396
+  },
+  {
+    "id": 334,
+    "code": "COMPASBOITEEVRESTEVI538",
+    "name": "COMPASBOITEEVRESTEVI538",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 24,
+    "expected_qty": 24,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 429,
+    "code": "BOIT24VERTEXVS5022",
+    "name": "GOMME BOIT24VERTEXVS5022",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 24,
+    "expected_qty": 48,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 428,
+    "code": "GOMMEBOIT24VERTEXVS5014",
+    "name": "GOMMEBOIT24VERTEXVS5014",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 24,
+    "expected_qty": 24,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 431,
+    "code": "GOMMEBLANCHE30EVERESTEV2541",
+    "name": "GOMMEBLANCHE30EVERESTEV2541",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 60,
+    "expected_qty": 120,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 435,
+    "code": "GOMMEBLANPM30PVERTEXV1502",
+    "name": "GOMMEBLANPM30PVERTEXV1502",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 60,
+    "expected_qty": 120,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 430,
+    "code": "GOMMEBOIT30VERTEXVS5016",
+    "name": "GOMMEBOIT30VERTEXVS5016",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 30,
+    "expected_qty": 60,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 449,
+    "code": "GOMMESCOLAIREPM45PVERTEX",
+    "name": "GOMMESCOLAIREPM45PVERTEX",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 135,
+    "expected_qty": 270,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 493,
+    "code": "TAILLECRAYONEVERESTEV1324",
+    "name": "GOMME+TAILLECRAYONEVERESTEV1324",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 12,
+    "expected_qty": 12,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 526,
+    "code": "GOMMEOBLIQUE36PCSVERTEXVS5004",
+    "name": "GOMMEOBLIQUE36PCSVERTEXVS5004",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 36,
+    "expected_qty": 72,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 651,
+    "code": "BROSSETABLEAUMULTICOUCHNY2017NY",
+    "name": "BROSSETABLEAUMULTICOUCHNY2017NY",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 24,
+    "expected_qty": 12,
+    "extra_qty_added": 12
+  },
+  {
+    "id": 663,
+    "code": "NOTEPADA5200PALRAYANERNOTA50582",
+    "name": "NOTEPADA5200PALRAYANERNOTA50582",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 29,
+    "expected_qty": 15,
+    "extra_qty_added": 14
+  },
+  {
+    "id": 658,
+    "code": "BROSSEECOLIERPMVERTEXVS5521",
+    "name": "BROSSEECOLIERPMVERTEXVS5521",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 144,
+    "expected_qty": 72,
+    "extra_qty_added": 72
+  },
+  {
+    "id": 648,
+    "code": "BROSSEECOLIERVERSALVR-1567",
+    "name": "BROSSEECOLIERVERSALVR-1567",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 96,
+    "expected_qty": 48,
+    "extra_qty_added": 48
+  },
+  {
+    "id": 653,
+    "code": "BROSSEPORTECRAIEXZML2000XZ",
+    "name": "BROSSEPORTECRAIEXZML2000XZ",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 48,
+    "expected_qty": 24,
+    "extra_qty_added": 24
+  },
+  {
+    "id": 656,
+    "code": "BROSSEECOLP-MXZML2005",
+    "name": "BROSSEECOLP-MXZML2005",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 96,
+    "expected_qty": 48,
+    "extra_qty_added": 48
+  },
+  {
+    "id": 650,
+    "code": "BROSSEPORTECRAIEEVERESTEV2508",
+    "name": "BROSSEPORTECRAIEEVERESTEV2508",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 96,
+    "expected_qty": 48,
+    "extra_qty_added": 48
+  },
+  {
+    "id": 447,
+    "code": "ART-0366",
+    "name": "GOMMEB20RS04.200",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 40,
+    "expected_qty": 80,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 756,
+    "code": "ART-H-0012",
+    "name": "ARDOISEALUMD/FBL/TRROD 03.010",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 150,
+    "expected_qty": 50,
+    "extra_qty_added": 100
+  },
+  {
+    "id": 821,
+    "code": "ART-H-0077",
+    "name": "TROUSSECRISTALCR 1907",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 38,
+    "expected_qty": 24,
+    "extra_qty_added": 14
+  },
+  {
+    "id": 808,
+    "code": "ART-H-0064",
+    "name": "MYDIARYBOOK 17*22 EXCELEP-0499",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 15,
+    "expected_qty": 5,
+    "extra_qty_added": 10
+  },
+  {
+    "id": 802,
+    "code": "ART-H-0058",
+    "name": "COFFERETBLOCNOTEEVRESTEV 9218",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 20,
+    "expected_qty": 10,
+    "extra_qty_added": 10
+  },
+  {
+    "id": 788,
+    "code": "ART-H-0044",
+    "name": "REGISTRE 17*22 SPEXCELLESEP-0203",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 25,
+    "expected_qty": 15,
+    "extra_qty_added": 10
+  },
+  {
+    "id": 815,
+    "code": "ART-H-0071",
+    "name": "AGENDALUXRODESS 2413",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 22,
+    "expected_qty": 12,
+    "extra_qty_added": 10
+  },
+  {
+    "id": 790,
+    "code": "ART-H-0046",
+    "name": "REGISTRE 17*22 SPIRALELHILLAL 36 CHR 17*22",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 10,
+    "expected_qty": 10,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 320,
+    "code": "MARQUEURSKETCH2TETDELHM106-24",
+    "name": "MARQUEURSKETCH2TETDELHM106-24",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 2,
+    "expected_qty": 2,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 833,
+    "code": "ART-H-0089",
+    "name": "TROUSSEECOLIER 3 COLCARRVERTEXVS 3730",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 36,
+    "expected_qty": 12,
+    "extra_qty_added": 24
+  },
+  {
+    "id": 859,
+    "code": "ART-H-0115",
+    "name": "POCHETTEPPPOIGNETVEREVERESTEV 1204",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 20,
+    "expected_qty": 20,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 883,
+    "code": "ART-H-0139",
+    "name": "PROTEGECAHIERCRISTALEVERESTEV 1442",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 4075,
+    "expected_qty": 1875,
+    "extra_qty_added": 2200
+  },
+  {
+    "id": 870,
+    "code": "ART-H-0126",
+    "name": "TROUSSEECOLRS 06.112",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 24,
+    "expected_qty": 8,
+    "extra_qty_added": 16
+  },
+  {
+    "id": 874,
+    "code": "ART-H-0130",
+    "name": "TROUSSE 3 D+CALCULATRICEEVERESTEV 91030",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 7,
+    "expected_qty": 7,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 893,
+    "code": "ART-H-0149",
+    "name": "PROTEGELIVREVERTEXVS 0214",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 900,
+    "expected_qty": 300,
+    "extra_qty_added": 600
+  },
+  {
+    "id": 875,
+    "code": "ART-H-0131",
+    "name": "TROUSSEECORONDEEVERESTEV 91006",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 69,
+    "expected_qty": 9,
+    "extra_qty_added": 60
+  },
+  {
+    "id": 882,
+    "code": "ART-H-0138",
+    "name": "PROTEGECAHIERARDITECPCARD",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 4850,
+    "expected_qty": 2900,
+    "extra_qty_added": 1950
+  },
+  {
+    "id": 919,
+    "code": "ART-H-0175",
+    "name": "CAHIER 120P RAYANE 100",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 993,
+    "expected_qty": 1000,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 921,
+    "code": "ART-H-0177",
+    "name": "CAHIER TP 64P PM ALRAYANE 160",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 478,
+    "expected_qty": 800,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 931,
+    "code": "ART-H-0187",
+    "name": "REGISTRE 3 MAINRAYANI 8 R",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 36,
+    "expected_qty": 36,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 448,
+    "code": "TAILLECRAYONEXINEIS05120",
+    "name": "GOMME+TAILLECRAYONEXINEIS05120",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 16,
+    "expected_qty": 16,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 889,
+    "code": "ART-H-0145",
+    "name": "PROTEGCAHIERTPCRISTALEVERESTEV 1243",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 2250,
+    "expected_qty": 1350,
+    "extra_qty_added": 900
+  },
+  {
+    "id": 920,
+    "code": "ART-H-0176",
+    "name": "CAHIER 192P PIQUE AL RAYANE 72",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 359,
+    "expected_qty": 720,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 950,
+    "code": "ART-H-0206",
+    "name": "CAHIER 200 PN/BGF 5*SELHILLAL 20 C",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 100,
+    "expected_qty": 100,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 949,
+    "code": "ART-H-0205",
+    "name": "CAHIER 288P N/B A4 SEYES ELHILLAL 14C",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 27,
+    "expected_qty": 28,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 807,
+    "code": "ART-H-0063",
+    "name": "NOTEBOOKA 5 SPRLUXVISIONPP-0.00",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 23,
+    "expected_qty": 5,
+    "extra_qty_added": 18
+  },
+  {
+    "id": 900,
+    "code": "ART-H-0156",
+    "name": "PROTEGELIVREADHESIVETRASEXINEIS 02005",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 49,
+    "expected_qty": 50,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 873,
+    "code": "ART-H-0129",
+    "name": "TROUSSE 3 DGMSKYBHM 844-5",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 9,
+    "expected_qty": 10,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 942,
+    "code": "ART-H-0198",
+    "name": "CAHIER 192P SP P.F ELHILLAL 70G 56C HC19",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 280,
+    "expected_qty": 280,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 935,
+    "code": "ART-H-0191",
+    "name": "CAHIER 120P P.F SP ELHILLAL 90C",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 180,
+    "expected_qty": 180,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 940,
+    "code": "ART-H-0196",
+    "name": "CAHIER TP 120P GF PIQ ELHILLAL 70G 45C",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 135,
+    "expected_qty": 90,
+    "extra_qty_added": 45
+  },
+  {
+    "id": 927,
+    "code": "ART-H-0183",
+    "name": "CAHIER 288 P RAYANE COV-PAP 40",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 200,
+    "expected_qty": 320,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 915,
+    "code": "ART-H-0171",
+    "name": "CAHIER 32P ALRAYANE 280",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 280,
+    "expected_qty": 280,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 922,
+    "code": "ART-H-0178",
+    "name": "CAHIER TP 64 P GM PIQ ALRAYANE 72",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 216,
+    "expected_qty": 360,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 933,
+    "code": "ART-H-0189",
+    "name": "COPIE DOUBLE 96P 120C AL RAYANE",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 120,
+    "expected_qty": 120,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 932,
+    "code": "ART-H-0188",
+    "name": "REGISTRE 4 MAIN ALRAYANE 14",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 14,
+    "expected_qty": 14,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 928,
+    "code": "ART-H-0184",
+    "name": "CAHIER 288 P SPIRA LPVC RAYAN 40",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 200,
+    "expected_qty": 320,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 929,
+    "code": "ART-H-0185",
+    "name": "CAHIER 288P CC COLLE ALRAYANE 46",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 230,
+    "expected_qty": 230,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 926,
+    "code": "ART-H-0182",
+    "name": "CAHIER 192P PM CC COLLE ALRAYANE 66",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 198,
+    "expected_qty": 330,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 956,
+    "code": "ART-H-0212",
+    "name": "CAHIER 96P POLY-PRO SPIRAL HILLAL 108C",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 216,
+    "expected_qty": 216,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 944,
+    "code": "ART-H-0200",
+    "name": "CAHIER 192P N/B 17/22 ELHILLAL 36C",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 108,
+    "expected_qty": 180,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 957,
+    "code": "ART-H-0213",
+    "name": "CAHIER 300P N/B GF 5*5 ELHILLAL 14C",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 70,
+    "expected_qty": 70,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 946,
+    "code": "ART-H-0202",
+    "name": "CAHIER 288P SP P.F ELHILLAL 40C",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 200,
+    "expected_qty": 200,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 916,
+    "code": "ART-H-0172",
+    "name": "CAHIER 48P ALRAYANE 210",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 420,
+    "expected_qty": 630,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 659,
+    "code": "PORMARQVISION4486",
+    "name": "BROSSETABLEAU+PORMARQVISION4486",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 24,
+    "expected_qty": 12,
+    "extra_qty_added": 12
+  },
+  {
+    "id": 649,
+    "code": "BROSSET-PORTMARQUVERTEXVS5520",
+    "name": "BROSSET-PORTMARQUVERTEXVS5520",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 48,
+    "expected_qty": 24,
+    "extra_qty_added": 24
+  },
+  {
+    "id": 344,
+    "code": "COMPASECOLIERPLASIQUEVERSALVR-148",
+    "name": "COMPASECOLIERPLASIQUEVERSALVR-148",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 46,
+    "expected_qty": 24,
+    "extra_qty_added": 22
+  },
+  {
+    "id": 758,
+    "code": "ART-H-0014",
+    "name": "FEUILLESMOBILEDESSINHILLALHFMDES 25 F",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 100,
+    "expected_qty": 60,
+    "extra_qty_added": 40
+  },
+  {
+    "id": 986,
+    "code": "ART-H-0121",
+    "name": "POCHETTETROUSSEA 6 YAPAPYA 34157",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 33,
+    "expected_qty": 8,
+    "extra_qty_added": 25
+  },
+  {
+    "id": 925,
+    "code": "ART-H-0181",
+    "name": "CAHIER 192 P SPIRAL PVC 56C RAYAN",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 278,
+    "expected_qty": 448,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 948,
+    "code": "ART-H-0204",
+    "name": "CAHIER 288P PM NOTE BOOK ELHILLAL 28C",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 139,
+    "expected_qty": 140,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 923,
+    "code": "ART-H-0179",
+    "name": "CAHIER TP 96 GM PIQUEE RAYAN 54C",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 263,
+    "expected_qty": 270,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 2592,
+    "code": "ART-949121",
+    "name": "PROTEGECAHIERNEONVERTEXVS 0266",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 0,
+    "expected_qty": 200,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 2568,
+    "code": "ART-519296",
+    "name": "TROUSSE 3 DPMEVERESTEV 91019",
+    "current_buyer": "Houari",
+    "expected_buyer": "Houari",
+    "current_qty": 0,
+    "expected_qty": 10,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 2573,
+    "code": "ART-204386",
+    "name": "COFFERETBLOCNOTEEVRESTEV 9204",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 0,
+    "expected_qty": 8,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 2590,
+    "code": "ART-004009",
+    "name": "TROUSSECRISTALCR 11034",
+    "current_buyer": "Bilel",
+    "expected_buyer": "Houari",
+    "current_qty": 0,
+    "expected_qty": 5,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 2575,
+    "code": "ART-345716",
+    "name": "NOTEBOOKHELLOHL 014",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 0,
+    "expected_qty": 10,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 2571,
+    "code": "ART-777595",
+    "name": "BLOCNOTEYAPAPYA 0134",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 0,
+    "expected_qty": 5,
+    "extra_qty_added": 0
+  },
+  {
+    "id": 2581,
+    "code": "ART-285131",
+    "name": "NOTEBOOKHELLOHL 003",
+    "current_buyer": "Abdrahman",
+    "expected_buyer": "Houari",
+    "current_qty": 0,
+    "expected_qty": 5,
+    "extra_qty_added": 0
+  }
+]

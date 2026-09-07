@@ -108,9 +108,29 @@ class ProductUpdate(BaseModel):
 from api.websocket import manager
 
 def product_to_admin_dict(p: Product) -> dict:
-    tot_stock = (p.global_stock.quantity if p.global_stock else 0)
+    g_qty = (p.global_stock.quantity if p.global_stock else 0)
+    b_low = (p.buyer or "bilel").lower().strip()
+    s_qty = 0
     if hasattr(p, 'seller_stock') and p.seller_stock:
-        tot_stock += sum(ss.quantity for ss in p.seller_stock if ss.quantity > 0)
+        seen_sellers = set()
+        for ss in p.seller_stock:
+            if ss.quantity <= 0:
+                continue
+            s_uname = (ss.seller.username if ss.seller else "").lower().strip()
+            # Strict isolation: only count seller stock belonging to this product's buyer
+            if b_low.startswith("hou") and s_uname.startswith("hou"):
+                s_qty += ss.quantity
+            elif b_low.startswith("bil") and s_uname.startswith("bil"):
+                s_qty += ss.quantity
+            elif b_low.startswith("abd") and (s_uname.startswith("abd") or s_uname.startswith("abde")):
+                # Avoid counting both abderahman and abdrahman for the same physical person
+                if "abd" not in seen_sellers:
+                    s_qty += ss.quantity
+                    seen_sellers.add("abd")
+            elif not (b_low.startswith("hou") or b_low.startswith("bil") or b_low.startswith("abd")):
+                s_qty += ss.quantity
+
+    tot_stock = g_qty + s_qty
     return {
         "id": p.id, "code_article": p.code_article,
         "barcode": p.barcode,
@@ -122,7 +142,7 @@ def product_to_admin_dict(p: Product) -> dict:
         "fast_panel": bool(p.fast_panel),
         "created_at": p.created_at,
         "global_stock_quantity": tot_stock,
-        "seller_stock_quantity": tot_stock,
+        "seller_stock_quantity": s_qty,
         "stock_qty": tot_stock,
         "quantity": tot_stock,
     }
@@ -522,16 +542,24 @@ def batch_import_products(items: list[dict], db: Session = Depends(get_db), admi
         # KEY RULE: Same product name with DIFFERENT buyer = NEW separate product
         # (Houari and Bilel can each own the same product independently)
         existing = None
+        b_val_clean = buyer_val.lower().strip()
         if prod_id:
             existing = db.query(Product).filter(Product.id == int(prod_id)).first()
         if not existing and code:
-            existing = db.query(Product).filter(Product.code_article == code).first()
+            existing = db.query(Product).filter(
+                Product.code_article == code,
+                func.lower(Product.buyer) == b_val_clean
+            ).first()
         if not existing and name_fr:
             # Match ONLY if same name AND same buyer — different gérant = different product
             existing = db.query(Product).filter(
-                Product.name_fr == name_fr,
-                Product.buyer == buyer_val
+                func.lower(Product.name_fr) == name_fr.lower().strip(),
+                func.lower(Product.buyer) == b_val_clean
             ).first()
+            
+        if existing and existing.buyer and existing.buyer.lower().strip() != b_val_clean:
+            # SAFETY GUARD: Never overwrite another buyer's product!
+            existing = None
             
         if existing:
             # ── AUTO-WRITE / UPDATE EXISTING PRODUCT ─────────────────────────

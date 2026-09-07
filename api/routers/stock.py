@@ -777,3 +777,180 @@ def transfer_stock_by_bon(data: TransferByBonRequest, db: Session = Depends(get_
         "total_units": total_units
     }
 
+@router.post("/restore-houari-and-split")
+def restore_houari_and_split(
+    payload: Optional[dict] = None,
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_admin)
+):
+    """
+    Restores all Houari products back to buyer='Houari', restores their expected invoice quantities
+    in SellerStock for seller 'houarii' (ID 7), moves any overlapping stock of other sellers (Bilel, Abdrahman)
+    into their own separate product rows so NO stock is lost, and cleans cross-seller contamination.
+    """
+    import random
+
+    items = []
+    if payload and isinstance(payload, dict) and "items" in payload:
+        items = payload["items"]
+    elif payload and isinstance(payload, list):
+        items = payload
+    else:
+        cur_dir = Path(__file__).resolve().parent.parent.parent
+        possible_paths = [
+            cur_dir / "data_bons" / "houari_restoration_data.json",
+            Path("data_bons/houari_restoration_data.json"),
+            Path("houari_restoration_data.json"),
+        ]
+        for p in possible_paths:
+            if p.exists():
+                try:
+                    with open(p, "r", encoding="utf-8") as f:
+                        items = json.load(f)
+                    break
+                except Exception:
+                    pass
+
+    if not items:
+        raise HTTPException(400, "Aucune donnée de restauration trouvée.")
+
+    houari_user = db.query(User).filter(func.lower(User.username) == "houarii").first()
+    bilel_user = db.query(User).filter(func.lower(User.username) == "bilel").first()
+    abd_user = db.query(User).filter(func.lower(User.username) == "abderahman").first()
+    abd_dup = db.query(User).filter(func.lower(User.username) == "abdrahman").first()
+
+    if not houari_user:
+        raise HTTPException(404, "Vendeur 'houarii' (ID 7) introuvable dans la base.")
+
+    restored_houari_count = 0
+    preserved_bilel_count = 0
+    preserved_abd_count = 0
+    moved_stock_units = 0
+
+    for item in items:
+        pid = item.get("id")
+        expected_qty = int(item.get("expected_qty", 0))
+
+        prod = db.query(Product).options(joinedload(Product.global_stock)).filter(Product.id == pid).first()
+        if not prod:
+            continue
+
+        # 1. Restore product buyer to Houari
+        prod.buyer = "Houari"
+
+        # 2. Houari stock in caisse (seller 7)
+        h_ss = db.query(SellerStock).filter_by(seller_id=houari_user.id, product_id=prod.id).first()
+        if h_ss:
+            h_ss.quantity = expected_qty
+        else:
+            h_ss = SellerStock(seller_id=houari_user.id, product_id=prod.id, quantity=expected_qty)
+            db.add(h_ss)
+
+        # Set Houari GlobalStock to 0 (all stock is active in caisse)
+        if prod.global_stock:
+            prod.global_stock.quantity = 0
+        else:
+            db.add(GlobalStock(product_id=prod.id, quantity=0))
+
+        # 3. Check for any other sellers attached to this Houari product
+        other_sstocks = db.query(SellerStock).filter(
+            SellerStock.product_id == prod.id,
+            SellerStock.seller_id != houari_user.id
+        ).all()
+
+        for oss in other_sstocks:
+            qty_to_move = oss.quantity or 0
+            if qty_to_move > 0:
+                if bilel_user and oss.seller_id == bilel_user.id:
+                    t_buyer = "Bilel"
+                    t_seller_id = bilel_user.id
+                elif (abd_user and oss.seller_id == abd_user.id) or (abd_dup and oss.seller_id == abd_dup.id):
+                    t_buyer = "Abdrahman"
+                    t_seller_id = abd_user.id
+                else:
+                    t_buyer = "Bilel"
+                    t_seller_id = oss.seller_id
+
+                target_prod = None
+                if prod.barcode:
+                    target_prod = db.query(Product).filter(
+                        Product.id != prod.id,
+                        func.lower(Product.buyer).startswith(t_buyer[:3].lower()),
+                        Product.barcode == prod.barcode
+                    ).first()
+                if not target_prod and prod.name_fr:
+                    target_prod = db.query(Product).filter(
+                        Product.id != prod.id,
+                        func.lower(Product.buyer).startswith(t_buyer[:3].lower()),
+                        func.lower(Product.name_fr) == prod.name_fr.lower().strip()
+                    ).first()
+
+                if not target_prod:
+                    prefix = "ART-BIL" if t_buyer == "Bilel" else "ART-ABD"
+                    code_gen = f"{prefix}-{random.randint(10000, 99999)}"
+                    while db.query(Product).filter(Product.code_article == code_gen).first():
+                        code_gen = f"{prefix}-{random.randint(10000, 99999)}"
+
+                    target_prod = Product(
+                        code_article=code_gen,
+                        barcode=prod.barcode,
+                        name_fr=prod.name_fr,
+                        name_ar=prod.name_ar,
+                        category=prod.category or "Général",
+                        purchase_price=prod.purchase_price or 0.0,
+                        sell_price=prod.sell_price or 0.0,
+                        min_quantity=prod.min_quantity or 5,
+                        description=f"Article {t_buyer} (séparé de Houari)",
+                        buyer=t_buyer,
+                        fast_panel=prod.fast_panel or False
+                    )
+                    db.add(target_prod)
+                    db.flush()
+                    db.add(GlobalStock(product_id=target_prod.id, quantity=0))
+
+                t_ss = db.query(SellerStock).filter_by(seller_id=t_seller_id, product_id=target_prod.id).first()
+                if t_ss:
+                    t_ss.quantity += qty_to_move
+                else:
+                    t_ss = SellerStock(seller_id=t_seller_id, product_id=target_prod.id, quantity=qty_to_move)
+                    db.add(t_ss)
+
+                if t_buyer == "Bilel":
+                    preserved_bilel_count += 1
+                else:
+                    preserved_abd_count += 1
+                moved_stock_units += qty_to_move
+
+            db.delete(oss)
+
+        restored_houari_count += 1
+
+    # 4. Clean duplicate seller 5 ('abdrahman') stocks to avoid double-counting Abdrahman
+    cleaned_dup_count = 0
+    if abd_dup:
+        dup_stocks = db.query(SellerStock).filter(SellerStock.seller_id == abd_dup.id).all()
+        cleaned_dup_count = len(dup_stocks)
+        for ds in dup_stocks:
+            db.delete(ds)
+
+    # 5. Clean any invalid seller 7 ('houarii') stock attached to products belonging to Bilel or Abdrahman
+    wrong_h_stocks = db.query(SellerStock).join(Product, Product.id == SellerStock.product_id)\
+        .filter(SellerStock.seller_id == houari_user.id, ~Product.buyer.ilike("hou%")).all()
+    cleaned_wrong_h_count = len(wrong_h_stocks)
+    for whs in wrong_h_stocks:
+        db.delete(whs)
+
+    db.commit()
+
+    return {
+        "status": "success",
+        "message": f"Restauration terminée : {restored_houari_count} produits Houari restaurés avec succès.",
+        "restored_houari_count": restored_houari_count,
+        "preserved_bilel_count": preserved_bilel_count,
+        "preserved_abd_count": preserved_abd_count,
+        "moved_stock_units": moved_stock_units,
+        "cleaned_dup_seller_stocks": cleaned_dup_count,
+        "cleaned_wrong_houari_stocks": cleaned_wrong_h_count
+    }
+
+
