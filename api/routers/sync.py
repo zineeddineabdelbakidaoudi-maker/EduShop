@@ -61,6 +61,24 @@ class ProgressSnapshotRequest(BaseModel):
     total_capital: Optional[float] = 0.0
 
 
+def is_seller_match(canonical_buyer: str, username: str) -> bool:
+    b = (canonical_buyer or "").lower()
+    u = (username or "").lower()
+    if "hou" in b and "hou" in u: return True
+    if "bil" in b and "bil" in u: return True
+    if "abd" in b and "abd" in u: return True
+    return False
+
+
+def resolve_canonical_seller(raw_name: str):
+    k = (raw_name or "").lower().strip()
+    if "hou" in k:
+        return "Houari", "houarii"
+    elif "abd" in k:
+        return "Abdrahman", "abderahman"
+    return "Bilel", "bilel"
+
+
 @router.get("/pull")
 def sync_pull(db: Session = Depends(get_db), seller: User = Depends(require_seller)):
     """Seller pulls latest assigned products & stock quantities from server."""
@@ -167,15 +185,6 @@ async def sync_push(data: PushRequest, db: Session = Depends(get_db), seller: Us
     }
 
 
-def resolve_canonical_seller(raw_name: str):
-    k = (raw_name or "").lower().strip()
-    if "hou" in k:
-        return "Houari", "houarii"
-    elif "abd" in k:
-        return "Abdrahman", "abderahman"
-    return "Bilel", "bilel"
-
-
 @router.post("/progress-snapshot")
 async def receive_progress_snapshot(
     data: ProgressSnapshotRequest,
@@ -190,14 +199,16 @@ async def receive_progress_snapshot(
     canonical_name, canonical_username = resolve_canonical_seller(data.seller)
 
     # Find or verify the target user
-    target_user = db.query(User).filter(User.username.ilike(f"%{canonical_username}%")).first()
-    if not target_user:
-        target_user = db.query(User).filter(User.username.ilike(f"%{canonical_name}%")).first()
+    target_user = None
+    all_users = db.query(User).all()
+    for u in all_users:
+        if is_seller_match(canonical_name, u.username):
+            target_user = u
+            break
     if not target_user:
         target_user = current_user
 
-    other_users = db.query(User).filter(User.id != target_user.id).all()
-    other_user_ids = [u.id for u in other_users]
+    other_user_ids = [u.id for u in all_users if u.id != target_user.id]
 
     updated_count = 0
     total_qty = 0
@@ -230,6 +241,13 @@ async def receive_progress_snapshot(
         elif item_name and item_name in name_map:
             p = name_map[item_name]
 
+        is_divers = (
+            item_code.startswith("ART-DIVERS") or
+            item_bar.startswith("DIVERS") or
+            (item.category or "").strip().lower() == "divers" or
+            item.stock_qty >= 100000
+        )
+
         if not p:
             p = Product(
                 code_article=item.code_article or f"ART-{canonical_name[:3].upper()}-{datetime.utcnow().strftime('%M%S%f')}",
@@ -261,7 +279,7 @@ async def receive_progress_snapshot(
             db.add(ss)
 
         # Clear erroneous duplicates in other sellers
-        if other_user_ids:
+        if other_user_ids and not is_divers:
             other_stocks = db.query(SellerStock).filter(
                 SellerStock.product_id == p.id,
                 SellerStock.seller_id.in_(other_user_ids)
@@ -269,9 +287,11 @@ async def receive_progress_snapshot(
             for os_item in other_stocks:
                 os_item.quantity = 0
 
-        updated_count += 1
-        total_qty += item.stock_qty
-        total_cap += (item.stock_qty * (item.purchase_price or p.purchase_price or 0.0))
+        # Only accumulate real physical items into KPIs
+        if not is_divers:
+            updated_count += 1
+            total_qty += item.stock_qty
+            total_cap += (item.stock_qty * (item.purchase_price or p.purchase_price or 0.0))
 
     try:
         db.commit()
@@ -355,6 +375,7 @@ def get_stock_capital_summary(
     """
     Returns full metrics and product-by-product remaining stock and capital
     for the '/admin/stock-capital' web page.
+    Filters out virtual/free-price items (ART-DIVERS) from physical inventory KPIs.
     """
     sellers_canonical = ["Bilel", "Abdrahman", "Houari"]
     sellers_data = {}
@@ -393,6 +414,19 @@ def get_stock_capital_summary(
     grand_sell_value_remaining = 0.0
 
     for p in products:
+        code = str(p.code_article or "").strip().upper()
+        bar = str(p.barcode or "").strip().upper()
+        cat = str(p.category or "").strip().lower()
+
+        # Strict exclusion of virtual Article Divers with 999,999 units
+        is_divers = (
+            code.startswith("ART-DIVERS") or
+            bar.startswith("DIVERS") or
+            cat == "divers"
+        )
+        if is_divers:
+            continue
+
         b_clean = (p.buyer or "Bilel").strip().capitalize()
         if "Hou" in b_clean:
             b_name = "Houari"
@@ -401,14 +435,20 @@ def get_stock_capital_summary(
         else:
             b_name = "Bilel"
 
+        # Determine seller stock quantity with flexible matching (handles abderahman & abdrahman)
         qty = 0
         target_s = sellers_data.get(b_name)
         if p.seller_stock:
             for ss in p.seller_stock:
-                if ss.seller and b_name.lower() in (ss.seller.username or "").lower():
-                    qty += ss.quantity
+                if ss.seller and is_seller_match(b_name, ss.seller.username):
+                    qty = ss.quantity
+                    break
         if qty == 0 and p.global_stock:
             qty = p.global_stock.quantity
+
+        # Safety: ignore any artificial runaway quantities
+        if qty >= 100000:
+            qty = 0
 
         pa = p.purchase_price or 0.0
         pv = p.sell_price or 0.0
@@ -456,6 +496,7 @@ def get_stock_capital_summary(
 
     items_list.sort(key=lambda x: (0 if x["status"] == "out_of_stock" else (1 if x["status"] == "low_stock" else 2), -x["capital_remaining"]))
 
+    # Sales aggregation for each seller
     sales = db.query(Sale).options(joinedload(Sale.items), joinedload(Sale.seller)).filter(Sale.is_return == False).all()
     grand_revenue = 0.0
     grand_profit = 0.0
