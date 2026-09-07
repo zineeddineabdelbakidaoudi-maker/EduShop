@@ -215,6 +215,51 @@ def list_seller_products(
     
     return []
 
+@router.get("/catalog")
+def get_catalog_for_user(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    uname = (current_user.username or "").lower().strip()
+    query = db.query(Product).options(joinedload(Product.global_stock), joinedload(Product.seller_stock))
+    if uname.startswith("bil"):
+        query = query.filter(Product.buyer.ilike("bil%"))
+    elif uname.startswith("hou"):
+        query = query.filter(Product.buyer.ilike("hou%"))
+    elif uname.startswith("abd"):
+        query = query.filter(Product.buyer.ilike("abd%"))
+    elif uname != "admin":
+        return []
+    
+    prods = query.all()
+    result = []
+    is_privileged = (current_user.role == UserRole.admin or uname in ["bilel", "admin", "houarii", "abderahman"])
+    for p in prods:
+        g_qty = p.global_stock.quantity if p.global_stock else 0
+        s_qty = sum(ss.quantity for ss in p.seller_stock if ss.quantity > 0) if p.seller_stock else 0
+        tot_qty = max(g_qty, s_qty) if g_qty != s_qty else g_qty
+        if tot_qty == 0:
+            tot_qty = g_qty + s_qty
+        result.append({
+            "id": p.id,
+            "code_article": p.code_article,
+            "barcode": p.barcode,
+            "barcodes": p.barcode_list,
+            "name_fr": p.name_fr,
+            "name_ar": p.name_ar,
+            "category": p.category,
+            "buyer": p.buyer or ("Houari" if uname.startswith("hou") else ("Abdrahman" if uname.startswith("abd") else "Bilel")),
+            "sell_price": p.sell_price,
+            "purchase_price": p.purchase_price if is_privileged else 0.0,
+            "min_quantity": p.min_quantity,
+            "fast_panel": bool(p.fast_panel),
+            "stock_qty": tot_qty,
+            "global_stock_quantity": tot_qty,
+            "seller_stock_quantity": tot_qty,
+            "quantity": tot_qty
+        })
+    return result
+
 @router.get("/search")
 def search_products(
     q: Optional[str] = None, barcode: Optional[str] = None,

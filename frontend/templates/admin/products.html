@@ -473,7 +473,7 @@ function renderTable(data){
 
   document.getElementById("products-table").innerHTML = currentFilteredProducts.map(p => {
     const isSelected = (p.id === selectedProductId);
-    const margin = p.purchase_price > 0 ? ((p.sell_price - p.purchase_price) / p.purchase_price * 100).toFixed(1) : "—";
+    const margin = (p.purchase_price > 0 && p.sell_price !== undefined && p.sell_price !== null) ? (((Number(p.sell_price) - Number(p.purchase_price)) / Number(p.purchase_price)) * 100).toFixed(1) : "—";
     const bRaw = (p.buyer || "Houari").trim();
     const bLow = bRaw.toLowerCase();
     let buyerBadge = "";
@@ -562,7 +562,7 @@ function calcSellFromMargin(){
     showToast("⚠️ Marge restreinte entre 0% et 100% (Réinitialisée à 60%)", "warn");
   }
   const sell = purchase * (1 + margin / 100);
-  document.getElementById("p-sell").value = sell.toFixed(2);
+  document.getElementById("p-sell").value = (Number(sell) || 0).toFixed(2);
 }
 
 function calcMarginFromSell(){
@@ -573,11 +573,11 @@ function calcMarginFromSell(){
     if(margin < 0 || margin > 100){
       margin = 60;
       sell = purchase * 1.60;
-      document.getElementById("p-sell").value = sell.toFixed(2);
+      document.getElementById("p-sell").value = (Number(sell) || 0).toFixed(2);
       document.getElementById("p-margin").value = 60;
-      showToast("⚠️ Marge invalide (<0% ou >100%) réinitialisée à 60% (Vente: " + sell.toFixed(2) + " DA)", "warn");
+      showToast("⚠️ Marge invalide (<0% ou >100%) réinitialisée à 60% (Vente: " + (Number(sell) || 0).toFixed(2) + " DA)", "warn");
     } else {
-      document.getElementById("p-margin").value = margin.toFixed(1);
+      document.getElementById("p-margin").value = (Number(margin) || 0).toFixed(1);
     }
   }
 }
@@ -718,8 +718,11 @@ function openEdit(id, focusTarget = null){
   document.getElementById("p-sell").value = p.sell_price; 
   document.getElementById("p-qty").value = p.global_stock_quantity; 
   document.getElementById("p-min").value = p.min_quantity;
-  if(p.purchase_price > 0){ 
-    document.getElementById("p-margin").value = ((p.sell_price - p.purchase_price) / p.purchase_price * 100).toFixed(1); 
+  if(Number(p.purchase_price) > 0 && p.sell_price !== undefined && p.sell_price !== null){ 
+    const m = ((Number(p.sell_price) - Number(p.purchase_price)) / Number(p.purchase_price)) * 100;
+    document.getElementById("p-margin").value = (Number(m) || 0).toFixed(1); 
+  } else {
+    document.getElementById("p-margin").value = "";
   }
   
   // Set multi-select gérants checkboxes
