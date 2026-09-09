@@ -1,5 +1,5 @@
 from typing import List, Optional
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 import json
 import os
@@ -118,6 +118,19 @@ async def sync_push(data: PushRequest, db: Session = Depends(get_db), seller: Us
                 sale_time = datetime.utcnow()
 
             total = sum(item.quantity * item.unit_price for item in osale.items) - osale.discount
+            calc_total = max(0.0, total)
+
+            # Deduplication check: skip if this sale was already synced
+            existing_sale = db.query(Sale).filter(
+                Sale.seller_id == seller.id,
+                Sale.is_return == osale.is_return,
+                Sale.created_at >= sale_time - timedelta(seconds=3),
+                Sale.created_at <= sale_time + timedelta(seconds=3)
+            ).first()
+            if existing_sale and abs(float(existing_sale.total or 0.0) - calc_total) < 0.05:
+                if osale.local_id:
+                    synced_local_ids.append(osale.local_id)
+                continue
 
             pm = PaymentMethod.cash
             if osale.payment_method.lower() == "card":
@@ -127,7 +140,7 @@ async def sync_push(data: PushRequest, db: Session = Depends(get_db), seller: Us
 
             sale = Sale(
                 seller_id=seller.id,
-                total=max(0.0, total),
+                total=calc_total,
                 discount=osale.discount,
                 payment_method=pm,
                 is_return=osale.is_return,
@@ -305,11 +318,23 @@ async def receive_progress_snapshot(
             try:
                 sale_time = datetime.fromisoformat(osale.created_at) if osale.created_at else datetime.utcnow()
                 total = sum(it.quantity * it.unit_price for it in osale.items) - osale.discount
+                calc_total = max(0.0, total)
+
+                # Deduplication check: skip if this sale was already synced for this seller
+                existing_sale = db.query(Sale).filter(
+                    Sale.seller_id == target_user.id,
+                    Sale.is_return == osale.is_return,
+                    Sale.created_at >= sale_time - timedelta(seconds=3),
+                    Sale.created_at <= sale_time + timedelta(seconds=3)
+                ).first()
+                if existing_sale and abs(float(existing_sale.total or 0.0) - calc_total) < 0.05:
+                    continue
+
                 pm = PaymentMethod.card if osale.payment_method.lower() == "card" else PaymentMethod.cash
 
                 sale = Sale(
                     seller_id=target_user.id,
-                    total=max(0.0, total),
+                    total=calc_total,
                     discount=osale.discount,
                     payment_method=pm,
                     is_return=osale.is_return,
@@ -364,6 +389,76 @@ async def receive_progress_snapshot(
         "total_units": total_qty,
         "total_capital": round(total_cap, 2),
         "synced_at": sync_time_str
+    }
+
+
+@router.post("/cleanup-duplicate-sales")
+def cleanup_duplicate_sales(
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_admin)
+):
+    """
+    Cleans up duplicate sales from PostgreSQL database on Render.
+    Keeps the earliest row for each unique sale (seller, timestamp within 3s, total, is_return),
+    deletes all redundant duplicate Sale and SaleItem rows, and returns fresh clean KPIs.
+    """
+    all_sales = db.query(Sale).order_by(Sale.seller_id.asc(), Sale.created_at.asc(), Sale.id.asc()).all()
+
+    unique_sales_by_seller = {}
+    duplicate_sale_ids = []
+
+    for s in all_sales:
+        sid = s.seller_id
+        if sid not in unique_sales_by_seller:
+            unique_sales_by_seller[sid] = []
+
+        is_dup = False
+        s_time = s.created_at
+        s_total = float(s.total or 0.0)
+        s_ret = bool(s.is_return)
+
+        for u in unique_sales_by_seller[sid]:
+            if u.is_return == s_ret and abs(float(u.total or 0.0) - s_total) < 0.05:
+                if s_time and u.created_at:
+                    diff_sec = abs((s_time - u.created_at).total_seconds())
+                    if diff_sec <= 3.0:
+                        is_dup = True
+                        break
+
+        if is_dup:
+            duplicate_sale_ids.append(s.id)
+        else:
+            unique_sales_by_seller[sid].append(s)
+
+    # Delete duplicates in chunks
+    deleted_count = len(duplicate_sale_ids)
+    if duplicate_sale_ids:
+        batch_size = 200
+        for i in range(0, len(duplicate_sale_ids), batch_size):
+            chunk = duplicate_sale_ids[i:i + batch_size]
+            db.query(SaleItem).filter(SaleItem.sale_id.in_(chunk)).delete(synchronize_session=False)
+            db.query(Sale).filter(Sale.id.in_(chunk)).delete(synchronize_session=False)
+            db.commit()
+
+    stats = {}
+    for sid, sales_list in unique_sales_by_seller.items():
+        user = db.query(User).filter_by(id=sid).first()
+        uname = user.username if user else f"user_{sid}"
+        clean_sales = [s for s in sales_list if not s.is_return]
+        clean_returns = [s for s in sales_list if s.is_return]
+        net_revenue = sum(float(s.total or 0.0) for s in clean_sales) - sum(float(s.total or 0.0) for s in clean_returns)
+        stats[uname] = {
+            "seller_id": sid,
+            "unique_sales_count": len(clean_sales),
+            "returns_count": len(clean_returns),
+            "net_revenue": round(net_revenue, 2)
+        }
+
+    return {
+        "status": "success",
+        "deleted_duplicates_count": deleted_count,
+        "remaining_unique_sales_count": sum(len(l) for l in unique_sales_by_seller.values()),
+        "sellers_stats": stats
     }
 
 
